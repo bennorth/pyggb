@@ -1,0 +1,46 @@
+App {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.abs-0000 {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.pyggb-IDE {
+  background-color: blue;
+
+  display: grid;
+  grid-template-rows: 32px 1fr;
+
+  .MenuBar {
+    background-color: fuchsia;
+    margin: 0rem;
+  }
+
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .editor {
+      background-color: green;
+    }
+    .results {
+      display: grid;
+      grid-template-rows: 3fr 2fr;
+
+      background-color: red;
+      .ggb {
+        background-color: orange;
+      }
+      .stdout {
+        background-color: yellow;
+      }
+    }
+  }
+}
