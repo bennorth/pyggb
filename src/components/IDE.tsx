@@ -1,10 +1,7 @@
 import React from "react";
 import { CodeEditor } from "./CodeEditor";
 import { GeoGebraPane } from "./GeoGebraPane";
-
-const MenuBar = () => {
-  return <div className="MenuBar"></div>;
-};
+import { MenuBar } from "./MenuBar";
 
 export const IDE: React.FC<{}> = () => {
   return (
