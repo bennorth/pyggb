@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { IDE } from "./components/IDE";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { useStoreActions } from "./store";
 
 function App() {
