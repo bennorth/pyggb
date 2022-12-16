@@ -1,4 +1,6 @@
 import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
+import { PyGgbModel } from ".";
+import { SkulptGgbModuleUrl } from "../shared/resources";
 
 type BootStatus = "idle" | "running" | "done";
 
@@ -12,6 +14,8 @@ export type Dependencies = {
   setBootStatus: Action<Dependencies, BootStatus>;
   setGgbApi: Action<Dependencies, any>;
   setGgbPythonModuleText: Action<Dependencies, string>;
+
+  boot: Thunk<Dependencies, void, {}, PyGgbModel>;
 };
 
 export const dependencies: Dependencies = {
@@ -29,5 +33,17 @@ export const dependencies: Dependencies = {
   }),
   setGgbPythonModuleText: action((s, moduleText) => {
     s.ggbPythonModuleText = moduleText;
+  }),
+
+  boot: thunk(async (a, _voidPayload, helpers) => {
+    const status = helpers.getState().bootStatus;
+    if (status !== "idle") return;
+
+    a.setBootStatus("running");
+
+    const response = await fetch(SkulptGgbModuleUrl);
+    const text = await response.text();
+    a.setGgbPythonModuleText(text);
+    a.setBootStatus("done");
   }),
 };
