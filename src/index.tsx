@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
+import "./shared/ggb-interaction";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
