@@ -1,5 +1,6 @@
 import React from "react";
 import { CodeEditor } from "./CodeEditor";
+import { GeoGebraPane } from "./GeoGebraPane";
 
 const MenuBar = () => {
   return <div className="MenuBar"></div>;
@@ -14,7 +15,9 @@ export const IDE: React.FC<{}> = () => {
           <CodeEditor />
         </div>
         <div className="results">
-          <div className="ggb"></div>
+          <div className="ggb">
+            <GeoGebraPane />
+          </div>
           <div className="stdout"></div>
         </div>
       </div>
