@@ -8,6 +8,7 @@ import { useStoreActions, useStoreState } from "../store";
 export const CodeEditor: React.FC<{}> = () => {
   const codeText = useStoreState((s) => s.editor.codeText);
   const setCodeText = useStoreActions((a) => a.editor.setCodeText);
+  const allReady = useStoreState((s) => s.dependencies.allReady);
 
   return (
     <AceEditor
@@ -19,6 +20,7 @@ export const CodeEditor: React.FC<{}> = () => {
       height="100%"
       value={codeText}
       onChange={setCodeText}
+      readOnly={!allReady}
     />
   );
 };
