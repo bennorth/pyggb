@@ -3,8 +3,12 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
+import { useStoreActions, useStoreState } from "../store";
 
 export const CodeEditor: React.FC<{}> = () => {
+  const codeText = useStoreState((s) => s.editor.codeText);
+  const setCodeText = useStoreActions((a) => a.editor.setCodeText);
+
   return (
     <AceEditor
       mode="python"
@@ -13,6 +17,8 @@ export const CodeEditor: React.FC<{}> = () => {
       fontSize={14}
       width="100%"
       height="100%"
+      value={codeText}
+      onChange={setCodeText}
     />
   );
 };
