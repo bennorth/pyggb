@@ -107,5 +107,10 @@ function $builtinmodule() {
     },
   }));
 
+  const namesForExport = Sk.ffi.remapToPy(["Point"]);
+
+  mod.__name__ = new Sk.builtin.str("ggb");
+  mod.__all__ = namesForExport;
+
   return mod;
 }
