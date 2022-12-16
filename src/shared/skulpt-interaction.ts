@@ -1,3 +1,5 @@
+import { GgbApi } from "./ggb-interaction";
+
 declare var Sk: any;
 
 export type ModuleFilename = string;
@@ -20,6 +22,7 @@ const builtinOrLocalRead =
 export const runPythonProgram = (
   codeText: string,
   localModules: LocalModules,
+  ggbApi: GgbApi
 ) => {
   Sk.configure({
     output: (s: string) => console.log(s),
@@ -29,7 +32,9 @@ export const runPythonProgram = (
     inputfunTakesPrompt: true /* then you need to output the prompt yourself */,
   });
 
-  Sk.misceval.asyncToPromise(function () {
-    return Sk.importMainWithBody("<stdin>", false, codeText, true);
-  });
+  (globalThis as any).$ggbApiHandoverQueue.enqueue(ggbApi);
+
+  return Sk.misceval.asyncToPromise(() =>
+    Sk.importMainWithBody("<stdin>", false, codeText, true)
+  );
 };
