@@ -32,6 +32,7 @@ export const runPythonProgram = (
     inputfunTakesPrompt: true /* then you need to output the prompt yourself */,
   });
 
+  ggbApi.reset();
   (globalThis as any).$ggbApiHandoverQueue.enqueue(ggbApi);
 
   return Sk.misceval.asyncToPromise(() =>
