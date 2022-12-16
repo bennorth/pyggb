@@ -1,3 +1,11 @@
+$pyggbGeoGebraPaneWidth: 640;
+$pyggbGeoGebraPaneHeight: 640;
+
+:root {
+  --pyggb-geogebra-pane-width: #{$pyggbGeoGebraPaneWidth};
+  --pyggb-geogebra-pane-height: #{$pyggbGeoGebraPaneHeight};
+}
+
 App {
   position: absolute;
   width: 100%;
