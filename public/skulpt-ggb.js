@@ -1,4 +1,6 @@
 function $builtinmodule() {
+  const ggbApi = globalThis.$ggbApiHandoverQueue.dequeue();
+
   let mod = {};
 
   const clsPoint = (mod.Point = Sk.abstr.buildNativeClass("Point", {
