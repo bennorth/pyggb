@@ -1,18 +1,19 @@
 import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
+import { GgbApi } from "../shared/ggb-interaction";
 import { SkulptGgbModuleUrl } from "../shared/resources";
 
 type BootStatus = "idle" | "running" | "done";
 
 export type Dependencies = {
   bootStatus: BootStatus;
-  ggbApi: any;
+  ggbApi: GgbApi;
   ggbPythonModuleText: string;
 
   allReady: Computed<Dependencies, boolean>;
 
   setBootStatus: Action<Dependencies, BootStatus>;
-  setGgbApi: Action<Dependencies, any>;
+  setGgbApi: Action<Dependencies, GgbApi>;
   setGgbPythonModuleText: Action<Dependencies, string>;
 
   boot: Thunk<Dependencies, void, {}, PyGgbModel>;
