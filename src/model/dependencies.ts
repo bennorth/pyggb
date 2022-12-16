@@ -9,6 +9,7 @@ export type Dependencies = {
 
   allReady: Computed<Dependencies, boolean>;
 
+  setBootStatus: Action<Dependencies, BootStatus>;
   setGgbApi: Action<Dependencies, any>;
   setGgbPythonModuleText: Action<Dependencies, string>;
 };
@@ -20,6 +21,9 @@ export const dependencies: Dependencies = {
 
   allReady: computed((s) => s.ggbApi !== null && s.ggbPythonModuleText !== ""),
 
+  setBootStatus: action((s, status) => {
+    s.bootStatus = status;
+  }),
   setGgbApi: action((s, api) => {
     s.ggbApi = api;
   }),
