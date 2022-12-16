@@ -1,5 +1,9 @@
 declare var Sk: any;
 
+export type ModuleFilename = string;
+export type ModuleContents = string;
+export type LocalModules = Map<ModuleFilename, ModuleContents>;
+
 const builtinRead = (filename: string) => {
   console.log(`builtinRead("${filename}")`);
 
