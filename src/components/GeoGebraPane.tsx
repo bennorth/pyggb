@@ -31,8 +31,6 @@ export const GeoGebraPane: React.FC<{}> = () => {
       },
     };
 
-    console.log("about to create with", params);
-
     const ggbApplet = new GGBApplet(params, true);
     ggbApplet.inject("ggb-applet-content");
   });
