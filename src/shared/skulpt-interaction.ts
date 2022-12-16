@@ -4,17 +4,18 @@ export type ModuleFilename = string;
 export type ModuleContents = string;
 export type LocalModules = Map<ModuleFilename, ModuleContents>;
 
-const builtinRead = (filename: string) => {
-  console.log(`builtinRead("${filename}")`);
+const builtinOrLocalRead =
+  (localModules: LocalModules) => (filename: string) => {
+    if (
+      Sk.builtinFiles !== undefined &&
+      Sk.builtinFiles["files"][filename] !== undefined
+    )
+      return Sk.builtinFiles["files"][filename];
 
-  if (
-    Sk.builtinFiles === undefined ||
-    Sk.builtinFiles["files"][filename] === undefined
-  )
-    throw `File not found: "${filename}"`;
+    if (localModules.has(filename)) return localModules.get(filename);
 
-  return Sk.builtinFiles["files"][filename];
-};
+    throw new Error(`File not found: "${filename}"`);
+  };
 
 export const runPythonProgram = (codeText: string) => {
   Sk.configure({
