@@ -24,7 +24,7 @@ App {
   background-color: blue;
 
   display: grid;
-  grid-template-rows: 32px 1fr;
+  grid-template-rows: min-content 1fr;
 
   .MenuBar {
     background-color: fuchsia;
