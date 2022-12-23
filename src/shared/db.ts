@@ -62,6 +62,17 @@ export class PyGgbDexie extends Dexie {
 
     await this.userFiles.put(newValue);
   }
+
+  async createNewFile(name: string): Promise<UserFilePreview> {
+    const newFile = {
+      name,
+      codeText: "# Start writing your code!\n",
+      mtime: Date.now(),
+    };
+
+    const newFileId = (await this.userFiles.add(newFile)) as number;
+    return { id: newFileId, name };
+  }
 }
 
 // TODO: Need some thought as to what the user experience is when they
