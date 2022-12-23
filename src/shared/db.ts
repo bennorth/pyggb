@@ -45,6 +45,23 @@ export class PyGgbDexie extends Dexie {
       name: mostRecentFile.name,
     };
   }
+
+  async updateFile(update: UserFileUpdate) {
+    const currentValue = await this.userFiles.get(update.id);
+    if (currentValue == null) {
+      console.error(`could not find UserFile ${update.id} for update`);
+      return;
+    }
+
+    const newValue = {
+      id: currentValue.id,
+      name: currentValue.name,
+      codeText: update.codeText,
+      mtime: Date.now(),
+    };
+
+    await this.userFiles.put(newValue);
+  }
 }
 
 // TODO: Need some thought as to what the user experience is when they
