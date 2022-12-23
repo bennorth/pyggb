@@ -12,6 +12,8 @@ export type BackingFileState =
       name: string;
     };
 
+type CodeTextSnapshot = { seqNum: number; codeText: string };
+
 export type Editor = {
   backingFileState: BackingFileState;
   codeText: string;
@@ -22,6 +24,7 @@ export type Editor = {
   updateCodeText: Action<Editor, string>;
   setBackingFileState: Action<Editor, BackingFileState>;
   loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
+  maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, {}, PyGgbModel>;
 };
 
 const InitialCodeTextSeqNum = 1001;
@@ -64,5 +67,32 @@ export const editor: Editor = {
       a.setBackedSeqNum(InitialCodeTextSeqNum);
     }
     a.setBackingFileState({ status: "idle", ...userFilePreview });
+  }),
+
+  maybeUpdateBacking: thunk(async (a, snapshot, helpers) => {
+    const state = helpers.getState();
+
+    if (state.codeTextSeqNum > snapshot.seqNum) {
+      return;
+    }
+
+    const backingFileState = state.backingFileState;
+    const bfStatus = backingFileState.status;
+    switch (bfStatus) {
+      case "booting":
+      case "loading":
+        console.error(`updateBacking(): in bad state ${bfStatus}`);
+        return;
+      case "saving":
+        // Another save already in progress.  Should we ever get here?
+        return;
+      case "idle":
+        const update = { id: backingFileState.id, codeText: snapshot.codeText };
+        a.setBackingFileState({ ...backingFileState, status: "saving" });
+        await db.updateFile(update);
+        a.setBackingFileState({ ...backingFileState, status: "idle" });
+        a.setBackedSeqNum(snapshot.seqNum);
+        return;
+    }
   }),
 };
