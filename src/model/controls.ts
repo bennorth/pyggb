@@ -10,6 +10,7 @@ export type Controls = {
 export const controls: Controls = {
   runProgram: thunk((a, _voidPayload, helpers) => {
     const state = helpers.getStoreState();
+    const actions = helpers.getStoreActions();
     const codeText = state.editor.codeText;
     const { ggbApi, ggbPythonModuleText } = state.dependencies;
 
@@ -28,10 +29,15 @@ export const controls: Controls = {
       ["src/builtin/ggb.js", ggbPythonModuleText],
     ]);
 
+    const stdoutActions = {
+      clear: actions.pyStdout.clearContent,
+      append: actions.pyStdout.appendContent,
+    };
+
     // TODO: Make async, add "await" to following, and wrap it in
     // setState("running") / setState("idle") calls.  Or just use
     // "then()" calls.
-    runPythonProgram(codeText, localModules, ggbApi).then(() => {
+    runPythonProgram(codeText, localModules, stdoutActions, ggbApi).then(() => {
       console.log("runPythonProgram done");
     });
   }),
