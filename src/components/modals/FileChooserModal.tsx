@@ -1,8 +1,26 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
-import { db } from "../../shared/db";
+import { db, UserFilePreview } from "../../shared/db";
 import { useStoreActions, useStoreState } from "../../store";
+
+type FileChoiceProps = UserFilePreview & {
+  dismiss: () => void;
+};
+
+const FileChoice: React.FC<FileChoiceProps> = (props) => {
+  const loadFromBacking = useStoreActions((a) => a.editor.loadFromBacking);
+  const load = () => {
+    loadFromBacking({ id: props.id, name: props.name });
+    props.dismiss();
+  };
+
+  return (
+    <li className="FileChoice" onClick={load}>
+      {props.name}
+    </li>
+  );
+};
 
 export const FileChooserModal: React.FC<{}> = () => {
   const userFiles = useLiveQuery(() => db.allFiles());
