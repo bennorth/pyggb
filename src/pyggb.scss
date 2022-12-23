@@ -85,3 +85,19 @@ App {
     }
   }
 }
+
+.FileChoice-list {
+  padding: 0px;
+  .FileChoice {
+    user-select: none;
+    cursor: pointer;
+    list-style: none;
+    background-color: #eee;
+    margin: 0.5rem 0rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+}
