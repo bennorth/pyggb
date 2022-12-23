@@ -3,7 +3,7 @@ function $builtinmodule() {
 
   let mod = {};
 
-  const clsPoint = (mod.Point = Sk.abstr.buildNativeClass("Point", {
+  mod.Point = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(pyX, pyY) {
       const x = Sk.ffi.remapToJs(pyX);
       const y = Sk.ffi.remapToJs(pyY);
@@ -20,7 +20,7 @@ function $builtinmodule() {
       tp$new(args, kwargs) {
         Sk.abstr.checkNoKwargs("Point", kwargs);
         Sk.abstr.checkArgsLen("Point", args, 2, 2);
-        return new clsPoint(...args);
+        return new mod.Point(...args);
       },
       tp$str() {
         return new Sk.builtin.str(`(${this.$xCoord()}, ${this.$yCoord()})`);
@@ -107,7 +107,7 @@ function $builtinmodule() {
         },
       },
     },
-  }));
+  });
 
   const namesForExport = Sk.ffi.remapToPy(["Point"]);
 
