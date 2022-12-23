@@ -26,9 +26,19 @@ App {
   display: grid;
   grid-template-rows: min-content 1fr;
 
-  .MenuBar {
-    background-color: fuchsia;
+  .navbar {
+    padding: 0px;
+  }
+  .container-fluid.MenuBar {
+    background-color: #303030;
+    color: white;
     margin: 0rem;
+    justify-content: flex-start;
+
+    .RunButton button {
+      padding: 2px 4px;
+      display: block; // Avoids little bit of extra space above
+    }
   }
 
   .main-content {
