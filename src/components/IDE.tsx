@@ -2,6 +2,7 @@ import React from "react";
 import { CodeEditor } from "./CodeEditor";
 import { GeoGebraPane } from "./GeoGebraPane";
 import { MenuBar } from "./MenuBar";
+import { StdoutPane } from "./StdoutPane";
 
 export const IDE: React.FC<{}> = () => {
   return (
@@ -15,7 +16,7 @@ export const IDE: React.FC<{}> = () => {
           <div className="ggb">
             <GeoGebraPane />
           </div>
-          <div className="stdout"></div>
+          <StdoutPane />
         </div>
       </div>
     </div>
