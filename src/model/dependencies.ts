@@ -2,6 +2,7 @@ import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/ggb-interaction";
 import { SkulptGgbModuleUrl } from "../shared/resources";
+import { db } from "../shared/db";
 
 type BootStatus = "idle" | "running" | "done";
 
@@ -45,6 +46,9 @@ export const dependencies: Dependencies = {
     const response = await fetch(SkulptGgbModuleUrl);
     const text = await response.text();
     a.setGgbPythonModuleText(text);
+
+    await db.ensureUserFilesNonEmpty();
+
     a.setBootStatus("done");
   }),
 };
