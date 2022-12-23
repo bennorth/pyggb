@@ -51,7 +51,6 @@ export const FileChooserModal: React.FC<{}> = () => {
         <Button variant="secondary" onClick={dismiss}>
           Cancel
         </Button>
-        <Button variant="primary">Open</Button>
       </Modal.Footer>
     </Modal>
   );
