@@ -30,6 +30,21 @@ export class PyGgbDexie extends Dexie {
       });
     }
   }
+
+  async mostRecentlyOpenedPreview(): Promise<UserFilePreview> {
+    const recentFileArray = await this.userFiles
+      .toCollection()
+      .reverse()
+      .limit(1)
+      .sortBy("mtime");
+
+    const mostRecentFile = recentFileArray[0];
+
+    return {
+      id: mostRecentFile.id!,
+      name: mostRecentFile.name,
+    };
+  }
 }
 
 // TODO: Need some thought as to what the user experience is when they
