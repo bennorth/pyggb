@@ -21,7 +21,10 @@ export class PyGgbDexie extends Dexie {
   }
 
   async allFiles(): Promise<Array<UserFilePreview>> {
-    const allFiles = await this.userFiles.toArray();
+    let allFiles = await this.userFiles
+      .toCollection()
+      .reverse()
+      .sortBy("mtime");
     return allFiles as Array<UserFilePreview>;
   }
 
