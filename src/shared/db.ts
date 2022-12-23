@@ -20,6 +20,11 @@ export class PyGgbDexie extends Dexie {
     });
   }
 
+  async allFiles(): Promise<Array<UserFilePreview>> {
+    const allFiles = await this.userFiles.toArray();
+    return allFiles as Array<UserFilePreview>;
+  }
+
   async ensureUserFilesNonEmpty() {
     const nFiles = await this.userFiles.count();
     if (nFiles === 0) {
