@@ -36,7 +36,7 @@ export const FileChooserModal: React.FC<{}> = () => {
       </Modal.Header>
       <Modal.Body>
         {userFiles && userFiles.length === 0 && <p>No files yet</p>}
-        <ul>
+        <ul className="FileChoice-list">
           {userFiles?.map((f) => (
             <FileChoice
               key={f.id}
