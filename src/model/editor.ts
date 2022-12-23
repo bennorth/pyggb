@@ -13,6 +13,7 @@ export type BackingFileState =
 export type Editor = {
   backingFileState: BackingFileState;
   codeText: string;
+  codeTextSeqNum: number;
   setCodeText: Action<Editor, string>;
   setBackingFileState: Action<Editor, BackingFileState>;
 };
@@ -20,6 +21,7 @@ export type Editor = {
 export const editor: Editor = {
   backingFileState: { status: "booting" },
   codeText: "",
+  codeTextSeqNum: 0,
   setCodeText: action((s, codeText) => {
     s.codeText = codeText;
   }),
