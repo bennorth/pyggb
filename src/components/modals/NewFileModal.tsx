@@ -5,11 +5,17 @@ import { useStoreActions, useStoreState } from "../../store";
 export const NewFileModal: React.FC<{}> = () => {
   const active = useStoreState((s) => s.modals.newFile.active);
   const setActive = useStoreActions((a) => a.modals.newFile.setActive);
+  const createAction = useStoreActions((a) => a.editor.createNew);
 
   const [newName, setNewName] = useState("");
   const createEnabled = newName !== "";
 
   const dismiss = () => setActive(false);
+  const create = async () => {
+    await createAction(newName);
+    setNewName(""); // Ready for next time
+    dismiss();
+  };
 
   return (
     <Modal show={active}>
@@ -31,7 +37,7 @@ export const NewFileModal: React.FC<{}> = () => {
         <Button variant="secondary" onClick={dismiss}>
           Cancel
         </Button>
-        <Button disabled={!createEnabled} variant="primary">
+        <Button disabled={!createEnabled} variant="primary" onClick={create}>
           Create
         </Button>
       </Modal.Footer>
