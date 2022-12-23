@@ -19,6 +19,11 @@ const builtinOrLocalRead =
     throw new Error(`File not found: "${filename}"`);
   };
 
+export interface StdoutActions {
+  clear: () => void;
+  append: (newOutput: string) => void;
+}
+
 export const runPythonProgram = (
   codeText: string,
   localModules: LocalModules,
