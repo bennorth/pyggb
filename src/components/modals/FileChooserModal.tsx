@@ -38,7 +38,12 @@ export const FileChooserModal: React.FC<{}> = () => {
         {userFiles && userFiles.length === 0 && <p>No files yet</p>}
         <ul>
           {userFiles?.map((f) => (
-            <li key={f.id}>{f.name}</li>
+            <FileChoice
+              key={f.id}
+              id={f.id}
+              name={f.name}
+              dismiss={dismiss}
+            ></FileChoice>
           ))}
         </ul>
       </Modal.Body>
