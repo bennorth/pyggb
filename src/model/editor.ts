@@ -26,6 +26,7 @@ export type Editor = {
   setBackingFileState: Action<Editor, BackingFileState>;
   loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
   maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, {}, PyGgbModel>;
+  createNew: Thunk<Editor, string>;
 };
 
 const InitialCodeTextSeqNum = 1001;
@@ -101,5 +102,10 @@ export const editor: Editor = {
         a.setBackedSeqNum(snapshot.seqNum);
         return;
     }
+  }),
+
+  createNew: thunk(async (a, name) => {
+    const preview = await db.createNewFile(name);
+    await a.loadFromBacking(preview);
   }),
 };
