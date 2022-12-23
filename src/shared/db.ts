@@ -19,6 +19,17 @@ export class PyGgbDexie extends Dexie {
       userFiles: "++id,name",
     });
   }
+
+  async ensureUserFilesNonEmpty() {
+    const nFiles = await this.userFiles.count();
+    if (nFiles === 0) {
+      await this.userFiles.add({
+        name: "Untitled",
+        codeText: "# Start writing your code!",
+        mtime: Date.now(),
+      });
+    }
+  }
 }
 
 // TODO: Need some thought as to what the user experience is when they
