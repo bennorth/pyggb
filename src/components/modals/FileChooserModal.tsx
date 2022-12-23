@@ -5,7 +5,7 @@ import { db } from "../../shared/db";
 import { useStoreActions, useStoreState } from "../../store";
 
 export const FileChooserModal: React.FC<{}> = () => {
-  const userFiles = useLiveQuery(() => db.userFiles.toArray());
+  const userFiles = useLiveQuery(() => db.allFiles());
   const active = useStoreState((s) => s.modals.fileChooser.active);
   const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
 
