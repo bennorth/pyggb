@@ -76,10 +76,12 @@ App {
         }
       }
       .stdout-outer {
-        background-color: yellow;
+        background-color: #303030;
+        color: #eee;
         position: relative;
       }
       .stdout-inner {
+        margin: 0.5rem;
         overflow-y: auto;
       }
     }
