@@ -27,16 +27,18 @@ export interface StdoutActions {
 export const runPythonProgram = (
   codeText: string,
   localModules: LocalModules,
+  stdoutActions: StdoutActions,
   ggbApi: GgbApi
 ) => {
   Sk.configure({
-    output: (s: string) => console.log(s),
+    output: stdoutActions.append,
     read: builtinOrLocalRead(localModules),
     __future__: Sk.python3,
     inputfun: (promptText: string) => prompt(promptText),
     inputfunTakesPrompt: true /* then you need to output the prompt yourself */,
   });
 
+  stdoutActions.clear();
   ggbApi.reset();
   (globalThis as any).$ggbApiHandoverQueue.enqueue(ggbApi);
 
