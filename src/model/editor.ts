@@ -15,6 +15,7 @@ export type Editor = {
   codeText: string;
   codeTextSeqNum: number;
   setCodeText: Action<Editor, string>;
+  updateCodeText: Action<Editor, string>;
   setBackingFileState: Action<Editor, BackingFileState>;
 };
 
@@ -27,6 +28,10 @@ export const editor: Editor = {
   setCodeText: action((s, codeText) => {
     s.codeText = codeText;
     s.codeTextSeqNum = InitialCodeTextSeqNum;
+  }),
+  updateCodeText: action((s, codeText) => {
+    s.codeText = codeText;
+    s.codeTextSeqNum += 1;
   }),
   setBackingFileState: action((s, state) => {
     s.backingFileState = state;
