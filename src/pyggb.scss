@@ -51,8 +51,12 @@ App {
           height: #{$pyggbGeoGebraPaneHeight}px;
         }
       }
-      .stdout {
+      .stdout-outer {
         background-color: yellow;
+        position: relative;
+      }
+      .stdout-inner {
+        overflow-y: auto;
       }
     }
   }
