@@ -39,6 +39,20 @@ App {
       padding: 2px 4px;
       display: block; // Avoids little bit of extra space above
     }
+
+    .backing-state {
+      margin-left: 3rem;
+      color: white;
+      font-style: italic;
+
+      .spinner-border {
+        visibility: hidden;
+        &.visible {
+          visibility: visible;
+        }
+        margin-right: 1rem;
+      }
+    }
   }
 
   .main-content {
