@@ -38,6 +38,7 @@ export const dependencies: Dependencies = {
   }),
 
   boot: thunk(async (a, _voidPayload, helpers) => {
+    const allActions = helpers.getStoreActions();
     const status = helpers.getState().bootStatus;
     if (status !== "idle") return;
 
@@ -48,6 +49,8 @@ export const dependencies: Dependencies = {
     a.setGgbPythonModuleText(text);
 
     await db.ensureUserFilesNonEmpty();
+    const fileIdToBootWith = await db.mostRecentlyOpenedPreview();
+    await allActions.editor.loadFromBacking(fileIdToBootWith);
 
     a.setBootStatus("done");
   }),
