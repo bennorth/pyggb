@@ -11,13 +11,19 @@ export type BackingFileState =
     };
 
 export type Editor = {
+  backingFileState: BackingFileState;
   codeText: string;
   setCodeText: Action<Editor, string>;
+  setBackingFileState: Action<Editor, BackingFileState>;
 };
 
 export const editor: Editor = {
+  backingFileState: { status: "booting" },
   codeText: "",
   setCodeText: action((s, codeText) => {
     s.codeText = codeText;
+  }),
+  setBackingFileState: action((s, state) => {
+    s.backingFileState = state;
   }),
 };
