@@ -25,7 +25,7 @@ export const dependencies: Dependencies = {
   ggbApi: null,
   ggbPythonModuleText: "",
 
-  allReady: computed((s) => s.ggbApi !== null && s.ggbPythonModuleText !== ""),
+  allReady: computed((s) => s.ggbApi !== null && s.bootStatus === "done"),
 
   setBootStatus: action((s, status) => {
     s.bootStatus = status;
