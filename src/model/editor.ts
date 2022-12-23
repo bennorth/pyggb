@@ -1,4 +1,6 @@
-import { action, Action } from "easy-peasy";
+import { action, Action, thunk, Thunk } from "easy-peasy";
+import { PyGgbModel } from ".";
+import { db, UserFilePreview } from "../shared/db";
 
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
@@ -19,6 +21,7 @@ export type Editor = {
   setCodeText: Action<Editor, string>;
   updateCodeText: Action<Editor, string>;
   setBackingFileState: Action<Editor, BackingFileState>;
+  loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
 };
 
 const InitialCodeTextSeqNum = 1001;
@@ -41,5 +44,25 @@ export const editor: Editor = {
   }),
   setBackedSeqNum: action((s, seqNum) => {
     s.backedSeqNum = seqNum;
+  }),
+  loadFromBacking: thunk(async (a, userFilePreview, helpers) => {
+    const state = helpers.getState();
+    const status = state.backingFileState.status;
+    if (status !== "booting" && status !== "idle") {
+      console.error(`loadFromBacking(): in bad state ${status}`);
+      return;
+    }
+
+    a.setBackingFileState({ status: "loading", ...userFilePreview });
+    const userFile = await db.userFiles.get(userFilePreview.id);
+    if (userFile == null) {
+      console.error(
+        `could not get user-file ${JSON.stringify(userFilePreview)}`
+      );
+    } else {
+      a.setCodeText(userFile.codeText);
+      a.setBackedSeqNum(InitialCodeTextSeqNum);
+    }
+    a.setBackingFileState({ status: "idle", ...userFilePreview });
   }),
 };
