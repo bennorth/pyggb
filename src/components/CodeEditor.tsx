@@ -7,7 +7,9 @@ import { useStoreActions, useStoreState } from "../store";
 
 export const CodeEditor: React.FC<{}> = () => {
   const codeText = useStoreState((s) => s.editor.codeText);
-  const setCodeText = useStoreActions((a) => a.editor.setCodeText);
+  const setCodeText = useStoreActions(
+    (a) => a.editor.updateCodeTextAndScheduleSave
+  );
   const allReady = useStoreState((s) => s.dependencies.allReady);
 
   return (
