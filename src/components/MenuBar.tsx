@@ -31,6 +31,19 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
     }
     setEditState({ status: "editing", newName });
   };
+  const doRename = async () => {
+    if (editState.status !== "editing") {
+      console.warn("can't doRename unless editing");
+      return;
+    }
+    await db.renameFile(backingFileState.id, editState.newName);
+    // Redundant to reload whole file but will do for now:
+    await loadFromBacking({
+      id: backingFileState.id,
+      name: editState.newName,
+    });
+    setEditState({ status: "displaying" });
+  };
   const handleMaybeSubmit = async (
     evt: React.KeyboardEvent<HTMLInputElement>
   ) => {
