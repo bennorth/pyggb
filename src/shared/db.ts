@@ -81,6 +81,27 @@ export class PyGgbDexie extends Dexie {
     const newFileId = (await this.userFiles.add(newFile)) as number;
     return { id: newFileId, name };
   }
+
+  // TODO: What happens if a renameFile() call and a updateFile() call
+  // try to run at the same time?
+
+  async renameFile(id: number, newName: string): Promise<void> {
+    // TODO: Error handling if no such file.
+    const existingFile = await this.userFiles.get(id);
+    if (existingFile == null) {
+      console.error(`could not find file with id ${id}`);
+      return;
+    }
+
+    // TODO: Would a user expect a rename operation to update the mtime?
+    const newFile: UserFile = {
+      ...existingFile,
+      name: newName,
+      mtime: Date.now(),
+    };
+
+    await this.userFiles.put(newFile);
+  }
 }
 
 // TODO: Need some thought as to what the user experience is when they
