@@ -52,13 +52,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
       return;
     }
     if (evt.key === "Enter") {
-      await db.renameFile(backingFileState.id, editState.newName);
-      // Redundant to reload whole file but will do for now:
-      await loadFromBacking({
-        id: backingFileState.id,
-        name: editState.newName,
-      });
-      setEditState({ status: "displaying" });
+      doRename();
     }
   };
 
