@@ -14,7 +14,7 @@ function $builtinmodule() {
       const x = Sk.ffi.remapToJs(pyX);
       const y = Sk.ffi.remapToJs(pyY);
 
-      const cmd = `(${x}, ${y})`;
+      const cmd = `(${strOfNumber(x)}, ${strOfNumber(y)})`;
       const lbl = ggbApi.evalCommandGetLabels(cmd);
 
       this.$ggbLabel = lbl;
