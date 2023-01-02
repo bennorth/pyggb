@@ -181,7 +181,7 @@ function $builtinmodule() {
     },
   });
 
-  const namesForExport = Sk.ffi.remapToPy(["Point"]);
+  const namesForExport = Sk.ffi.remapToPy(["Point", "Circle"]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
   mod.__all__ = namesForExport;
