@@ -69,6 +69,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
           type="text"
           value={editState.newName}
           onKeyDown={(evt) => handleMaybeSubmit(evt)}
+          onBlur={() => doRename()}
           onChange={(evt) => setEditName(evt.target.value)}
         />
       );
