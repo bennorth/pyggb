@@ -133,6 +133,52 @@ function $builtinmodule() {
       const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
       this.$ggbLabel = lbl;
     },
+    slots: {
+      tp$new(args, _kwargs) {
+        const spec = (() => {
+          switch (args.length) {
+            case 2:
+              if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
+                throw new Sk.builtin.TypeError(
+                  `bad Circle() ctor arg[0] not Point`
+                );
+              }
+              if (Sk.builtin.checkNumber(args[1])) {
+                return {
+                  kind: "center-radius",
+                  center: args[0],
+                  radius: args[1].v,
+                };
+              }
+              if (Sk.builtin.isinstance(args[1], mod.Point).v) {
+                return {
+                  kind: "center-point",
+                  center: args[0],
+                  point: args[1],
+                };
+              }
+              // TODO: isinstance(args[1], mod.Segment)
+              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
+            case 3:
+              const allPoints = args.every(
+                (arg) => Sk.builtin.isinstance(arg, mod.Point).v
+              );
+              if (!allPoints) {
+                throw new Sk.builtin.TypeError(
+                  `bad Circle() ctor 3 args not Point`
+                );
+              }
+              return {
+                kind: "3-points",
+                points: args,
+              };
+            default:
+              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
+          }
+        })();
+        return new mod.Circle(spec);
+      },
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy(["Point"]);
