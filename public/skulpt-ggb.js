@@ -163,15 +163,23 @@ function $builtinmodule() {
               const allPoints = args.every(
                 (arg) => Sk.builtin.isinstance(arg, mod.Point).v
               );
-              if (!allPoints) {
-                throw new Sk.builtin.TypeError(
-                  `bad Circle() ctor 3 args not Point`
-                );
+              if (allPoints) {
+                return {
+                  kind: "3-points",
+                  points: args,
+                };
               }
-              return {
-                kind: "3-points",
-                points: args,
-              };
+
+              const allNumbers = args.every(Sk.builtin.checkNumber);
+              if (allNumbers) {
+                return {
+                  kind: "center-radius",
+                  center: new mod.Point(args[0], args[1]),
+                  radius: args[2].v,
+                };
+              }
+              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
+
             default:
               throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
           }
