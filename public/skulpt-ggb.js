@@ -116,6 +116,23 @@ function $builtinmodule() {
   });
 
   mod.Circle = Sk.abstr.buildNativeClass("Circle", {
+    constructor: function Circle(spec) {
+      const ggbArgs = (() => {
+        switch (spec.kind) {
+          case "center-radius":
+            return `${spec.center.$ggbLabel},${strOfNumber(spec.radius)}`;
+          case "center-point":
+            return `${spec.center.$ggbLabel},${spec.point.$ggbLabel}`;
+          case "3-points":
+            return spec.points.map((p) => p.$ggbLabel).join(",");
+          default:
+            throw new Sk.builtin.RuntimeError("should not get here");
+        }
+      })();
+      const ggbCmd = `Circle(${ggbArgs})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      this.$ggbLabel = lbl;
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy(["Point"]);
