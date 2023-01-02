@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React from "react";
+import React, { useState } from "react";
 import { Container, Navbar, NavDropdown, Spinner } from "react-bootstrap";
 import { OperationalBackingFileState } from "../model/editor";
 import { useStoreActions, useStoreState } from "../store";
@@ -9,9 +9,16 @@ type FilenameProps = {
   backingFileState: OperationalBackingFileState;
 };
 
+type FilenameEditState =
+  | { status: "displaying" }
+  | { status: "editing"; newName: string };
+
 const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   backingFileState,
 }) => {
+  const [editState, setEditState] = useState<FilenameEditState>({
+    status: "displaying",
+  });
 };
 
 export const MenuBar: React.FC<{}> = () => {
