@@ -12,6 +12,11 @@ export type BackingFileState =
       name: string;
     };
 
+export type OperationalBackingFileState = Exclude<
+  BackingFileState,
+  { status: "booting" }
+>;
+
 type CodeTextSnapshot = { seqNum: number; codeText: string };
 
 export type Editor = {
