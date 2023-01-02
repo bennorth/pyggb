@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Navbar, NavDropdown, Spinner } from "react-bootstrap";
 import { OperationalBackingFileState } from "../model/editor";
 import { db } from "../shared/db";
@@ -21,6 +21,16 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   const [editState, setEditState] = useState<FilenameEditState>({
     status: "displaying",
   });
+  const inputRef = React.createRef<HTMLInputElement>();
+
+  const editStatus = editState.status;
+
+  useEffect(() => {
+    if (editStatus === "editing" && inputRef.current != null) {
+      inputRef.current.focus();
+    }
+  }, [editStatus, inputRef]);
+
   const launchEdit = () => {
     setEditState({ status: "editing", newName: backingFileState.name });
   };
@@ -66,6 +76,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
     case "editing":
       return (
         <input
+          ref={inputRef}
           type="text"
           value={editState.newName}
           onKeyDown={(evt) => handleMaybeSubmit(evt)}
