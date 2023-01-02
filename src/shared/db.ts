@@ -40,13 +40,23 @@ export class PyGgbDexie extends Dexie {
   }
 
   async mostRecentlyOpenedPreview(): Promise<UserFilePreview> {
-    const recentFileArray = await this.userFiles
-      .toCollection()
-      .reverse()
-      .limit(1)
-      .sortBy("mtime");
+    const mostRecentFile = await (async () => {
+      let mostRecent: UserFilePreview | null = null;
+      let mostRecentMtime: number = 0;
+      await this.userFiles.each((uf) => {
+        if (uf.mtime > mostRecentMtime) {
+          mostRecentMtime = uf.mtime;
+          mostRecent = { id: uf.id!, name: uf.name };
+        }
+      });
 
-    const mostRecentFile = recentFileArray[0];
+      // https://github.com/microsoft/TypeScript/issues/11498
+      return mostRecent as UserFilePreview | null;
+    })();
+
+    if (mostRecentFile == null) {
+      throw new Error("userFiles empty");
+    }
 
     return {
       id: mostRecentFile.id!,
