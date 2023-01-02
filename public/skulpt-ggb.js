@@ -1,3 +1,9 @@
+const strOfNumber = (x) => {
+  const jsStr = x.toExponential();
+  const [sig, exp] = jsStr.split("e");
+  return `(${sig}*10^(${exp}))`;
+};
+
 function $builtinmodule() {
   const ggbApi = globalThis.$ggbApiHandoverQueue.dequeue();
 
