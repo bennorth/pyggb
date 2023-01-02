@@ -2,6 +2,7 @@ import classnames from "classnames";
 import React, { useState } from "react";
 import { Container, Navbar, NavDropdown, Spinner } from "react-bootstrap";
 import { OperationalBackingFileState } from "../model/editor";
+import { db } from "../shared/db";
 import { useStoreActions, useStoreState } from "../store";
 import { RunButton } from "./RunButton";
 
@@ -16,9 +17,58 @@ type FilenameEditState =
 const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   backingFileState,
 }) => {
+  const loadFromBacking = useStoreActions((a) => a.editor.loadFromBacking);
   const [editState, setEditState] = useState<FilenameEditState>({
     status: "displaying",
   });
+  const launchEdit = () => {
+    setEditState({ status: "editing", newName: backingFileState.name });
+  };
+  const setEditName = (newName: string) => {
+    if (editState.status !== "editing") {
+      console.warn("can't setEditName unless editing");
+      return;
+    }
+    setEditState({ status: "editing", newName });
+  };
+  const handleMaybeSubmit = async (
+    evt: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (editState.status !== "editing") {
+      console.warn("can't handleMaybeSubmit unless editing");
+      return;
+    }
+    if (evt.key === "Enter") {
+      await db.renameFile(backingFileState.id, editState.newName);
+      // Redundant to reload whole file but will do for now:
+      await loadFromBacking({
+        id: backingFileState.id,
+        name: editState.newName,
+      });
+      setEditState({ status: "displaying" });
+    }
+  };
+
+  switch (editState.status) {
+    case "displaying":
+      return (
+        <span className="FilenameDisplayOrEdit" onDoubleClick={launchEdit}>
+          {backingFileState.name}
+        </span>
+      );
+    case "editing":
+      return (
+        <input
+          type="text"
+          value={editState.newName}
+          onKeyDown={(evt) => handleMaybeSubmit(evt)}
+          onChange={(evt) => setEditName(evt.target.value)}
+        />
+      );
+    default:
+      console.error(`bad state ${JSON.stringify(editState)}`);
+      return null;
+  }
 };
 
 export const MenuBar: React.FC<{}> = () => {
