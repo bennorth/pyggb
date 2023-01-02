@@ -86,7 +86,9 @@ export const MenuBar: React.FC<{}> = () => {
   });
 
   const maybeBackingName =
-    backingState.status === "booting" ? null : backingState.name;
+    backingState.status === "booting" ? null : (
+      <FilenameDisplayOrEdit backingFileState={backingState} />
+    );
 
   return (
     <Navbar>
