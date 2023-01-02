@@ -1,8 +1,18 @@
 import classnames from "classnames";
 import React from "react";
 import { Container, Navbar, NavDropdown, Spinner } from "react-bootstrap";
+import { OperationalBackingFileState } from "../model/editor";
 import { useStoreActions, useStoreState } from "../store";
 import { RunButton } from "./RunButton";
+
+type FilenameProps = {
+  backingFileState: OperationalBackingFileState;
+};
+
+const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
+  backingFileState,
+}) => {
+};
 
 export const MenuBar: React.FC<{}> = () => {
   const backingState = useStoreState((s) => s.editor.backingFileState);
