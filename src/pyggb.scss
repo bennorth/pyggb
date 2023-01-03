@@ -104,6 +104,25 @@ App {
   }
 }
 
+ul.ExampleList {
+  padding: 0px;
+  li {
+    user-select: none;
+    cursor: pointer;
+    background-color: #eee;
+    margin: 0.5rem 0rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    &:hover {
+      background-color: #ddd;
+    }
+    list-style: none;
+    h1 {
+      font-size: 1.333rem;
+    }
+  }
+}
+
 .FilenameDisplayOrEdit {
   padding: 0.25rem;
   user-select: none;
