@@ -46,10 +46,16 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
       console.warn("can't doRename unless editing");
       return;
     }
-    await db.renameFile(backingFileState.id, editState.newName);
+    const backingSource = backingFileState.source;
+    if (backingSource.kind !== "db") {
+      console.warn("can't doRename unless source.kind is DB");
+      return;
+    }
+
+    await db.renameFile(backingSource.id, editState.newName);
     // Redundant to reload whole file but will do for now:
     await loadFromBacking({
-      id: backingFileState.id,
+      id: backingSource.id,
       name: editState.newName,
     });
     setEditState({ status: "displaying" });
