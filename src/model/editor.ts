@@ -4,6 +4,9 @@ import { db, UserFilePreview } from "../shared/db";
 
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
+export type BackingFileSource =
+  | { kind: "db"; id: number };
+
 export type BackingFileState =
   | { status: "booting" }
   | {
