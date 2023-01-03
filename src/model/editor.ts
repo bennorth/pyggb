@@ -2,6 +2,7 @@ import { action, Action, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { db, UserFilePreview } from "../shared/db";
 import { ExampleProgramPreview } from "../shared/resources";
+import { fetchAsText } from "../shared/utils";
 
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
@@ -35,6 +36,7 @@ export type Editor = {
   updateCodeTextAndScheduleSave: Thunk<Editor, string, {}, PyGgbModel>;
   setBackingFileState: Action<Editor, BackingFileState>;
   loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
+  loadExample: Thunk<Editor, ExampleProgramPreview, {}, PyGgbModel>;
   maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, {}, PyGgbModel>;
   createNew: Thunk<Editor, string>;
 };
@@ -102,6 +104,42 @@ export const editor: Editor = {
     };
     a.setBackingFileState(idleState);
   }),
+  loadExample: thunk(async (a, example, helpers) => {
+    const state = helpers.getState();
+    const status = state.backingFileState.status;
+    if (status !== "booting" && status !== "idle") {
+      console.error(`loadFromBacking(): in bad state ${status}`);
+      return;
+    }
+
+    const source: BackingFileSource = {
+      kind: "url",
+      relativeUrl: example.path,
+    };
+    const loadingState: BackingFileState = {
+      status: "loading",
+      source,
+      name: example.name,
+    };
+    a.setBackingFileState(loadingState);
+
+    const urlWithinApp = `examples/${example.path}`;
+    const maybeCodeText = await fetchAsText(urlWithinApp);
+    if (maybeCodeText == null) {
+      console.error(`could not get user-file at "${example.path}"`);
+    } else {
+      // TODO: Set "read only" state somewhere.
+      a.setCodeText(maybeCodeText);
+      a.setBackedSeqNum(InitialCodeTextSeqNum);
+    }
+
+    const idleState: BackingFileState = {
+      status: "idle",
+      source,
+      name: example.name,
+    };
+    a.setBackingFileState(idleState);
+  }),
 
   maybeUpdateBacking: thunk(async (a, snapshot, helpers) => {
     const state = helpers.getState();
@@ -122,6 +160,10 @@ export const editor: Editor = {
         return;
       case "idle":
         const backingSource = backingFileState.source;
+        if (backingSource.kind === "url") {
+          console.error("should not be saving if source is URL");
+          return;
+        }
         const update = { id: backingSource.id, codeText: snapshot.codeText };
         a.setBackingFileState({ ...backingFileState, status: "saving" });
         await db.updateFile(update);
