@@ -56,7 +56,16 @@ const UserFileList: React.FC<{}> = () => {
 };
 
 const ExampleList: React.FC<{}> = () => {
+  const loadExample = useStoreActions((a) => a.editor.loadExample);
   const examples = useJsonResource("examples/index.json");
+  const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
+
+  const dismiss = () => setActive(false);
+
+  const load = (ex: ExampleProgramPreview) => () => {
+    loadExample(ex);
+    dismiss();
+  };
 
   switch (examples.status) {
     case "idle":
@@ -70,7 +79,7 @@ const ExampleList: React.FC<{}> = () => {
         <ul className="ExampleList">
           {(examples.data as Array<ExampleProgramPreview>).map((ex, idx) => {
             return (
-              <li key={idx}>
+              <li key={idx} onClick={load(ex)}>
                 <h1>{ex.name}</h1>
                 <ReactMarkdown
                   children={ex.docMarkdown}
