@@ -1,11 +1,13 @@
 import { action, Action, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { db, UserFilePreview } from "../shared/db";
+import { ExampleProgramPreview } from "../shared/resources";
 
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
 export type BackingFileSource =
-  | { kind: "db"; id: number };
+  | { kind: "db"; id: number }
+  | { kind: "url"; relativeUrl: string };
 
 export type BackingFileState =
   | { status: "booting" }
