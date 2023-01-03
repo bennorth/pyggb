@@ -22,6 +22,33 @@ const FileChoice: React.FC<FileChoiceProps> = (props) => {
   );
 };
 
+const UserFileList: React.FC<{}> = () => {
+  const userFiles = useLiveQuery(() => db.allFiles());
+  const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
+
+  const dismiss = () => setActive(false);
+
+  if (userFiles == null) {
+    return <div>LOADING...</div>;
+  }
+
+  return (
+    <>
+      {userFiles.length === 0 && <p>No files yet</p>}
+      <ul className="FileChoice-list">
+        {userFiles.map((f) => (
+          <FileChoice
+            key={f.id}
+            id={f.id}
+            name={f.name}
+            dismiss={dismiss}
+          ></FileChoice>
+        ))}
+      </ul>
+    </>
+  );
+};
+
 export const FileChooserModal: React.FC<{}> = () => {
   const userFiles = useLiveQuery(() => db.allFiles());
   const active = useStoreState((s) => s.modals.fileChooser.active);
