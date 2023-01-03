@@ -65,6 +65,7 @@ const ExampleList: React.FC<{}> = () => {
     case "failed":
       return <div>Error!</div>;
     case "succeeded":
+      // TODO: Validate examples.data is Array<ExampleProgramPreview>.
       return (
         <ul className="ExampleList">
           {(examples.data as Array<ExampleProgramPreview>).map((ex, idx) => {
