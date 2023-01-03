@@ -72,7 +72,17 @@ export const editor: Editor = {
       return;
     }
 
-    a.setBackingFileState({ status: "loading", ...userFilePreview });
+    const source: BackingFileSource = {
+      kind: "db",
+      id: userFilePreview.id,
+    };
+    const loadingState: BackingFileState = {
+      status: "loading",
+      source,
+      name: userFilePreview.name,
+    };
+    a.setBackingFileState(loadingState);
+
     const userFile = await db.userFiles.get(userFilePreview.id);
     if (userFile == null) {
       console.error(
@@ -82,7 +92,13 @@ export const editor: Editor = {
       a.setCodeText(userFile.codeText);
       a.setBackedSeqNum(InitialCodeTextSeqNum);
     }
-    a.setBackingFileState({ status: "idle", ...userFilePreview });
+
+    const idleState: BackingFileState = {
+      status: "idle",
+      source,
+      name: userFilePreview.name,
+    };
+    a.setBackingFileState(idleState);
   }),
 
   maybeUpdateBacking: thunk(async (a, snapshot, helpers) => {
