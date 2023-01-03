@@ -88,6 +88,22 @@ App {
   }
 }
 
+@mixin hoverable-ul-of-cards {
+  padding: 0px;
+  li {
+    list-style: none;
+    user-select: none;
+    cursor: pointer;
+    background-color: #eee;
+    margin: 0.5rem 0rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+}
+
 .FileChoice-list {
   padding: 0px;
   .FileChoice {
