@@ -100,7 +100,7 @@ export const FileChooserModal: React.FC<{}> = () => {
       case "user-file":
         return <UserFileList />;
       case "example":
-        return <div>EXAMPLES GO HERE</div>;
+        return <ExampleList />;
       default:
         return <div>ERROR</div>;
     }
