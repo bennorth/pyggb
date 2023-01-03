@@ -11,7 +11,7 @@ export type BackingFileState =
   | { status: "booting" }
   | {
       status: OperationalBackingFileStatus;
-      id: number;
+      source: BackingFileSource;
       name: string;
     };
 
