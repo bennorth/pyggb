@@ -1,7 +1,11 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Button, Modal } from "react-bootstrap";
 import { db, UserFilePreview } from "../../shared/db";
+import { useJsonResource } from "../../shared/hooks";
+import { ExampleProgramPreview } from "../../shared/resources";
 import { useStoreActions, useStoreState } from "../../store";
 
 type FileChoiceProps = UserFilePreview & {
@@ -49,6 +53,34 @@ const UserFileList: React.FC<{}> = () => {
       </ul>
     </>
   );
+};
+
+const ExampleList: React.FC<{}> = () => {
+  const examples = useJsonResource("examples/index.json");
+
+  switch (examples.status) {
+    case "idle":
+    case "pending":
+      return <div>Loading...</div>;
+    case "failed":
+      return <div>Error!</div>;
+    case "succeeded":
+      return (
+        <ul className="ExampleList">
+          {(examples.data as Array<ExampleProgramPreview>).map((ex, idx) => {
+            return (
+              <li key={idx}>
+                <h1>{ex.name}</h1>
+                <ReactMarkdown
+                  children={ex.docMarkdown}
+                  remarkPlugins={[remarkGfm]}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      );
+  }
 };
 
 export const FileChooserModal: React.FC<{}> = () => {
