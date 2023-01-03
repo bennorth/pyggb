@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import React from "react";
+import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { db, UserFilePreview } from "../../shared/db";
 import { useStoreActions, useStoreState } from "../../store";
@@ -21,6 +21,8 @@ const FileChoice: React.FC<FileChoiceProps> = (props) => {
     </li>
   );
 };
+
+type FileChoiceScope = "user-file" | "example";
 
 const UserFileList: React.FC<{}> = () => {
   const userFiles = useLiveQuery(() => db.allFiles());
@@ -51,6 +53,8 @@ const UserFileList: React.FC<{}> = () => {
 
 export const FileChooserModal: React.FC<{}> = () => {
   const userFiles = useLiveQuery(() => db.allFiles());
+  const [scope, setScope] = useState<FileChoiceScope>("user-file");
+
   const active = useStoreState((s) => s.modals.fileChooser.active);
   const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
 
