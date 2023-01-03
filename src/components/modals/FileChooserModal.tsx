@@ -58,6 +58,10 @@ export const FileChooserModal: React.FC<{}> = () => {
   const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
 
   const dismiss = () => setActive(false);
+  const setScopeFun =
+    (scope: FileChoiceScope): (() => void) =>
+    () =>
+      setScope(scope);
 
   const content = (() => {
     switch (scope) {
@@ -70,10 +74,20 @@ export const FileChooserModal: React.FC<{}> = () => {
     }
   })();
 
+  const filesButtonVar = scope === "user-file" ? "primary" : "outline-primary";
+  const examplesButtonVar = scope === "example" ? "primary" : "outline-primary";
+
   return (
     <Modal size="xl" show={active}>
       <Modal.Header>
-        <Modal.Title>Open file or example</Modal.Title>
+        <Modal.Title>
+          <Button onClick={setScopeFun("user-file")} variant={filesButtonVar}>
+            My programs
+          </Button>{" "}
+          <Button onClick={setScopeFun("example")} variant={examplesButtonVar}>
+            Examples
+          </Button>
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>{content}</Modal.Body>
       <Modal.Footer>
