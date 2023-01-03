@@ -119,7 +119,8 @@ export const editor: Editor = {
         // Another save already in progress.  Should we ever get here?
         return;
       case "idle":
-        const update = { id: backingFileState.id, codeText: snapshot.codeText };
+        const backingSource = backingFileState.source;
+        const update = { id: backingSource.id, codeText: snapshot.codeText };
         a.setBackingFileState({ ...backingFileState, status: "saving" });
         await db.updateFile(update);
         a.setBackingFileState({ ...backingFileState, status: "idle" });
