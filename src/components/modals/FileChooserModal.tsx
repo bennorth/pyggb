@@ -52,7 +52,6 @@ const UserFileList: React.FC<{}> = () => {
 };
 
 export const FileChooserModal: React.FC<{}> = () => {
-  const userFiles = useLiveQuery(() => db.allFiles());
   const [scope, setScope] = useState<FileChoiceScope>("user-file");
 
   const active = useStoreState((s) => s.modals.fileChooser.active);
@@ -60,24 +59,23 @@ export const FileChooserModal: React.FC<{}> = () => {
 
   const dismiss = () => setActive(false);
 
+  const content = (() => {
+    switch (scope) {
+      case "user-file":
+        return <UserFileList />;
+      case "example":
+        return <div>EXAMPLES GO HERE</div>;
+      default:
+        return <div>ERROR</div>;
+    }
+  })();
+
   return (
     <Modal size="xl" show={active}>
       <Modal.Header>
         <Modal.Title>Open file or example</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        {userFiles && userFiles.length === 0 && <p>No files yet</p>}
-        <ul className="FileChoice-list">
-          {userFiles?.map((f) => (
-            <FileChoice
-              key={f.id}
-              id={f.id}
-              name={f.name}
-              dismiss={dismiss}
-            ></FileChoice>
-          ))}
-        </ul>
-      </Modal.Body>
+      <Modal.Body>{content}</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={dismiss}>
           Cancel
