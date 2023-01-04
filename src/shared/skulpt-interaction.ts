@@ -25,7 +25,7 @@ export interface StdoutActions {
 }
 
 export const runPythonProgram = (
-  codeText: string,
+  userCodeText: string,
   localModules: LocalModules,
   stdoutActions: StdoutActions,
   ggbApi: GgbApi
@@ -43,6 +43,6 @@ export const runPythonProgram = (
   (globalThis as any).$ggbApiHandoverQueue.enqueue(ggbApi);
 
   return Sk.misceval.asyncToPromise(() =>
-    Sk.importMainWithBody("<stdin>", false, codeText, true)
+    Sk.importMainWithBody("<stdin>", false, userCodeText, true)
   );
 };
