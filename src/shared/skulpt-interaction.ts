@@ -42,7 +42,9 @@ export const runPythonProgram = (
   ggbApi.reset();
   (globalThis as any).$ggbApiHandoverQueue.enqueue(ggbApi);
 
+  const codeText = "from ggb import *\n\n" + userCodeText;
+
   return Sk.misceval.asyncToPromise(() =>
-    Sk.importMainWithBody("<stdin>", false, userCodeText, true)
+    Sk.importMainWithBody("<stdin>", false, codeText, true)
   );
 };
