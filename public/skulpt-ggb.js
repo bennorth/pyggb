@@ -4,6 +4,8 @@ const strOfNumber = (x) => {
   return `(${sig}*10^(${exp}))`;
 };
 
+const strOfBool = (x) => x.toString();
+
 function $builtinmodule() {
   const ggbApi = globalThis.$ggbApiHandoverQueue.dequeue();
 
