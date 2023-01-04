@@ -190,6 +190,19 @@ function $builtinmodule() {
   });
 
   mod.Line = Sk.abstr.buildNativeClass("Line", {
+    constructor: function Line(spec) {
+      const ggbArgs = (() => {
+        switch (spec.kind) {
+          case "point-point":
+            return spec.points.map((p) => p.$ggbLabel).join(",");
+          default:
+            throw new Sk.builtin.RuntimeError("should not get here");
+        }
+      })();
+      const ggbCmd = `Line(${ggbArgs})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      this.$ggbLabel = lbl;
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy(["Point", "Circle", "Line"]);
