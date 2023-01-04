@@ -232,7 +232,15 @@ function $builtinmodule() {
     },
   });
 
-  const namesForExport = Sk.ffi.remapToPy(["Point", "Circle", "Line"]);
+  mod.Slider = Sk.abstr.buildNativeClass("Slider", {
+  });
+
+  const namesForExport = Sk.ffi.remapToPy([
+    "Point",
+    "Circle",
+    "Line",
+    "Slider",
+  ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
   mod.__all__ = namesForExport;
