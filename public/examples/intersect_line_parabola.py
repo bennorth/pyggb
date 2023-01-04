@@ -16,4 +16,5 @@ print(line)
 
 intersect(parabola, line)
 
+## TODO: Would "num.value = 2.0" be more Pythonic?
 setValue(num, 2)
