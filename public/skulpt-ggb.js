@@ -251,6 +251,49 @@ function $builtinmodule() {
       console.log(ggbCmd, lbl);
       this.$ggbLabel = lbl;
     },
+    slots: {
+      tp$new(args, kwargs) {
+        if (args.length !== 2)
+          throw new Sk.builtin.TypeError("bad Slider() args; need 2 args");
+
+        const bothNumbers = args.every(Sk.builtin.checkNumber);
+        if (!bothNumbers)
+          throw new Sk.builtin.TypeError(
+            "bad Slider() args; args must be numbers"
+          );
+
+        const kwOrDefault = (k, isCorrectType, jsDefault) => {
+          const mIndex = kwargs.findIndex((x, i) => i % 2 === 0 && x === k);
+          console.log(k, kwargs, mIndex);
+          if (mIndex === -1) return jsDefault;
+          const value = kwargs[mIndex + 1];
+          if (!isCorrectType(value)) throw Sk.builtin.TypeError("bad arg type");
+          return Sk.ffi.remapToJs(value);
+        };
+
+        const kwNumber = (k, jsDefault) => {
+          return kwOrDefault(k, Sk.builtin.checkNumber, jsDefault);
+        };
+
+        const kwBoolean = (k, jsDefault) => {
+          return kwOrDefault(k, Sk.builtin.checkBool, jsDefault);
+        };
+
+        const spec = {
+          min: args[0].v,
+          max: args[1].v,
+          increment: kwNumber("increment", 0.1),
+          speed: kwNumber("speed", 1.0),
+          width: kwNumber("width", 100),
+          isAngle: kwBoolean("isAngle", false),
+          isHorizontal: kwBoolean("isHorizontal", true),
+          isAnimating: kwBoolean("isAnimating", false),
+          isRandom: kwBoolean("isRandom", false),
+        };
+
+        return new mod.Slider(spec);
+      },
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy([
