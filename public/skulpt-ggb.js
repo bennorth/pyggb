@@ -233,6 +233,24 @@ function $builtinmodule() {
   });
 
   mod.Slider = Sk.abstr.buildNativeClass("Slider", {
+    constructor: function Slider(spec) {
+      const ggbArgs = [
+        strOfNumber(spec.min),
+        strOfNumber(spec.max),
+        strOfNumber(spec.increment),
+        strOfNumber(spec.speed),
+        strOfNumber(spec.width),
+        strOfBool(spec.isAngle),
+        strOfBool(spec.isHorizontal),
+        strOfBool(spec.isAnimating),
+        strOfBool(spec.isRandom),
+      ].join(",");
+
+      const ggbCmd = `Slider(${ggbArgs})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      console.log(ggbCmd, lbl);
+      this.$ggbLabel = lbl;
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy([
