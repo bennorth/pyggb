@@ -203,6 +203,31 @@ function $builtinmodule() {
       const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
       this.$ggbLabel = lbl;
     },
+    slots: {
+      tp$new(args, _kwargs) {
+        const spec = (() => {
+          if (args.length !== 2) {
+            throw new Sk.builtin.TypeError("bad Line() args; need 2 args");
+          }
+
+          if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
+            throw new Sk.builtin.TypeError("bad Line() args; first not Point");
+          }
+
+          if (Sk.builtin.isinstance(args[1], mod.Point).v) {
+            return {
+              kind: "point-point",
+              points: args,
+            };
+          }
+
+          throw new Sk.builtin.TypeError(
+            "bad Line() args; unhandled type of second"
+          );
+        })();
+        return new mod.Line(spec);
+      },
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy(["Point", "Circle", "Line"]);
