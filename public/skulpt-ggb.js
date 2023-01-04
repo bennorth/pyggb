@@ -189,7 +189,10 @@ function $builtinmodule() {
     },
   });
 
-  const namesForExport = Sk.ffi.remapToPy(["Point", "Circle"]);
+  mod.Line = Sk.abstr.buildNativeClass("Line", {
+  });
+
+  const namesForExport = Sk.ffi.remapToPy(["Point", "Circle", "Line"]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
   mod.__all__ = namesForExport;
