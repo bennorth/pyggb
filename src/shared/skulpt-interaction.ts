@@ -52,7 +52,8 @@ export const runPythonProgram = (
 
   const codeText = "from ggb import *\n\n" + userCodeText;
 
-  return Sk.misceval.asyncToPromise(() =>
-    Sk.importMainWithBody("<stdin>", false, codeText, true)
-  );
+  return Sk.misceval
+    .asyncToPromise(() =>
+      Sk.importMainWithBody("<stdin>", false, codeText, true)
+    );
 };
