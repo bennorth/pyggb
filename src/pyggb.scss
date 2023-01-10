@@ -57,6 +57,23 @@ App {
     display: grid;
     grid-template-columns: 1fr #{$pyggbGeoGebraPaneWidth}px;
 
+    .editor-maybe-errors-outer {
+      position: relative;
+
+      .editor-maybe-errors-inner {
+        display: grid;
+        grid-template-rows: 2fr 1fr;
+
+        .errors-container {
+          position: relative;
+
+          .errors {
+            overflow: auto;
+          }
+        }
+      }
+    }
+
     .results {
       display: grid;
       grid-template-rows: #{$pyggbGeoGebraPaneHeight}px 1fr;
