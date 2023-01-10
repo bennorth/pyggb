@@ -16,7 +16,7 @@ export const controls: Controls = {
   setExecutionStatus: action((s, status) => {
     s.executionStatus = status;
   }),
-  runProgram: thunk((a, _voidPayload, helpers) => {
+  runProgram: thunk(async (a, _voidPayload, helpers) => {
     const storeState = helpers.getStoreState();
     const actions = helpers.getStoreActions();
     const codeText = storeState.editor.codeText;
@@ -45,11 +45,13 @@ export const controls: Controls = {
     // TODO: Make async, add "await" to following, and wrap it in
     // setState("running") / setState("idle") calls.  Or just use
     // "then()" calls.
-    runPythonProgram(
+    a.setExecutionStatus("running");
+    await runPythonProgram(
       codeText,
       localModules,
       stdoutActions,
       ggbApi
     );
+    a.setExecutionStatus("idle");
   }),
 };
