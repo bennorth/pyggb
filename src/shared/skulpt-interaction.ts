@@ -36,6 +36,7 @@ export const runPythonProgram = (
   userCodeText: string,
   localModules: LocalModules,
   stdoutActions: StdoutActions,
+  errorActions: ErrorActions,
   ggbApi: GgbApi
 ) => {
   Sk.configure({
@@ -47,13 +48,17 @@ export const runPythonProgram = (
   });
 
   stdoutActions.clear();
+  errorActions.clear();
   ggbApi.reset();
   (globalThis as any).$ggbApiHandoverQueue.enqueue(ggbApi);
+
+  const handleError = (e: any) => errorActions.append(e);
 
   const codeText = "from ggb import *\n\n" + userCodeText;
 
   return Sk.misceval
     .asyncToPromise(() =>
       Sk.importMainWithBody("<stdin>", false, codeText, true)
-    );
+    )
+    .catch(handleError);
 };
