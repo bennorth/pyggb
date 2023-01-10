@@ -21,8 +21,6 @@ App {
 }
 
 .pyggb-IDE {
-  background-color: blue;
-
   display: grid;
   grid-template-rows: min-content 1fr;
 
@@ -59,17 +57,11 @@ App {
     display: grid;
     grid-template-columns: 1fr #{$pyggbGeoGebraPaneWidth}px;
 
-    .editor {
-      background-color: green;
-    }
     .results {
       display: grid;
       grid-template-rows: #{$pyggbGeoGebraPaneHeight}px 1fr;
 
-      background-color: red;
       .ggb {
-        background-color: orange;
-
         .GeoGebraPane {
           width: #{$pyggbGeoGebraPaneWidth}px;
           height: #{$pyggbGeoGebraPaneHeight}px;
