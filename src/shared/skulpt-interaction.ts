@@ -27,6 +27,11 @@ export interface StdoutActions {
   append: (newOutput: string) => void;
 }
 
+export interface ErrorActions {
+  clear: () => void;
+  append: (newError: PyError) => void;
+}
+
 export const runPythonProgram = (
   userCodeText: string,
   localModules: LocalModules,
