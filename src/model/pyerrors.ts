@@ -1,5 +1,5 @@
 import { action, Action, computed, Computed } from "easy-peasy";
-import { PyError } from "../shared/skulpt-interaction";
+import { PyError } from "../shared/appApi";
 
 export type PyErrors = {
   errors: Array<PyError>;

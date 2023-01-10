@@ -1,6 +1,6 @@
 import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
-import { GgbApi } from "../shared/ggb-interaction";
+import { GgbApi } from "../shared/appApi";
 import { SkulptGgbModuleUrl } from "../shared/resources";
 import { db } from "../shared/db";
 

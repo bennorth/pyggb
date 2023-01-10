@@ -1,10 +1,7 @@
 import React from "react";
 import { Alert } from "react-bootstrap";
-import {
-  messageOfPyError,
-  PyError,
-  TracebackEntry,
-} from "../shared/skulpt-interaction";
+import { PyError, TracebackEntry } from "../shared/appApi";
+import { messageOfPyError } from "../shared/skulpt-interaction";
 import { useStoreState } from "../store";
 
 type TracebackEntryItemProps = { entry: TracebackEntry };

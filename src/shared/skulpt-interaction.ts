@@ -1,4 +1,4 @@
-import { GgbApi } from "./ggb-interaction";
+import { GgbApi, SkulptApi, AppApi, PyError } from "./appApi";
 
 declare var Sk: any;
 

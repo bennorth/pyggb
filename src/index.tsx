@@ -4,7 +4,7 @@ import "./pyggb.scss";
 import App from "./App";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
-import "./shared/ggb-interaction";
+import "./shared/appApi";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
