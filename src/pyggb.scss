@@ -88,6 +88,20 @@ App {
                 margin-bottom: 1.5rem;
               }
               margin: 1rem;
+
+              > ul {
+                padding-left: 0px;
+                > li {
+                  list-style: none;
+                }
+
+                ul > li {
+                  list-style: disc;
+                  p {
+                    margin: 0.25rem 0px;
+                  }
+                }
+              }
             }
           }
         }
