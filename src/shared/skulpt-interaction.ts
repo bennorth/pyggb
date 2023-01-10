@@ -12,8 +12,13 @@ export type TracebackEntry = {
   filename: string;
 };
 
-// TODO: Use a proper type:
-export type PyError = any;
+export type PyError = {
+  args: {
+    v: { length: number; [0]: { v: string } };
+  };
+  traceback: Array<TracebackEntry>;
+  tp$name: string;
+};
 
 const builtinOrLocalRead =
   (localModules: LocalModules) => (filename: string) => {
