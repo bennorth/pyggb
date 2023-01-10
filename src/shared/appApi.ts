@@ -18,3 +18,8 @@ export type PyError = {
 export type SkulptApi = {
   onError: (error: PyError) => void;
 };
+
+export type AppApi = {
+  ggb: GgbApi;
+  sk: SkulptApi;
+};
