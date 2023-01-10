@@ -32,29 +32,11 @@ const EditorMaybeErrors: React.FC<{}> = () => {
 };
 
 export const IDE: React.FC<{}> = () => {
-  const anyErrors = useStoreState((s) => s.pyErrors.any);
-
-  const errorsContainerClasses = classNames(
-    "editor-maybe-errors-inner",
-    "abs-0000",
-    anyErrors ? "has-errors" : "no-errors"
-  );
-
   return (
     <div className="pyggb-IDE abs-0000">
       <MenuBar />
       <div className="main-content">
-        <div className="editor-maybe-errors-outer">
-          <div className={errorsContainerClasses}>
-            <div className="editor">
-              <CodeEditor />
-            </div>
-            {/* TODO: Only show if there are errors. */}
-            <div className="errors-container">
-              <ErrorList />
-            </div>
-          </div>
-        </div>
+        <EditorMaybeErrors />
         <div className="results">
           <div className="ggb">
             <GeoGebraPane />
