@@ -78,6 +78,17 @@ App {
 
           .ErrorList {
             overflow: auto;
+            border: 2px solid #a00;
+            border-radius: 2px;
+
+            .error-list-inner {
+              h1 {
+                font-size: 1.5rem;
+                font-style: bold;
+                margin-bottom: 1.5rem;
+              }
+              margin: 1rem;
+            }
           }
         }
       }
