@@ -37,8 +37,11 @@ export const controls: Controls = {
     // TODO: Make async, add "await" to following, and wrap it in
     // setState("running") / setState("idle") calls.  Or just use
     // "then()" calls.
-    runPythonProgram(codeText, localModules, stdoutActions, ggbApi).then(() => {
-      console.log("runPythonProgram done");
-    });
+    runPythonProgram(
+      codeText,
+      localModules,
+      stdoutActions,
+      ggbApi
+    );
   }),
 };
