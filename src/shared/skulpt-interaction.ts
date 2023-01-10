@@ -20,6 +20,19 @@ export type PyError = {
   tp$name: string;
 };
 
+export const messageOfPyError = (err: PyError) => {
+  if (err.tp$name == null) {
+    return `[Internal error: ${err}]`;
+  }
+
+  let message = err.tp$name;
+  if (err.args && err.args.v.length > 0) {
+    message += ": " + err.args.v[0].v;
+  }
+
+  return message;
+};
+
 const builtinOrLocalRead =
   (localModules: LocalModules) => (filename: string) => {
     if (
