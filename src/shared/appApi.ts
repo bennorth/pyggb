@@ -14,3 +14,7 @@ export type PyError = {
   traceback: Array<TracebackEntry>;
   tp$name: string;
 };
+
+export type SkulptApi = {
+  onError: (error: PyError) => void;
+};
