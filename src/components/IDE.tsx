@@ -1,5 +1,6 @@
 import React from "react";
 import { CodeEditor } from "./CodeEditor";
+import { ErrorList } from "./ErrorList";
 import { GeoGebraPane } from "./GeoGebraPane";
 import { MenuBar } from "./MenuBar";
 import { StdoutPane } from "./StdoutPane";
@@ -16,28 +17,7 @@ export const IDE: React.FC<{}> = () => {
             </div>
             {/* TODO: Only show if there are errors. */}
             <div className="errors-container">
-              <div className="errors abs-0000">
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-                <div>ERRORS GO HERE!</div>
-              </div>
+              <ErrorList />
             </div>
           </div>
         </div>
