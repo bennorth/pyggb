@@ -60,7 +60,11 @@ export const runPythonProgram = (
   stdoutActions.clear();
   errorActions.clear();
   ggbApi.reset();
-  (globalThis as any).$ggbApiHandoverQueue.enqueue(ggbApi);
+
+  // TODO: Seems a bit clunky to reuse errorActions like this.  Revisit?
+  const skApi: SkulptApi = { onError: (e) => errorActions.append(e) };
+  const appApi: AppApi = { ggb: ggbApi, sk: skApi };
+  (globalThis as any).$appApiHandoverQueue.enqueue(appApi);
 
   const handleError = (e: any) => errorActions.append(e);
 
