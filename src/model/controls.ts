@@ -42,6 +42,11 @@ export const controls: Controls = {
       append: actions.pyStdout.appendContent,
     };
 
+    const errorActions = {
+      clear: actions.pyErrors.clearErrors,
+      append: actions.pyErrors.appendError,
+    };
+
     // TODO: Make async, add "await" to following, and wrap it in
     // setState("running") / setState("idle") calls.  Or just use
     // "then()" calls.
@@ -50,6 +55,7 @@ export const controls: Controls = {
       codeText,
       localModules,
       stdoutActions,
+      errorActions,
       ggbApi
     );
     a.setExecutionStatus("idle");
