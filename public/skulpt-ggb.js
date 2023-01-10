@@ -7,7 +7,8 @@ const strOfNumber = (x) => {
 const strOfBool = (x) => x.toString();
 
 function $builtinmodule() {
-  const ggbApi = globalThis.$ggbApiHandoverQueue.dequeue();
+  const appApi = globalThis.$appApiHandoverQueue.dequeue();
+  const ggbApi = appApi.ggb;
 
   let mod = {};
 
