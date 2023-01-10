@@ -9,6 +9,7 @@ const strOfBool = (x) => x.toString();
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
+  const skApi = appApi.sk;
 
   let mod = {};
 
@@ -68,7 +69,11 @@ function $builtinmodule() {
       },
       $fireUpdateEvents() {
         this.$updateHandlers.forEach((fun) => {
-          Sk.misceval.callsimOrSuspend(fun);
+          try {
+            Sk.misceval.callsimOrSuspend(fun);
+          } catch (e) {
+            skApi.onError(e);
+          }
         });
       },
     },
