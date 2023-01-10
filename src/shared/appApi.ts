@@ -23,3 +23,20 @@ export type AppApi = {
   ggb: GgbApi;
   sk: SkulptApi;
 };
+
+(globalThis as any).$appApiHandoverQueue = (() => {
+  let queue: Array<AppApi> = [];
+
+  const enqueue = (api: AppApi): void => {
+    queue.push(api);
+  };
+
+  const dequeue = (): AppApi => {
+    const api = queue.shift();
+    if (api == null) throw new Error("api queue empty!");
+
+    return api;
+  };
+
+  return { enqueue, dequeue };
+})();
