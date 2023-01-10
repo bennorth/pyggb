@@ -1,5 +1,10 @@
 import React from "react";
-import { TracebackEntry } from "../shared/skulpt-interaction";
+import { Alert } from "react-bootstrap";
+import {
+  messageOfPyError,
+  PyError,
+  TracebackEntry,
+} from "../shared/skulpt-interaction";
 import { useStoreState } from "../store";
 
 type TracebackEntryItemProps = { entry: TracebackEntry };
@@ -16,6 +21,26 @@ const TracebackEntryItem: React.FC<TracebackEntryItemProps> = ({ entry }) => {
     <p>
       line {userLineNumber} (position {entry.colno}) of {source}
     </p>
+  );
+};
+
+type ErrorReportProps = { error: PyError };
+const ErrorReport: React.FC<ErrorReportProps> = ({ error }) => {
+  // Get traceback with deepest frame last.
+  let traceback = error.traceback.slice();
+  traceback.reverse();
+
+  return (
+    <Alert variant="danger">
+      <p>{messageOfPyError(error)}</p>
+      <ul>
+        {traceback.map((entry, i) => (
+          <li key={i}>
+            <TracebackEntryItem entry={entry} />
+          </li>
+        ))}
+      </ul>
+    </Alert>
   );
 };
 
