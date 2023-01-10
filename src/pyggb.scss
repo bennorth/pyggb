@@ -24,6 +24,10 @@ App {
   display: grid;
   grid-template-rows: min-content 1fr;
 
+  /* Not sure quite what's going on, but there's a flicker of some
+  x-overflow when running some programs.  Suppress it. */
+  overflow-x: hidden;
+
   .navbar {
     padding: 0px;
   }
