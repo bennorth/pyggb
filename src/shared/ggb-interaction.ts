@@ -1,6 +1,3 @@
-// TODO: Replace this with proper type:
-export type GgbApi = any;
-
 (globalThis as any).$ggbApiHandoverQueue = (() => {
   let queue: Array<GgbApi> = [];
 

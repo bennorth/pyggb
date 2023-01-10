@@ -1,3 +1,6 @@
+// TODO: Replace this with proper type:
+export type GgbApi = any;
+
 export type TracebackEntry = {
   lineno: number;
   colno: number;
