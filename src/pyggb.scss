@@ -69,6 +69,10 @@ App {
         display: grid;
         grid-template-rows: 2fr 1fr;
 
+        &.no-errors {
+          grid-template-rows: 1fr 0px;
+        }
+
         .errors-container {
           position: relative;
 
