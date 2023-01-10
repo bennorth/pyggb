@@ -22,7 +22,6 @@ const EditorMaybeErrors: React.FC<{}> = () => {
         <div className="editor">
           <CodeEditor />
         </div>
-        {/* TODO: Only show if there are errors. */}
         <div className="errors-container">
           <ErrorList />
         </div>
