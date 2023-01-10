@@ -9,10 +9,10 @@ export type Controls = {
 
 export const controls: Controls = {
   runProgram: thunk((a, _voidPayload, helpers) => {
-    const state = helpers.getStoreState();
+    const storeState = helpers.getStoreState();
     const actions = helpers.getStoreActions();
-    const codeText = state.editor.codeText;
-    const { ggbApi, ggbPythonModuleText } = state.dependencies;
+    const codeText = storeState.editor.codeText;
+    const { ggbApi, ggbPythonModuleText } = storeState.dependencies;
 
     if (ggbApi === null) {
       console.error("runProgram() called without ggbApi");
