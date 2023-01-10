@@ -6,20 +6,6 @@ export type ModuleFilename = string;
 export type ModuleContents = string;
 export type LocalModules = Map<ModuleFilename, ModuleContents>;
 
-export type TracebackEntry = {
-  lineno: number;
-  colno: number;
-  filename: string;
-};
-
-export type PyError = {
-  args: {
-    v: { length: number; [0]: { v: string } };
-  };
-  traceback: Array<TracebackEntry>;
-  tp$name: string;
-};
-
 export const messageOfPyError = (err: PyError) => {
   if (err.tp$name == null) {
     return `[Internal error: ${err}]`;
