@@ -7,6 +7,30 @@ import { GeoGebraPane } from "./GeoGebraPane";
 import { MenuBar } from "./MenuBar";
 import { StdoutPane } from "./StdoutPane";
 
+const EditorMaybeErrors: React.FC<{}> = () => {
+  const anyErrors = useStoreState((s) => s.pyErrors.any);
+
+  const errorsContainerClasses = classNames(
+    "editor-maybe-errors-inner",
+    "abs-0000",
+    anyErrors ? "has-errors" : "no-errors"
+  );
+
+  return (
+    <div className="editor-maybe-errors-outer">
+      <div className={errorsContainerClasses}>
+        <div className="editor">
+          <CodeEditor />
+        </div>
+        {/* TODO: Only show if there are errors. */}
+        <div className="errors-container">
+          <ErrorList />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const IDE: React.FC<{}> = () => {
   const anyErrors = useStoreState((s) => s.pyErrors.any);
 
