@@ -6,6 +6,12 @@ export type ModuleFilename = string;
 export type ModuleContents = string;
 export type LocalModules = Map<ModuleFilename, ModuleContents>;
 
+export type TracebackEntry = {
+  lineno: number;
+  colno: number;
+  filename: string;
+};
+
 // TODO: Use a proper type:
 export type PyError = any;
 
