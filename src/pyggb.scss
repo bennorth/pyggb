@@ -71,6 +71,9 @@ App {
 
         &.no-errors {
           grid-template-rows: 1fr 0px;
+          .errors-container {
+            display: none;
+          }
         }
 
         .errors-container {
