@@ -1,5 +1,15 @@
+const strOfNumber = (x) => {
+  const jsStr = x.toExponential();
+  const [sig, exp] = jsStr.split("e");
+  return `(${sig}*10^(${exp}))`;
+};
+
+const strOfBool = (x) => x.toString();
+
 function $builtinmodule() {
-  const ggbApi = globalThis.$ggbApiHandoverQueue.dequeue();
+  const appApi = globalThis.$appApiHandoverQueue.dequeue();
+  const ggbApi = appApi.ggb;
+  const skApi = appApi.sk;
 
   let mod = {};
 
@@ -8,7 +18,7 @@ function $builtinmodule() {
       const x = Sk.ffi.remapToJs(pyX);
       const y = Sk.ffi.remapToJs(pyY);
 
-      const cmd = `(${x}, ${y})`;
+      const cmd = `(${strOfNumber(x)}, ${strOfNumber(y)})`;
       const lbl = ggbApi.evalCommandGetLabels(cmd);
 
       this.$ggbLabel = lbl;
@@ -59,7 +69,11 @@ function $builtinmodule() {
       },
       $fireUpdateEvents() {
         this.$updateHandlers.forEach((fun) => {
-          Sk.misceval.callsimOrSuspend(fun);
+          try {
+            Sk.misceval.callsimOrSuspend(fun);
+          } catch (e) {
+            skApi.onError(e);
+          }
         });
       },
     },
@@ -109,7 +123,191 @@ function $builtinmodule() {
     },
   });
 
-  const namesForExport = Sk.ffi.remapToPy(["Point"]);
+  mod.Circle = Sk.abstr.buildNativeClass("Circle", {
+    constructor: function Circle(spec) {
+      const ggbArgs = (() => {
+        switch (spec.kind) {
+          case "center-radius":
+            return `${spec.center.$ggbLabel},${strOfNumber(spec.radius)}`;
+          case "center-point":
+            return `${spec.center.$ggbLabel},${spec.point.$ggbLabel}`;
+          case "3-points":
+            return spec.points.map((p) => p.$ggbLabel).join(",");
+          default:
+            throw new Sk.builtin.RuntimeError("should not get here");
+        }
+      })();
+      const ggbCmd = `Circle(${ggbArgs})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      this.$ggbLabel = lbl;
+    },
+    slots: {
+      tp$new(args, _kwargs) {
+        const spec = (() => {
+          switch (args.length) {
+            case 2:
+              if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
+                throw new Sk.builtin.TypeError(
+                  `bad Circle() ctor arg[0] not Point`
+                );
+              }
+              if (Sk.builtin.checkNumber(args[1])) {
+                return {
+                  kind: "center-radius",
+                  center: args[0],
+                  radius: args[1].v,
+                };
+              }
+              if (Sk.builtin.isinstance(args[1], mod.Point).v) {
+                return {
+                  kind: "center-point",
+                  center: args[0],
+                  point: args[1],
+                };
+              }
+              // TODO: isinstance(args[1], mod.Segment)
+              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
+            case 3:
+              const allPoints = args.every(
+                (arg) => Sk.builtin.isinstance(arg, mod.Point).v
+              );
+              if (allPoints) {
+                return {
+                  kind: "3-points",
+                  points: args,
+                };
+              }
+
+              const allNumbers = args.every(Sk.builtin.checkNumber);
+              if (allNumbers) {
+                return {
+                  kind: "center-radius",
+                  center: new mod.Point(args[0], args[1]),
+                  radius: args[2].v,
+                };
+              }
+              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
+
+            default:
+              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
+          }
+        })();
+        return new mod.Circle(spec);
+      },
+    },
+  });
+
+  mod.Line = Sk.abstr.buildNativeClass("Line", {
+    constructor: function Line(spec) {
+      const ggbArgs = (() => {
+        switch (spec.kind) {
+          case "point-point":
+            return spec.points.map((p) => p.$ggbLabel).join(",");
+          default:
+            throw new Sk.builtin.RuntimeError("should not get here");
+        }
+      })();
+      const ggbCmd = `Line(${ggbArgs})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      this.$ggbLabel = lbl;
+    },
+    slots: {
+      tp$new(args, _kwargs) {
+        const spec = (() => {
+          if (args.length !== 2) {
+            throw new Sk.builtin.TypeError("bad Line() args; need 2 args");
+          }
+
+          if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
+            throw new Sk.builtin.TypeError("bad Line() args; first not Point");
+          }
+
+          if (Sk.builtin.isinstance(args[1], mod.Point).v) {
+            return {
+              kind: "point-point",
+              points: args,
+            };
+          }
+
+          throw new Sk.builtin.TypeError(
+            "bad Line() args; unhandled type of second"
+          );
+        })();
+        return new mod.Line(spec);
+      },
+    },
+  });
+
+  mod.Slider = Sk.abstr.buildNativeClass("Slider", {
+    constructor: function Slider(spec) {
+      const ggbArgs = [
+        strOfNumber(spec.min),
+        strOfNumber(spec.max),
+        strOfNumber(spec.increment),
+        strOfNumber(spec.speed),
+        strOfNumber(spec.width),
+        strOfBool(spec.isAngle),
+        strOfBool(spec.isHorizontal),
+        strOfBool(spec.isAnimating),
+        strOfBool(spec.isRandom),
+      ].join(",");
+
+      const ggbCmd = `Slider(${ggbArgs})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      console.log(ggbCmd, lbl);
+      this.$ggbLabel = lbl;
+    },
+    slots: {
+      tp$new(args, kwargs) {
+        if (args.length !== 2)
+          throw new Sk.builtin.TypeError("bad Slider() args; need 2 args");
+
+        const bothNumbers = args.every(Sk.builtin.checkNumber);
+        if (!bothNumbers)
+          throw new Sk.builtin.TypeError(
+            "bad Slider() args; args must be numbers"
+          );
+
+        const kwOrDefault = (k, isCorrectType, jsDefault) => {
+          const mIndex = kwargs.findIndex((x, i) => i % 2 === 0 && x === k);
+          console.log(k, kwargs, mIndex);
+          if (mIndex === -1) return jsDefault;
+          const value = kwargs[mIndex + 1];
+          if (!isCorrectType(value)) throw Sk.builtin.TypeError("bad arg type");
+          return Sk.ffi.remapToJs(value);
+        };
+
+        const kwNumber = (k, jsDefault) => {
+          return kwOrDefault(k, Sk.builtin.checkNumber, jsDefault);
+        };
+
+        const kwBoolean = (k, jsDefault) => {
+          return kwOrDefault(k, Sk.builtin.checkBool, jsDefault);
+        };
+
+        const spec = {
+          min: args[0].v,
+          max: args[1].v,
+          increment: kwNumber("increment", 0.1),
+          speed: kwNumber("speed", 1.0),
+          width: kwNumber("width", 100),
+          isAngle: kwBoolean("isAngle", false),
+          isHorizontal: kwBoolean("isHorizontal", true),
+          isAnimating: kwBoolean("isAnimating", false),
+          isRandom: kwBoolean("isRandom", false),
+        };
+
+        return new mod.Slider(spec);
+      },
+    },
+  });
+
+  const namesForExport = Sk.ffi.remapToPy([
+    "Point",
+    "Circle",
+    "Line",
+    "Slider",
+  ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
   mod.__all__ = namesForExport;
