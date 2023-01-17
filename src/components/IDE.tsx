@@ -1,14 +1,32 @@
 import React from "react";
 import classNames from "classnames";
-import { useStoreState } from "../store";
+import { useStoreActions, useStoreState } from "../store";
 import { CodeEditor } from "./CodeEditor";
 import { ErrorList } from "./ErrorList";
 import { GeoGebraPane } from "./GeoGebraPane";
 import { MenuBar } from "./MenuBar";
 import { StdoutPane } from "./StdoutPane";
+import { Button } from "react-bootstrap";
 
 const CopyExampleButton: React.FC<{}> = () => {
-  return <p>CLICK HERE TO MAKE YOUR OWN COPY</p>;
+  const newFileLaunch = useStoreActions((a) => a.modals.newFile.launch);
+  const exampleCodeText = useStoreState((s) => s.editor.codeText);
+  const isLoaded = useStoreState(
+    (s) => s.editor.backingFileState.status === "idle"
+  );
+
+  const doCopyExample = () => newFileLaunch(exampleCodeText);
+
+  const classes = classNames("copy-example", isLoaded && "codetext-ready");
+
+  return (
+    <div className={classes}>
+      <p>You cannot edit the code below because this is an example.</p>
+      <Button disabled={!isLoaded} onClick={doCopyExample}>
+        Make your own copy of the program
+      </Button>
+    </div>
+  );
 };
 
 const EditorMaybeErrors: React.FC<{}> = () => {
