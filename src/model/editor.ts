@@ -103,6 +103,10 @@ export const editor: Editor = {
       name: userFilePreview.name,
     };
     a.setBackingFileState(idleState);
+
+    const storeActions = helpers.getStoreActions();
+    storeActions.pyErrors.clearErrors();
+    storeActions.pyStdout.clearContent();
   }),
   loadExample: thunk(async (a, example, helpers) => {
     const state = helpers.getState();
