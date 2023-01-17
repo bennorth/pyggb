@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, KeyboardEvent } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useStoreActions, useStoreState } from "../../store";
 
@@ -23,6 +23,18 @@ export const NewFileModal: React.FC<{}> = () => {
     resetAndClose();
   };
 
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (createEnabled) {
+        create();
+      }
+      e.preventDefault();
+    }
+    if (e.key === "Escape") {
+      resetAndClose();
+    }
+  };
+
   return (
     <Modal show={active}>
       <Modal.Header>
@@ -36,6 +48,7 @@ export const NewFileModal: React.FC<{}> = () => {
             onChange={(e) => {
               setNewName(e.target.value);
             }}
+            onKeyDown={onKeyDown}
           ></Form.Control>
         </Form>
       </Modal.Body>
