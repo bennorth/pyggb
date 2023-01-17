@@ -1,6 +1,6 @@
 import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
-import { db, UserFilePreview } from "../shared/db";
+import { db, NewFileDescriptor, UserFilePreview } from "../shared/db";
 import { ExampleProgramPreview } from "../shared/resources";
 import { assertNever, fetchAsText } from "../shared/utils";
 
@@ -41,7 +41,7 @@ export type Editor = {
   loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
   loadExample: Thunk<Editor, ExampleProgramPreview, {}, PyGgbModel>;
   maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, {}, PyGgbModel>;
-  createNew: Thunk<Editor, string>;
+  createNew: Thunk<Editor, NewFileDescriptor>;
 };
 
 const InitialCodeTextSeqNum = 1001;
@@ -196,8 +196,8 @@ export const editor: Editor = {
     }
   }),
 
-  createNew: thunk(async (a, name) => {
-    const preview = await db.createNewFile({ name });
+  createNew: thunk(async (a, descriptor) => {
+    const preview = await db.createNewFile(descriptor);
     await a.loadFromBacking(preview);
   }),
 };
