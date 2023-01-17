@@ -47,7 +47,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
       return;
     }
     const backingSource = backingFileState.source;
-    if (backingSource.kind !== "db") {
+    if (backingSource.kind !== "user-program") {
       console.warn("can't doRename unless source.kind is DB");
       return;
     }

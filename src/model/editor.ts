@@ -7,8 +7,8 @@ import { fetchAsText } from "../shared/utils";
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
 export type BackingFileSource =
-  | { kind: "db"; id: number }
-  | { kind: "url"; relativeUrl: string };
+  | { kind: "user-program"; id: number }
+  | { kind: "example"; relativeUrl: string };
 
 export type BackingFileState =
   | { status: "booting" }
@@ -77,7 +77,7 @@ export const editor: Editor = {
     }
 
     const source: BackingFileSource = {
-      kind: "db",
+      kind: "user-program",
       id: userFilePreview.id,
     };
     const loadingState: BackingFileState = {
@@ -117,7 +117,7 @@ export const editor: Editor = {
     }
 
     const source: BackingFileSource = {
-      kind: "url",
+      kind: "example",
       relativeUrl: example.path,
     };
     const loadingState: BackingFileState = {
@@ -168,7 +168,7 @@ export const editor: Editor = {
         return;
       case "idle":
         const backingSource = backingFileState.source;
-        if (backingSource.kind === "url") {
+        if (backingSource.kind === "example") {
           console.error("should not be saving if source is URL");
           return;
         }
