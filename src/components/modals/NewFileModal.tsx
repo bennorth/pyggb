@@ -12,6 +12,12 @@ export const NewFileModal: React.FC<{}> = () => {
   const createEnabled = newName !== "";
 
   const dismiss = () => setActive(false);
+
+  const resetAndClose = () => {
+    setNewName(""); // Ready for next time
+    dismiss();
+  };
+
   const create = async () => {
     await createAction({ name: newName, codeText });
     setNewName(""); // Ready for next time
