@@ -18,3 +18,8 @@ export const fetchAsText = async (urlWithinApp: string) => {
     return null;
   }
 };
+
+// For exhaustiveness checking, as per TypeScript Handbook.
+export const assertNever = (x: never): never => {
+  throw Error(`should not be here; got ${x}`);
+};
