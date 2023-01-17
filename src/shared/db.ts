@@ -10,6 +10,11 @@ export type UserFile = {
 export type UserFileUpdate = Required<Pick<UserFile, "id" | "codeText">>;
 export type UserFilePreview = Required<Pick<UserFile, "id" | "name">>;
 
+export type NewFileDescriptor = {
+  name: string;
+  codeText?: string;
+};
+
 export class PyGgbDexie extends Dexie {
   userFiles!: Table<UserFile>;
 
