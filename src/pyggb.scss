@@ -67,13 +67,26 @@ App {
 
       .editor-maybe-errors-inner {
         display: grid;
-        grid-template-rows: 2fr 1fr;
 
-        &.no-errors {
+        &.no-errors.content-user-program {
           grid-template-rows: 1fr 0px;
-          .errors-container {
-            display: none;
-          }
+        }
+        &.no-errors.content-example {
+          grid-template-rows: 3rem 1fr 0px;
+        }
+        &.has-errors.content-user-program {
+          grid-template-rows: 2fr 1fr;
+        }
+        &.has-errors.content-example {
+          grid-template-rows: 3rem 2fr 1fr;
+        }
+
+        &.no-errors .errors-container {
+          display: none;
+        }
+
+        &.content-user-program .copy-invitation-container {
+          display: none;
         }
 
         .errors-container {
