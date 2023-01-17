@@ -1,8 +1,8 @@
-import { action, Action, thunk, Thunk } from "easy-peasy";
+import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { db, UserFilePreview } from "../shared/db";
 import { ExampleProgramPreview } from "../shared/resources";
-import { fetchAsText } from "../shared/utils";
+import { assertNever, fetchAsText } from "../shared/utils";
 
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
@@ -29,6 +29,7 @@ type CodeTextSnapshot = { seqNum: number; codeText: string };
 
 export type Editor = {
   backingFileState: BackingFileState;
+  contentKind: Computed<Editor, ContentKind>;
   codeText: string;
   codeTextSeqNum: number;
   backedSeqNum: number;
@@ -47,6 +48,18 @@ const InitialCodeTextSeqNum = 1001;
 
 export const editor: Editor = {
   backingFileState: { status: "booting" },
+  contentKind: computed((s) => {
+    switch (s.backingFileState.status) {
+      case "booting":
+        return "nothing-yet-loaded";
+      case "idle":
+      case "loading":
+      case "saving":
+        return s.backingFileState.source.kind;
+      default:
+        return assertNever(s.backingFileState);
+    }
+  }),
   codeText: "",
   codeTextSeqNum: 0,
   backedSeqNum: 0,
