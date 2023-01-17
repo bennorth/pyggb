@@ -101,10 +101,10 @@ export const MenuBar: React.FC<{}> = () => {
   const fileChooserSetActive = useStoreActions(
     (a) => a.modals.fileChooser.setActive
   );
-  const newFileSetActive = useStoreActions((a) => a.modals.newFile.setActive);
+  const newFileLaunch = useStoreActions((a) => a.modals.newFile.launch);
 
   const launchFileChooser = () => fileChooserSetActive(true);
-  const launchNewFile = () => newFileSetActive(true);
+  const launchNewFile = () => newFileLaunch(undefined);
 
   const spinnerClasses = classnames({
     visible: backingState.status !== "idle",
