@@ -20,8 +20,7 @@ export const NewFileModal: React.FC<{}> = () => {
 
   const create = async () => {
     await createAction({ name: newName, codeText });
-    setNewName(""); // Ready for next time
-    dismiss();
+    resetAndClose();
   };
 
   return (
