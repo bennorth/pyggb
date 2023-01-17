@@ -7,6 +7,10 @@ import { GeoGebraPane } from "./GeoGebraPane";
 import { MenuBar } from "./MenuBar";
 import { StdoutPane } from "./StdoutPane";
 
+const CopyExampleButton: React.FC<{}> = () => {
+  return <p>CLICK HERE TO MAKE YOUR OWN COPY</p>;
+};
+
 const EditorMaybeErrors: React.FC<{}> = () => {
   const anyErrors = useStoreState((s) => s.pyErrors.any);
 
