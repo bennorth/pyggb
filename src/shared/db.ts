@@ -15,6 +15,8 @@ export type NewFileDescriptor = {
   codeText?: string;
 };
 
+const kDefaultCodeText = "# Start writing your code!\n";
+
 export class PyGgbDexie extends Dexie {
   userFiles!: Table<UserFile>;
 
