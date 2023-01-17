@@ -10,6 +10,8 @@ export type BackingFileSource =
   | { kind: "user-program"; id: number }
   | { kind: "example"; relativeUrl: string };
 
+export type ContentKind = "nothing-yet-loaded" | BackingFileSource["kind"];
+
 export type BackingFileState =
   | { status: "booting" }
   | {
