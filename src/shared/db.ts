@@ -88,15 +88,16 @@ export class PyGgbDexie extends Dexie {
     await this.userFiles.put(newValue);
   }
 
-  async createNewFile(name: string): Promise<UserFilePreview> {
+  async createNewFile(descriptor: NewFileDescriptor): Promise<UserFilePreview> {
+    const codeText = descriptor.codeText ?? kDefaultCodeText;
     const newFile = {
-      name,
-      codeText: "# Start writing your code!\n",
+      name: descriptor.name,
+      codeText,
       mtime: Date.now(),
     };
 
     const newFileId = (await this.userFiles.add(newFile)) as number;
-    return { id: newFileId, name };
+    return { id: newFileId, name: descriptor.name };
   }
 
   // TODO: What happens if a renameFile() call and a updateFile() call
