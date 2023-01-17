@@ -11,6 +11,9 @@ export const CodeEditor: React.FC<{}> = () => {
     (a) => a.editor.updateCodeTextAndScheduleSave
   );
   const allReady = useStoreState((s) => s.dependencies.allReady);
+  const contentKind = useStoreState((s) => s.editor.contentKind);
+
+  const isReadWrite = allReady && contentKind === "user-program";
 
   return (
     <AceEditor
@@ -22,7 +25,7 @@ export const CodeEditor: React.FC<{}> = () => {
       height="100%"
       value={codeText}
       onChange={setCodeText}
-      readOnly={!allReady}
+      readOnly={!isReadWrite}
     />
   );
 };
