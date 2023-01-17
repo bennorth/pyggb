@@ -23,6 +23,9 @@ const EditorMaybeErrors: React.FC<{}> = () => {
   return (
     <div className="editor-maybe-errors-outer">
       <div className={errorsContainerClasses}>
+        <div className="copy-invitation-container">
+          <CopyExampleButton />
+        </div>
         <div className="editor">
           <CodeEditor />
         </div>
