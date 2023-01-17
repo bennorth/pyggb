@@ -139,6 +139,10 @@ export const editor: Editor = {
       name: example.name,
     };
     a.setBackingFileState(idleState);
+
+    const storeActions = helpers.getStoreActions();
+    storeActions.pyErrors.clearErrors();
+    storeActions.pyStdout.clearContent();
   }),
 
   maybeUpdateBacking: thunk(async (a, snapshot, helpers) => {
