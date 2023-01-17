@@ -13,11 +13,13 @@ const CopyExampleButton: React.FC<{}> = () => {
 
 const EditorMaybeErrors: React.FC<{}> = () => {
   const anyErrors = useStoreState((s) => s.pyErrors.any);
+  const contentKind = useStoreState((s) => s.editor.contentKind);
 
   const errorsContainerClasses = classNames(
     "editor-maybe-errors-inner",
     "abs-0000",
-    anyErrors ? "has-errors" : "no-errors"
+    anyErrors ? "has-errors" : "no-errors",
+    `content-${contentKind}`
   );
 
   return (
