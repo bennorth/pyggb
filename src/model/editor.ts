@@ -197,7 +197,7 @@ export const editor: Editor = {
   }),
 
   createNew: thunk(async (a, name) => {
-    const preview = await db.createNewFile(name);
+    const preview = await db.createNewFile({ name });
     await a.loadFromBacking(preview);
   }),
 };
