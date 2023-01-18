@@ -15,6 +15,8 @@ const CopyExampleButton: React.FC<{}> = () => {
     (s) => s.editor.backingFileState.status === "idle"
   );
 
+  // TODO: Allow specification of modal title (eg New File vs Make Copy
+  // of Example).
   const doCopyExample = () => newFileLaunch(exampleCodeText);
 
   const classes = classNames("copy-example", isLoaded && "codetext-ready");
