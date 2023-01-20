@@ -31,6 +31,13 @@ const tryParseColor = (rawColor) => {
   return null;
 };
 
+const parseColorOrFail = (color) => {
+  const mRGB = tryParseColor(color);
+  if (mRGB == null)
+    throw new Sk.builtin.ValueError(`the color "${color}" is not recognised`);
+  return mRGB;
+};
+
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
