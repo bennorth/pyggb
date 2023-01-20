@@ -6,6 +6,31 @@ const strOfNumber = (x) => {
 
 const strOfBool = (x) => x.toString();
 
+// Requires existence of map on globalThis.
+const tryParseColor = (rawColor) => {
+  const lcColor = rawColor.toLowerCase();
+  const mHex = globalThis.$hexRgbFromNamedColour.get(lcColor);
+  const color = mHex ?? lcColor;
+
+  const mMatch6 = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/.exec(color);
+  if (mMatch6 != null)
+    return [
+      parseInt(mMatch6[1], 16),
+      parseInt(mMatch6[2], 16),
+      parseInt(mMatch6[3], 16),
+    ];
+
+  const mMatch3 = /^#([0-9a-f]{1})([0-9a-f]{1})([0-9a-f]{1})$/.exec(color);
+  if (mMatch3 != null)
+    return [
+      0x11 * parseInt(mMatch3[1], 16),
+      0x11 * parseInt(mMatch3[2], 16),
+      0x11 * parseInt(mMatch3[3], 16),
+    ];
+
+  return null;
+};
+
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
