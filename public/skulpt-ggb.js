@@ -92,12 +92,8 @@ function $builtinmodule() {
         return ggbApi.getColor(this.$ggbLabel);
       },
       $setColor(color) {
-        // TODO: Validate input.  Assumes "#rrggbb".
-        // need to support "red" as well
-        const r = Number.parseInt(color.substring(1, 3), 16);
-        const g = Number.parseInt(color.substring(3, 5), 16);
-        const b = Number.parseInt(color.substring(5, 7), 16);
-        ggbApi.setColor(this.$ggbLabel, r, g, b);
+        const mRGB = parseColorOrFail(color);
+        ggbApi.setColor(this.$ggbLabel, ...mRGB);
       },
       $fireUpdateEvents() {
         this.$updateHandlers.forEach((fun) => {
