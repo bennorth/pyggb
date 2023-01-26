@@ -345,6 +345,29 @@ function $builtinmodule() {
       const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
       this.$ggbLabel = lbl;
     },
+    slots: {
+      tp$new(args, _kwargs) {
+        if (args.length !== 2)
+          throw new sk.builtin.TypeError("bad Distance() args; need 2 args");
+        if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
+          throw new Sk.builtin.TypeError(
+            `bad Distance() ctor arg[0] not Point`
+          );
+        }
+        if (!Object.hasOwn(args[1], "$ggbLabel")) {
+          throw new Sk.builtin.TypeError(
+            `bad Distance() ctor arg[1] not GeoGebra object`
+          );
+        }
+
+        const spec = {
+          kind: "point-object",
+          point: args[0].$ggbLabel,
+          object: args[1].$ggbLabel,
+        };
+        return new mod.Distance(spec);
+      },
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy([
