@@ -364,11 +364,7 @@ function $builtinmodule() {
             `bad Distance() ctor arg[0] not Point`
           );
         }
-        if (!Object.hasOwn(args[1], "$ggbLabel")) {
-          throw new Sk.builtin.TypeError(
-            `bad Distance() ctor arg[1] not GeoGebra object`
-          );
-        }
+        throwIfNotGgb(args[1], "Distance() ctor arg[1]");
 
         const spec = {
           kind: "point-object",
