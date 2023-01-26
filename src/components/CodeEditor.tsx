@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
@@ -14,9 +14,28 @@ export const CodeEditor: React.FC<{}> = () => {
   const allReady = useStoreState((s) => s.dependencies.allReady);
   const contentKind = useStoreState((s) => s.editor.contentKind);
 
+  const [lastWd, setLastWd] = useState<number>(-1);
+  const [lastHt, setLastHt] = useState<number>(-1);
+
   const aceRef = createRef<ReactAce>();
 
   const isReadWrite = allReady && contentKind === "user-program";
+
+  // Force the Ace Editor to adapt itself to the new size whenever the
+  // client dimensions change.
+  //
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const aceEditor = aceRef.current;
+    const aceWidth = aceRef.current?.refEditor.clientWidth ?? -1;
+    const aceHeight = aceRef.current?.refEditor.clientHeight ?? -1;
+
+    if (aceEditor != null && (lastWd !== aceWidth || lastHt !== aceHeight)) {
+      setLastWd(aceWidth);
+      setLastHt(aceHeight);
+      aceEditor.editor.resize();
+    }
+  });
 
   return (
     <AceEditor
