@@ -368,6 +368,11 @@ function $builtinmodule() {
         return new mod.Distance(spec);
       },
     },
+    proto: {
+      $value() {
+        return ggbApi.getValue(this.$ggbLabel);
+      },
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy([
