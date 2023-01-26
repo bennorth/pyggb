@@ -330,11 +330,15 @@ function $builtinmodule() {
     },
   });
 
+  mod.Distance = Sk.abstr.buildNativeClass("Distance", {
+  });
+
   const namesForExport = Sk.ffi.remapToPy([
     "Point",
     "Circle",
     "Line",
     "Slider",
+    "Distance",
   ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
