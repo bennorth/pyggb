@@ -38,6 +38,11 @@ const parseColorOrFail = (color) => {
   return mRGB;
 };
 
+const throwIfNotNumber = (pyObj, objName) => {
+  if (!Sk.builtin.checkNumber(pyObj))
+    throw new Sk.builtin.TypeError(`${objName} must be a number`);
+};
+
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
