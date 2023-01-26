@@ -331,6 +331,20 @@ function $builtinmodule() {
   });
 
   mod.Distance = Sk.abstr.buildNativeClass("Distance", {
+    constructor: function Distance(spec) {
+      const ggbArgs = (() => {
+        switch (spec.kind) {
+          case "point-object":
+            return `${spec.point},${spec.object}`;
+          default:
+            throw new Sk.builtin.RuntimeError("should not get here");
+        }
+      })();
+
+      const ggbCmd = `Distance(${ggbArgs})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      this.$ggbLabel = lbl;
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy([
