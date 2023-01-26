@@ -1,9 +1,10 @@
-import React from "react";
+import React, { createRef } from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { useStoreActions, useStoreState } from "../store";
+import ReactAce from "react-ace/lib/ace";
 
 export const CodeEditor: React.FC<{}> = () => {
   const codeText = useStoreState((s) => s.editor.codeText);
@@ -12,6 +13,8 @@ export const CodeEditor: React.FC<{}> = () => {
   );
   const allReady = useStoreState((s) => s.dependencies.allReady);
   const contentKind = useStoreState((s) => s.editor.contentKind);
+
+  const aceRef = createRef<ReactAce>();
 
   const isReadWrite = allReady && contentKind === "user-program";
 
@@ -26,6 +29,7 @@ export const CodeEditor: React.FC<{}> = () => {
       value={codeText}
       onChange={setCodeText}
       readOnly={!isReadWrite}
+      ref={aceRef}
     />
   );
 };
