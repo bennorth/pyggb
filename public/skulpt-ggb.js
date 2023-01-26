@@ -346,7 +346,8 @@ function $builtinmodule() {
       this.$ggbLabel = lbl;
     },
     slots: {
-      tp$new(args, _kwargs) {
+      tp$new(args, kwargs) {
+        Sk.abstr.checkNoKwargs("Distance", kwargs);
         if (args.length !== 2)
           throw new sk.builtin.TypeError("bad Distance() args; need 2 args");
         if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
