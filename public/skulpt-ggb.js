@@ -373,6 +373,13 @@ function $builtinmodule() {
         return ggbApi.getValue(this.$ggbLabel);
       },
     },
+    getsets: {
+      value: {
+        $get() {
+          return new Sk.builtin.float_(this.$value());
+        },
+      },
+    },
   });
 
   const namesForExport = Sk.ffi.remapToPy([
