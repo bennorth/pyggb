@@ -125,8 +125,7 @@ function $builtinmodule() {
           return new Sk.builtin.float_(this.$xCoord());
         },
         $set(pyX) {
-          if (!Sk.builtin.checkNumber(pyX))
-            throw new Sk.builtin.TypeError("x coord must be number");
+          throwIfNotNumber(pyX, "x coord");
           this.$setXCoord(Sk.ffi.remapToJs(pyX));
         },
       },
@@ -135,8 +134,7 @@ function $builtinmodule() {
           return new Sk.builtin.float_(this.$yCoord());
         },
         $set(pyY) {
-          if (!Sk.builtin.checkNumber(pyY))
-            throw new Sk.builtin.TypeError("y coord must be number");
+          throwIfNotNumber(pyY, "y coord");
           this.$setYCoord(Sk.ffi.remapToJs(pyY));
         },
       },
