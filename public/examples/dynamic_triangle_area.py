@@ -1,8 +1,6 @@
 """
 Calculate area as a triangle's vertices are dragged
 
-**Does not work yet; needs `Distance`.**
-
 Write a Python function which is called when a GeoGebra point is dragged
 around the plane.
 """
