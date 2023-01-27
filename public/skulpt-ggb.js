@@ -339,53 +339,20 @@ function $builtinmodule() {
     },
   });
 
-  mod.Distance = Sk.abstr.buildNativeClass("Distance", {
-    constructor: function Distance(spec) {
-      const ggbArgs = (() => {
-        switch (spec.kind) {
-          case "point-object":
-            return `${spec.point},${spec.object}`;
-          default:
-            throw new Sk.builtin.RuntimeError("should not get here");
-        }
-      })();
+  mod.Distance = new Sk.builtin.func((...args) => {
+    if (args.length !== 2)
+      throw new Sk.builtin.TypeError("bad Distance() args; need 2 args");
+    if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
+      throw new Sk.builtin.TypeError(`bad Distance() ctor arg[0] not Point`);
+    }
+    throwIfNotGgb(args[1], "Distance() ctor arg[1]");
 
-      const ggbCmd = `Distance(${ggbArgs})`;
-      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-      this.$ggbLabel = lbl;
-    },
-    slots: {
-      tp$new(args, kwargs) {
-        Sk.abstr.checkNoKwargs("Distance", kwargs);
-        if (args.length !== 2)
-          throw new sk.builtin.TypeError("bad Distance() args; need 2 args");
-        if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
-          throw new Sk.builtin.TypeError(
-            `bad Distance() ctor arg[0] not Point`
-          );
-        }
-        throwIfNotGgb(args[1], "Distance() ctor arg[1]");
-
-        const spec = {
-          kind: "point-object",
-          point: args[0].$ggbLabel,
-          object: args[1].$ggbLabel,
-        };
-        return new mod.Distance(spec);
-      },
-    },
-    proto: {
-      $value() {
-        return ggbApi.getValue(this.$ggbLabel);
-      },
-    },
-    getsets: {
-      value: {
-        $get() {
-          return new Sk.builtin.float_(this.$value());
-        },
-      },
-    },
+    const ggbArgs = `${args[0].$ggbLabel},${args[1].$ggbLabel}`;
+    const ggbCmd = `Distance(${ggbArgs})`;
+    const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+    const distanceValue = ggbApi.getValue(lbl);
+    ggbApi.deleteObject(lbl);
+    return new Sk.builtin.float_(distanceValue);
   });
 
   const namesForExport = Sk.ffi.remapToPy([
