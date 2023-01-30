@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Navbar, NavDropdown, Spinner } from "react-bootstrap";
 import { OperationalBackingFileState } from "../model/editor";
 import { db } from "../shared/db";
+import { assertNever } from "../shared/utils";
 import { useStoreActions, useStoreState } from "../store";
 import { RunButton } from "./RunButton";
 
@@ -98,13 +99,34 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
 
 export const MenuBar: React.FC<{}> = () => {
   const backingState = useStoreState((s) => s.editor.backingFileState);
+  const codeText = useStoreState((s) => s.editor.codeText);
   const fileChooserSetActive = useStoreActions(
     (a) => a.modals.fileChooser.setActive
   );
   const newFileLaunch = useStoreActions((a) => a.modals.newFile.launch);
+  const downloadPythonLaunch = useStoreActions(
+    (a) => a.modals.downloadPython.launch
+  );
 
   const launchFileChooser = () => fileChooserSetActive(true);
   const launchNewFile = () => newFileLaunch(undefined);
+
+  const downloadPython = (() => {
+    switch (backingState.status) {
+      case "booting":
+        return () => {};
+      case "idle":
+      case "loading":
+      case "saving":
+        return () =>
+          downloadPythonLaunch({
+            storedName: backingState.name,
+            content: codeText,
+          });
+      default:
+        return assertNever(backingState);
+    }
+  })();
 
   const spinnerClasses = classnames({
     visible: backingState.status !== "idle",
@@ -126,7 +148,7 @@ export const MenuBar: React.FC<{}> = () => {
           <NavDropdown.Item onClick={launchFileChooser}>Open</NavDropdown.Item>
           <NavDropdown.Item>Upload</NavDropdown.Item>
           <NavDropdown.Item>Make a copy</NavDropdown.Item>
-          <NavDropdown.Item>Download</NavDropdown.Item>
+          <NavDropdown.Item onClick={downloadPython}>Download</NavDropdown.Item>
         </NavDropdown>
         <Navbar.Text className="backing-state">
           <Spinner size="sm" className={spinnerClasses}></Spinner>
