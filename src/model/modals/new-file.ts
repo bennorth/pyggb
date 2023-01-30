@@ -1,4 +1,5 @@
-import { action, Action, thunk, Thunk } from "easy-peasy";
+import { Action, thunk, Thunk } from "easy-peasy";
+import { propSetterAction } from "../../shared/utils";
 
 export type NewFile = {
   active: boolean;
@@ -11,13 +12,10 @@ export type NewFile = {
 
 export const newFile: NewFile = {
   active: false,
-  setActive: action((s, active) => {
-    s.active = active;
-  }),
+  setActive: propSetterAction("active"),
+
   initialCodeText: undefined,
-  setInitialCodeText: action((s, initialCodeText) => {
-    s.initialCodeText = initialCodeText;
-  }),
+  setInitialCodeText: propSetterAction("initialCodeText"),
 
   launch: thunk((a, codeText) => {
     a.setInitialCodeText(codeText);

@@ -2,7 +2,7 @@ import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { db, NewFileDescriptor, UserFilePreview } from "../shared/db";
 import { ExampleProgramPreview } from "../shared/resources";
-import { assertNever, fetchAsText } from "../shared/utils";
+import { assertNever, fetchAsText, propSetterAction } from "../shared/utils";
 
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
@@ -77,12 +77,10 @@ export const editor: Editor = {
     const snapshot: CodeTextSnapshot = { seqNum: seqNumAfterUpdate, codeText };
     setTimeout(() => a.maybeUpdateBacking(snapshot), 2000);
   }),
-  setBackingFileState: action((s, state) => {
-    s.backingFileState = state;
-  }),
-  setBackedSeqNum: action((s, seqNum) => {
-    s.backedSeqNum = seqNum;
-  }),
+
+  setBackingFileState: propSetterAction("backingFileState"),
+  setBackedSeqNum: propSetterAction("backedSeqNum"),
+
   loadFromBacking: thunk(async (a, userFilePreview, helpers) => {
     const state = helpers.getState();
     const status = state.backingFileState.status;

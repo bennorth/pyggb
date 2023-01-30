@@ -1,4 +1,5 @@
-import { action, Action } from "easy-peasy";
+import { Action } from "easy-peasy";
+import { propSetterAction } from "../../shared/utils";
 
 export type FileChooser = {
   active: boolean;
@@ -7,7 +8,5 @@ export type FileChooser = {
 
 export const fileChooser: FileChooser = {
   active: false,
-  setActive: action((s, active) => {
-    s.active = active;
-  }),
+  setActive: propSetterAction("active"),
 };

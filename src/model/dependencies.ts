@@ -1,8 +1,9 @@
-import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
+import { Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/appApi";
 import { SkulptGgbModuleUrl } from "../shared/resources";
 import { db } from "../shared/db";
+import { propSetterAction } from "../shared/utils";
 
 type BootStatus = "idle" | "running" | "done";
 
@@ -27,15 +28,9 @@ export const dependencies: Dependencies = {
 
   allReady: computed((s) => s.ggbApi !== null && s.bootStatus === "done"),
 
-  setBootStatus: action((s, status) => {
-    s.bootStatus = status;
-  }),
-  setGgbApi: action((s, api) => {
-    s.ggbApi = api;
-  }),
-  setGgbPythonModuleText: action((s, moduleText) => {
-    s.ggbPythonModuleText = moduleText;
-  }),
+  setBootStatus: propSetterAction("bootStatus"),
+  setGgbApi: propSetterAction("ggbApi"),
+  setGgbPythonModuleText: propSetterAction("ggbPythonModuleText"),
 
   boot: thunk(async (a, _voidPayload, helpers) => {
     const allActions = helpers.getStoreActions();

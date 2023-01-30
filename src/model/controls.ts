@@ -1,7 +1,8 @@
-import { Action, action, thunk, Thunk } from "easy-peasy";
+import { Action, thunk, Thunk } from "easy-peasy";
 import { runPythonProgram } from "../shared/skulpt-interaction";
 import { PyGgbModel } from ".";
 import { ModuleFilename, ModuleContents } from "../shared/skulpt-interaction";
+import { propSetterAction } from "../shared/utils";
 
 type ExecutionStatus = "idle" | "running";
 
@@ -13,9 +14,8 @@ export type Controls = {
 
 export const controls: Controls = {
   executionStatus: "idle",
-  setExecutionStatus: action((s, status) => {
-    s.executionStatus = status;
-  }),
+  setExecutionStatus: propSetterAction("executionStatus"),
+
   runProgram: thunk(async (a, _voidPayload, helpers) => {
     const storeState = helpers.getStoreState();
     const actions = helpers.getStoreActions();
