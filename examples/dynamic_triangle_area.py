@@ -1,8 +1,6 @@
 """
 Calculate area as a triangle's vertices are dragged
 
-**Does not work yet; needs `Distance`.**
-
 Write a Python function which is called when a GeoGebra point is dragged
 around the plane.
 """
@@ -29,7 +27,7 @@ def find_area():
     ca = Distance(c, a)
     s = 0.5 * (ab + bc + ca)
     A = math.sqrt(s * (s - ab) * (s - bc) * (s - ca))
-    print("Area = " + str(A))
+    print(f"Area = {A:.2f}")
 
 
 find_area()

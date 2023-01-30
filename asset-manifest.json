@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/pyggb/static/css/main.4a62ca1d.css",
-    "main.js": "/pyggb/static/js/main.ef442210.js",
+    "main.css": "/pyggb/static/css/main.ff944257.css",
+    "main.js": "/pyggb/static/js/main.2901b94f.js",
     "index.html": "/pyggb/index.html",
-    "main.4a62ca1d.css.map": "/pyggb/static/css/main.4a62ca1d.css.map",
-    "main.ef442210.js.map": "/pyggb/static/js/main.ef442210.js.map"
+    "main.ff944257.css.map": "/pyggb/static/css/main.ff944257.css.map",
+    "main.2901b94f.js.map": "/pyggb/static/js/main.2901b94f.js.map"
   },
   "entrypoints": [
-    "static/css/main.4a62ca1d.css",
-    "static/js/main.ef442210.js"
+    "static/css/main.ff944257.css",
+    "static/js/main.2901b94f.js"
   ]
 }

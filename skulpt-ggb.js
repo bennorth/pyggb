@@ -6,6 +6,49 @@ const strOfNumber = (x) => {
 
 const strOfBool = (x) => x.toString();
 
+// Requires existence of map on globalThis.
+const tryParseColor = (rawColor) => {
+  const lcColor = rawColor.toLowerCase();
+  const mHex = globalThis.$hexRgbFromNamedColour.get(lcColor);
+  const color = mHex ?? lcColor;
+
+  const mMatch6 = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/.exec(color);
+  if (mMatch6 != null)
+    return [
+      parseInt(mMatch6[1], 16),
+      parseInt(mMatch6[2], 16),
+      parseInt(mMatch6[3], 16),
+    ];
+
+  const mMatch3 = /^#([0-9a-f]{1})([0-9a-f]{1})([0-9a-f]{1})$/.exec(color);
+  if (mMatch3 != null)
+    return [
+      0x11 * parseInt(mMatch3[1], 16),
+      0x11 * parseInt(mMatch3[2], 16),
+      0x11 * parseInt(mMatch3[3], 16),
+    ];
+
+  return null;
+};
+
+const parseColorOrFail = (color) => {
+  const mRGB = tryParseColor(color);
+  if (mRGB == null)
+    throw new Sk.builtin.ValueError(`the color "${color}" is not recognised`);
+  return mRGB;
+};
+
+const throwIfNotGgb = (obj, objName) => {
+  // This might not always be the right test, but it is for now:
+  if (!Object.hasOwn(obj, "$ggbLabel"))
+    throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
+};
+
+const throwIfNotNumber = (pyObj, objName) => {
+  if (!Sk.builtin.checkNumber(pyObj))
+    throw new Sk.builtin.TypeError(`${objName} must be a number`);
+};
+
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
@@ -60,12 +103,8 @@ function $builtinmodule() {
         return ggbApi.getColor(this.$ggbLabel);
       },
       $setColor(color) {
-        // TODO: Validate input.  Assumes "#rrggbb".
-        // need to support "red" as well
-        const r = Number.parseInt(color.substring(1, 3), 16);
-        const g = Number.parseInt(color.substring(3, 5), 16);
-        const b = Number.parseInt(color.substring(5, 7), 16);
-        ggbApi.setColor(this.$ggbLabel, r, g, b);
+        const mRGB = parseColorOrFail(color);
+        ggbApi.setColor(this.$ggbLabel, ...mRGB);
       },
       $fireUpdateEvents() {
         this.$updateHandlers.forEach((fun) => {
@@ -92,8 +131,7 @@ function $builtinmodule() {
           return new Sk.builtin.float_(this.$xCoord());
         },
         $set(pyX) {
-          if (!Sk.builtin.checkNumber(pyX))
-            throw new Sk.builtin.TypeError("x coord must be number");
+          throwIfNotNumber(pyX, "x coord");
           this.$setXCoord(Sk.ffi.remapToJs(pyX));
         },
       },
@@ -102,8 +140,7 @@ function $builtinmodule() {
           return new Sk.builtin.float_(this.$yCoord());
         },
         $set(pyY) {
-          if (!Sk.builtin.checkNumber(pyY))
-            throw new Sk.builtin.TypeError("y coord must be number");
+          throwIfNotNumber(pyY, "y coord");
           this.$setYCoord(Sk.ffi.remapToJs(pyY));
         },
       },
@@ -302,11 +339,28 @@ function $builtinmodule() {
     },
   });
 
+  mod.Distance = new Sk.builtin.func((...args) => {
+    if (args.length !== 2)
+      throw new Sk.builtin.TypeError("bad Distance() args; need 2 args");
+    if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
+      throw new Sk.builtin.TypeError(`bad Distance() ctor arg[0] not Point`);
+    }
+    throwIfNotGgb(args[1], "Distance() ctor arg[1]");
+
+    const ggbArgs = `${args[0].$ggbLabel},${args[1].$ggbLabel}`;
+    const ggbCmd = `Distance(${ggbArgs})`;
+    const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+    const distanceValue = ggbApi.getValue(lbl);
+    ggbApi.deleteObject(lbl);
+    return new Sk.builtin.float_(distanceValue);
+  });
+
   const namesForExport = Sk.ffi.remapToPy([
     "Point",
     "Circle",
     "Line",
     "Slider",
+    "Distance",
   ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
