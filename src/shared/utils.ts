@@ -1,5 +1,7 @@
 // https://www.falldowngoboone.com/blog/share-variables-between-javascript-and-css/
 
+import { Action, action, State } from "easy-peasy";
+
 export function cssValue(property: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(property);
 }
@@ -23,3 +25,12 @@ export const fetchAsText = async (urlWithinApp: string) => {
 export const assertNever = (x: never): never => {
   throw Error(`should not be here; got ${x}`);
 };
+
+export function propSetterAction<
+  ModelT extends object,
+  PropNameT extends keyof State<ModelT>
+>(propName: PropNameT): Action<ModelT, State<ModelT>[PropNameT]> {
+  return action((s, val) => {
+    s[propName] = val;
+  });
+}
