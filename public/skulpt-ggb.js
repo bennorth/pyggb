@@ -75,6 +75,7 @@ function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
   const skApi = appApi.sk;
+  const uiApi = appApi.ui;
 
   let mod = {};
 
