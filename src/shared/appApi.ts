@@ -26,6 +26,7 @@ export type UiApi = {
 export type AppApi = {
   ggb: GgbApi;
   sk: SkulptApi;
+  ui: UiApi;
 };
 
 (globalThis as any).$appApiHandoverQueue = (() => {
