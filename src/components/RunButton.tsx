@@ -8,8 +8,13 @@ export const RunButton: React.FC<{}> = () => {
 
   const enabled = executionStatus === "idle";
   return (
-    <div className="RunButton" onClick={() => runProgram()}>
-      <Button variant="success" size="sm" disabled={!enabled}>
+    <div className="RunButton">
+      <Button
+        variant="success"
+        size="sm"
+        disabled={!enabled}
+        onClick={() => runProgram()}
+      >
         RUN
       </Button>
     </div>
