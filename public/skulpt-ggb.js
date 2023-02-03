@@ -973,6 +973,12 @@ function $builtinmodule() {
 
   mod.Function = new cls_Function();
 
+  mod.ClearConsole = new Sk.builtin.func((...args) => {
+    if (args.length !== 0)
+      throw new Sk.builtin.TypeError("bad ClearConsole() args; need 0 args");
+    uiApi.clearConsole();
+  });
+
   const namesForExport = Sk.ffi.remapToPy([
     "Number",
     "Boolean",
@@ -989,6 +995,7 @@ function $builtinmodule() {
     "Rotate",
     "Function",
     "If",
+    "ClearConsole",
   ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
