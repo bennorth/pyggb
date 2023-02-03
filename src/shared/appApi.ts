@@ -19,6 +19,10 @@ export type SkulptApi = {
   onError: (error: PyError) => void;
 };
 
+export type UiApi = {
+  clearConsole: () => void;
+};
+
 export type AppApi = {
   ggb: GgbApi;
   sk: SkulptApi;
