@@ -5,6 +5,7 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { useStoreActions, useStoreState } from "../store";
 import ReactAce from "react-ace/lib/ace";
+import { PYGGB_CYPRESS } from "../shared/utils";
 
 export const CodeEditor: React.FC<{}> = () => {
   const codeText = useStoreState((s) => s.editor.codeText);
@@ -37,6 +38,10 @@ export const CodeEditor: React.FC<{}> = () => {
     }
   });
 
+  const setGlobalRef = (editor: any) => {
+    PYGGB_CYPRESS().ACE_EDITOR = editor;
+  };
+
   return (
     <AceEditor
       mode="python"
@@ -49,6 +54,7 @@ export const CodeEditor: React.FC<{}> = () => {
       onChange={setCodeText}
       readOnly={!isReadWrite}
       ref={aceRef}
+      onLoad={setGlobalRef}
     />
   );
 };
