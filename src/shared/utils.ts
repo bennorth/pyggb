@@ -34,3 +34,12 @@ export function propSetterAction<
     s[propName] = val;
   });
 }
+
+// To allow testing to hook into various aspects of behaviour:
+const PYGGB_CYPRESS_default = {};
+export const PYGGB_CYPRESS = () => {
+  if ((window as any).PYGGB_CYPRESS == null) {
+    (window as any).PYGGB_CYPRESS = PYGGB_CYPRESS_default;
+  }
+  return (window as any).PYGGB_CYPRESS;
+};
