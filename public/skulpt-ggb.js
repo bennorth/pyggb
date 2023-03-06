@@ -325,10 +325,12 @@ function $builtinmodule() {
 
   mod.Polygon = Sk.abstr.buildNativeClass("Polygon", {
     constructor: function Polygon(points) {
+      // TODO: Check each element of points is a ggb Point.
       const ggbLabels = points.map((p) => p.$ggbLabel);
       const ggbArgs = ggbLabels.join(",");
       const ggbCmd = `Polygon(${ggbArgs})`;
       const lbls = ggbApi.evalCommandGetLabels(ggbCmd).split(",");
+      // TODO: Should have n.args + 1 labels here; check this.
       this.$ggbLabel = lbls[0];
       this.segments = lbls
         .slice(1)
@@ -336,6 +338,8 @@ function $builtinmodule() {
     },
     slots: {
       tp$new(args, _kwargs) {
+        // TODO Assert args is array-like.
+        // TODO: Use Sk.misceval.arrayFromIterable() to allow any iterable?
         if (args.length !== 1)
           throw new Sk.builtin.TypeError("bad Polygon() args; need 1 arg");
         const jsPoints = args[0].v;
