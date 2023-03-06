@@ -310,6 +310,17 @@ function $builtinmodule() {
           );
       }
     },
+    slots: {
+      tp$new(args, _kwargs) {
+        if (args.length !== 2 || !args.every(isInstance(mod.Point)))
+          throw new Sk.builtin.TypeError("bad Segment() args: need 2 Points");
+        return new mod.Segment({
+          kind: "new-from-points",
+          point1: args[0],
+          point2: args[1],
+        });
+      },
+    },
   });
 
   mod.Slider = Sk.abstr.buildNativeClass("Slider", {
