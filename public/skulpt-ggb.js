@@ -428,6 +428,9 @@ function $builtinmodule() {
     return new Sk.builtin.float_(distanceValue);
   });
 
+  mod.Intersect = new Sk.builtin.func((...args) => {
+  });
+
   const namesForExport = Sk.ffi.remapToPy([
     "Point",
     "Circle",
@@ -436,6 +439,7 @@ function $builtinmodule() {
     "Polygon",
     "Slider",
     "Distance",
+    "Intersect",
   ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
