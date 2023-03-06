@@ -38,6 +38,8 @@ const parseColorOrFail = (color) => {
   return mRGB;
 };
 
+const isSingletonOfEmpty = (xs) => xs.length === 1 && xs[0] === "";
+
 const isGgbObject = (obj) => Object.hasOwn(obj, "$ggbLabel");
 
 const throwIfNotGgb = (obj, objName) => {
