@@ -301,6 +301,9 @@ function $builtinmodule() {
           this.point2 = spec.point2;
           console.log("Made segment?", lbl, spec);
           break;
+        case "wrap-existing":
+          this.$ggbLabel = spec.label;
+          break;
         default:
           throw new Sk.builtin.TypeError(
             `bad Segment() spec.kind "{$spec.kind}"`
