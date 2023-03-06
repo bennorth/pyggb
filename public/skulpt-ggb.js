@@ -164,9 +164,6 @@ function $builtinmodule() {
         $set(pyColor) {
           if (!Sk.builtin.checkString(pyColor))
             throw new Sk.builtin.TypeError("color must be string");
-          // TODO: It must also be the right sort of string.
-          // "red" OK
-          // "#00FF00" OK
           this.$setColor(Sk.ffi.remapToJs(pyColor));
         },
       },
