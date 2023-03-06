@@ -69,6 +69,9 @@ function $builtinmodule() {
 
           this.$ggbLabel = lbl;
           break;
+        case "wrap-existing":
+          this.$ggbLabel = spec.label;
+          break;
         default:
           throw new Sk.builtin.TypeError(
             `bad Point() spec.kind "${spec.kind}"`
