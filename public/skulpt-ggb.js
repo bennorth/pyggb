@@ -324,6 +324,16 @@ function $builtinmodule() {
   });
 
   mod.Polygon = Sk.abstr.buildNativeClass("Polygon", {
+    constructor: function Polygon(points) {
+      const ggbLabels = points.map((p) => p.$ggbLabel);
+      const ggbArgs = ggbLabels.join(",");
+      const ggbCmd = `Polygon(${ggbArgs})`;
+      const lbls = ggbApi.evalCommandGetLabels(ggbCmd).split(",");
+      this.$ggbLabel = lbls[0];
+      this.segments = lbls
+        .slice(1)
+        .map((label) => new mod.Segment({ kind: "wrap-existing", label }));
+    },
   });
 
   mod.Slider = Sk.abstr.buildNativeClass("Slider", {
