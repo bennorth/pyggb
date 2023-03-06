@@ -38,9 +38,11 @@ const parseColorOrFail = (color) => {
   return mRGB;
 };
 
+const isGgbObject = (obj) => Object.hasOwn(obj, "$ggbLabel");
+
 const throwIfNotGgb = (obj, objName) => {
   // This might not always be the right test, but it is for now:
-  if (!Object.hasOwn(obj, "$ggbLabel"))
+  if (!isGgbObject(obj))
     throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
 };
 
