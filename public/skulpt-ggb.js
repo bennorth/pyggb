@@ -443,10 +443,27 @@ function $builtinmodule() {
     const ggbCmd = `Intersect(${ggbArgs})`;
     const commandResponse = ggbApi.evalCommandGetLabels(ggbCmd);
 
+    // TODO: Handle null response, e.g., if you try to Intersect two points.
+
     const rawLabels = commandResponse.split(",");
 
+    // TODO: Seem to get back a label even if given objects do not intersect.
+    // How to handle this?  Do we actually need the isSingletonOfEmpty() call?
     const labels = isSingletonOfEmpty(rawLabels) ? [] : rawLabels;
 
+    // TODO: Will we always get Points back?  Assert this?  Do we need to
+    // distinguish between free and derived points?  What happens if when we
+    // initially Intersect a Segment and a Polygon, they don't intersect, but
+    // then I drag one end of the Segment such that it intersects the Polygon
+    // twice.  The "Intersection" object does what?  Looks like it tracks one of
+    // the intersection points.  Both intersections are shown on the
+    // construction though.
+    //
+    // If you intersect two Segments which are collinear and overlap, you get
+    // back a NaN,Nan point.
+    //
+    // Not clear what a good user experience here is.  Doesn't fit so well with
+    // Python's idea of doing a calculation and getting a result.
     const points = labels.map(
       (label) => new mod.Point({ kind: "wrap-existing", label })
     );
