@@ -232,7 +232,11 @@ function $builtinmodule() {
               if (allNumbers) {
                 return {
                   kind: "center-radius",
-                  center: new mod.Point(args[0], args[1]),
+                  center: new mod.Point({
+                    kind: "new-from-coords",
+                    x: args[0].v,
+                    y: args[1].v,
+                  }),
                   radius: args[2].v,
                 };
               }
