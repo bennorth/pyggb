@@ -61,23 +61,32 @@ function $builtinmodule() {
   let mod = {};
 
   mod.Point = Sk.abstr.buildNativeClass("Point", {
-    constructor: function Point(pyX, pyY) {
-      const x = Sk.ffi.remapToJs(pyX);
-      const y = Sk.ffi.remapToJs(pyY);
+    constructor: function Point(spec) {
+      switch (spec.kind) {
+        case "new-from-coords":
+          const cmd = `(${strOfNumber(spec.x)}, ${strOfNumber(spec.y)})`;
+          const lbl = ggbApi.evalCommandGetLabels(cmd);
 
-      const cmd = `(${strOfNumber(x)}, ${strOfNumber(y)})`;
-      const lbl = ggbApi.evalCommandGetLabels(cmd);
-
-      this.$ggbLabel = lbl;
+          this.$ggbLabel = lbl;
+          break;
+        default:
+          throw new Sk.builtin.TypeError(
+            `bad Point() spec.kind "${spec.kind}"`
+          );
+      }
 
       this.$updateHandlers = [];
-      ggbApi.registerObjectUpdateListener(lbl, () => this.$fireUpdateEvents());
+      ggbApi.registerObjectUpdateListener(this.$ggbLabel, () =>
+        this.$fireUpdateEvents()
+      );
     },
     slots: {
       tp$new(args, kwargs) {
         Sk.abstr.checkNoKwargs("Point", kwargs);
         Sk.abstr.checkArgsLen("Point", args, 2, 2);
-        return new mod.Point(...args);
+        const x = Sk.ffi.remapToJs(args[0]);
+        const y = Sk.ffi.remapToJs(args[1]);
+        return new mod.Point({ kind: "new-from-coords", x, y });
       },
       tp$str() {
         return new Sk.builtin.str(`(${this.$xCoord()}, ${this.$yCoord()})`);
