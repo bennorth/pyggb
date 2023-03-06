@@ -293,6 +293,23 @@ function $builtinmodule() {
   });
 
   mod.Segment = Sk.abstr.buildNativeClass("Segment", {
+    constructor: function Segment(spec) {
+      switch (spec.kind) {
+        case "new-from-points":
+          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
+          const ggbCmd = `Segment(${ggbArgs})`;
+          const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+          this.$ggbLabel = lbl;
+          this.point1 = spec.point1;
+          this.point2 = spec.point2;
+          console.log("Made segment?", lbl, spec);
+          break;
+        default:
+          throw new Sk.builtin.TypeError(
+            `bad Segment() spec.kind "{$spec.kind}"`
+          );
+      }
+    },
   });
 
   mod.Slider = Sk.abstr.buildNativeClass("Slider", {
