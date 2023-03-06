@@ -434,6 +434,11 @@ function $builtinmodule() {
   });
 
   mod.Intersect = new Sk.builtin.func((...args) => {
+    if (args.length !== 2 || !args.every(isGgbObject))
+      throw new Sk.builtin.TypeError(
+        "bad Intersect() args; need 2 Geogebra objects"
+      );
+
     const ggbArgs = `${args[0].$ggbLabel},${args[1].$ggbLabel}`;
     const ggbCmd = `Intersect(${ggbArgs})`;
     const commandResponse = ggbApi.evalCommandGetLabels(ggbCmd);
