@@ -172,6 +172,15 @@ function $builtinmodule() {
           this.$setColor(Sk.ffi.remapToJs(pyColor));
         },
       },
+      size: {
+        $get() {
+          return new Sk.builtin.float_(ggbApi.getPointSize(this.$ggbLabel));
+        },
+        $set(pySize) {
+          // TODO: Verify numeric and in range [1.0, 9.0]
+          ggbApi.setPointSize(this.$ggbLabel, pySize.v);
+        },
+      },
     },
   });
 
