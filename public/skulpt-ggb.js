@@ -308,6 +308,9 @@ function $builtinmodule() {
           break;
         case "wrap-existing":
           this.$ggbLabel = spec.label;
+          // TODO: Can we reliably parse ggbApi.getDefinitionString() output to
+          // recover the two points?  Do we need to keep a registry of which GGB
+          // objects we have already wrapped for Python use?
           break;
         default:
           throw new Sk.builtin.TypeError(
