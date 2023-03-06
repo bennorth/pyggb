@@ -434,6 +434,19 @@ function $builtinmodule() {
   });
 
   mod.Intersect = new Sk.builtin.func((...args) => {
+    const ggbArgs = `${args[0].$ggbLabel},${args[1].$ggbLabel}`;
+    const ggbCmd = `Intersect(${ggbArgs})`;
+    const commandResponse = ggbApi.evalCommandGetLabels(ggbCmd);
+
+    const rawLabels = commandResponse.split(",");
+
+    const labels = isSingletonOfEmpty(rawLabels) ? [] : rawLabels;
+
+    const points = labels.map(
+      (label) => new mod.Point({ kind: "wrap-existing", label })
+    );
+
+    return new Sk.builtin.list(points);
   });
 
   const namesForExport = Sk.ffi.remapToPy([
