@@ -334,6 +334,14 @@ function $builtinmodule() {
         .slice(1)
         .map((label) => new mod.Segment({ kind: "wrap-existing", label }));
     },
+    slots: {
+      tp$new(args, _kwargs) {
+        if (args.length !== 1)
+          throw new Sk.builtin.TypeError("bad Polygon() args; need 1 arg");
+        const jsPoints = args[0].v;
+        return new mod.Polygon(jsPoints);
+      },
+    },
   });
 
   mod.Slider = Sk.abstr.buildNativeClass("Slider", {
