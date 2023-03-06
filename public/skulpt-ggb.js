@@ -363,6 +363,13 @@ function $builtinmodule() {
         return new mod.Polygon(jsPoints);
       },
     },
+    getsets: {
+      area: {
+        $get() {
+          return new Sk.builtin.float_(ggbApi.getValue(this.$ggbLabel));
+        },
+      },
+    },
   });
 
   mod.Slider = Sk.abstr.buildNativeClass("Slider", {
