@@ -51,6 +51,8 @@ const throwIfNotNumber = (pyObj, objName) => {
     throw new Sk.builtin.TypeError(`${objName} must be a number`);
 };
 
+const isInstance = (cls) => (obj) => Sk.builtin.isinstance(obj, cls).v;
+
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
