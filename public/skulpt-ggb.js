@@ -323,6 +323,9 @@ function $builtinmodule() {
     },
   });
 
+  mod.Polygon = Sk.abstr.buildNativeClass("Polygon", {
+  });
+
   mod.Slider = Sk.abstr.buildNativeClass("Slider", {
     constructor: function Slider(spec) {
       const ggbArgs = [
@@ -408,6 +411,7 @@ function $builtinmodule() {
     "Circle",
     "Line",
     "Segment",
+    "Polygon",
     "Slider",
     "Distance",
   ]);
