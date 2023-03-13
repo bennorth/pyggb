@@ -108,9 +108,11 @@ export const MenuBar: React.FC<{}> = () => {
   const downloadPythonLaunch = useStoreActions(
     (a) => a.modals.downloadPython.launch
   );
+  const saveCodeTextAction = useStoreActions((a) => a.editor.saveCodeText);
 
   const launchFileChooser = () => fileChooserSetActive(true);
   const launchNewFile = () => newFileLaunch(undefined);
+  const saveCodeText = () => saveCodeTextAction();
 
   const downloadPython = (() => {
     switch (backingState.status) {
@@ -159,6 +161,7 @@ export const MenuBar: React.FC<{}> = () => {
           <NavDropdown.Item onClick={launchFileChooser}>Open</NavDropdown.Item>
           <NavDropdown.Item disabled>Upload</NavDropdown.Item>
           <NavDropdown.Item disabled>Make a copy</NavDropdown.Item>
+          <NavDropdown.Item onClick={saveCodeText}>Save now</NavDropdown.Item>
           <NavDropdown.Item onClick={downloadPython}>Download</NavDropdown.Item>
         </NavDropdown>
         <Navbar.Text className="backing-state">
