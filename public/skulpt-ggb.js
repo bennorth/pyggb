@@ -206,6 +206,14 @@ function $builtinmodule() {
 
   const ggbCompare = (v, w, ggbOp) => ggbBinaryOpFun(ggbInfix(ggbOp))(v, w);
 
+  const ggbPyBoolOfCompare = (v, w, ggbOp) => {
+    const bool = ggbCompare(v, w, ggbOp);
+    const pyBool = Sk.builtin.bool(ggbApi.getValue(bool.$ggbLabel));
+    // TODO: Should the following be method on mod.Boolean cls?
+    ggbApi.deleteObject(bool.$ggbLabel);
+    return pyBool;
+  };
+
   const sharedOpSlots = {
     nb$add(other) {
       return ggbAdd(this, other);
