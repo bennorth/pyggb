@@ -297,6 +297,10 @@ function $builtinmodule() {
         return new mod.Circle(spec);
       },
     },
+    getsets: {
+      color: sharedGetSets.color,
+      line_thickness: sharedGetSets.line_thickness,
+    },
   });
 
   mod.Line = Sk.abstr.buildNativeClass("Line", {
