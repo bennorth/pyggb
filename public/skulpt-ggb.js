@@ -174,6 +174,16 @@ function $builtinmodule() {
     }
   };
 
+  const ggbBinaryOpFun = (buildCommand) => (v, w) => {
+    if ([v, w].every(isPythonOrGgbNumber)) {
+      const vArg = numberValueOrLabel(v);
+      const wArg = numberValueOrLabel(w);
+      const ggbCmd = buildCommand(vArg, wArg);
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      return wrapDependent(lbl);
+    }
+  };
+
   const ggbAdd = (v, w) => {
     if ([v, w].every((x) => isGgbObject(x))) {
       const ggbCmd = `(${v.$ggbLabel})+(${w.$ggbLabel})`;
