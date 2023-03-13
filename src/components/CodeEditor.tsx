@@ -6,8 +6,12 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import { useStoreActions, useStoreState } from "../store";
 import ReactAce from "react-ace/lib/ace";
 import { PYGGB_CYPRESS } from "../shared/utils";
+import classNames from "classnames";
+import { Spinner } from "react-bootstrap";
 
 export const CodeEditor: React.FC<{}> = () => {
+  const backingStatus = useStoreState((s) => s.editor.backingFileState.status);
+
   const codeText = useStoreState((s) => s.editor.codeText);
   const setCodeText = useStoreActions(
     (a) => a.editor.updateCodeTextAndScheduleSave
@@ -20,7 +24,10 @@ export const CodeEditor: React.FC<{}> = () => {
 
   const aceRef = createRef<ReactAce>();
 
-  const isReadWrite = allDependenciesReady && contentKind === "user-program";
+  const isReadWrite =
+    allDependenciesReady &&
+    (backingStatus === "idle" || backingStatus === "saving") &&
+    contentKind === "user-program";
 
   // Force the Ace Editor to adapt itself to the new size whenever the
   // client dimensions change.
@@ -57,6 +64,9 @@ export const CodeEditor: React.FC<{}> = () => {
         ref={aceRef}
         onLoad={setGlobalRef}
       />
+      <div className={classNames("abs-0000", "busy-overlay", backingStatus)}>
+        <Spinner />
+      </div>
     </>
   );
 };
