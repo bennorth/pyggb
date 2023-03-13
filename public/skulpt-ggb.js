@@ -94,6 +94,19 @@ function $builtinmodule() {
 
   const isPythonOrGgbNumber = (obj) =>
     Sk.builtin.checkNumber(obj) || isGgbObject(obj, "numeric");
+
+  const numberValueOrLabel = (x) => {
+    if (isGgbObject(x, "numeric")) {
+      return x.$ggbLabel;
+    }
+
+    if (Sk.builtin.checkNumber(x)) {
+      const jsStr = x.v.toExponential();
+      const [sig, exp] = jsStr.split("e");
+      return `(${sig}*10^(${exp}))`;
+    }
+
+    throw new Sk.builtin.RuntimeError("internal error: not Number or number");
   };
 
   const sharedGetSets = {
