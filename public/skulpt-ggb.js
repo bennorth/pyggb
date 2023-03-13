@@ -193,6 +193,16 @@ function $builtinmodule() {
     return obj;
   };
 
+  const kWithPropertiesMethodsSlice = {
+    with_properties: {
+      $flags: { FastCall: true },
+      $meth(args, kwargs) {
+        if (args.length !== 0) throw new Sk.builtin.TypeError("only kwargs");
+        return withPropertiesFromNameValuePairs(this, kwargs);
+      },
+    },
+  };
+
   mod.Point = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(spec) {
       switch (spec.kind) {
