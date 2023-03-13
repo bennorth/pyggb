@@ -313,14 +313,12 @@ function $builtinmodule() {
       // TODO: Would be cleaner to avoid making a new dependent Number
       // if a passed-in coord was already a Number.
       //
-      this.$ggbNumberX = new mod.Number({
-        kind: "wrap-existing",
-        label: ggbApi.evalCommandGetLabels(`x(${this.$ggbLabel})`),
-      });
-      this.$ggbNumberY = new mod.Number({
-        kind: "wrap-existing",
-        label: ggbApi.evalCommandGetLabels(`y(${this.$ggbLabel})`),
-      });
+      this.$ggbNumberX = wrapDependent(
+        ggbApi.evalCommandGetLabels(`x(${this.$ggbLabel})`)
+      );
+      this.$ggbNumberY = wrapDependent(
+        ggbApi.evalCommandGetLabels(`y(${this.$ggbLabel})`)
+      );
 
       this.$updateHandlers = [];
       ggbApi.registerObjectUpdateListener(this.$ggbLabel, () =>
@@ -738,9 +736,7 @@ function $builtinmodule() {
       const lbls = ggbApi.evalCommandGetLabels(ggbCmd).split(",");
       // TODO: Should have n.args + 1 labels here; check this.
       this.$ggbLabel = lbls[0];
-      this.segments = lbls
-        .slice(1)
-        .map((label) => new mod.Segment({ kind: "wrap-existing", label }));
+      this.segments = lbls.slice(1).map(wrapDependent);
     },
     slots: {
       tp$new(args, _kwargs) {
