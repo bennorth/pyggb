@@ -23,7 +23,6 @@ describe("File management", () => {
 
     cy.window().then((window) => {
       const editorText = window["PYGGB_CYPRESS"].ACE_EDITOR.getValue();
-      console.log("editorText", editorText);
       expect(editorText).to.equal("# Start writing your code!\n");
 
       window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(
