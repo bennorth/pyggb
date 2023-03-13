@@ -775,6 +775,8 @@ function $builtinmodule() {
           return new Sk.builtin.float_(ggbApi.getValue(this.$ggbLabel));
         },
       },
+      color: sharedGetSets.color,
+      line_thickness: sharedGetSets.line_thickness,
       // TODO: List of segments?
     },
   });
