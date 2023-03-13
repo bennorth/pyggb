@@ -53,6 +53,24 @@ const throwIfNotNumber = (pyObj, objName) => {
 
 const isInstance = (cls) => (obj) => Sk.builtin.isinstance(obj, cls).v;
 
+const kwOrDefault = (rawKwargs, k, isCorrectType, jsDefault) => {
+  const kwargs = rawKwargs ?? [];
+  const mIndex = kwargs.findIndex((x, i) => i % 2 === 0 && x === k);
+  console.log(kwargs, k, mIndex);
+  if (mIndex === -1) return jsDefault;
+  const value = kwargs[mIndex + 1];
+  if (!isCorrectType(value)) throw Sk.builtin.TypeError("bad arg type");
+  return Sk.ffi.remapToJs(value);
+};
+
+const kwNumber = (kwargs, k, jsDefault) => {
+  return kwOrDefault(kwargs, k, Sk.builtin.checkNumber, jsDefault);
+};
+
+const kwBoolean = (kwargs, k, jsDefault) => {
+  return kwOrDefault(kwargs, k, Sk.builtin.checkBool, jsDefault);
+};
+
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
@@ -540,33 +558,16 @@ function $builtinmodule() {
             "bad Slider() args; args must be numbers"
           );
 
-        const kwOrDefault = (k, isCorrectType, jsDefault) => {
-          const mIndex = kwargs.findIndex((x, i) => i % 2 === 0 && x === k);
-          console.log(k, kwargs, mIndex);
-          if (mIndex === -1) return jsDefault;
-          const value = kwargs[mIndex + 1];
-          if (!isCorrectType(value)) throw Sk.builtin.TypeError("bad arg type");
-          return Sk.ffi.remapToJs(value);
-        };
-
-        const kwNumber = (k, jsDefault) => {
-          return kwOrDefault(k, Sk.builtin.checkNumber, jsDefault);
-        };
-
-        const kwBoolean = (k, jsDefault) => {
-          return kwOrDefault(k, Sk.builtin.checkBool, jsDefault);
-        };
-
         const spec = {
           min: args[0].v,
           max: args[1].v,
-          increment: kwNumber("increment", 0.1),
-          speed: kwNumber("speed", 1.0),
-          width: kwNumber("width", 100),
-          isAngle: kwBoolean("isAngle", false),
-          isHorizontal: kwBoolean("isHorizontal", true),
-          isAnimating: kwBoolean("isAnimating", false),
-          isRandom: kwBoolean("isRandom", false),
+          increment: kwNumber(kwargs, "increment", 0.1),
+          speed: kwNumber(kwargs, "speed", 1.0),
+          width: kwNumber(kwargs, "width", 100),
+          isAngle: kwBoolean(kwargs, "isAngle", false),
+          isHorizontal: kwBoolean(kwargs, "isHorizontal", true),
+          isAnimating: kwBoolean(kwargs, "isAnimating", false),
+          isRandom: kwBoolean(kwargs, "isRandom", false),
         };
 
         return new mod.Slider(spec);
