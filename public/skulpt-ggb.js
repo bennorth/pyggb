@@ -450,6 +450,46 @@ function $builtinmodule() {
     },
   });
 
+  mod.Number = Sk.abstr.buildNativeClass("Number", {
+    constructor: function Number(spec) {
+      switch (spec.kind) {
+        case "literal":
+          const ggbCmd = strOfNumber(spec.value);
+          const label = ggbApi.evalCommandGetLabels(ggbCmd);
+          this.$ggbLabel = label;
+          break;
+        case "wrap-existing":
+          this.$ggbLabel = spec.label;
+          break;
+        default:
+          throw new Sk.builtin.TypeError(
+            `bad spec.kind "${spec.kind}" for Number`
+          );
+      }
+    },
+    slots: {
+      tp$new(args, kwargs) {
+        throwIfNotNumber(args[0]);
+        return new mod.Number({ kind: "literal", value: args[0].v });
+      },
+      nb$add: sharedOpSlots.nb$add,
+      nb$reflected_add: sharedOpSlots.nb$reflected_add,
+      nb$multiply: sharedOpSlots.nb$multiply,
+      nb$reflected_multiply: sharedOpSlots.nb$reflected_multiply,
+    },
+    getsets: {
+      value: {
+        $get() {
+          return new Sk.builtin.float_(ggbApi.getValue(this.$ggbLabel));
+        },
+        $set(pyValue) {
+          // TODO: Get numeric value more robustly.
+          ggbApi.setValue(this.$ggbLabel, pyValue.v);
+        },
+      },
+    },
+  });
+
   mod.Segment = Sk.abstr.buildNativeClass("Segment", {
     constructor: function Segment(spec) {
       switch (spec.kind) {
@@ -630,6 +670,7 @@ function $builtinmodule() {
   });
 
   const namesForExport = Sk.ffi.remapToPy([
+    "Number",
     "Point",
     "Circle",
     "Line",
