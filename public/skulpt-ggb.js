@@ -248,6 +248,24 @@ function $builtinmodule() {
     nb$reflected_remainder(other) {
       return ggbRemainder(other, this);
     },
+    ob$eq(other) {
+      return ggbPyBoolOfCompare(this, other, "==");
+    },
+    ob$ne(other) {
+      return ggbPyBoolOfCompare(this, other, "!=");
+    },
+    ob$lt(other) {
+      return ggbPyBoolOfCompare(this, other, "<");
+    },
+    ob$le(other) {
+      return ggbPyBoolOfCompare(this, other, "<=");
+    },
+    ob$gt(other) {
+      return ggbPyBoolOfCompare(this, other, ">");
+    },
+    ob$ge(other) {
+      return ggbPyBoolOfCompare(this, other, ">=");
+    },
   };
 
   const withPropertiesFromNameValuePairs = (obj, propNamesValues) => {
