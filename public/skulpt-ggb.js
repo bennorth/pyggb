@@ -196,6 +196,12 @@ function $builtinmodule() {
   const ggbDivide = ggbBinaryOpFun(ggbInfix("/"));
   const ggbRemainder = ggbBinaryOpFun(ggbFunctionCall("Mod"));
 
+  const ggbNegative = (v) => {
+    const ggbCmd = `-${v.$ggbLabel}`;
+    const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+    return wrapDependent(lbl);
+  };
+
   const sharedOpSlots = {
     nb$add(other) {
       return ggbAdd(this, other);
