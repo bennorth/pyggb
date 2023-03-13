@@ -217,6 +217,8 @@ function $builtinmodule() {
           `Point(${this.$xCoord()}, ${this.$yCoord()})`
         );
       },
+      nb$add: sharedOpSlots.nb$add,
+      nb$reflected_add: sharedOpSlots.nb$reflected_add,
     },
     proto: {
       $xCoord() {
