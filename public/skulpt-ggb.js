@@ -178,6 +178,21 @@ function $builtinmodule() {
     },
   };
 
+  const withPropertiesFromNameValuePairs = (obj, propNamesValues) => {
+    propNamesValues = propNamesValues ?? [];
+    if (propNamesValues.length % 2 !== 0) {
+      throw new Sk.builtin.RuntimeError(
+        "internal error: propertyKeyValuePairs not in pairs"
+      );
+    }
+    for (let i = 0; i !== propNamesValues.length; i += 2) {
+      const propName = propNamesValues[i];
+      const propValue = propNamesValues[i + 1];
+      obj.tp$setattr(new Sk.builtin.str(propName), propValue);
+    }
+    return obj;
+  };
+
   mod.Point = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(spec) {
       switch (spec.kind) {
