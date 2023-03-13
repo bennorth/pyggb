@@ -555,6 +555,43 @@ function $builtinmodule() {
     },
   });
 
+  mod.Boolean = Sk.abstr.buildNativeClass("Boolean", {
+    constructor: function Boolean(spec) {
+      switch (spec.kind) {
+        case "literal":
+          const ggbCmd = spec.value ? "true" : "false";
+          const label = ggbApi.evalCommandGetLabels(ggbCmd);
+          this.$ggbLabel = label;
+          break;
+        case "wrap-existing":
+          this.$ggbLabel = spec.label;
+          break;
+        default:
+          throw new Sk.builtin.TypeError(
+            `bad spec.kind "${spec.kind}" for Boolean`
+          );
+      }
+    },
+    slots: {
+      tp$new(args, _kwargs) {
+        // TODO: Check for exactly one arg.
+        const value = Sk.builtin.isTrue(args[0]);
+        return new mod.Number({ kind: "literal", value });
+      },
+    },
+    getsets: {
+      value: {
+        $get() {
+          return new Sk.builtin.bool_(ggbApi.getValue(this.$ggbLabel));
+        },
+        $set(pyValue) {
+          const value = Sk.builtin.isTrue(pyValue);
+          ggbApi.setValue(this.$ggbLabel, value);
+        },
+      },
+    },
+  });
+
   mod.Vector = Sk.abstr.buildNativeClass("Vector", {
     constructor: function Vector(spec, options) {
       switch (spec.kind) {
@@ -879,6 +916,7 @@ function $builtinmodule() {
 
   const namesForExport = Sk.ffi.remapToPy([
     "Number",
+    "Boolean",
     "Point",
     "Circle",
     "Line",
