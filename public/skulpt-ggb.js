@@ -644,6 +644,9 @@ function $builtinmodule() {
       },
       ...sharedOpSlots,
     },
+    methods: {
+      ...kWithPropertiesMethodsSlice,
+    },
     getsets: {
       is_visible: sharedGetSets.is_visible,
       is_independent: sharedGetSets.is_independent,
