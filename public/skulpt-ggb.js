@@ -218,11 +218,13 @@ function $builtinmodule() {
     },
     slots: {
       tp$new(args, kwargs) {
-        Sk.abstr.checkNoKwargs("Point", kwargs);
         Sk.abstr.checkArgsLen("Point", args, 2, 2);
         const x = Sk.ffi.remapToJs(args[0]);
         const y = Sk.ffi.remapToJs(args[1]);
-        return new mod.Point({ kind: "new-from-coords", x, y });
+        return withPropertiesFromNameValuePairs(
+          new mod.Point({ kind: "new-from-coords", x, y }),
+          kwargs
+        );
       },
       tp$str() {
         return new Sk.builtin.str(`(${this.$xCoord()}, ${this.$yCoord()})`);
