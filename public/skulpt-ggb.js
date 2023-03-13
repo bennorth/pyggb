@@ -397,8 +397,10 @@ function $builtinmodule() {
     constructor: function Circle(spec) {
       const ggbArgs = (() => {
         switch (spec.kind) {
-          case "center-radius":
-            return `${spec.center.$ggbLabel},${strOfNumber(spec.radius)}`;
+          case "center-radius": {
+            const radiusArg = numberValueOrLabel(spec.radius);
+            return `${spec.center.$ggbLabel},${radiusArg}`;
+          }
           case "center-point":
             return `${spec.center.$ggbLabel},${spec.point.$ggbLabel}`;
           case "3-points":
@@ -421,11 +423,11 @@ function $builtinmodule() {
                   `bad Circle() ctor arg[0] not Point`
                 );
               }
-              if (Sk.builtin.checkNumber(args[1])) {
+              if (isPythonOrGgbNumber(args[1])) {
                 return {
                   kind: "center-radius",
                   center: args[0],
-                  radius: args[1].v,
+                  radius: args[1],
                 };
               }
               if (Sk.builtin.isinstance(args[1], mod.Point).v) {
