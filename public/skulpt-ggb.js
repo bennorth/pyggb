@@ -521,6 +521,16 @@ function $builtinmodule() {
     getsets: {
       color: sharedGetSets.color,
       line_thickness: sharedGetSets.line_thickness,
+      radius: {
+        $get() {
+          return this.$radiusNumber().$value();
+        },
+      },
+      radius_number: {
+        $get() {
+          return this.$radiusNumber();
+        },
+      },
     },
   });
 
