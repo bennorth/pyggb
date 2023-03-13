@@ -780,6 +780,39 @@ function $builtinmodule() {
     return wrapDependent(label);
   });
 
+  // Is the following reasonable?  It bundles various pre-defined GGB functions
+  // into a Function object, so user-level code ends up as, e.g.,
+  //
+  // x = Function.sin(th)
+  //
+  // where th is a ggb Number and therefore x is also.
+
+  const functionWrapperSlice = (ggbName) => {
+    return {
+      [ggbName]: {
+        $meth(x) {
+          // TODO: If given a Python number, evaluate in Python; if a ggb
+          // Number, evaluate as dependent Number.
+          const ggbCmd = `${ggbName}(${x.$ggbLabel})`;
+          const label = ggbApi.evalCommandGetLabels(ggbCmd);
+          console.log("FUNC", x, ggbCmd, label);
+          return wrapDependent(label);
+        },
+        $flags: { OneArg: true },
+      },
+    };
+  };
+
+  const cls_Function = Sk.abstr.buildNativeClass("Function", {
+    constructor: function Function() {},
+    methods: {
+      ...functionWrapperSlice("sin"),
+      ...functionWrapperSlice("cos"),
+    },
+  });
+
+  mod.Function = new cls_Function();
+
   const namesForExport = Sk.ffi.remapToPy([
     "Number",
     "Point",
@@ -793,6 +826,7 @@ function $builtinmodule() {
     "Distance",
     "Intersect",
     "Rotate",
+    "Function",
   ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
