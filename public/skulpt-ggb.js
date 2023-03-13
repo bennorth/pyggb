@@ -121,6 +121,22 @@ function $builtinmodule() {
     },
   };
 
+  const wrapDependent = (label) => {
+    const objectType = ggbApi.getObjectType(label);
+    switch (objectType) {
+      case "point":
+        return new mod.Point({ kind: "wrap-existing", label });
+      case "numeric":
+        return new mod.Number({ kind: "wrap-existing", label });
+      case "vector":
+        return new mod.Vector({ kind: "wrap-existing", label });
+      default:
+        throw new Sk.builtin.RuntimeError(
+          `unknown object-type "${objectType}"`
+        );
+    }
+  };
+
   mod.Point = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(spec) {
       switch (spec.kind) {
