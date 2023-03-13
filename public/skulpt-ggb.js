@@ -280,6 +280,7 @@ function $builtinmodule() {
         },
         $flags: { OneArg: true },
       },
+      ...kWithPropertiesMethodsSlice,
     },
     getsets: {
       is_visible: sharedGetSets.is_visible,
