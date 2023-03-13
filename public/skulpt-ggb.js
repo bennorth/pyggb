@@ -738,24 +738,35 @@ function $builtinmodule() {
   });
 
   mod.Polygon = Sk.abstr.buildNativeClass("Polygon", {
-    constructor: function Polygon(points) {
-      // TODO: Check each element of points is a ggb Point.
-      const ggbLabels = points.map((p) => p.$ggbLabel);
-      const ggbArgs = ggbLabels.join(",");
-      const ggbCmd = `Polygon(${ggbArgs})`;
-      const lbls = ggbApi.evalCommandGetLabels(ggbCmd).split(",");
-      // TODO: Should have n.args + 1 labels here; check this.
-      this.$ggbLabel = lbls[0];
-      this.segments = lbls.slice(1).map(wrapDependent);
+    constructor: function Polygon(spec) {
+      switch (spec.kind) {
+        case "points-array": {
+          const ggbLabels = spec.points.map((p) => p.$ggbLabel);
+          const ggbArgs = ggbLabels.join(",");
+          const ggbCmd = `Polygon(${ggbArgs})`;
+          const lbls = ggbApi.evalCommandGetLabels(ggbCmd).split(",");
+          // TODO: Should have n.args + 1 labels here; check this.
+          this.$ggbLabel = lbls[0];
+          this.segments = lbls.slice(1).map(wrapDependent);
+          break;
+        }
+        default:
+          throw new Sk.builtin.RuntimeError(`bad spec kind "${spec.kind}"`);
+      }
     },
     slots: {
       tp$new(args, _kwargs) {
-        // TODO Assert args is array-like.
-        // TODO: Use Sk.misceval.arrayFromIterable() to allow any iterable?
-        if (args.length !== 1)
-          throw new Sk.builtin.TypeError("bad Polygon() args; need 1 arg");
-        const jsPoints = args[0].v;
-        return new mod.Polygon(jsPoints);
+        const spec = (() => {
+          switch (args.length) {
+            case 1:
+              const points = Sk.misceval.arrayFromIterable(args[0]);
+              // TODO: Check each element of points is a ggb Point.
+              return { kind: "points-array", points };
+            default:
+              throw new Sk.builtin.TypeError(`bad arguments to Polygon()`);
+          }
+        })();
+        return new mod.Polygon(spec);
       },
     },
     getsets: {
