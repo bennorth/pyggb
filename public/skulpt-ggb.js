@@ -292,6 +292,7 @@ function $builtinmodule() {
           return new Sk.builtin.float_(this.$xCoord());
         },
         $set(pyX) {
+          // Throw if not isIndependent(this)?
           throwIfNotNumber(pyX, "x coord");
           this.$setXCoord(Sk.ffi.remapToJs(pyX));
         },
