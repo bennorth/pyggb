@@ -271,7 +271,6 @@ function $builtinmodule() {
         case "new-from-coords":
           const cmd = `(${spec.x}, ${spec.y})`;
           const lbl = ggbApi.evalCommandGetLabels(cmd);
-
           this.$ggbLabel = lbl;
           break;
         case "wrap-existing":
@@ -836,7 +835,6 @@ function $builtinmodule() {
         const angle = pyAngle.nb$float().v;
         return strOfNumber(angle);
       }
-
       throw new Sk.builtin.TypeError("angle arg must be ggb Numeric or number");
     })();
 
