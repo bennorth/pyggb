@@ -448,7 +448,7 @@ function $builtinmodule() {
       this.$ggbLabel = lbl;
     },
     slots: {
-      tp$new(args, _kwargs) {
+      tp$new(args, kwargs) {
         const spec = (() => {
           switch (args.length) {
             case 2:
@@ -502,7 +502,8 @@ function $builtinmodule() {
               throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
           }
         })();
-        return new mod.Circle(spec);
+
+        return withPropertiesFromNameValuePairs(new mod.Circle(spec), kwargs);
       },
     },
     getsets: {
