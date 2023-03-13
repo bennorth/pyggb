@@ -191,7 +191,10 @@ function $builtinmodule() {
   };
 
   const ggbAdd = ggbBinaryOpFun(ggbInfix("+"));
+  const ggbSubtract = ggbBinaryOpFun(ggbInfix("-"));
   const ggbMultiply = ggbBinaryOpFun(ggbInfix("*"));
+  const ggbDivide = ggbBinaryOpFun(ggbInfix("/"));
+  const ggbRemainder = ggbBinaryOpFun(ggbFunctionCall("Mod"));
 
   const sharedOpSlots = {
     nb$add(other) {
