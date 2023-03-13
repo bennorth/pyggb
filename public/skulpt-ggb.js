@@ -283,6 +283,18 @@ function $builtinmodule() {
           );
       }
 
+      // TODO: Would be cleaner to avoid making a new dependent Number
+      // if a passed-in coord was already a Number.
+      //
+      this.$ggbNumberX = new mod.Number({
+        kind: "wrap-existing",
+        label: ggbApi.evalCommandGetLabels(`x(${this.$ggbLabel})`),
+      });
+      this.$ggbNumberY = new mod.Number({
+        kind: "wrap-existing",
+        label: ggbApi.evalCommandGetLabels(`y(${this.$ggbLabel})`),
+      });
+
       this.$updateHandlers = [];
       ggbApi.registerObjectUpdateListener(this.$ggbLabel, () =>
         this.$fireUpdateEvents()
@@ -359,6 +371,11 @@ function $builtinmodule() {
           this.$setXCoord(Sk.ffi.remapToJs(pyX));
         },
       },
+      xNumber: {
+        $get() {
+          return this.$ggbNumberX;
+        },
+      },
       y: {
         $get() {
           return new Sk.builtin.float_(this.$yCoord());
@@ -366,6 +383,11 @@ function $builtinmodule() {
         $set(pyY) {
           throwIfNotNumber(pyY, "y coord");
           this.$setYCoord(Sk.ffi.remapToJs(pyY));
+        },
+      },
+      yNumber: {
+        $get() {
+          return this.$ggbNumberY;
         },
       },
     },
