@@ -568,14 +568,15 @@ function $builtinmodule() {
       }
     },
     slots: {
-      tp$new(args, _kwargs) {
+      tp$new(args, kwargs) {
         if (args.length !== 2 || !args.every(isInstance(mod.Point)))
           throw new Sk.builtin.TypeError("bad Segment() args: need 2 Points");
-        return new mod.Segment({
+        const spec = {
           kind: "new-from-points",
           point1: args[0],
           point2: args[1],
-        });
+        };
+        return withPropertiesFromNameValuePairs(new mod.Segment(spec), kwargs);
       },
     },
     getsets: {
