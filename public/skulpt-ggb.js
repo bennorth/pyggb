@@ -490,6 +490,59 @@ function $builtinmodule() {
     },
   });
 
+  mod.Vector = Sk.abstr.buildNativeClass("Vector", {
+    constructor: function Vector(spec, options) {
+      switch (spec.kind) {
+        case "points": {
+          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
+          const ggbCmd = `Vector(${ggbArgs})`;
+          const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+          this.$ggbLabel = lbl;
+          break;
+        }
+        case "components": {
+          const ggbArgs = `${strOfNumber(spec.e1)},${strOfNumber(spec.e2)}`;
+          const ggbCmd = `Vector((${ggbArgs}))`;
+          const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+          console.log("Vector(components):", ggbCmd, lbl);
+          this.$ggbLabel = lbl;
+          break;
+        }
+        case "wrap-existing":
+          this.$ggbLabel = spec.label;
+          break;
+        default:
+          throw new Sk.builtin.TypeError(
+            `bad Vector() spec.kind "${spec.kind}"`
+          );
+      }
+      ggbApi.setVisible(this.$ggbLabel, options?.isVisible ?? true);
+    },
+    slots: {
+      tp$new(args, kwargs) {
+        const options = { isVisible: kwBoolean(kwargs, "is_visible", true) };
+        if (args.length === 2 && args.every(isInstance(mod.Point))) {
+          const spec = { kind: "points", point1: args[0], point2: args[1] };
+          return new mod.Vector(spec, options);
+        }
+        // TODO: Also support ggb Number instances?
+        if (args.length === 2 && args.every((x) => Sk.builtin.checkNumber(x))) {
+          const spec = { kind: "components", e1: args[0].v, e2: args[1].v };
+          return new mod.Vector(spec, options);
+        }
+
+        // TODO: Support other signatures, e.g., (x-coord, y-coord).
+
+        throw new Sk.builtin.TypeError("bad Vector() args: need 2 Points");
+      },
+      ...sharedOpSlots,
+    },
+    getsets: {
+      is_visible: sharedGetSets.is_visible,
+      is_independent: sharedGetSets.is_independent,
+    },
+  });
+
   mod.Segment = Sk.abstr.buildNativeClass("Segment", {
     constructor: function Segment(spec) {
       switch (spec.kind) {
@@ -674,6 +727,7 @@ function $builtinmodule() {
     "Point",
     "Circle",
     "Line",
+    "Vector",
     "Segment",
     "Polygon",
     "Slider",
