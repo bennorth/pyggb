@@ -578,10 +578,16 @@ function $builtinmodule() {
       },
       ...sharedOpSlots,
     },
+    proto: {
+      $value() {
+        return ggbApi.getValue(this.$ggbLabel);
+      },
+    },
     getsets: {
       value: {
         $get() {
-          return new Sk.builtin.float_(ggbApi.getValue(this.$ggbLabel));
+          // TODO: Consider cache so get self-same Python float every time.
+          return new Sk.builtin.float_(this.$value());
         },
         $set(pyValue) {
           // TODO: Get numeric value more robustly.
