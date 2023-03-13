@@ -35,6 +35,11 @@ export function propSetterAction<
   });
 }
 
+export const delaySeconds = (nSeconds: number) => {
+  const timeoutMs = 1000.0 * nSeconds;
+  return new Promise((r) => setTimeout(r, timeoutMs));
+};
+
 // To allow testing to hook into various aspects of behaviour:
 const PYGGB_CYPRESS_default = {};
 export const PYGGB_CYPRESS = () => {
