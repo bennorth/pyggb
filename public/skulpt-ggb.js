@@ -605,7 +605,9 @@ function $builtinmodule() {
           break;
         }
         case "components": {
-          const ggbArgs = `${strOfNumber(spec.e1)},${strOfNumber(spec.e2)}`;
+          const e1Arg = numberValueOrLabel(spec.e1);
+          const e2Arg = numberValueOrLabel(spec.e2);
+          const ggbArgs = `${e1Arg},${e2Arg}`;
           const ggbCmd = `Vector((${ggbArgs}))`;
           const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
           this.$ggbLabel = lbl;
@@ -634,7 +636,10 @@ function $builtinmodule() {
           return new mod.Vector(spec, options);
         }
 
-        // TODO: Support other signatures, e.g., (x-coord, y-coord).
+        if (args.length === 2 && args.every(isPythonOrGgbNumber)) {
+          const spec = { kind: "components", e1: args[0], e2: args[1] };
+          return new mod.Vector(spec);
+        }
 
         throw new Sk.builtin.TypeError("bad Vector() args: need 2 Points");
       },
