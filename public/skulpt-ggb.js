@@ -71,11 +71,18 @@ const kwBoolean = (kwargs, k, jsDefault) => {
   return kwOrDefault(kwargs, k, Sk.builtin.checkBool, jsDefault);
 };
 
+const PYGGB_CYPRESS = () => {
+  if (window.PYGGB_CYPRESS == null) window.PYGGB_CYPRESS = {};
+  return window.PYGGB_CYPRESS;
+};
+
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
   const ggbApi = appApi.ggb;
   const skApi = appApi.sk;
   const uiApi = appApi.ui;
+
+  PYGGB_CYPRESS().GGB_API = ggbApi;
 
   let mod = {};
 
