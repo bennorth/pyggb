@@ -244,7 +244,7 @@ function $builtinmodule() {
     propNamesValues = propNamesValues ?? [];
     if (propNamesValues.length % 2 !== 0) {
       throw new Sk.builtin.RuntimeError(
-        "internal error: propertyKeyValuePairs not in pairs"
+        "internal error: propNamesValues not in pairs"
       );
     }
     for (let i = 0; i !== propNamesValues.length; i += 2) {
