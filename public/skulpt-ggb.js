@@ -137,6 +137,47 @@ function $builtinmodule() {
     }
   };
 
+  const ggbAdd = (v, w) => {
+    if ([v, w].every((x) => isGgbObject(x))) {
+      const ggbCmd = `(${v.$ggbLabel})+(${w.$ggbLabel})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      return wrapDependent(lbl);
+    }
+    if (isGgbObject(v) && Sk.builtin.checkNumber(w)) {
+      const ggbCmd = `(${v.$ggbLabel})+(${strOfNumber(w.v)})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      return wrapDependent(lbl);
+    }
+  };
+
+  const ggbMultiply = (v, w) => {
+    if ([v, w].every((x) => isGgbObject(x))) {
+      const ggbCmd = `(${v.$ggbLabel})*(${w.$ggbLabel})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      return wrapDependent(lbl);
+    }
+    if (isGgbObject(v) && Sk.builtin.checkNumber(w)) {
+      const ggbCmd = `(${v.$ggbLabel})*(${strOfNumber(w.v)})`;
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      return wrapDependent(lbl);
+    }
+  };
+
+  const sharedOpSlots = {
+    nb$add(other) {
+      return ggbAdd(this, other);
+    },
+    nb$reflected_add(other) {
+      return ggbAdd(this, other);
+    },
+    nb$multiply(other) {
+      return ggbMultiply(this, other);
+    },
+    nb$reflected_multiply(other) {
+      return ggbMultiply(this, other);
+    },
+  };
+
   mod.Point = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(spec) {
       switch (spec.kind) {
