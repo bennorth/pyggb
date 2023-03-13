@@ -269,7 +269,7 @@ function $builtinmodule() {
     constructor: function Point(spec) {
       switch (spec.kind) {
         case "new-from-coords":
-          const cmd = `(${strOfNumber(spec.x)}, ${strOfNumber(spec.y)})`;
+          const cmd = `(${spec.x}, ${spec.y})`;
           const lbl = ggbApi.evalCommandGetLabels(cmd);
 
           this.$ggbLabel = lbl;
@@ -303,8 +303,9 @@ function $builtinmodule() {
     slots: {
       tp$new(args, kwargs) {
         Sk.abstr.checkArgsLen("Point", args, 2, 2);
-        const x = Sk.ffi.remapToJs(args[0]);
-        const y = Sk.ffi.remapToJs(args[1]);
+        // TODO: Check args are sensible.
+        const x = numberValueOrLabel(args[0]);
+        const y = numberValueOrLabel(args[1]);
         return withPropertiesFromNameValuePairs(
           new mod.Point({ kind: "new-from-coords", x, y }),
           kwargs
