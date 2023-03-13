@@ -174,6 +174,12 @@ function $builtinmodule() {
     }
   };
 
+  const ggbInfix = (opSymbol) => (vArg, wArg) =>
+    `(${vArg})${opSymbol}(${wArg})`;
+
+  const ggbFunctionCall = (funName) => (vArg, wArg) =>
+    `${funName}(${vArg},${wArg})`;
+
   const ggbBinaryOpFun = (buildCommand) => (v, w) => {
     if ([v, w].every(isPythonOrGgbNumber)) {
       const vArg = numberValueOrLabel(v);
