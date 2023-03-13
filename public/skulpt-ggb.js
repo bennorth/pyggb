@@ -864,13 +864,8 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError("need 2 args to Rotate()");
     const angleArg = (() => {
       const pyAngle = args[1];
-      if (isGgbObject(pyAngle, "numeric")) {
-        return pyAngle.$ggbLabel;
-      }
-
-      if (pyAngle.nb$float != null) {
-        const angle = pyAngle.nb$float().v;
-        return strOfNumber(angle);
+      if (isPythonOrGgbNumber(pyAngle)) {
+        return numberValueOrLabel(pyAngle);
       }
       throw new Sk.builtin.TypeError("angle arg must be ggb Numeric or number");
     })();
