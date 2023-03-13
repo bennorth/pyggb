@@ -211,11 +211,32 @@ function $builtinmodule() {
     nb$reflected_add(other) {
       return ggbAdd(this, other);
     },
+    nb$negative() {
+      return ggbNegative(this);
+    },
+    nb$subtract(other) {
+      return ggbSubtract(this, other);
+    },
+    nb$reflected_subtract(other) {
+      return ggbSubtract(other, this);
+    },
     nb$multiply(other) {
       return ggbMultiply(this, other);
     },
     nb$reflected_multiply(other) {
       return ggbMultiply(other, this);
+    },
+    nb$divide(other) {
+      return ggbDivide(this, other);
+    },
+    nb$reflected_divide(other) {
+      return ggbDivide(other, this);
+    },
+    nb$remainder(other) {
+      return ggbRemainder(this, other);
+    },
+    nb$reflected_remainder(other) {
+      return ggbRemainder(other, this);
     },
   };
 
