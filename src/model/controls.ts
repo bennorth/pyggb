@@ -47,6 +47,12 @@ export const controls: Controls = {
       append: actions.pyErrors.appendError,
     };
 
+    // This seems to have the side-effect that the "load/save" spinner
+    // is visible while the program is running, or until the first
+    // suspension point.  This is useful but it would be good to do it
+    // more deliberately.
+    await actions.editor.saveCodeText();
+
     a.setExecutionStatus("running");
     await runPythonProgram(
       codeText,
