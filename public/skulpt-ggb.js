@@ -624,23 +624,23 @@ function $builtinmodule() {
     },
     slots: {
       tp$new(args, kwargs) {
-        const options = { isVisible: kwBoolean(kwargs, "is_visible", true) };
-        if (args.length === 2 && args.every(isInstance(mod.Point))) {
-          const spec = { kind: "points", point1: args[0], point2: args[1] };
-          return new mod.Vector(spec, options);
-        }
-        // TODO: Also support ggb Number instances?
-        if (args.length === 2 && args.every((x) => Sk.builtin.checkNumber(x))) {
-          const spec = { kind: "components", e1: args[0].v, e2: args[1].v };
-          return new mod.Vector(spec, options);
-        }
+        const rawVector = (() => {
+          if (args.length === 2 && args.every(isInstance(mod.Point))) {
+            const spec = { kind: "points", point1: args[0], point2: args[1] };
+            return new mod.Vector(spec);
+          }
 
-        if (args.length === 2 && args.every(isPythonOrGgbNumber)) {
-          const spec = { kind: "components", e1: args[0], e2: args[1] };
-          return new mod.Vector(spec);
-        }
+          if (args.length === 2 && args.every(isPythonOrGgbNumber)) {
+            const spec = { kind: "components", e1: args[0], e2: args[1] };
+            return new mod.Vector(spec);
+          }
 
-        throw new Sk.builtin.TypeError("bad Vector() args: need 2 Points");
+          // TODO: Support other signatures, e.g., (x-coord, y-coord).
+
+          throw new Sk.builtin.TypeError("bad Vector() args: need 2 Points");
+        })();
+
+        return withPropertiesFromNameValuePairs(rawVector, kwargs);
       },
       ...sharedOpSlots,
     },
