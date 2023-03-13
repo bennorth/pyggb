@@ -587,6 +587,7 @@ function $builtinmodule() {
           return new Sk.builtin.float_(ggbApi.getValue(this.$ggbLabel));
         },
       },
+      line_thickness: sharedGetSets.line_thickness,
     },
   });
 
