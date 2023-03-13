@@ -680,7 +680,7 @@ function $builtinmodule() {
       },
     },
     getsets: {
-      // "length" appears as a reserved word for Skulpt, so the property must be
+      // "length" is reserved word for Skulpt, so the property must be
       // set up with this mangled name:
       length_$rw$: {
         $get() {
