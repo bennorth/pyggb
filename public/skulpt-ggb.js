@@ -516,10 +516,7 @@ function $builtinmodule() {
         throwIfNotNumber(args[0]);
         return new mod.Number({ kind: "literal", value: args[0].v });
       },
-      nb$add: sharedOpSlots.nb$add,
-      nb$reflected_add: sharedOpSlots.nb$reflected_add,
-      nb$multiply: sharedOpSlots.nb$multiply,
-      nb$reflected_multiply: sharedOpSlots.nb$reflected_multiply,
+      ...sharedOpSlots,
     },
     getsets: {
       value: {
