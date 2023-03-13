@@ -196,6 +196,8 @@ function $builtinmodule() {
       },
     },
     getsets: {
+      is_visible: sharedGetSets.is_visible,
+      is_independent: sharedGetSets.is_independent,
       color: sharedGetSets.color,
       size: sharedGetSets.size,
       x: {
