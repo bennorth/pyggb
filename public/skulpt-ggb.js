@@ -157,14 +157,15 @@ function $builtinmodule() {
   };
 
   const wrapDependent = (label) => {
+    const wrapSpec = { kind: "wrap-existing", label };
     const objectType = ggbApi.getObjectType(label);
     switch (objectType) {
       case "point":
-        return new mod.Point({ kind: "wrap-existing", label });
+        return new mod.Point(wrapSpec);
       case "numeric":
-        return new mod.Number({ kind: "wrap-existing", label });
+        return new mod.Number(wrapSpec);
       case "vector":
-        return new mod.Vector({ kind: "wrap-existing", label });
+        return new mod.Vector(wrapSpec);
       default:
         throw new Sk.builtin.RuntimeError(
           `unknown object-type "${objectType}"`
