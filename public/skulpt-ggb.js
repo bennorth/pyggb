@@ -750,6 +750,16 @@ function $builtinmodule() {
           this.segments = lbls.slice(1).map(wrapDependent);
           break;
         }
+        case "two-points-n-sides": {
+          const nSidesArg = numberValueOrLabel(spec.nSides);
+          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel},${nSidesArg}`;
+          const ggbCmd = `Polygon(${ggbArgs})`;
+          const lbls = ggbApi.evalCommandGetLabels(ggbCmd).split(",");
+          // TODO: Should have n.args + 1 labels here; check this.
+          this.$ggbLabel = lbls[0];
+          this.segments = lbls.slice(1).map(wrapDependent);
+          break;
+        }
         default:
           throw new Sk.builtin.RuntimeError(`bad spec kind "${spec.kind}"`);
       }
@@ -762,6 +772,20 @@ function $builtinmodule() {
               const points = Sk.misceval.arrayFromIterable(args[0]);
               // TODO: Check each element of points is a ggb Point.
               return { kind: "points-array", points };
+            case 3:
+              if (
+                args.slice(0, 2).every(isInstance(mod.Point)) &&
+                isPythonOrGgbNumber(args[2])
+              )
+                return {
+                  kind: "two-points-n-sides",
+                  point1: args[0],
+                  point2: args[1],
+                  nSides: args[2],
+                };
+              throw new Sk.builtin.TypeError(
+                "Polygon(): if 3 args, must be point, point, n"
+              );
             default:
               throw new Sk.builtin.TypeError(`bad arguments to Polygon()`);
           }
