@@ -43,6 +43,12 @@ App {
       display: block; // Avoids little bit of extra space above
     }
 
+    .loading-text {
+      margin-left: 3rem;
+      color: white;
+      font-style: italic;
+    }
+
     .backing-state {
       margin-left: 3rem;
       color: white;
