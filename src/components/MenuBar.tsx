@@ -157,8 +157,8 @@ export const MenuBar: React.FC<{}> = () => {
         <NavDropdown title="File">
           <NavDropdown.Item onClick={launchNewFile}>New</NavDropdown.Item>
           <NavDropdown.Item onClick={launchFileChooser}>Open</NavDropdown.Item>
-          <NavDropdown.Item>Upload</NavDropdown.Item>
-          <NavDropdown.Item>Make a copy</NavDropdown.Item>
+          <NavDropdown.Item disabled>Upload</NavDropdown.Item>
+          <NavDropdown.Item disabled>Make a copy</NavDropdown.Item>
           <NavDropdown.Item onClick={downloadPython}>Download</NavDropdown.Item>
         </NavDropdown>
         <Navbar.Text className="backing-state">
