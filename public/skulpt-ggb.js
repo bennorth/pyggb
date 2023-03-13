@@ -732,6 +732,7 @@ function $builtinmodule() {
           return new Sk.builtin.float_(ggbApi.getValue(this.$ggbLabel));
         },
       },
+      // TODO: List of segments?
     },
   });
 
