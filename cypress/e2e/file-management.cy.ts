@@ -5,6 +5,11 @@ describe("File management", () => {
     cy.visit("/");
   });
 
+  const chooseFileMenuEntry = (entryMatch: string) => {
+    cy.get(".MenuBar .nav-link").contains("File").click();
+    cy.get(".dropdown-item").contains(entryMatch).click();
+  };
+
   it("can create new file", () => {
     const filename = uuidv4();
 
