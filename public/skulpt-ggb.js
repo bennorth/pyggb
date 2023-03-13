@@ -757,6 +757,29 @@ function $builtinmodule() {
     return new Sk.builtin.list(points);
   });
 
+  mod.Rotate = new Sk.builtin.func((...args) => {
+    if (args.length !== 2 || !isGgbObject(args[0]))
+      throw new Sk.builtin.TypeError("need 2 args to Rotate()");
+    const angleArg = (() => {
+      const pyAngle = args[1];
+      if (isGgbObject(pyAngle, "numeric")) {
+        return pyAngle.$ggbLabel;
+      }
+
+      if (pyAngle.nb$float != null) {
+        const angle = pyAngle.nb$float().v;
+        return strOfNumber(angle);
+      }
+
+      throw new Sk.builtin.TypeError("angle arg must be ggb Numeric or number");
+    })();
+
+    const ggbArgs = `${args[0].$ggbLabel},${angleArg}`;
+    const ggbCmd = `Rotate(${ggbArgs})`;
+    const label = ggbApi.evalCommandGetLabels(ggbCmd);
+    return wrapDependent(label);
+  });
+
   const namesForExport = Sk.ffi.remapToPy([
     "Number",
     "Point",
@@ -769,6 +792,7 @@ function $builtinmodule() {
     "Slider",
     "Distance",
     "Intersect",
+    "Rotate",
   ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
