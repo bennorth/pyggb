@@ -521,7 +521,6 @@ function $builtinmodule() {
           const ggbArgs = `${strOfNumber(spec.e1)},${strOfNumber(spec.e2)}`;
           const ggbCmd = `Vector((${ggbArgs}))`;
           const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-          console.log("Vector(components):", ggbCmd, lbl);
           this.$ggbLabel = lbl;
           break;
         }
@@ -570,7 +569,6 @@ function $builtinmodule() {
           this.$ggbLabel = lbl;
           this.point1 = spec.point1;
           this.point2 = spec.point2;
-          console.log("Made segment?", lbl, spec);
           break;
         case "wrap-existing":
           this.$ggbLabel = spec.label;
