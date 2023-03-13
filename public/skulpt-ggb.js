@@ -406,7 +406,7 @@ function $builtinmodule() {
           this.$setXCoord(Sk.ffi.remapToJs(pyX));
         },
       },
-      xNumber: {
+      x_number: {
         $get() {
           return this.$ggbNumberX;
         },
@@ -420,7 +420,7 @@ function $builtinmodule() {
           this.$setYCoord(Sk.ffi.remapToJs(pyY));
         },
       },
-      yNumber: {
+      y_number: {
         $get() {
           return this.$ggbNumberY;
         },
