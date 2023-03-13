@@ -669,6 +669,8 @@ function $builtinmodule() {
           // TODO: Can we reliably parse ggbApi.getDefinitionString() output to
           // recover the two points?  Do we need to keep a registry of which GGB
           // objects we have already wrapped for Python use?
+          //
+          // Can get from GGB with Point(SEGMENT, 0) and Point(SEGMENT, 1).
           break;
         default:
           throw new Sk.builtin.TypeError(
