@@ -168,7 +168,8 @@ function $builtinmodule() {
         return new mod.Vector(wrapSpec);
       default:
         throw new Sk.builtin.RuntimeError(
-          `unknown object-type "${objectType}"`
+          `unknown object-type "${objectType}"` +
+            ` when trying to wrap ggb object "${label}"`
         );
     }
   };
