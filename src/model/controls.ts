@@ -47,9 +47,6 @@ export const controls: Controls = {
       append: actions.pyErrors.appendError,
     };
 
-    // TODO: Make async, add "await" to following, and wrap it in
-    // setState("running") / setState("idle") calls.  Or just use
-    // "then()" calls.
     a.setExecutionStatus("running");
     await runPythonProgram(
       codeText,
