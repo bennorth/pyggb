@@ -166,6 +166,8 @@ function $builtinmodule() {
         return new mod.Number(wrapSpec);
       case "vector":
         return new mod.Vector(wrapSpec);
+      case "boolean":
+        return new mod.Boolean(wrapSpec);
       default:
         throw new Sk.builtin.RuntimeError(
           `unknown object-type "${objectType}"` +
