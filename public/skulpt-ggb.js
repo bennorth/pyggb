@@ -191,19 +191,7 @@ function $builtinmodule() {
   };
 
   const ggbAdd = ggbBinaryOpFun(ggbInfix("+"));
-
-  const ggbMultiply = (v, w) => {
-    if ([v, w].every((x) => isGgbObject(x))) {
-      const ggbCmd = `(${v.$ggbLabel})*(${w.$ggbLabel})`;
-      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-      return wrapDependent(lbl);
-    }
-    if (isGgbObject(v) && Sk.builtin.checkNumber(w)) {
-      const ggbCmd = `(${v.$ggbLabel})*(${strOfNumber(w.v)})`;
-      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-      return wrapDependent(lbl);
-    }
-  };
+  const ggbMultiply = ggbBinaryOpFun(ggbInfix("*"));
 
   const sharedOpSlots = {
     nb$add(other) {
