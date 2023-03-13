@@ -151,7 +151,7 @@ function $builtinmodule() {
         return new Sk.builtin.int_(ggbApi.getLineThickness(this.$ggbLabel));
       },
       $set(pyThickness) {
-        // TODO: Verify integer and in range [1, 9]
+        // TODO: Verify integer and in range [1, 13]
         ggbApi.setLineThickness(this.$ggbLabel, pyThickness.v);
       },
     },
