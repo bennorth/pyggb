@@ -12,7 +12,7 @@ export const CodeEditor: React.FC<{}> = () => {
   const setCodeText = useStoreActions(
     (a) => a.editor.updateCodeTextAndScheduleSave
   );
-  const allReady = useStoreState((s) => s.dependencies.allReady);
+  const allDependenciesReady = useStoreState((s) => s.dependencies.allReady);
   const contentKind = useStoreState((s) => s.editor.contentKind);
 
   const [lastWd, setLastWd] = useState<number>(-1);
@@ -20,7 +20,7 @@ export const CodeEditor: React.FC<{}> = () => {
 
   const aceRef = createRef<ReactAce>();
 
-  const isReadWrite = allReady && contentKind === "user-program";
+  const isReadWrite = allDependenciesReady && contentKind === "user-program";
 
   // Force the Ace Editor to adapt itself to the new size whenever the
   // client dimensions change.
