@@ -917,6 +917,13 @@ function $builtinmodule() {
     methods: {
       ...functionWrapperSlice("sin"),
       ...functionWrapperSlice("cos"),
+      compare_LT: {
+        $flags: { FastCall: true },
+        $meth(args, _kwargs) {
+          // TODO: Check no kwargs.
+          return ggbCompare(args[0], args[1], "<");
+        },
+      },
     },
   });
 
