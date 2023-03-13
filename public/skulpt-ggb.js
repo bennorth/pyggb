@@ -202,6 +202,8 @@ function $builtinmodule() {
     return wrapDependent(lbl);
   };
 
+  const ggbCompare = (v, w, ggbOp) => ggbBinaryOpFun(ggbInfix(ggbOp))(v, w);
+
   const sharedOpSlots = {
     nb$add(other) {
       return ggbAdd(this, other);
