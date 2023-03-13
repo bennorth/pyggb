@@ -215,7 +215,7 @@ function $builtinmodule() {
       return ggbMultiply(this, other);
     },
     nb$reflected_multiply(other) {
-      return ggbMultiply(this, other);
+      return ggbMultiply(other, this);
     },
   };
 
