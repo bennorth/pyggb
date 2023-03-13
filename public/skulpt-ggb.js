@@ -595,7 +595,7 @@ function $builtinmodule() {
   });
 
   mod.Vector = Sk.abstr.buildNativeClass("Vector", {
-    constructor: function Vector(spec, options) {
+    constructor: function Vector(spec) {
       switch (spec.kind) {
         case "points": {
           const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
@@ -621,7 +621,6 @@ function $builtinmodule() {
             `bad Vector() spec.kind "${spec.kind}"`
           );
       }
-      ggbApi.setVisible(this.$ggbLabel, options?.isVisible ?? true);
     },
     slots: {
       tp$new(args, kwargs) {
