@@ -15,6 +15,7 @@ describe("File management", () => {
     cy.get("button").contains("Create").click();
 
     // Name of newly-created file should appear in the navbar / menubar:
+    cy.get(".editor .busy-overlay").should("not.be.visible");
     cy.get(".MenuBar").contains(filename);
 
     cy.window().then((window) => {
@@ -27,6 +28,10 @@ describe("File management", () => {
       );
 
       cy.get("#pyggb-ace-editor").click("center");
+      cy.get(".MenuBar .nav-link").contains("File").click();
+      cy.get(".dropdown-item").contains("Open").click();
+
+      cy.get(".FileChoice").contains(filename);
     });
   });
 });
