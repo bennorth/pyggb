@@ -470,7 +470,7 @@ function $builtinmodule() {
           break;
         default:
           throw new Sk.builtin.TypeError(
-            `bad Segment() spec.kind "{$spec.kind}"`
+            `bad Segment() spec.kind "${spec.kind}"`
           );
       }
     },
