@@ -447,6 +447,17 @@ function $builtinmodule() {
       const ggbCmd = `Circle(${ggbArgs})`;
       const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
       this.$ggbLabel = lbl;
+      this.radiusNumber = null;
+    },
+    proto: {
+      $radiusNumber() {
+        if (this.radiusNumber == null) {
+          const ggbCmd = `Radius(${this.$ggbLabel})`;
+          const label = ggbApi.evalCommandGetLabels(ggbCmd);
+          this.radiusNumber = new mod.Number({ kind: "wrap-existing", label });
+        }
+        return this.radiusNumber;
+      },
     },
     slots: {
       tp$new(args, kwargs) {
