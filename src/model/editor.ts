@@ -36,6 +36,7 @@ export type Editor = {
   setBackedSeqNum: Action<Editor, number>;
   setCodeText: Action<Editor, string>;
   updateCodeText: Action<Editor, string>;
+  saveCodeText: Thunk<Editor>;
   updateCodeTextAndScheduleSave: Thunk<Editor, string, {}, PyGgbModel>;
   setBackingFileState: Action<Editor, BackingFileState>;
   loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
@@ -70,6 +71,11 @@ export const editor: Editor = {
   updateCodeText: action((s, codeText) => {
     s.codeText = codeText;
     s.codeTextSeqNum += 1;
+  }),
+  saveCodeText: thunk(async (a, _voidPayload, helpers) => {
+    const state = helpers.getState();
+    const snapshot = { seqNum: state.codeTextSeqNum, codeText: state.codeText };
+    await a.maybeUpdateBacking(snapshot);
   }),
   updateCodeTextAndScheduleSave: thunk((a, codeText, helpers) => {
     const seqNumAfterUpdate = helpers.getState().codeTextSeqNum + 1;
