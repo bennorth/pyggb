@@ -176,13 +176,6 @@ function $builtinmodule() {
         // Hm; mildly annoying:
         ggbApi.setCoords(this.$ggbLabel, this.$xCoord(), y);
       },
-      $color() {
-        return ggbApi.getColor(this.$ggbLabel);
-      },
-      $setColor(color) {
-        const mRGB = parseColorOrFail(color);
-        ggbApi.setColor(this.$ggbLabel, ...mRGB);
-      },
       $fireUpdateEvents() {
         this.$updateHandlers.forEach((fun) => {
           try {
