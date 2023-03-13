@@ -98,6 +98,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
 };
 
 export const MenuBar: React.FC<{}> = () => {
+  const allDependenciesReady = useStoreState((s) => s.dependencies.allReady);
   const backingState = useStoreState((s) => s.editor.backingFileState);
   const codeText = useStoreState((s) => s.editor.codeText);
   const fileChooserSetActive = useStoreActions(
@@ -136,6 +137,16 @@ export const MenuBar: React.FC<{}> = () => {
     backingState.status === "booting" ? null : (
       <FilenameDisplayOrEdit backingFileState={backingState} />
     );
+
+  if (!allDependenciesReady) {
+    return (
+      <Navbar>
+        <Container fluid className="MenuBar">
+          <Navbar.Text className="loading-text">Loading...</Navbar.Text>
+        </Container>
+      </Navbar>
+    );
+  }
 
   return (
     <Navbar>
