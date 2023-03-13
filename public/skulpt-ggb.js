@@ -92,6 +92,10 @@ function $builtinmodule() {
     return gotType === requiredType;
   };
 
+  const isPythonOrGgbNumber = (obj) =>
+    Sk.builtin.checkNumber(obj) || isGgbObject(obj, "numeric");
+  };
+
   const sharedGetSets = {
     is_visible: {
       $get() {
