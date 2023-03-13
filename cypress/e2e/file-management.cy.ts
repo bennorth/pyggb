@@ -13,9 +13,7 @@ describe("File management", () => {
   it("can create new file", () => {
     const filename = uuidv4();
 
-    cy.get(".MenuBar .nav-link").contains("File").click();
-    cy.get(".dropdown-item").contains("New").click();
-
+    chooseFileMenuEntry("New");
     cy.get(".modal-body input").click().type(filename);
     cy.get("button").contains("Create").click();
 
@@ -33,9 +31,7 @@ describe("File management", () => {
       );
 
       cy.get("#pyggb-ace-editor").click("center");
-      cy.get(".MenuBar .nav-link").contains("File").click();
-      cy.get(".dropdown-item").contains("Open").click();
-
+      chooseFileMenuEntry("Open");
       cy.get(".FileChoice").contains(filename);
     });
   });
