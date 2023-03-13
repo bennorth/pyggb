@@ -190,6 +190,12 @@ function $builtinmodule() {
       const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
       return wrapDependent(lbl);
     }
+    if ([v, w].every((x) => isGgbObject(x))) {
+      const ggbCmd = buildCommand(v.$ggbLabel, w.$ggbLabel);
+      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      // TODO: What if the addition doesn't make sense?
+      return wrapDependent(lbl);
+    }
   };
 
   const ggbAdd = ggbBinaryOpFun(ggbInfix("+"));
