@@ -667,9 +667,9 @@ function $builtinmodule() {
             return new mod.Vector(spec);
           }
 
-          // TODO: Support other signatures, e.g., (x-coord, y-coord).
-
-          throw new Sk.builtin.TypeError("bad Vector() args: need 2 Points");
+          throw new Sk.builtin.TypeError(
+            "bad Vector() args: need 2 Points or 2 numbers"
+          );
         })();
 
         return withPropertiesFromNameValuePairs(rawVector, kwargs);
