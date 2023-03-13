@@ -109,6 +109,24 @@ App {
             }
           }
         }
+
+        .editor {
+          position: relative;
+          .busy-overlay {
+            display: none;
+
+            &.booting,
+            &.loading {
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+              align-items: center;
+              background-color: black;
+              opacity: 30%;
+            }
+          }
+        }
+
         .errors-container {
           position: relative;
 
