@@ -43,18 +43,20 @@ export const CodeEditor: React.FC<{}> = () => {
   };
 
   return (
-    <AceEditor
-      mode="python"
-      theme="github"
-      name="pyggb-ace-editor"
-      fontSize={14}
-      width="100%"
-      height="100%"
-      value={codeText}
-      onChange={setCodeText}
-      readOnly={!isReadWrite}
-      ref={aceRef}
-      onLoad={setGlobalRef}
-    />
+    <>
+      <AceEditor
+        mode="python"
+        theme="github"
+        name="pyggb-ace-editor"
+        fontSize={14}
+        width="100%"
+        height="100%"
+        value={codeText}
+        onChange={setCodeText}
+        readOnly={!isReadWrite}
+        ref={aceRef}
+        onLoad={setGlobalRef}
+      />
+    </>
   );
 };
