@@ -755,7 +755,7 @@ function $builtinmodule() {
       }
     },
     slots: {
-      tp$new(args, _kwargs) {
+      tp$new(args, kwargs) {
         const spec = (() => {
           switch (args.length) {
             case 1:
@@ -766,7 +766,7 @@ function $builtinmodule() {
               throw new Sk.builtin.TypeError(`bad arguments to Polygon()`);
           }
         })();
-        return new mod.Polygon(spec);
+        return withPropertiesFromNameValuePairs(new mod.Polygon(spec), kwargs);
       },
     },
     getsets: {
