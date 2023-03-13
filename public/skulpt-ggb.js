@@ -203,6 +203,8 @@ function $builtinmodule() {
       },
     },
     getsets: {
+      color: sharedGetSets.color,
+      size: sharedGetSets.size,
       x: {
         $get() {
           return new Sk.builtin.float_(this.$xCoord());
@@ -219,25 +221,6 @@ function $builtinmodule() {
         $set(pyY) {
           throwIfNotNumber(pyY, "y coord");
           this.$setYCoord(Sk.ffi.remapToJs(pyY));
-        },
-      },
-      color: {
-        $get() {
-          return new Sk.builtin.str(this.$color());
-        },
-        $set(pyColor) {
-          if (!Sk.builtin.checkString(pyColor))
-            throw new Sk.builtin.TypeError("color must be string");
-          this.$setColor(Sk.ffi.remapToJs(pyColor));
-        },
-      },
-      size: {
-        $get() {
-          return new Sk.builtin.float_(ggbApi.getPointSize(this.$ggbLabel));
-        },
-        $set(pySize) {
-          // TODO: Verify numeric and in range [1.0, 9.0]
-          ggbApi.setPointSize(this.$ggbLabel, pySize.v);
         },
       },
     },
