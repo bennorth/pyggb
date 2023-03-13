@@ -889,6 +889,18 @@ function $builtinmodule() {
     return wrapDependent(label);
   });
 
+  mod.If = new Sk.builtin.func((...args) => {
+    // TODO: Allow literals as well?
+    if (!args.every((x) => isGgbObject(x))) {
+      console.error(args);
+      throw new Sk.builtin.TypeError("all args must be GGB objects");
+    }
+    const ggbArgs = args.map((obj) => obj.$ggbLabel).join(",");
+    const ggbCmd = `If(${ggbArgs})`;
+    const label = ggbApi.evalCommandGetLabels(ggbCmd);
+    return wrapDependent(label);
+  });
+
   // Is the following reasonable?  It bundles various pre-defined GGB functions
   // into a Function object, so user-level code ends up as, e.g.,
   //
@@ -944,6 +956,7 @@ function $builtinmodule() {
     "Intersect",
     "Rotate",
     "Function",
+    "If",
   ]);
 
   mod.__name__ = new Sk.builtin.str("ggb");
