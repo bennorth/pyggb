@@ -40,8 +40,6 @@ const parseColorOrFail = (color) => {
 
 const isSingletonOfEmpty = (xs) => xs.length === 1 && xs[0] === "";
 
-const isGgbObject = (obj) => Object.hasOwn(obj, "$ggbLabel");
-
 const throwIfNotGgb = (obj, objName) => {
   // This might not always be the right test, but it is for now:
   if (!isGgbObject(obj))
@@ -61,6 +59,20 @@ function $builtinmodule() {
   const skApi = appApi.sk;
 
   let mod = {};
+
+  const isGgbObject = (obj, requiredType) => {
+    // Could collapse the following into one bool expression but it wouldn't
+    // obviously be clearer.
+
+    if (!Object.hasOwn(obj, "$ggbLabel")) return false;
+
+    // It is a GGB object.  If we're not fussy about what type, we're done.
+    if (requiredType == null) return true;
+
+    // We are fussy about what type; compare.
+    const gotType = ggbApi.getObjectType(obj.$ggbLabel);
+    return gotType === requiredType;
+  };
 
   mod.Point = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(spec) {
