@@ -1063,7 +1063,7 @@ function $builtinmodule() {
     "Segment",
     "Polygon",
     "Parabola",
-    "Slider",
+    // "Slider",  // This is not ready for use yet.
     "Distance",
     "Intersect",
     "Rotate",
