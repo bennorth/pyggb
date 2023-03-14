@@ -5,7 +5,11 @@ class ConstructionVerificationState {
   // points when describing lines, say.
 }
 
-describe("Runs Python programs", () => {
+// We specify no test isolation here, to avoid the heavy start-up cost
+// per small program we run.  We just keep entering new programs into
+// the same pyggb "file".
+//
+describe("Runs Python programs", { testIsolation: false }, () => {
   const chooseFileMenuEntry = (entryMatch: string) => {
     cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
     cy.get(".dropdown-item").contains(entryMatch).click();
