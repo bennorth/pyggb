@@ -47,3 +47,24 @@ describe("Runs Python programs", () => {
     cy.get(".MenuBar").contains(filename);
   });
 });
+
+/**
+ * How to specify what should happen as the result of running a program under
+ * test?  Want to say that certain points (with particular properties, such as
+ * coords, colors, sizes) exist.  And that other things (line, segments) also
+ * exist, to include certain of those points.
+ *
+ * Want to test all the construction facilities.
+ *
+ * ExpectPoint(x, y, props, labelToAssign)
+ *
+ * ExpectLine(pointLabel_1, pointLabel_2)  // Points can be in either order
+ *
+ * ExpectPolygon(list-of-points, props)  // Points can be cyclically permuted
+ *
+ * ExpectCircle(centre, radius)  // Can get at radius via Radius().
+ *
+ * Want to avoid duplicating code between skulpt-ggb.js and test code.  Might be
+ * unable to avoid all duplication since here we don't want to worry about
+ * Python objects.
+ */
