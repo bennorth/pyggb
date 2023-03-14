@@ -52,6 +52,13 @@ describe("Runs Python programs", { testIsolation: false }, () => {
     cy.get(".editor .busy-overlay").should("not.be.visible");
     cy.get(".MenuBar").contains(filename);
   });
+
+  type RunsWithoutErrorSpec = {
+    label: string;
+    code: string;
+    expOutputs?: Array<string>;
+    expNonOutputs?: Array<string>;
+  };
 });
 
 /**
