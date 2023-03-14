@@ -63,6 +63,23 @@ describe("Runs Python programs", { testIsolation: false }, () => {
   const runsWithoutErrorSpecs: Array<RunsWithoutErrorSpec> = [
     // TODO: specs
   ];
+
+  runsWithoutErrorSpecs.forEach((spec) => {
+    it(`runs ${spec.label} ok`, () => {
+      cy.window().then((window) => {
+        const fullCode = deIndent(spec.code) + '\nprint("done")';
+        window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(fullCode);
+        cy.get("button").contains("RUN").click();
+        cy.get(".stdout-inner").contains("done");
+        (spec.expOutputs ?? []).forEach((expOutput) =>
+          cy.get(".stdout-inner").contains(`${expOutput}\n`)
+        );
+        (spec.expNonOutputs ?? []).forEach((expNonOutput) =>
+          cy.get(".stdout-inner").contains(expNonOutput).should("not.exist")
+        );
+      });
+    });
+  });
 });
 
 /**
