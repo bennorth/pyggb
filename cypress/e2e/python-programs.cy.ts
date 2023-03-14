@@ -1,6 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
 
 describe("Runs Python programs", () => {
+  const chooseFileMenuEntry = (entryMatch: string) => {
+    cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
+    cy.get(".dropdown-item").contains(entryMatch).click();
+  };
+
   before(() => {
     cy.visit("/");
   });
