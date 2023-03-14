@@ -645,17 +645,17 @@ function $builtinmodule() {
     slots: {
       tp$new(args, _kwargs) {
         // TODO: Check for exactly one arg.
-        const value = Sk.builtin.isTrue(args[0]);
-        return new mod.Number({ kind: "literal", value });
+        const value = Sk.misceval.isTrue(args[0]);
+        return new mod.Boolean({ kind: "literal", value });
       },
     },
     getsets: {
       value: {
         $get() {
-          return new Sk.builtin.bool_(ggbApi.getValue(this.$ggbLabel));
+          return new Sk.builtin.bool(ggbApi.getValue(this.$ggbLabel));
         },
         $set(pyValue) {
-          const value = Sk.builtin.isTrue(pyValue);
+          const value = Sk.misceval.isTrue(pyValue);
           ggbApi.setValue(this.$ggbLabel, value);
         },
       },
