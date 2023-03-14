@@ -968,9 +968,12 @@ function $builtinmodule() {
     //
     // Not clear what a good user experience here is.  Doesn't fit so well with
     // Python's idea of doing a calculation and getting a result.
-    const points = labels.map(
-      (label) => new mod.Point({ kind: "wrap-existing", label })
-    );
+
+    // Not sure why we get a label "null" when intersecting two circles,
+    // but exclude such labels.
+    const points = labels
+      .filter((lbl) => lbl !== "null")
+      .map((label) => new mod.Point({ kind: "wrap-existing", label }));
 
     return new Sk.builtin.list(points);
   });
