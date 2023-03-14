@@ -44,9 +44,6 @@ describe("Runs Python programs", { testIsolation: false }, () => {
 
   before(() => {
     cy.visit("/");
-  });
-
-  beforeEach(() => {
     const filename = uuidv4();
 
     chooseFileMenuEntry("New");
