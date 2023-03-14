@@ -40,12 +40,6 @@ const parseColorOrFail = (color) => {
 
 const isSingletonOfEmpty = (xs) => xs.length === 1 && xs[0] === "";
 
-const throwIfNotGgb = (obj, objName) => {
-  // This might not always be the right test, but it is for now:
-  if (!isGgbObject(obj))
-    throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
-};
-
 const throwIfNotNumber = (pyObj, objName) => {
   if (!Sk.builtin.checkNumber(pyObj))
     throw new Sk.builtin.TypeError(`${objName} must be a number`);
@@ -98,6 +92,12 @@ function $builtinmodule() {
     // We are fussy about what type; compare.
     const gotType = ggbApi.getObjectType(obj.$ggbLabel);
     return gotType === requiredType;
+  };
+
+  const throwIfNotGgb = (obj, objName) => {
+    // This might not always be the right test, but it is for now:
+    if (!isGgbObject(obj))
+      throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
   const isPythonOrGgbNumber = (obj) =>
