@@ -530,7 +530,7 @@ function $builtinmodule() {
       line_thickness: sharedGetSets.line_thickness,
       radius: {
         $get() {
-          return this.$radiusNumber().$value();
+          return new Sk.builtin.float_(this.$radiusNumber().$value());
         },
       },
       radius_number: {
