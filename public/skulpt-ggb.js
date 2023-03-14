@@ -938,7 +938,7 @@ function $builtinmodule() {
   });
 
   mod.Intersect = new Sk.builtin.func((...args) => {
-    if (args.length !== 2 || !args.every(isGgbObject))
+    if (args.length !== 2 || !args.every((x) => isGgbObject(x)))
       throw new Sk.builtin.TypeError(
         "bad Intersect() args; need 2 Geogebra objects"
       );
