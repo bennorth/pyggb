@@ -1,5 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
+class ConstructionVerificationState {
+  // List of things we expect to see, in an order which lets us refer back to
+  // points when describing lines, say.
+}
+
 describe("Runs Python programs", () => {
   const chooseFileMenuEntry = (entryMatch: string) => {
     cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
