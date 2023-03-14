@@ -59,6 +59,10 @@ describe("Runs Python programs", { testIsolation: false }, () => {
     expOutputs?: Array<string>;
     expNonOutputs?: Array<string>;
   };
+
+  const runsWithoutErrorSpecs: Array<RunsWithoutErrorSpec> = [
+    // TODO: specs
+  ];
 });
 
 /**
