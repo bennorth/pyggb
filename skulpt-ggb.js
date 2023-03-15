@@ -503,16 +503,16 @@ function $builtinmodule() {
                 };
               }
 
-              const allNumbers = args.every(Sk.builtin.checkNumber);
+              const allNumbers = args.every(isPythonOrGgbNumber);
               if (allNumbers) {
                 return {
                   kind: "center-radius",
                   center: new mod.Point({
                     kind: "new-from-coords",
-                    x: args[0].v,
-                    y: args[1].v,
+                    x: numberValueOrLabel(args[0]),
+                    y: numberValueOrLabel(args[1]),
                   }),
-                  radius: args[2].v,
+                  radius: args[2],
                 };
               }
               throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
