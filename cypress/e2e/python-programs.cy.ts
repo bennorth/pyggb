@@ -128,6 +128,14 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       expOutputs: ["radius = 2.0"],
     },
     {
+      label: "Circle(Number, Number, Number)",
+      code: `
+        k = Circle(1, Number(2), 3.5)
+        print("radius =", k.radius)
+      `,
+      expOutputs: ["radius = 3.5"],
+    },
+    {
       label: "Vector(Point, Point)",
       code: `
         A = Point(3, 0)
