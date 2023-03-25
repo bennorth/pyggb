@@ -865,6 +865,12 @@ function $builtinmodule() {
 
   mod.Parabola = Sk.abstr.buildNativeClass("Parabola", {
     constructor: function Parabola(spec) {
+      // TODO: This is messy; tidy up:
+      if (spec.kind === "wrap-existing") {
+        this.$ggbLabel = spec.label;
+        return;
+      }
+
       switch (spec.kind) {
         case "focus-directrix":
           // TODO: Check focus is a point and directrix is a line.  Where does
