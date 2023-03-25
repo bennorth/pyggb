@@ -1000,6 +1000,16 @@ function $builtinmodule() {
     return new Sk.builtin.float_(distanceValue);
   });
 
+  // TODO: Is this the best way to handle intersections?  Could instead
+  // run command
+  //
+  //     {Intersect(⋯)}
+  //
+  // (i.e., wrapped in {}s), which gives us a dynamic GGB list.  Would
+  // then really have to wrap normal Python sequence operations to this
+  // object, which could only be done imperfectly.  E.g., Python
+  // sorted(⋯) always returns a native Python list.
+  //
   mod.Intersect = new Sk.builtin.func((...args) => {
     if (args.length !== 2 || !args.every((x) => isGgbObject(x)))
       throw new Sk.builtin.TypeError(
