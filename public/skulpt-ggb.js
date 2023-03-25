@@ -874,6 +874,12 @@ function $builtinmodule() {
         return withPropertiesFromNameValuePairs(new mod.Polygon(spec), kwargs);
       },
     },
+    methods: {
+      // TODO: Any insight into why CopyFreeObject(poly) gives a number?
+      // Until then, leave this disabled:
+      //
+      // ...kWithFreeCopyMethodsSlice,
+    },
     getsets: {
       area: {
         $get() {
