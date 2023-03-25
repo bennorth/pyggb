@@ -178,6 +178,12 @@ function $builtinmodule() {
         return new mod.Segment(wrapSpec);
       case "boolean":
         return new mod.Boolean(wrapSpec);
+      case "circle":
+        return new mod.Circle(wrapSpec);
+      case "line":
+        return new mod.Line(wrapSpec);
+      case "parabola":
+        return new mod.Parabola(wrapSpec);
       default:
         throw new Sk.builtin.RuntimeError(
           `unknown object-type "${objectType}"` +
