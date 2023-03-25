@@ -448,6 +448,13 @@ function $builtinmodule() {
 
   mod.Circle = Sk.abstr.buildNativeClass("Circle", {
     constructor: function Circle(spec) {
+      // TODO: This is messy; tidy up:
+      if (spec.kind === "wrap-existing") {
+        this.$ggbLabel = spec.label;
+        this.radiusNumber = null;
+        return;
+      }
+
       const ggbArgs = (() => {
         switch (spec.kind) {
           case "center-radius": {
