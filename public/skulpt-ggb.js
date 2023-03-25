@@ -414,6 +414,7 @@ function $builtinmodule() {
         $flags: { OneArg: true },
       },
       ...kWithPropertiesMethodsSlice,
+      ...kWithFreeCopyMethodsSlice,
     },
     getsets: {
       is_visible: sharedGetSets.is_visible,
@@ -549,6 +550,9 @@ function $builtinmodule() {
         return withPropertiesFromNameValuePairs(new mod.Circle(spec), kwargs);
       },
     },
+    methods: {
+      ...kWithFreeCopyMethodsSlice,
+    },
     getsets: {
       color: sharedGetSets.color,
       line_thickness: sharedGetSets.line_thickness,
@@ -610,6 +614,9 @@ function $builtinmodule() {
         return new mod.Line(spec);
       },
     },
+    methods: {
+      ...kWithFreeCopyMethodsSlice,
+    },
   });
 
   mod.Number = Sk.abstr.buildNativeClass("Number", {
@@ -640,6 +647,9 @@ function $builtinmodule() {
       $value() {
         return ggbApi.getValue(this.$ggbLabel);
       },
+    },
+    methods: {
+      ...kWithFreeCopyMethodsSlice,
     },
     getsets: {
       value: {
@@ -678,6 +688,9 @@ function $builtinmodule() {
         const value = Sk.misceval.isTrue(args[0]);
         return new mod.Boolean({ kind: "literal", value });
       },
+    },
+    methods: {
+      ...kWithFreeCopyMethodsSlice,
     },
     getsets: {
       value: {
@@ -744,6 +757,7 @@ function $builtinmodule() {
     },
     methods: {
       ...kWithPropertiesMethodsSlice,
+      ...kWithFreeCopyMethodsSlice,
     },
     getsets: {
       is_visible: sharedGetSets.is_visible,
@@ -787,6 +801,9 @@ function $builtinmodule() {
         };
         return withPropertiesFromNameValuePairs(new mod.Segment(spec), kwargs);
       },
+    },
+    methods: {
+      ...kWithFreeCopyMethodsSlice,
     },
     getsets: {
       // "length" is reserved word for Skulpt, so the property must be
@@ -907,6 +924,9 @@ function $builtinmodule() {
           directrix: args[1],
         });
       },
+    },
+    methods: {
+      ...kWithFreeCopyMethodsSlice,
     },
   });
 
