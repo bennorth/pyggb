@@ -304,6 +304,77 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       `,
       expNonOutputs: ["False"],
     },
+    {
+      label: "Point.free_copy()",
+      code: `
+        A = Point(3, 4)
+        A1 = A.free_copy()
+        A.x = 4
+        A1.x = 2
+      `,
+    },
+    {
+      label: "Circle.free_copy()",
+      code: `
+        k = Circle(3, 4, 5)
+        k1 = k.free_copy()
+      `,
+    },
+    {
+      label: "Line.free_copy()",
+      code: `
+        A = Point(3, 4)
+        B = Point(2, 1)
+        k = Line(A, B)
+        k1 = k.free_copy()
+      `,
+    },
+    {
+      label: "Number.free_copy()",
+      code: `
+        A = Point(3, 4)
+        B = Number(3.0)
+        x1 = A.x_number + B
+        x2 = x1.free_copy()
+      `,
+    },
+    {
+      label: "Boolean.free_copy()",
+      code: `
+        A = Point(3, 4)
+        p = Function.compare_LT(A.x_number, A.y_number)
+        p1 = p.free_copy()
+      `,
+    },
+    {
+      label: "Vector.free_copy()",
+      code: `
+        A = Point(3, 4)
+        B = Point(1, 1)
+        v = Vector(A, B)
+        v1 = v.free_copy()
+      `,
+    },
+    {
+      label: "Segment.free_copy()",
+      code: `
+        A = Point(3, 4)
+        B = Point(1, 1)
+        s = Segment(A, B)
+        s1 = s.free_copy()
+      `,
+    },
+    {
+      label: "Parabola.free_copy()",
+      code: `
+        A = Point(3, 4)
+        B = Point(1, 1)
+        C = Point(-1, 1)
+        k = Line(B, C)
+        c = Parabola(A, k)
+        c1 = c.free_copy()
+      `,
+    },
   ];
 
   runsWithoutErrorSpecs.forEach((spec) => {
