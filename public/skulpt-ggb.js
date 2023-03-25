@@ -551,6 +551,7 @@ function $builtinmodule() {
       },
     },
     methods: {
+      ...kWithPropertiesMethodsSlice,
       ...kWithFreeCopyMethodsSlice,
     },
     getsets: {
