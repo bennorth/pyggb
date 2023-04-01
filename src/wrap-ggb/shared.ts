@@ -164,6 +164,19 @@ type MethodDescriptorsSlice = {
   [methodName: string]: MethodDescriptor;
 };
 
+/** Method descriptors slice defining the Python method
+ * `with_properties()`.  Suitable for spreading into the `methods`
+ * property of the options object passed to `buildNativeClass()`. */
+const withPropertiesMethodsSlice: MethodDescriptorsSlice = {
+  with_properties: {
+    $flags: { FastCall: true },
+    $meth(args, kwargs) {
+      if (args.length !== 0) throw new Sk.builtin.TypeError("only kwargs");
+      return withPropertiesFromNameValuePairs(this, kwargs);
+    },
+  },
+};
+
 type ReadOnlyProperty = {
   $get(this: SkGgbObject): SkObject;
 };

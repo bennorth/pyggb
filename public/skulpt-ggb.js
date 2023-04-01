@@ -43,16 +43,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  const kWithPropertiesMethodsSlice = {
-    with_properties: {
-      $flags: { FastCall: true },
-      $meth(args, kwargs) {
-        if (args.length !== 0) throw new Sk.builtin.TypeError("only kwargs");
-        return withPropertiesFromNameValuePairs(this, kwargs);
-      },
-    },
-  };
-
   const kWithFreeCopyMethodsSlice = {
     free_copy: {
       $flags: { NoArgs: true },
