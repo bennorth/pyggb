@@ -1,6 +1,7 @@
 import { AppApi } from "../shared/appApi";
 
-declare var Sk: any;
+import { SkulptApi } from "./skulptapi";
+declare var Sk: SkulptApi;
 
 (globalThis as any).$skulptGgbModule = (appApi: AppApi) => {
   let mod = { __name__: new Sk.builtin.str("ggb") };
