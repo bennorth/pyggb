@@ -119,3 +119,10 @@ export const withPropertiesFromNameValuePairs = (
 
   return obj;
 };
+
+type ReadOnlyProperty = {
+  $get(this: SkGgbObject): SkObject;
+};
+type ReadWriteProperty = ReadOnlyProperty & {
+  $set(this: SkGgbObject, val: SkObject): void;
+};
