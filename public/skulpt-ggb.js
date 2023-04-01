@@ -43,56 +43,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  mod.Line = Sk.abstr.buildNativeClass("Line", {
-    constructor: function Line(spec) {
-      // TODO: This is messy; tidy up:
-      if (spec.kind === "wrap-existing") {
-        this.$ggbLabel = spec.label;
-        return;
-      }
-
-      const ggbArgs = (() => {
-        switch (spec.kind) {
-          case "point-point":
-            return spec.points.map((p) => p.$ggbLabel).join(",");
-          default:
-            throw new Sk.builtin.RuntimeError("should not get here");
-        }
-      })();
-      const ggbCmd = `Line(${ggbArgs})`;
-      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-      this.$ggbLabel = lbl;
-    },
-    slots: {
-      tp$new(args, _kwargs) {
-        const spec = (() => {
-          if (args.length !== 2) {
-            throw new Sk.builtin.TypeError("bad Line() args; need 2 args");
-          }
-
-          if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
-            throw new Sk.builtin.TypeError("bad Line() args; first not Point");
-          }
-
-          if (Sk.builtin.isinstance(args[1], mod.Point).v) {
-            return {
-              kind: "point-point",
-              points: args,
-            };
-          }
-
-          throw new Sk.builtin.TypeError(
-            "bad Line() args; unhandled type of second"
-          );
-        })();
-        return new mod.Line(spec);
-      },
-    },
-    methods: {
-      ...kWithFreeCopyMethodsSlice,
-    },
-  });
-
   mod.Number = Sk.abstr.buildNativeClass("Number", {
     constructor: function Number(spec) {
       switch (spec.kind) {
