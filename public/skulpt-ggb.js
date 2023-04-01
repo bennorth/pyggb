@@ -253,21 +253,6 @@ function $builtinmodule() {
     },
   };
 
-  const withPropertiesFromNameValuePairs = (obj, propNamesValues) => {
-    propNamesValues = propNamesValues ?? [];
-    if (propNamesValues.length % 2 !== 0) {
-      throw new Sk.builtin.RuntimeError(
-        "internal error: propNamesValues not in pairs"
-      );
-    }
-    for (let i = 0; i !== propNamesValues.length; i += 2) {
-      const propName = propNamesValues[i];
-      const propValue = propNamesValues[i + 1];
-      obj.tp$setattr(new Sk.builtin.str(propName), propValue);
-    }
-    return obj;
-  };
-
   const kWithPropertiesMethodsSlice = {
     with_properties: {
       $flags: { FastCall: true },

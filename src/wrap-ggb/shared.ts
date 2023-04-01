@@ -91,3 +91,31 @@ export const numberValueOrLabel = (ggbApi: GgbApi, x: SkObject): string => {
   // TODO: Can we tighten types to avoid this runtime check?
   throw new Sk.builtin.RuntimeError("internal error: not Number or number");
 };
+
+/** Set the attributes in `propNamesValue` (typically Python properties)
+ * on the given `obj`, and return `obj`.  The attribute/property names
+ * (JavaScript strings) and values (`SkObject` instances) should
+ * alternate in the `propNamesValues` array. */
+export const withPropertiesFromNameValuePairs = (
+  obj: SkObject,
+  propNamesValues?: Array<string | SkObject>
+) => {
+  propNamesValues = propNamesValues ?? [];
+
+  if (propNamesValues.length % 2 !== 0) {
+    throw new Sk.builtin.RuntimeError(
+      "internal error: propNamesValues not in pairs"
+    );
+  }
+
+  for (let i = 0; i !== propNamesValues.length; i += 2) {
+    // Not easy to tell TypeScript that the name/value pairs alternate
+    // within the array, so help it:
+    const propName = propNamesValues[i] as string;
+    const propPyName = new Sk.builtin.str(propName);
+    const propValue = propNamesValues[i + 1] as SkObject;
+    obj.tp$setattr(propPyName, propValue);
+  }
+
+  return obj;
+};
