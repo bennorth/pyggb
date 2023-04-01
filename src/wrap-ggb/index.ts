@@ -3,6 +3,7 @@ import { register as registerPoint } from "./wrappings/point";
 import { register as registerCircle } from "./wrappings/circle";
 import { register as registerLine } from "./wrappings/line";
 import { register as registerNumber } from "./wrappings/number";
+import { register as registerBoolean } from "./wrappings/boolean";
 
 import { SkulptApi } from "./skulptapi";
 declare var Sk: SkulptApi;
@@ -14,6 +15,7 @@ declare var Sk: SkulptApi;
   registerCircle(mod, appApi);
   registerLine(mod, appApi);
   registerNumber(mod, appApi);
+  registerBoolean(mod, appApi);
 
   return mod;
 };
