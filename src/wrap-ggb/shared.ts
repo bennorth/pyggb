@@ -1,5 +1,6 @@
 import { SkulptApi, SkObject, SkInt, SkFloat, SkString } from "./skulptapi";
 import { GgbApi } from "./ggbapi";
+import { parseColorOrFail } from "./color";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
 export interface SkGgbObject extends SkObject {
@@ -154,3 +155,56 @@ type SharedGetSets = {
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
 };
+
+/** Construct and return an object which contains various common
+ * property definitions, which use the given `ggbApi` for interaction
+ * with GeoGebra.  The returned object is suitable for inclusion in the
+ * `getsets` property of the options used in `buildNativeClass()`;
+ * alternatively, a subset of its properties can be used like that. */
+const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
+  is_visible: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.bool(ggbApi.getVisible(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyIsVisible: SkObject) {
+      const isVisible = Sk.misceval.isTrue(pyIsVisible);
+      ggbApi.setVisible(this.$ggbLabel, isVisible);
+    },
+  },
+  is_independent: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.bool(ggbApi.isIndependent(this.$ggbLabel));
+    },
+  },
+  color: {
+    $get(this: SkGgbObject) {
+      const color = ggbApi.getColor(this.$ggbLabel);
+      return new Sk.builtin.str(color);
+    },
+    $set(this: SkGgbObject, pyColor: SkObject) {
+      throwIfNotString(pyColor, "color");
+      const mRGB = parseColorOrFail(pyColor.v);
+      ggbApi.setColor(this.$ggbLabel, ...mRGB);
+    },
+  },
+  size: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.float_(ggbApi.getPointSize(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pySize: SkObject) {
+      throwIfNotNumber(pySize, "size must be a number");
+      // TODO: Verify integer and in range [1, 9]
+      ggbApi.setPointSize(this.$ggbLabel, pySize.v);
+    },
+  },
+  line_thickness: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.int_(ggbApi.getLineThickness(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyThickness: SkObject) {
+      throwIfNotNumber(pyThickness, "line_thickness must be a number");
+      // TODO: Verify integer and in range [1, 13]
+      ggbApi.setLineThickness(this.$ggbLabel, pyThickness.v);
+    },
+  },
+});

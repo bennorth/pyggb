@@ -43,53 +43,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  const sharedGetSets = {
-    is_visible: {
-      $get() {
-        return new Sk.builtin.bool(ggbApi.getVisible(this.$ggbLabel));
-      },
-      $set(pyIsVisible) {
-        const isVisible = Sk.misceval.isTrue(pyIsVisible);
-        ggbApi.setVisible(this.$ggbLabel, isVisible);
-      },
-    },
-    is_independent: {
-      $get() {
-        return new Sk.builtin.bool(ggbApi.isIndependent(this.$ggbLabel));
-      },
-    },
-    color: {
-      $get() {
-        const color = ggbApi.getColor(this.$ggbLabel);
-        return new Sk.builtin.str(color);
-      },
-      $set(pyColor) {
-        if (!Sk.builtin.checkString(pyColor))
-          throw new Sk.builtin.TypeError("color must be string");
-        const mRGB = parseColorOrFail(pyColor.v);
-        ggbApi.setColor(this.$ggbLabel, ...mRGB);
-      },
-    },
-    size: {
-      $get() {
-        return new Sk.builtin.float_(ggbApi.getPointSize(this.$ggbLabel));
-      },
-      $set(pySize) {
-        // TODO: Verify integer and in range [1, 9]
-        ggbApi.setPointSize(this.$ggbLabel, pySize.v);
-      },
-    },
-    line_thickness: {
-      $get() {
-        return new Sk.builtin.int_(ggbApi.getLineThickness(this.$ggbLabel));
-      },
-      $set(pyThickness) {
-        // TODO: Verify integer and in range [1, 13]
-        ggbApi.setLineThickness(this.$ggbLabel, pyThickness.v);
-      },
-    },
-  };
-
   const wrapDependent = (label) => {
     const wrapSpec = { kind: "wrap-existing", label };
     const objectType = ggbApi.getObjectType(label);
