@@ -275,18 +275,6 @@ function $builtinmodule() {
     return new Sk.builtin.list(points);
   });
 
-  mod.If = new Sk.builtin.func((...args) => {
-    // TODO: Allow literals as well?
-    if (!args.every((x) => isGgbObject(x))) {
-      console.error(args);
-      throw new Sk.builtin.TypeError("all args must be GGB objects");
-    }
-    const ggbArgs = args.map((obj) => obj.$ggbLabel).join(",");
-    const ggbCmd = `If(${ggbArgs})`;
-    const label = ggbApi.evalCommandGetLabels(ggbCmd);
-    return wrapDependent(label);
-  });
-
   mod.ClearConsole = new Sk.builtin.func((...args) => {
     if (args.length !== 0)
       throw new Sk.builtin.TypeError("bad ClearConsole() args; need 0 args");
