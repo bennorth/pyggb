@@ -148,6 +148,22 @@ export function throwIfNotNumber(
     throw new Sk.builtin.TypeError(`${objName} must be a number`);
 }
 
+// The only type we use:
+type FastCallMethod = (
+  this: SkGgbObject,
+  args: Array<SkObject>,
+  kwargs: Array<string | SkObject>
+) => SkObject;
+
+type MethodDescriptor = {
+  $flags: { [key: string]: boolean };
+  $meth: FastCallMethod;
+};
+
+type MethodDescriptorsSlice = {
+  [methodName: string]: MethodDescriptor;
+};
+
 type ReadOnlyProperty = {
   $get(this: SkGgbObject): SkObject;
 };
