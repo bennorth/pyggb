@@ -54,6 +54,10 @@ interface SkAbstrT {
 
 type SkJavaScriptFunction = (...args: Array<SkObject>) => SkObject;
 
+type SkNoneT = {
+  none$: SkObject;
+};
+
 type SkBuiltinT = {
   int_: { new (obj: any): SkInt };
   float_: { new (obj: any): SkFloat };
@@ -69,6 +73,8 @@ type SkBuiltinT = {
 
   checkNumber(obj: SkObject): obj is SkInt | SkFloat;
   checkString(obj: SkObject): boolean;
+
+  none: SkNoneT;
 };
 
 type SkMiscEvalT = {
