@@ -39,8 +39,6 @@ const throwIfNotNumber = (pyObj, objName) => {
     throw new Sk.builtin.TypeError(`${objName} must be a number`);
 };
 
-const isInstance = (cls) => (obj) => Sk.builtin.isinstance(obj, cls).v;
-
 const kwOrDefault = (rawKwargs, k, isCorrectType, jsDefault) => {
   const kwargs = rawKwargs ?? [];
   const mIndex = kwargs.findIndex((x, i) => i % 2 === 0 && x === k);
