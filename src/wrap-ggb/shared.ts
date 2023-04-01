@@ -71,3 +71,23 @@ const everyElementIsGgbObject = (
  * number or a GeoGebra `numeric` object. */
 export const isPythonOrGgbNumber = (ggbApi: GgbApi, obj: SkObject) =>
   Sk.builtin.checkNumber(obj) || isGgbObject(ggbApi, obj, "numeric");
+
+/** Given a Skulpt/PyGgb object `x`, which should be either a `numeric`
+ * GeoGebra object or a Python number, return a string suitable for
+ * inclusion in a GeoGebra command.  For a `numeric` object, return its
+ * label.  For a Python number, return a literal string representation.
+ * */
+export const numberValueOrLabel = (ggbApi: GgbApi, x: SkObject): string => {
+  if (isGgbObject(ggbApi, x, "numeric")) {
+    return x.$ggbLabel;
+  }
+
+  if (Sk.builtin.checkNumber(x)) {
+    const jsStr = x.v.toExponential();
+    const [sig, exp] = jsStr.split("e");
+    return `(${sig}*10^(${exp}))`;
+  }
+
+  // TODO: Can we tighten types to avoid this runtime check?
+  throw new Sk.builtin.RuntimeError("internal error: not Number or number");
+};

@@ -80,20 +80,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  const numberValueOrLabel = (x) => {
-    if (isGgbObject(x, "numeric")) {
-      return x.$ggbLabel;
-    }
-
-    if (Sk.builtin.checkNumber(x)) {
-      const jsStr = x.v.toExponential();
-      const [sig, exp] = jsStr.split("e");
-      return `(${sig}*10^(${exp}))`;
-    }
-
-    throw new Sk.builtin.RuntimeError("internal error: not Number or number");
-  };
-
   const sharedGetSets = {
     is_visible: {
       $get() {
