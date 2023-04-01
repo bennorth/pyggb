@@ -1,4 +1,4 @@
-import { SkulptApi, SkObject } from "./skulptapi";
+import { SkulptApi, SkObject, SkInt, SkFloat } from "./skulptapi";
 import { GgbApi } from "./ggbapi";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
@@ -119,6 +119,16 @@ export const withPropertiesFromNameValuePairs = (
 
   return obj;
 };
+
+/** Assert that the given `pyObj` is a Python number.  If not, throw a
+ * `TypeError`, whose message uses the given `objName`. */
+export function throwIfNotNumber(
+  pyObj: SkObject,
+  objName: string
+): asserts pyObj is SkInt | SkFloat {
+  if (!Sk.builtin.checkNumber(pyObj))
+    throw new Sk.builtin.TypeError(`${objName} must be a number`);
+}
 
 type ReadOnlyProperty = {
   $get(this: SkGgbObject): SkObject;
