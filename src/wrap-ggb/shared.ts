@@ -2,6 +2,7 @@ import { SkulptApi, SkObject, SkInt, SkFloat, SkString } from "./skulptapi";
 import { GgbApi } from "./ggbapi";
 import { parseColorOrFail } from "./color";
 import { wrapExistingGgbObject } from "./type-registry";
+import { OperationSlots, operationSlots } from "./operations";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
 export interface SkGgbObject extends SkObject {
@@ -259,3 +260,72 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
     },
   },
 });
+
+export type AugmentedGgbApi = {
+  isGgbObject(obj: SkObject): obj is SkGgbObject;
+  everyElementIsGgbObject: typeof everyElementIsGgbObject;
+  isPythonOrGgbNumber(obj: SkObject): boolean;
+  numberValueOrLabel(obj: SkObject): string;
+  wrapExistingGgbObject(label: string): SkGgbObject;
+  sharedGetSets: SharedGetSets;
+  freeCopyMethodsSlice: MethodDescriptorsSlice;
+  withPropertiesMethodsSlice: MethodDescriptorsSlice;
+  evalCmd(cmd: string): string;
+  getValue(label: string): number;
+  setValue(label: string, value: number): void;
+  getXcoord(label: string): number;
+  getYcoord(label: string): number;
+  setCoords(label: string, x: number, y: number): void;
+  deleteObject(label: string): void;
+  registerObjectUpdateListener(label: string, fun: () => void): void;
+  sharedOpSlots: OperationSlots;
+};
+
+/** Construct and return an "augmented GeoGebra API" object, which adds
+ * various utility functions and constants to the native GeoGebra API.
+ * */
+export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
+  // Can we make this generic and variadic?
+  function fixGgbArg_1<ArgT, ResultT>(
+    f: (ggbApi: GgbApi, arg: ArgT) => ResultT
+  ) {
+    return (arg: ArgT) => f(ggbApi, arg);
+  }
+
+  const evalCmd = (cmd: string): string => ggbApi.evalCommandGetLabels(cmd);
+  const getValue = (label: string): any => ggbApi.getValue(label);
+  const setValue = (label: string, value: number): void =>
+    ggbApi.setValue(label, value);
+  const setCoords = (label: string, x: number, y: number): void =>
+    ggbApi.setCoords(label, x, y);
+  const getXcoord = (label: string): number => ggbApi.getXcoord(label);
+  const getYcoord = (label: string): number => ggbApi.getYcoord(label);
+  const deleteObject = (label: string): void => ggbApi.deleteObject(label);
+  const registerObjectUpdateListener = (label: string, fun: () => void): void =>
+    ggbApi.registerObjectUpdateListener(label, fun);
+
+  // TypeScript can't (yet?) infer type predicate return values.
+  type IsGgbObjectPredicate = (x: SkObject) => x is SkGgbObject;
+
+  const api: AugmentedGgbApi = {
+    isGgbObject: fixGgbArg_1(isGgbObject) as IsGgbObjectPredicate,
+    everyElementIsGgbObject,
+    isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
+    numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
+    wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),
+    sharedGetSets: sharedGetSets(ggbApi),
+    freeCopyMethodsSlice: freeCopyMethodsSlice(ggbApi),
+    withPropertiesMethodsSlice,
+    evalCmd,
+    getValue,
+    setValue,
+    getXcoord,
+    getYcoord,
+    setCoords,
+    deleteObject,
+    registerObjectUpdateListener,
+    sharedOpSlots: operationSlots(ggbApi),
+  };
+
+  return api;
+};
