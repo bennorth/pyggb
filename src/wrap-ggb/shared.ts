@@ -126,3 +126,11 @@ type ReadOnlyProperty = {
 type ReadWriteProperty = ReadOnlyProperty & {
   $set(this: SkGgbObject, val: SkObject): void;
 };
+
+type SharedGetSets = {
+  is_visible: ReadWriteProperty;
+  is_independent: ReadOnlyProperty;
+  color: ReadWriteProperty;
+  size: ReadWriteProperty;
+  line_thickness: ReadWriteProperty;
+};
