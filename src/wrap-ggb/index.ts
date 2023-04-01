@@ -10,6 +10,8 @@ import { register as registerRotate } from "./wrappings/rotate";
 import { register as registerFunction } from "./wrappings/function";
 import { register as registerIf } from "./wrappings/if";
 
+import { register as registerClearConsole } from "./app-ui/clear-console";
+
 import { SkulptApi } from "./skulptapi";
 declare var Sk: SkulptApi;
 
@@ -26,6 +28,8 @@ declare var Sk: SkulptApi;
   registerRotate(mod, appApi);
   registerFunction(mod, appApi);
   registerIf(mod, appApi);
+
+  registerClearConsole(mod, appApi);
 
   return mod;
 };
