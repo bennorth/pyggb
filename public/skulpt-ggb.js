@@ -72,6 +72,8 @@ const PYGGB_CYPRESS = () => {
 
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
+  return globalThis.$skulptGgbModule(appApi);
+  /*
   const ggbApi = appApi.ggb;
   const skApi = appApi.sk;
   const uiApi = appApi.ui;
@@ -1149,4 +1151,5 @@ function $builtinmodule() {
   mod.__all__ = namesForExport;
 
   return mod;
+*/
 }
