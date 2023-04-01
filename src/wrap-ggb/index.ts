@@ -5,6 +5,7 @@ import { register as registerLine } from "./wrappings/line";
 import { register as registerNumber } from "./wrappings/number";
 import { register as registerBoolean } from "./wrappings/boolean";
 import { register as registerVector } from "./wrappings/vector";
+import { register as registerSegment } from "./wrappings/segment";
 
 import { SkulptApi } from "./skulptapi";
 declare var Sk: SkulptApi;
@@ -18,6 +19,7 @@ declare var Sk: SkulptApi;
   registerNumber(mod, appApi);
   registerBoolean(mod, appApi);
   registerVector(mod, appApi);
+  registerSegment(mod, appApi);
 
   return mod;
 };

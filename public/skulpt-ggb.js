@@ -43,59 +43,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  mod.Segment = Sk.abstr.buildNativeClass("Segment", {
-    constructor: function Segment(spec) {
-      switch (spec.kind) {
-        case "new-from-points":
-          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
-          const ggbCmd = `Segment(${ggbArgs})`;
-          const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-          this.$ggbLabel = lbl;
-          this.point1 = spec.point1;
-          this.point2 = spec.point2;
-          break;
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
-          // TODO: Can we reliably parse ggbApi.getDefinitionString() output to
-          // recover the two points?  Do we need to keep a registry of which GGB
-          // objects we have already wrapped for Python use?
-          //
-          // Can get from GGB with Point(SEGMENT, 0) and Point(SEGMENT, 1).
-          break;
-        default:
-          throw new Sk.builtin.TypeError(
-            `bad Segment() spec.kind "${spec.kind}"`
-          );
-      }
-    },
-    slots: {
-      tp$new(args, kwargs) {
-        if (args.length !== 2 || !args.every(isInstance(mod.Point)))
-          throw new Sk.builtin.TypeError("bad Segment() args: need 2 Points");
-        const spec = {
-          kind: "new-from-points",
-          point1: args[0],
-          point2: args[1],
-        };
-        return withPropertiesFromNameValuePairs(new mod.Segment(spec), kwargs);
-      },
-    },
-    methods: {
-      ...kWithFreeCopyMethodsSlice,
-    },
-    getsets: {
-      // "length" is reserved word for Skulpt, so the property must be
-      // set up with this mangled name:
-      length_$rw$: {
-        $get() {
-          return new Sk.builtin.float_(ggbApi.getValue(this.$ggbLabel));
-        },
-      },
-      color: sharedGetSets.color,
-      line_thickness: sharedGetSets.line_thickness,
-    },
-  });
-
   mod.Polygon = Sk.abstr.buildNativeClass("Polygon", {
     constructor: function Polygon(spec) {
       switch (spec.kind) {
