@@ -6,6 +6,7 @@ import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
 import "./shared/appApi";
 import "./shared/cssNamedColours";
+import "./wrap-ggb";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
