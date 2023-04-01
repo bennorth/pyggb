@@ -1,4 +1,5 @@
 import { SkulptApi, SkObject } from "./skulptapi";
+import { GgbApi } from "./ggbapi";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
 export interface SkGgbObject extends SkObject {
@@ -29,3 +30,31 @@ export const strOfNumber = (x: number): string => {
  * `Array.every()` call. */
 export const isInstance = (cls: SkObject) => (obj: SkObject) =>
   Sk.builtin.isinstance(obj, cls).v;
+
+function _isGgbObject(obj: SkObject): obj is SkGgbObject {
+  return "$ggbLabel" in obj;
+}
+
+/** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject` of
+ * the given GeoGebra type `requiredType` (for example, `"circle"`).  If
+ * `requiredType` is omitted, test only whether `obj` is an
+ * `SkGgbObject`.  The given `ggbApi` is used to get the object's
+ * GeoGebra type.
+ * */
+export const isGgbObject = (
+  ggbApi: GgbApi,
+  obj: SkObject,
+  requiredType?: string
+): obj is SkGgbObject => {
+  // Could collapse the following into one bool expression but it wouldn't
+  // obviously be clearer.
+
+  if (!_isGgbObject(obj)) return false;
+
+  // It is a GGB object.  If we're not fussy about what type, we're done.
+  if (requiredType == null) return true;
+
+  // We are fussy about what type; compare.
+  const gotType = ggbApi.getObjectType(obj.$ggbLabel);
+  return gotType === requiredType;
+};

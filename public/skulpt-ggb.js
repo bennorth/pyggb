@@ -74,20 +74,6 @@ function $builtinmodule() {
 
   let mod = {};
 
-  const isGgbObject = (obj, requiredType) => {
-    // Could collapse the following into one bool expression but it wouldn't
-    // obviously be clearer.
-
-    if (!Object.hasOwn(obj, "$ggbLabel")) return false;
-
-    // It is a GGB object.  If we're not fussy about what type, we're done.
-    if (requiredType == null) return true;
-
-    // We are fussy about what type; compare.
-    const gotType = ggbApi.getObjectType(obj.$ggbLabel);
-    return gotType === requiredType;
-  };
-
   const throwIfNotGgb = (obj, objName) => {
     // This might not always be the right test, but it is for now:
     if (!isGgbObject(obj))
