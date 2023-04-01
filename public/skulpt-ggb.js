@@ -43,52 +43,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  mod.Number = Sk.abstr.buildNativeClass("Number", {
-    constructor: function Number(spec) {
-      switch (spec.kind) {
-        case "literal":
-          const ggbCmd = strOfNumber(spec.value);
-          const label = ggbApi.evalCommandGetLabels(ggbCmd);
-          this.$ggbLabel = label;
-          break;
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
-          break;
-        default:
-          throw new Sk.builtin.TypeError(
-            `bad spec.kind "${spec.kind}" for Number`
-          );
-      }
-    },
-    slots: {
-      tp$new(args, kwargs) {
-        throwIfNotNumber(args[0]);
-        return new mod.Number({ kind: "literal", value: args[0].v });
-      },
-      ...sharedOpSlots,
-    },
-    proto: {
-      $value() {
-        return ggbApi.getValue(this.$ggbLabel);
-      },
-    },
-    methods: {
-      ...kWithFreeCopyMethodsSlice,
-    },
-    getsets: {
-      value: {
-        $get() {
-          // TODO: Consider cache so get self-same Python float every time.
-          return new Sk.builtin.float_(this.$value());
-        },
-        $set(pyValue) {
-          // TODO: Get numeric value more robustly.
-          ggbApi.setValue(this.$ggbLabel, pyValue.v);
-        },
-      },
-    },
-  });
-
   mod.Boolean = Sk.abstr.buildNativeClass("Boolean", {
     constructor: function Boolean(spec) {
       switch (spec.kind) {
