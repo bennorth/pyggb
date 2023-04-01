@@ -275,23 +275,6 @@ function $builtinmodule() {
     return new Sk.builtin.list(points);
   });
 
-  mod.Rotate = new Sk.builtin.func((...args) => {
-    if (args.length !== 2 || !isGgbObject(args[0]))
-      throw new Sk.builtin.TypeError("need 2 args to Rotate()");
-    const angleArg = (() => {
-      const pyAngle = args[1];
-      if (isPythonOrGgbNumber(pyAngle)) {
-        return numberValueOrLabel(pyAngle);
-      }
-      throw new Sk.builtin.TypeError("angle arg must be ggb Numeric or number");
-    })();
-
-    const ggbArgs = `${args[0].$ggbLabel},${angleArg}`;
-    const ggbCmd = `Rotate(${ggbArgs})`;
-    const label = ggbApi.evalCommandGetLabels(ggbCmd);
-    return wrapDependent(label);
-  });
-
   mod.If = new Sk.builtin.func((...args) => {
     // TODO: Allow literals as well?
     if (!args.every((x) => isGgbObject(x))) {
