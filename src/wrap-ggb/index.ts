@@ -7,6 +7,7 @@ import { register as registerBoolean } from "./wrappings/boolean";
 import { register as registerVector } from "./wrappings/vector";
 import { register as registerSegment } from "./wrappings/segment";
 import { register as registerRotate } from "./wrappings/rotate";
+import { register as registerFunction } from "./wrappings/function";
 
 import { SkulptApi } from "./skulptapi";
 declare var Sk: SkulptApi;
@@ -22,6 +23,7 @@ declare var Sk: SkulptApi;
   registerVector(mod, appApi);
   registerSegment(mod, appApi);
   registerRotate(mod, appApi);
+  registerFunction(mod, appApi);
 
   return mod;
 };

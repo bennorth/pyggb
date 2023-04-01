@@ -287,46 +287,6 @@ function $builtinmodule() {
     return wrapDependent(label);
   });
 
-  // Is the following reasonable?  It bundles various pre-defined GGB functions
-  // into a Function object, so user-level code ends up as, e.g.,
-  //
-  // x = Function.sin(th)
-  //
-  // where th is a ggb Number and therefore x is also.
-
-  const functionWrapperSlice = (ggbName) => {
-    return {
-      [ggbName]: {
-        $meth(x) {
-          // TODO: If given a Python number, evaluate in Python; if a ggb
-          // Number, evaluate as dependent Number.
-          const ggbCmd = `${ggbName}(${x.$ggbLabel})`;
-          const label = ggbApi.evalCommandGetLabels(ggbCmd);
-          console.log("FUNC", x, ggbCmd, label);
-          return wrapDependent(label);
-        },
-        $flags: { OneArg: true },
-      },
-    };
-  };
-
-  const cls_Function = Sk.abstr.buildNativeClass("Function", {
-    constructor: function Function() {},
-    methods: {
-      ...functionWrapperSlice("sin"),
-      ...functionWrapperSlice("cos"),
-      compare_LT: {
-        $flags: { FastCall: true },
-        $meth(args, _kwargs) {
-          // TODO: Check no kwargs.
-          return ggbCompare(args[0], args[1], "<");
-        },
-      },
-    },
-  });
-
-  mod.Function = new cls_Function();
-
   mod.ClearConsole = new Sk.builtin.func((...args) => {
     if (args.length !== 0)
       throw new Sk.builtin.TypeError("bad ClearConsole() args; need 0 args");
