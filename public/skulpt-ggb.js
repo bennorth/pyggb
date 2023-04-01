@@ -43,66 +43,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  mod.Vector = Sk.abstr.buildNativeClass("Vector", {
-    constructor: function Vector(spec) {
-      switch (spec.kind) {
-        case "points": {
-          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
-          const ggbCmd = `Vector(${ggbArgs})`;
-          const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-          this.$ggbLabel = lbl;
-          break;
-        }
-        case "components": {
-          const e1Arg = numberValueOrLabel(spec.e1);
-          const e2Arg = numberValueOrLabel(spec.e2);
-          const ggbArgs = `${e1Arg},${e2Arg}`;
-          const ggbCmd = `Vector((${ggbArgs}))`;
-          const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-          this.$ggbLabel = lbl;
-          break;
-        }
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
-          break;
-        default:
-          throw new Sk.builtin.TypeError(
-            `bad Vector() spec.kind "${spec.kind}"`
-          );
-      }
-    },
-    slots: {
-      tp$new(args, kwargs) {
-        const rawVector = (() => {
-          if (args.length === 2 && args.every(isInstance(mod.Point))) {
-            const spec = { kind: "points", point1: args[0], point2: args[1] };
-            return new mod.Vector(spec);
-          }
-
-          if (args.length === 2 && args.every(isPythonOrGgbNumber)) {
-            const spec = { kind: "components", e1: args[0], e2: args[1] };
-            return new mod.Vector(spec);
-          }
-
-          throw new Sk.builtin.TypeError(
-            "bad Vector() args: need 2 Points or 2 numbers"
-          );
-        })();
-
-        return withPropertiesFromNameValuePairs(rawVector, kwargs);
-      },
-      ...sharedOpSlots,
-    },
-    methods: {
-      ...kWithPropertiesMethodsSlice,
-      ...kWithFreeCopyMethodsSlice,
-    },
-    getsets: {
-      is_visible: sharedGetSets.is_visible,
-      is_independent: sharedGetSets.is_independent,
-    },
-  });
-
   mod.Segment = Sk.abstr.buildNativeClass("Segment", {
     constructor: function Segment(spec) {
       switch (spec.kind) {
