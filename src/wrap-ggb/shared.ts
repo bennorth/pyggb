@@ -11,6 +11,13 @@ export interface SkGgbObject extends SkObject {
 
 declare var Sk: SkulptApi;
 
+/** Spec to indicate that we should construct a new Skulpt/Python
+ * wrapper for an existing GeoGebra object. */
+export type WrapExistingCtorSpec = {
+  kind: "wrap-existing";
+  label: string;
+};
+
 /** Given a JavaScript number `x`, return a string representation of `x`
  * which GeoGebra will interpret correctly.  We don't want to feed
  * exponential notation in the form "4.1693084667370053e-38" directly to
