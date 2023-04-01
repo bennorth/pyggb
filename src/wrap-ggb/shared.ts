@@ -1,4 +1,4 @@
-import { SkulptApi, SkObject, SkInt, SkFloat } from "./skulptapi";
+import { SkulptApi, SkObject, SkInt, SkFloat, SkString } from "./skulptapi";
 import { GgbApi } from "./ggbapi";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
@@ -119,6 +119,16 @@ export const withPropertiesFromNameValuePairs = (
 
   return obj;
 };
+
+/** Assert that the given `pyObj` is a Python string.  If not, throw a
+ * `TypeError`, whose message uses the given `objName`. */
+export function throwIfNotString(
+  pyObj: SkObject,
+  objName: string
+): asserts pyObj is SkString {
+  if (!Sk.builtin.checkString(pyObj))
+    throw new Sk.builtin.TypeError(`${objName} must be a string`);
+}
 
 /** Assert that the given `pyObj` is a Python number.  If not, throw a
  * `TypeError`, whose message uses the given `objName`. */
