@@ -35,6 +35,15 @@ export function propSetterAction<
   });
 }
 
+export function propSetterNonNullAction<
+  ModelT extends object,
+  PropNameT extends keyof State<ModelT>
+>(propName: PropNameT): Action<ModelT, NonNullable<State<ModelT>[PropNameT]>> {
+  return action((s, val) => {
+    s[propName] = val;
+  });
+}
+
 export const delaySeconds = (nSeconds: number) => {
   const timeoutMs = 1000.0 * nSeconds;
   return new Promise((r) => setTimeout(r, timeoutMs));
