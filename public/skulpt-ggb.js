@@ -1,9 +1,3 @@
-const strOfNumber = (x) => {
-  const jsStr = x.toExponential();
-  const [sig, exp] = jsStr.split("e");
-  return `(${sig}*10^(${exp}))`;
-};
-
 const strOfBool = (x) => x.toString();
 
 // Requires existence of map on globalThis.
