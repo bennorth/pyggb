@@ -58,3 +58,11 @@ export const isGgbObject = (
   const gotType = ggbApi.getObjectType(obj.$ggbLabel);
   return gotType === requiredType;
 };
+
+/** Test whether every element of a (JavaScript) array is an
+ * `SkGgbObject`.  This is provided explicitly (rather than letting
+ * callers use `xs.every(⋯)` instead) to help TypeScript with its
+ * type-narrowing. */
+const everyElementIsGgbObject = (
+  objs: Array<SkObject>
+): objs is Array<SkGgbObject> => objs.every(_isGgbObject);
