@@ -1,6 +1,7 @@
 import { SkulptApi, SkObject, SkInt, SkFloat, SkString } from "./skulptapi";
 import { GgbApi } from "./ggbapi";
 import { parseColorOrFail } from "./color";
+import { wrapExistingGgbObject } from "./type-registry";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
 export interface SkGgbObject extends SkObject {
@@ -176,6 +177,20 @@ const withPropertiesMethodsSlice: MethodDescriptorsSlice = {
     },
   },
 };
+
+/** Method descriptors slice defining the Python method `free_copy()`.
+ * Suitable for spreading into the `methods` property of the options
+ * object passed to `buildNativeClass()`. */
+const freeCopyMethodsSlice = (ggbApi: GgbApi): MethodDescriptorsSlice => ({
+  free_copy: {
+    $flags: { NoArgs: true },
+    $meth(this: SkGgbObject) {
+      const ggbCmd = `CopyFreeObject(${this.$ggbLabel})`;
+      const label = ggbApi.evalCommandGetLabels(ggbCmd);
+      return wrapExistingGgbObject(ggbApi, label);
+    },
+  },
+});
 
 type ReadOnlyProperty = {
   $get(this: SkGgbObject): SkObject;

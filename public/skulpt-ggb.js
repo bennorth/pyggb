@@ -43,17 +43,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  const kWithFreeCopyMethodsSlice = {
-    free_copy: {
-      $flags: { NoArgs: true },
-      $meth() {
-        const ggbCmd = `CopyFreeObject(${this.$ggbLabel})`;
-        const label = ggbApi.evalCommandGetLabels(ggbCmd);
-        return wrapDependent(label);
-      },
-    },
-  };
-
   mod.Point = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(spec) {
       switch (spec.kind) {
