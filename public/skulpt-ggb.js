@@ -80,9 +80,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  const isPythonOrGgbNumber = (obj) =>
-    Sk.builtin.checkNumber(obj) || isGgbObject(obj, "numeric");
-
   const numberValueOrLabel = (x) => {
     if (isGgbObject(x, "numeric")) {
       return x.$ggbLabel;
