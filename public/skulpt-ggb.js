@@ -43,34 +43,6 @@ function $builtinmodule() {
       throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
   };
 
-  const wrapDependent = (label) => {
-    const wrapSpec = { kind: "wrap-existing", label };
-    const objectType = ggbApi.getObjectType(label);
-    switch (objectType) {
-      case "point":
-        return new mod.Point(wrapSpec);
-      case "numeric":
-        return new mod.Number(wrapSpec);
-      case "vector":
-        return new mod.Vector(wrapSpec);
-      case "segment":
-        return new mod.Segment(wrapSpec);
-      case "boolean":
-        return new mod.Boolean(wrapSpec);
-      case "circle":
-        return new mod.Circle(wrapSpec);
-      case "line":
-        return new mod.Line(wrapSpec);
-      case "parabola":
-        return new mod.Parabola(wrapSpec);
-      default:
-        throw new Sk.builtin.RuntimeError(
-          `unknown object-type "${objectType}"` +
-            ` when trying to wrap ggb object "${label}"`
-        );
-    }
-  };
-
   const ggbInfix = (opSymbol) => (vArg, wArg) =>
     `(${vArg})${opSymbol}(${wArg})`;
 
