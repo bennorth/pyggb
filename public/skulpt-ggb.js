@@ -111,50 +111,6 @@ function $builtinmodule() {
     },
   });
 
-  mod.Parabola = Sk.abstr.buildNativeClass("Parabola", {
-    constructor: function Parabola(spec) {
-      // TODO: This is messy; tidy up:
-      if (spec.kind === "wrap-existing") {
-        this.$ggbLabel = spec.label;
-        return;
-      }
-
-      switch (spec.kind) {
-        case "focus-directrix":
-          // TODO: Check focus is a point and directrix is a line.  Where does
-          // that check belong?
-          const ggbArgs = `${spec.focus.$ggbLabel},${spec.directrix.$ggbLabel}`;
-          const ggbCmd = `Parabola(${ggbArgs})`;
-          const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-          this.$ggbLabel = lbl;
-          this.focus = spec.focus;
-          this.directrix = spec.directrix;
-          console.log("Made Parabola?", lbl, spec);
-          break;
-        default:
-          throw new Sk.builtin.RuntimeError(
-            `bad Parabola spec.kind "${spec.kind}"`
-          );
-      }
-    },
-    slots: {
-      tp$new(args, _kwargs) {
-        if (args.length !== 2)
-          throw new Sk.builtin.TypeError("expected 2 args for Parabola()");
-        if (!isInstance(mod.Point)(args[0]) || !isInstance(mod.Line)(args[1]))
-          throw new Sk.builtin.TypeError("args must be point, line");
-        return new mod.Parabola({
-          kind: "focus-directrix",
-          focus: args[0],
-          directrix: args[1],
-        });
-      },
-    },
-    methods: {
-      ...kWithFreeCopyMethodsSlice,
-    },
-  });
-
   mod.Slider = Sk.abstr.buildNativeClass("Slider", {
     constructor: function Slider(spec) {
       const ggbArgs = [
