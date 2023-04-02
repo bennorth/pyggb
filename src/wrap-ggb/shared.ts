@@ -335,11 +335,22 @@ export type AugmentedGgbApi = {
  * various utility functions and constants to the native GeoGebra API.
  * */
 export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
-  // Can we make this generic and variadic?
+  // Can we make these variadic?
   function fixGgbArg_1<ArgT, ResultT>(
     f: (ggbApi: GgbApi, arg: ArgT) => ResultT
   ) {
     return (arg: ArgT) => f(ggbApi, arg);
+  }
+  function fixGgbArg_2<Arg1T, Arg2T, ResultT>(
+    f: (ggbApi: GgbApi, arg1: Arg1T, arg2: Arg2T) => ResultT
+  ) {
+    return (arg1: Arg1T, arg2: Arg2T) => f(ggbApi, arg1, arg2);
+  }
+  function fixGgbArg_3<Arg1T, Arg2T, Arg3T, ResultT>(
+    f: (ggbApi: GgbApi, arg1: Arg1T, arg2: Arg2T, arg3: Arg3T) => ResultT
+  ) {
+    return (arg1: Arg1T, arg2: Arg2T, arg3: Arg3T) =>
+      f(ggbApi, arg1, arg2, arg3);
   }
 
   const evalCmd = (cmd: string): string => ggbApi.evalCommandGetLabels(cmd);
