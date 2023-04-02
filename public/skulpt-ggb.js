@@ -1,23 +1,5 @@
 const isSingletonOfEmpty = (xs) => xs.length === 1 && xs[0] === "";
 
-const kwOrDefault = (rawKwargs, k, isCorrectType, jsDefault) => {
-  const kwargs = rawKwargs ?? [];
-  const mIndex = kwargs.findIndex((x, i) => i % 2 === 0 && x === k);
-  console.log(kwargs, k, mIndex);
-  if (mIndex === -1) return jsDefault;
-  const value = kwargs[mIndex + 1];
-  if (!isCorrectType(value)) throw Sk.builtin.TypeError("bad arg type");
-  return Sk.ffi.remapToJs(value);
-};
-
-const kwNumber = (kwargs, k, jsDefault) => {
-  return kwOrDefault(kwargs, k, Sk.builtin.checkNumber, jsDefault);
-};
-
-const kwBoolean = (kwargs, k, jsDefault) => {
-  return kwOrDefault(kwargs, k, Sk.builtin.checkBool, jsDefault);
-};
-
 const PYGGB_CYPRESS = () => {
   if (window.PYGGB_CYPRESS == null) window.PYGGB_CYPRESS = {};
   return window.PYGGB_CYPRESS;
@@ -34,53 +16,6 @@ function $builtinmodule() {
   PYGGB_CYPRESS().GGB_API = ggbApi;
 
   let mod = {};
-
-  mod.Slider = Sk.abstr.buildNativeClass("Slider", {
-    constructor: function Slider(spec) {
-      const ggbArgs = [
-        strOfNumber(spec.min),
-        strOfNumber(spec.max),
-        strOfNumber(spec.increment),
-        strOfNumber(spec.speed),
-        strOfNumber(spec.width),
-        strOfBool(spec.isAngle),
-        strOfBool(spec.isHorizontal),
-        strOfBool(spec.isAnimating),
-        strOfBool(spec.isRandom),
-      ].join(",");
-
-      const ggbCmd = `Slider(${ggbArgs})`;
-      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-      console.log(ggbCmd, lbl);
-      this.$ggbLabel = lbl;
-    },
-    slots: {
-      tp$new(args, kwargs) {
-        if (args.length !== 2)
-          throw new Sk.builtin.TypeError("bad Slider() args; need 2 args");
-
-        const bothNumbers = args.every(Sk.builtin.checkNumber);
-        if (!bothNumbers)
-          throw new Sk.builtin.TypeError(
-            "bad Slider() args; args must be numbers"
-          );
-
-        const spec = {
-          min: args[0].v,
-          max: args[1].v,
-          increment: kwNumber(kwargs, "increment", 0.1),
-          speed: kwNumber(kwargs, "speed", 1.0),
-          width: kwNumber(kwargs, "width", 100),
-          isAngle: kwBoolean(kwargs, "isAngle", false),
-          isHorizontal: kwBoolean(kwargs, "isHorizontal", true),
-          isAnimating: kwBoolean(kwargs, "isAnimating", false),
-          isRandom: kwBoolean(kwargs, "isRandom", false),
-        };
-
-        return new mod.Slider(spec);
-      },
-    },
-  });
 
   // TODO: Is this the best way to handle intersections?  Could instead
   // run command
