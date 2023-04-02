@@ -16,6 +16,10 @@ export interface SkString extends SkObject {
   v: string;
 }
 
+export interface SkList extends SkObject {
+  v: Array<SkObject>;
+}
+
 export interface SkObject {
   tp$setattr(
     this: SkObject,
@@ -63,6 +67,7 @@ type SkBuiltinT = {
   str: { new (obj: any): SkString };
   bool: { new (obj: any): SkBool };
   func: { new (f: SkJavaScriptFunction): SkObject };
+  list: { new (xs: SkObject | Array<SkObject>): SkObject };
 
   RuntimeError: { new (message: string): SkObject };
   TypeError: { new (message: string): SkObject };
