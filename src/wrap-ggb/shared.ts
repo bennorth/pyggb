@@ -31,6 +31,11 @@ export const strOfNumber = (x: number): string => {
   return `(${sig}*10^(${exp}))`;
 };
 
+/** Given a JavaScript boolean `x`, return a string representation of
+ * `x` which GeoGebra will interpret correctly.
+ * */
+export const strOfBool = (x: boolean): string => x.toString();
+
 /** Given a Skulpt/PyGgb object `cls`, which should be a class object,
  * return a predicate function which tests whether a given Skulpt/PyGgb
  * object is (in the Python sense) an instance of that class.

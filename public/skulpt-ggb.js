@@ -1,5 +1,3 @@
-const strOfBool = (x) => x.toString();
-
 const isSingletonOfEmpty = (xs) => xs.length === 1 && xs[0] === "";
 
 const kwOrDefault = (rawKwargs, k, isCorrectType, jsDefault) => {
