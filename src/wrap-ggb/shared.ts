@@ -1,4 +1,11 @@
-import { SkulptApi, SkObject, SkInt, SkFloat, SkString } from "./skulptapi";
+import {
+  SkulptApi,
+  SkObject,
+  SkInt,
+  SkFloat,
+  SkString,
+  KeywordArgsArray,
+} from "./skulptapi";
 import { GgbApi } from "./ggbapi";
 import { parseColorOrFail } from "./color";
 import { wrapExistingGgbObject } from "./type-registry";
@@ -113,7 +120,7 @@ export const numberValueOrLabel = (ggbApi: GgbApi, x: SkObject): string => {
  * alternate in the `propNamesValues` array. */
 export const withPropertiesFromNameValuePairs = (
   obj: SkObject,
-  propNamesValues?: Array<string | SkObject>
+  propNamesValues?: KeywordArgsArray
 ) => {
   propNamesValues = propNamesValues ?? [];
 
@@ -209,7 +216,7 @@ export function throwIfNotNumber(
 type FastCallMethod = (
   this: SkGgbObject,
   args: Array<SkObject>,
-  kwargs: Array<string | SkObject>
+  kwargs: KeywordArgsArray
 ) => SkObject;
 
 type MethodDescriptor = {

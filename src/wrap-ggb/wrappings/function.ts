@@ -1,7 +1,7 @@
 import { AppApi } from "../../shared/appApi";
 import { ggbCompare } from "../operations";
 import { AugmentedGgbApi, augmentedGgbApi, SkGgbObject } from "../shared";
-import { SkObject, SkulptApi } from "../skulptapi";
+import { KeywordArgsArray, SkObject, SkulptApi } from "../skulptapi";
 
 declare var Sk: SkulptApi;
 
@@ -30,7 +30,7 @@ export const register = (mod: any, appApi: AppApi) => {
         cos: functionWrapper(ggb, "cos"),
         compare_LT: {
           $flags: { FastCall: true },
-          $meth(args: Array<SkObject>, _kwargs: Array<string | SkObject>) {
+          $meth(args: Array<SkObject>, _kwargs: KeywordArgsArray) {
             // TODO: Check no kwargs.
             return ggbCompare(ggbApi, args[0], args[1], "<");
           },

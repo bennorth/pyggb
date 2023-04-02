@@ -27,14 +27,13 @@ export interface SkObject {
 
 // TODO: There are some "any"s left in this file.  Can we tighten?
 
+export type KeywordArgsArray = Array<string | SkObject>;
+
 type BuildNativeClassOptions = Partial<{
   constructor: any;
   proto: { [key: string]: any };
   slots: {
-    tp$new: (
-      args: Array<SkObject>,
-      kwargs: Array<string | SkObject>
-    ) => SkObject;
+    tp$new: (args: Array<SkObject>, kwargs: KeywordArgsArray) => SkObject;
     [key: string]: any;
   };
   methods: { [key: string]: any };
