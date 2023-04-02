@@ -160,6 +160,26 @@ function throwIfNotGgbObjectOfType(
   }
 }
 
+/** Assert that the given `obj` is either a Python number, or wraps a
+ * GeoGebra "numeric" object.  If not, throw a `TypeError` whose message
+ * uses the given `objName`.  The given `ggbApi` is used to find the
+ * type of GeoGebra object wrapped.
+ * */
+function throwIfNotPyOrGgbNumber(
+  ggbApi: GgbApi,
+  obj: SkObject,
+  objName: string
+): asserts obj is SkInt | SkFloat | SkGgbObject {
+  const isPyNumber = Sk.builtin.checkNumber(obj);
+  const isGgbNumber = isGgbObject(ggbApi, obj, "numeric");
+  const isSomeNumber = isPyNumber || isGgbNumber;
+  if (!isSomeNumber) {
+    throw new Sk.builtin.TypeError(
+      `${objName} must be a Python number or GeoGebra numeric`
+    );
+  }
+}
+
 /** Assert that the given `pyObj` is a Python string.  If not, throw a
  * `TypeError`, whose message uses the given `objName`. */
 export function throwIfNotString(
