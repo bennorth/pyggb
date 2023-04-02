@@ -84,22 +84,6 @@ function $builtinmodule() {
     },
   });
 
-  mod.Distance = new Sk.builtin.func((...args) => {
-    if (args.length !== 2)
-      throw new Sk.builtin.TypeError("bad Distance() args; need 2 args");
-    if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
-      throw new Sk.builtin.TypeError(`bad Distance() ctor arg[0] not Point`);
-    }
-    throwIfNotGgb(args[1], "Distance() ctor arg[1]");
-
-    const ggbArgs = `${args[0].$ggbLabel},${args[1].$ggbLabel}`;
-    const ggbCmd = `Distance(${ggbArgs})`;
-    const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-    const distanceValue = ggbApi.getValue(lbl);
-    ggbApi.deleteObject(lbl);
-    return new Sk.builtin.float_(distanceValue);
-  });
-
   // TODO: Is this the best way to handle intersections?  Could instead
   // run command
   //

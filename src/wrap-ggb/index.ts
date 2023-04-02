@@ -11,6 +11,7 @@ import { register as registerPolygon } from "./wrappings/polygon";
 import { register as registerRotate } from "./wrappings/rotate";
 import { register as registerFunction } from "./wrappings/function";
 import { register as registerIf } from "./wrappings/if";
+import { register as registerDistance } from "./wrappings/distance";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
@@ -32,6 +33,7 @@ declare var Sk: SkulptApi;
   registerRotate(mod, appApi);
   registerFunction(mod, appApi);
   registerIf(mod, appApi);
+  registerDistance(mod, appApi);
 
   registerClearConsole(mod, appApi);
 
