@@ -381,6 +381,8 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
   // TypeScript can't (yet?) infer type predicate return values.
   type IsGgbObjectPredicate = (x: SkObject) => x is SkGgbObject;
 
+  // TODO: Review usage of isInstance() vs throwIfNotGgbObjectOfType().
+
   const api: AugmentedGgbApi = {
     isGgbObject: fixGgbArg_1(isGgbObject) as IsGgbObjectPredicate,
     throwIfNotGgbObject,
