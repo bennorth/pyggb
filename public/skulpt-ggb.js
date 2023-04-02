@@ -37,12 +37,6 @@ function $builtinmodule() {
 
   let mod = {};
 
-  const throwIfNotGgb = (obj, objName) => {
-    // This might not always be the right test, but it is for now:
-    if (!isGgbObject(obj))
-      throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
-  };
-
   mod.Polygon = Sk.abstr.buildNativeClass("Polygon", {
     constructor: function Polygon(spec) {
       switch (spec.kind) {

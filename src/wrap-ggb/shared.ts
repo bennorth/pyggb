@@ -130,6 +130,18 @@ export const withPropertiesFromNameValuePairs = (
   return obj;
 };
 
+/** Assert that the given `obj` wraps a GeoGebra object.  If not, throw
+ * a `TypeError` whose message uses the given `objName`.
+ * */
+function throwIfNotGgbObject(
+  obj: SkObject,
+  objName: string
+): asserts obj is SkGgbObject {
+  if (!_isGgbObject(obj)) {
+    throw new Sk.builtin.TypeError(`${objName} must be a GeoGebra object`);
+  }
+}
+
 /** Assert that the given `pyObj` is a Python string.  If not, throw a
  * `TypeError`, whose message uses the given `objName`. */
 export function throwIfNotString(
