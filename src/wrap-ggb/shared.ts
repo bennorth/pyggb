@@ -142,6 +142,24 @@ function throwIfNotGgbObject(
   }
 }
 
+/** Assert that the given `obj` wraps a GeoGebra object of the given
+ * `requiredType` GeoGebra type.  If not, throw a `TypeError` whose
+ * message uses the given `objName`.  The given `ggbApi` is used to find
+ * the type of GeoGebra object wrapped.
+ * */
+function throwIfNotGgbObjectOfType(
+  ggbApi: GgbApi,
+  obj: SkObject,
+  requiredType: string,
+  objName: string
+): asserts obj is SkGgbObject {
+  if (!isGgbObject(ggbApi, obj, requiredType)) {
+    throw new Sk.builtin.TypeError(
+      `${objName} must be a GeoGebra object of type "${requiredType}"`
+    );
+  }
+}
+
 /** Assert that the given `pyObj` is a Python string.  If not, throw a
  * `TypeError`, whose message uses the given `objName`. */
 export function throwIfNotString(
