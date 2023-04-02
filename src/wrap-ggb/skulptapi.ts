@@ -71,6 +71,7 @@ type SkBuiltinT = {
   isinstance(obj: SkObject, cls: SkObject): SkBool;
 
   checkNumber(obj: SkObject): obj is SkInt | SkFloat;
+  checkBool(obj: SkObject): obj is SkBool;
   checkString(obj: SkObject): boolean;
 
   none: SkNoneT;
