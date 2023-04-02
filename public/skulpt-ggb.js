@@ -5,9 +5,6 @@ const PYGGB_CYPRESS = () => {
 
 function $builtinmodule() {
   const appApi = globalThis.$appApiHandoverQueue.dequeue();
+  PYGGB_CYPRESS().GGB_API = appApi.ggb;
   return globalThis.$skulptGgbModule(appApi);
-  /*
-  const ggbApi = appApi.ggb;
-  PYGGB_CYPRESS().GGB_API = ggbApi;
-*/
 }
