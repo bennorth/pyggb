@@ -12,6 +12,7 @@ import { register as registerRotate } from "./wrappings/rotate";
 import { register as registerFunction } from "./wrappings/function";
 import { register as registerIf } from "./wrappings/if";
 import { register as registerDistance } from "./wrappings/distance";
+import { register as registerIntersect } from "./wrappings/intersect";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
@@ -34,6 +35,7 @@ declare var Sk: SkulptApi;
   registerFunction(mod, appApi);
   registerIf(mod, appApi);
   registerDistance(mod, appApi);
+  registerIntersect(mod, appApi);
 
   registerClearConsole(mod, appApi);
 
