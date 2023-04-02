@@ -80,6 +80,7 @@ type SkBuiltinT = {
 type SkMiscEvalT = {
   isTrue: (obj: SkObject) => boolean;
   callsimOrSuspend: (fun: any) => any;
+  arrayFromIterable: (obj: SkObject) => Array<SkObject>;
 };
 
 type SkFfiT = {
