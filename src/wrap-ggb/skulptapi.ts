@@ -102,3 +102,27 @@ export type SkulptApi = {
   misceval: SkMiscEvalT;
   ffi: SkFfiT;
 };
+
+declare var Sk: SkulptApi;
+
+type AugmentedSkulptApi = {
+  checkList(x: SkObject): x is SkList;
+  checkTuple(x: SkObject): x is SkTuple;
+  checkInt(x: SkObject): x is SkInt;
+  checkFloat(x: SkObject): x is SkFloat;
+};
+
+export const augmentedSkulptApi: AugmentedSkulptApi = {
+  checkList(x: SkObject): x is SkList {
+    return x instanceof Sk.builtin.list;
+  },
+  checkTuple(x: SkObject): x is SkTuple {
+    return x instanceof Sk.builtin.tuple;
+  },
+  checkInt(x: SkObject): x is SkInt {
+    return x instanceof Sk.builtin.int_;
+  },
+  checkFloat(x: SkObject): x is SkFloat {
+    return x instanceof Sk.builtin.float_;
+  },
+};
