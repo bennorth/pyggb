@@ -77,7 +77,7 @@ type SkBuiltinT = {
 
   checkNumber(obj: SkObject): obj is SkInt | SkFloat;
   checkBool(obj: SkObject): obj is SkBool;
-  checkString(obj: SkObject): boolean;
+  checkString(obj: SkObject): obj is SkString;
 
   none: SkNoneT;
 };
