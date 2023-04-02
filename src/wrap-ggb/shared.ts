@@ -313,6 +313,19 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
 
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
+  throwIfNotGgbObject(
+    obj: SkObject,
+    objName: string
+  ): asserts obj is SkGgbObject;
+  throwIfNotGgbObjectOfType(
+    obj: SkObject,
+    requiredType: string,
+    objName: string
+  ): asserts obj is SkGgbObject;
+  throwIfNotPyOrGgbNumber(
+    obj: SkObject,
+    objName: string
+  ): asserts obj is SkInt | SkFloat | SkGgbObject;
   everyElementIsGgbObject: typeof everyElementIsGgbObject;
   isPythonOrGgbNumber(obj: SkObject): boolean;
   numberValueOrLabel(obj: SkObject): string;
@@ -370,6 +383,9 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
 
   const api: AugmentedGgbApi = {
     isGgbObject: fixGgbArg_1(isGgbObject) as IsGgbObjectPredicate,
+    throwIfNotGgbObject,
+    throwIfNotGgbObjectOfType: fixGgbArg_3(throwIfNotGgbObjectOfType),
+    throwIfNotPyOrGgbNumber: fixGgbArg_2(throwIfNotPyOrGgbNumber),
     everyElementIsGgbObject,
     isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
     numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
