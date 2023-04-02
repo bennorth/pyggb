@@ -1,5 +1,3 @@
-const isSingletonOfEmpty = (xs) => xs.length === 1 && xs[0] === "";
-
 const PYGGB_CYPRESS = () => {
   if (window.PYGGB_CYPRESS == null) window.PYGGB_CYPRESS = {};
   return window.PYGGB_CYPRESS;

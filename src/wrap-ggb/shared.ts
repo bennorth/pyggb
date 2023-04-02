@@ -94,6 +94,11 @@ const everyElementIsGgbObject = (
 export const isPythonOrGgbNumber = (ggbApi: GgbApi, obj: SkObject) =>
   Sk.builtin.checkNumber(obj) || isGgbObject(ggbApi, obj, "numeric");
 
+/** Test whether the given array of strings is `[""]`, i.e., a
+ * one-element list whose only element is the empty string. */
+export const isSingletonOfEmpty = (xs: Array<string>) =>
+  xs.length === 1 && xs[0] === "";
+
 /** Given a Skulpt/PyGgb object `x`, which should be either a `numeric`
  * GeoGebra object or a Python number, return a string suitable for
  * inclusion in a GeoGebra command.  For a `numeric` object, return its
