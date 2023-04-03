@@ -4,7 +4,7 @@ import { PyGgbModel } from ".";
 import { ModuleFilename, ModuleContents } from "../shared/skulpt-interaction";
 import { propSetterAction } from "../shared/utils";
 
-type ExecutionState = "idle" | "running";
+type ExecutionState = { state: "idle" } | { state: "running" };
 
 export type Controls = {
   executionStatus: ExecutionState;
@@ -13,7 +13,7 @@ export type Controls = {
 };
 
 export const controls: Controls = {
-  executionStatus: "idle",
+  executionStatus: { state: "idle" },
   setExecutionStatus: propSetterAction("executionStatus"),
 
   runProgram: thunk(async (a, _voidPayload, helpers) => {
@@ -53,7 +53,7 @@ export const controls: Controls = {
     // more deliberately.
     await actions.editor.saveCodeText();
 
-    a.setExecutionStatus("running");
+    a.setExecutionStatus({ state: "running" });
     await runPythonProgram(
       codeText,
       localModules,
@@ -61,6 +61,6 @@ export const controls: Controls = {
       errorActions,
       ggbApi
     );
-    a.setExecutionStatus("idle");
+    a.setExecutionStatus({ state: "idle" });
   }),
 };

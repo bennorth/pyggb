@@ -6,7 +6,7 @@ export const RunButton: React.FC<{}> = () => {
   const executionStatus = useStoreState((s) => s.controls.executionStatus);
   const runProgram = useStoreActions((a) => a.controls.runProgram);
 
-  const enabled = executionStatus === "idle";
+  const enabled = executionStatus.state === "idle";
   return (
     <div className="RunButton">
       <Button
