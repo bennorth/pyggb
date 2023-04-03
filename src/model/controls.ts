@@ -4,11 +4,11 @@ import { PyGgbModel } from ".";
 import { ModuleFilename, ModuleContents } from "../shared/skulpt-interaction";
 import { propSetterAction } from "../shared/utils";
 
-type ExecutionStatus = "idle" | "running";
+type ExecutionState = "idle" | "running";
 
 export type Controls = {
-  executionStatus: ExecutionStatus;
-  setExecutionStatus: Action<Controls, ExecutionStatus>;
+  executionStatus: ExecutionState;
+  setExecutionStatus: Action<Controls, ExecutionState>;
   runProgram: Thunk<Controls, void, {}, PyGgbModel>;
 };
 
