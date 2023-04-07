@@ -4,6 +4,8 @@ import { cssValue } from "../shared/utils";
 
 declare var GGBApplet: any;
 
+const useLocalGeoGebraBundle = process.env.REACT_APP_LOCAL_GEOGEBRA === "yes";
+
 const nextAppletDivId = (() => {
   let nextId = 10000;
   return () => `ggb-applet-content-${++nextId}`;
@@ -51,6 +53,11 @@ export const GeoGebraPane: React.FC<{}> = () => {
     appletDiv.setAttribute("data-PyGgb-injected", "yes");
 
     const ggbApplet = new GGBApplet(params, true);
+
+    if (useLocalGeoGebraBundle) {
+      ggbApplet.setHTML5Codebase("/vendor/geogebra/GeoGebra/HTML5/5.0/web3d/");
+    }
+
     ggbApplet.inject(divId);
   });
 
