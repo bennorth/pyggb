@@ -5,7 +5,7 @@ import { OperationalBackingFileState } from "../model/editor";
 import { db } from "../shared/db";
 import { assertNever } from "../shared/utils";
 import { useStoreActions, useStoreState } from "../store";
-import { RunButton } from "./RunButton";
+import { RunButton, PauseButton, StopButton } from "./RunButton";
 
 type FilenameProps = {
   backingFileState: OperationalBackingFileState;
@@ -155,6 +155,12 @@ export const MenuBar: React.FC<{}> = () => {
       <Container fluid className="MenuBar">
         <Navbar.Brand>
           <RunButton />
+        </Navbar.Brand>
+        <Navbar.Brand>
+          <PauseButton />
+        </Navbar.Brand>
+        <Navbar.Brand>
+          <StopButton />
         </Navbar.Brand>
         <NavDropdown title="File">
           <NavDropdown.Item onClick={launchNewFile}>New</NavDropdown.Item>
