@@ -1,4 +1,5 @@
 import { GgbApi } from "../wrap-ggb/ggbapi";
+import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
 export { type GgbApi } from "../wrap-ggb/ggbapi";
 
 export type TracebackEntry = {
@@ -21,6 +22,7 @@ export type SkulptInteractionApi = {
 
 export type UiApi = {
   clearConsole: () => void;
+  runControlClient: RunControlClient;
 };
 
 export type AppApi = {
