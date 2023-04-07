@@ -8,7 +8,7 @@ export const RunButton: React.FC<{}> = () => {
 
   const enabled = executionStatus.state === "idle";
   return (
-    <div className="RunButton">
+    <div className="ControlButton run-button">
       <Button
         variant="success"
         size="sm"
