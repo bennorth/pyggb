@@ -36,3 +36,19 @@ export const PauseButton: React.FC<{}> = () => {
     </div>
   );
 };
+
+export const StopButton: React.FC<{}> = () => {
+  const enabled = true; // TODO
+  return (
+    <div className="ControlButton stop-button">
+      <Button
+        variant="danger"
+        size="sm"
+        disabled={!enabled}
+        onClick={() => {} /* TODO */}
+      >
+        STOP
+      </Button>
+    </div>
+  );
+};
