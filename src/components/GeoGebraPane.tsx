@@ -4,6 +4,11 @@ import { cssValue } from "../shared/utils";
 
 declare var GGBApplet: any;
 
+const nextAppletDivId = (() => {
+  let nextId = 10000;
+  return () => `ggb-applet-content-${++nextId}`;
+})();
+
 export const GeoGebraPane: React.FC<{}> = () => {
   const setGgbAppletApi = useStoreActions((a) => a.dependencies.setGgbApi);
 
