@@ -3,8 +3,16 @@ import { runPythonProgram } from "../shared/skulpt-interaction";
 import { PyGgbModel } from ".";
 import { ModuleFilename, ModuleContents } from "../shared/skulpt-interaction";
 import { propSetterAction } from "../shared/utils";
+import {
+  PauseResolutionActions,
+  SleepInterruptionActions,
+} from "../wrap-ggb/interruptible-sleep";
 
-type ExecutionState = { state: "idle" } | { state: "running" };
+type ExecutionState =
+  | { state: "idle" }
+  | { state: "running" }
+  | ({ state: "paused" } & PauseResolutionActions)
+  | ({ state: "sleeping" } & SleepInterruptionActions);
 
 export type Controls = {
   executionStatus: ExecutionState;
