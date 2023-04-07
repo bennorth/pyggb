@@ -4,6 +4,7 @@ import { PyGgbModel } from ".";
 import { ModuleFilename, ModuleContents } from "../shared/skulpt-interaction";
 import { propSetterAction } from "../shared/utils";
 import {
+  RunControlClient,
   PauseResolutionActions,
   SleepInterruptionActions,
 } from "../wrap-ggb/interruptible-sleep";
@@ -91,6 +92,15 @@ export const controls: Controls = {
     // suspension point.  This is useful but it would be good to do it
     // more deliberately.
     await actions.editor.saveCodeText();
+
+    const runControlClient: RunControlClient = {
+      handleEnterSleep: (actions) => a.handleEnterSleep(actions),
+      handleResumeSleepingRun: () => a.handleResumeSleepingRun(),
+      handleCancelSleepingRun: () => a.handleCancelSleepingRun(),
+      handleEnterPause: (actions) => a.handleEnterPause(actions),
+      handleResumePausedRun: () => a.handleResumePausedRun(),
+      handleCancelPausedRun: () => a.handleCancelPausedRun(),
+    };
 
     a.setExecutionStatus({ state: "running" });
     await runPythonProgram(
