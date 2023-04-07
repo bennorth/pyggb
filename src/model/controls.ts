@@ -12,6 +12,17 @@ export type Controls = {
   runProgram: Thunk<Controls, void, {}, PyGgbModel>;
 };
 
+const logBadStateError = (
+  callerName: string,
+  expStates: Array<string>,
+  gotState: string
+) => {
+  const expStateString = expStates.map((s) => `"${s}"`).join("/");
+  console.error(
+    `${callerName}(): expected state ${expStateString} but got "${gotState}"`
+  );
+};
+
 export const controls: Controls = {
   executionStatus: { state: "idle" },
   setExecutionStatus: propSetterAction("executionStatus"),
