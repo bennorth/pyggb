@@ -76,6 +76,7 @@ type SkBuiltinT = {
   RuntimeError: { new (message: string): SkObject };
   TypeError: { new (message: string): SkObject };
   ValueError: { new (message: string): SkObject };
+  SystemExit: { new (): SkObject };
 
   isinstance(obj: SkObject, cls: SkObject): SkBool;
 
@@ -90,6 +91,7 @@ type SkMiscEvalT = {
   isTrue: (obj: SkObject) => boolean;
   callsimOrSuspend: (fun: any) => any;
   arrayFromIterable: (obj: SkObject) => Array<SkObject>;
+  promiseToSuspension(p: Promise<SkObject>): any;
 };
 
 type SkFfiT = {
