@@ -1,4 +1,4 @@
-import { Action, thunk, Thunk } from "easy-peasy";
+import { Action, Helpers, thunk, Thunk } from "easy-peasy";
 import { runPythonProgram } from "../shared/skulpt-interaction";
 import { PyGgbModel } from ".";
 import { ModuleFilename, ModuleContents } from "../shared/skulpt-interaction";
@@ -21,6 +21,19 @@ const logBadStateError = (
   console.error(
     `${callerName}(): expected state ${expStateString} but got "${gotState}"`
   );
+};
+
+const stateIsValid = (
+  helpers: Helpers<Controls, any, {}>,
+  expectedState: ExecutionState["state"],
+  callerName: string
+): boolean => {
+  const gotState = helpers.getState().executionStatus.state;
+  const isValid = gotState === expectedState;
+  if (!isValid) {
+    logBadStateError(callerName, [expectedState], gotState);
+  }
+  return isValid;
 };
 
 export const controls: Controls = {
