@@ -38,6 +38,18 @@ export const GeoGebraPane: React.FC<{}> = () => {
       },
     };
 
+    const appletDiv = document.getElementById(divId);
+    if (appletDiv == null) {
+      console.error(`no appletDiv; could not find id "${divId}"`);
+      return;
+    }
+
+    const doneInject = appletDiv.getAttribute("data-PyGgb-injected") === "yes";
+    if (doneInject) {
+      return;
+    }
+    appletDiv.setAttribute("data-PyGgb-injected", "yes");
+
     const ggbApplet = new GGBApplet(params, true);
     ggbApplet.inject(divId);
   });
