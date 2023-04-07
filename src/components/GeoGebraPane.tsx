@@ -12,6 +12,8 @@ const nextAppletDivId = (() => {
 export const GeoGebraPane: React.FC<{}> = () => {
   const setGgbAppletApi = useStoreActions((a) => a.dependencies.setGgbApi);
 
+  const divId = nextAppletDivId();
+
   useEffect(() => {
     const params = {
       scaleContainerClass: "GeoGebraPane",
@@ -37,12 +39,12 @@ export const GeoGebraPane: React.FC<{}> = () => {
     };
 
     const ggbApplet = new GGBApplet(params, true);
-    ggbApplet.inject("ggb-applet-content");
+    ggbApplet.inject(divId);
   });
 
   return (
     <div className="GeoGebraPane">
-      <div id="ggb-applet-content"></div>
+      <div id={divId}></div>
     </div>
   );
 };
