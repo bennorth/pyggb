@@ -13,6 +13,15 @@ export interface PauseResolutionActions {
   stop(): void;
 }
 
+export interface RunControlClient {
+  handleEnterSleep(actions: SleepInterruptionActions): void;
+  handleResumeSleepingRun(): void;
+  handleCancelSleepingRun(): void;
+  handleEnterPause(actions: PauseResolutionActions): void;
+  handleResumePausedRun(): void;
+  handleCancelPausedRun(): void;
+}
+
 export function interruptibleSleep(
   pyDelayS: SkObject
 ) {
