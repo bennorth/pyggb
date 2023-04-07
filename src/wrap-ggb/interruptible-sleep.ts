@@ -23,6 +23,7 @@ export interface RunControlClient {
 }
 
 export function interruptibleSleep(
+  client: RunControlClient,
   pyDelayS: SkObject
 ) {
   throwIfNotNumber(pyDelayS, "delay");
