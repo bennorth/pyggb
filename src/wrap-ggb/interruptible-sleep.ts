@@ -8,6 +8,11 @@ export interface SleepInterruptionActions {
   stop(): void;
 }
 
+export interface PauseResolutionActions {
+  resume(): void;
+  stop(): void;
+}
+
 export function interruptibleSleep(
   pyDelayS: SkObject
 ) {
