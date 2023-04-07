@@ -3,6 +3,11 @@ import { SkObject, SkulptApi } from "./skulptapi";
 
 declare var Sk: SkulptApi;
 
+export interface SleepInterruptionActions {
+  pause(): void;
+  stop(): void;
+}
+
 export function interruptibleSleep(
   pyDelayS: SkObject
 ) {
