@@ -18,6 +18,13 @@ export type Controls = {
   executionStatus: ExecutionState;
   setExecutionStatus: Action<Controls, ExecutionState>;
   runProgram: Thunk<Controls, void, {}, PyGgbModel>;
+
+  handleEnterSleep: Thunk<Controls, SleepInterruptionActions>;
+  handleResumeSleepingRun: Thunk<Controls, void>;
+  handleCancelSleepingRun: Thunk<Controls, void>;
+  handleEnterPause: Thunk<Controls, PauseResolutionActions>;
+  handleResumePausedRun: Thunk<Controls, void>;
+  handleCancelPausedRun: Thunk<Controls, void>;
 };
 
 const logBadStateError = (
@@ -94,5 +101,36 @@ export const controls: Controls = {
       ggbApi
     );
     a.setExecutionStatus({ state: "idle" });
+  }),
+
+  handleEnterSleep: thunk((a, interruptionActions, helpers) => {
+    if (stateIsValid(helpers, "running", "handleEnterSleep")) {
+      a.setExecutionStatus({ state: "sleeping", ...interruptionActions });
+    }
+  }),
+  handleResumeSleepingRun: thunk((a, _voidPayload, helpers) => {
+    if (stateIsValid(helpers, "sleeping", "handleResumeSleepingRun")) {
+      a.setExecutionStatus({ state: "running" });
+    }
+  }),
+  handleCancelSleepingRun: thunk((a, _voidPayload, helpers) => {
+    if (stateIsValid(helpers, "sleeping", "handleCancelSleepingRun")) {
+      a.setExecutionStatus({ state: "idle" });
+    }
+  }),
+  handleEnterPause: thunk((a, pauseResolutionActions, helpers) => {
+    if (stateIsValid(helpers, "sleeping", "handleEnterPause")) {
+      a.setExecutionStatus({ state: "paused", ...pauseResolutionActions });
+    }
+  }),
+  handleResumePausedRun: thunk((a, _voidPayload, helpers) => {
+    if (stateIsValid(helpers, "paused", "handleResumePausedRun")) {
+      a.setExecutionStatus({ state: "running" });
+    }
+  }),
+  handleCancelPausedRun: thunk((a, _voidPayload, helpers) => {
+    if (stateIsValid(helpers, "paused", "handleCancelPausedRun")) {
+      a.setExecutionStatus({ state: "idle" });
+    }
   }),
 };
