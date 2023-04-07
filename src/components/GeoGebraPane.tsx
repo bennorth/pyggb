@@ -6,6 +6,22 @@ declare var GGBApplet: any;
 
 const useLocalGeoGebraBundle = process.env.REACT_APP_LOCAL_GEOGEBRA === "yes";
 
+// Using a local copy of the GGB bundle was not initially successful.  One
+// symptom was that the browser attempted to fetch the main files
+// (BIG-HEX-STRING.js) from http://localhost:3000/BIG-HEX-STRING.js, seemingly
+// ignoring the setHTML5Codebase().  I think the reason for this was that the
+// <script> element which is dynamically created gets attached as a child to the
+// applet div, but React was throwing that div away and making a new one.  So the
+// code in the GGB loader which attempts to find where the running script came
+// from failed.  Fixing this by changing deployggb.js allowed more progress, but
+// then Python programs weren't working.  It seemed that there were two GGB API
+// objects floating round, and the wrong one was being used.  I don't know why
+// this didn't show up when fetching the files from GGB's CDN; a race seems
+// likely.  In any event, both problems seem to be resolved (allowing the
+// original deployggb.js to be used) by ensuring a fresh element-ID is used each
+// time the component is rendered, and by ensuring (by means of a data
+// attribute) that we only inject() the GGB app into the DIV once.
+
 const nextAppletDivId = (() => {
   let nextId = 10000;
   return () => `ggb-applet-content-${++nextId}`;
