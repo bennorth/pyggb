@@ -1,3 +1,4 @@
+import { AppApi } from "../shared/appApi";
 import { throwIfNotNumber } from "./shared";
 import { SkObject, SkulptApi } from "./skulptapi";
 
@@ -87,5 +88,9 @@ export function interruptibleSleep(
 }
 
 export function register(mod: any, appApi: AppApi) {
-  // TODO
+  const runControlClient = appApi.ui.runControlClient;
+
+  mod.interruptible_sleep = new Sk.builtin.func((delay) =>
+    interruptibleSleep(runControlClient, delay)
+  );
 }
