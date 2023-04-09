@@ -40,7 +40,50 @@ export function interruptibleSleep(
 ) {
   throwIfNotNumber(pyDelayS, "delay");
   const delayMs = 1000 * pyDelayS.v;
-  // TODO
+
+  let sleepState: SleepState = nullSleepState;
+
+  const sleepPromise = new Promise<SkObject>((resolve, reject) => {
+    const resumeSleepingRun = () => {
+      client.handleResumeSleepingRun();
+      resolve(Sk.builtin.none.none$);
+    };
+
+    sleepState = {
+      resolvePromise: resolve,
+      rejectPromise: reject,
+      timeoutId: setTimeout(resumeSleepingRun, delayMs),
+    };
+  });
+
+  const resolveWithNone = () =>
+    sleepState.resolvePromise(Sk.builtin.none.none$);
+
+  const rejectWithSystemExit = () =>
+    sleepState.rejectPromise(new Sk.builtin.SystemExit());
+
+  client.handleEnterSleep({
+    pause() {
+      clearTimeout(sleepState.timeoutId);
+      client.handleEnterPause({
+        resume() {
+          client.handleResumePausedRun();
+          resolveWithNone();
+        },
+        stop() {
+          client.handleCancelPausedRun();
+          rejectWithSystemExit();
+        },
+      });
+    },
+    stop() {
+      clearTimeout(sleepState.timeoutId);
+      client.handleCancelSleepingRun();
+      rejectWithSystemExit();
+    },
+  });
+
+  return Sk.misceval.promiseToSuspension(sleepPromise);
 }
 
 export function register(mod: any, appApi: AppApi) {
