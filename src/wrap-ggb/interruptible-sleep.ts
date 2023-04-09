@@ -72,14 +72,14 @@ export function interruptibleSleep(
           resolveWithNone();
         },
         stop() {
-          client.handleCancelPausedRun();
+          client.handleResumePausedRun();
           rejectWithSystemExit();
         },
       });
     },
     stop() {
       clearTimeout(sleepState.timeoutId);
-      client.handleCancelSleepingRun();
+      client.handleResumeSleepingRun();
       rejectWithSystemExit();
     },
   });
