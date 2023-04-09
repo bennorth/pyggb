@@ -24,10 +24,8 @@ export type Controls = {
 
   handleEnterSleep: Thunk<Controls, SleepInterruptionActions>;
   handleResumeSleepingRun: Thunk<Controls, void>;
-  handleCancelSleepingRun: Thunk<Controls, void>;
   handleEnterPause: Thunk<Controls, PauseResolutionActions>;
   handleResumePausedRun: Thunk<Controls, void>;
-  handleCancelPausedRun: Thunk<Controls, void>;
 };
 
 const logBadStateError = (
@@ -104,10 +102,8 @@ export const controls: Controls = {
     const runControlClient: RunControlClient = {
       handleEnterSleep: (actions) => a.handleEnterSleep(actions),
       handleResumeSleepingRun: () => a.handleResumeSleepingRun(),
-      handleCancelSleepingRun: () => a.handleCancelSleepingRun(),
       handleEnterPause: (actions) => a.handleEnterPause(actions),
       handleResumePausedRun: () => a.handleResumePausedRun(),
-      handleCancelPausedRun: () => a.handleCancelPausedRun(),
     };
 
     a.setExecutionStatus({ state: "running" });
@@ -132,11 +128,6 @@ export const controls: Controls = {
       a.setExecutionStatus({ state: "running" });
     }
   }),
-  handleCancelSleepingRun: thunk((a, _voidPayload, helpers) => {
-    if (stateIsValid(helpers, "sleeping", "handleCancelSleepingRun")) {
-      a.setExecutionStatus({ state: "idle" });
-    }
-  }),
   handleEnterPause: thunk((a, pauseResolutionActions, helpers) => {
     if (stateIsValid(helpers, "sleeping", "handleEnterPause")) {
       a.setExecutionStatus({ state: "paused", ...pauseResolutionActions });
@@ -145,11 +136,6 @@ export const controls: Controls = {
   handleResumePausedRun: thunk((a, _voidPayload, helpers) => {
     if (stateIsValid(helpers, "paused", "handleResumePausedRun")) {
       a.setExecutionStatus({ state: "running" });
-    }
-  }),
-  handleCancelPausedRun: thunk((a, _voidPayload, helpers) => {
-    if (stateIsValid(helpers, "paused", "handleCancelPausedRun")) {
-      a.setExecutionStatus({ state: "idle" });
     }
   }),
 
