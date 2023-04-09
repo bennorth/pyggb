@@ -19,6 +19,7 @@ export type Controls = {
   executionStatus: ExecutionState;
   setExecutionStatus: Action<Controls, ExecutionState>;
   runProgram: Thunk<Controls, void, {}, PyGgbModel>;
+  pauseProgram: Thunk<Controls, void, {}, PyGgbModel>;
 
   handleEnterSleep: Thunk<Controls, SleepInterruptionActions>;
   handleResumeSleepingRun: Thunk<Controls, void>;
@@ -148,6 +149,18 @@ export const controls: Controls = {
   handleCancelPausedRun: thunk((a, _voidPayload, helpers) => {
     if (stateIsValid(helpers, "paused", "handleCancelPausedRun")) {
       a.setExecutionStatus({ state: "idle" });
+    }
+  }),
+
+  pauseProgram: thunk(async (a, _voidPayload, helpers) => {
+    const execStatus = helpers.getState().executionStatus;
+    switch (execStatus.state) {
+      case "sleeping":
+        execStatus.pause();
+        break;
+      default:
+        logBadStateError("pauseProgram", ["sleeping"], execStatus.state);
+        break;
     }
   }),
 };
