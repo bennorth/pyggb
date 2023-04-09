@@ -1,4 +1,5 @@
 import { GgbApi, SkulptInteractionApi, AppApi, PyError, UiApi } from "./appApi";
+import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
 
 declare var Sk: any;
 
@@ -47,6 +48,7 @@ export const runPythonProgram = (
   localModules: LocalModules,
   stdoutActions: StdoutActions,
   errorActions: ErrorActions,
+  runControlClient: RunControlClient,
   ggbApi: GgbApi
 ) => {
   Sk.configure({
@@ -66,7 +68,10 @@ export const runPythonProgram = (
   const skApi: SkulptInteractionApi = {
     onError: (e) => errorActions.append(e),
   };
-  const uiApi: UiApi = { clearConsole: () => stdoutActions.clear() };
+  const uiApi: UiApi = {
+    clearConsole: () => stdoutActions.clear(),
+    runControlClient: runControlClient,
+  };
   const appApi: AppApi = { ggb: ggbApi, sk: skApi, ui: uiApi };
   (globalThis as any).$appApiHandoverQueue.enqueue(appApi);
 

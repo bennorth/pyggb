@@ -108,6 +108,7 @@ export const controls: Controls = {
       localModules,
       stdoutActions,
       errorActions,
+      runControlClient,
       ggbApi
     );
     a.setExecutionStatus({ state: "idle" });
