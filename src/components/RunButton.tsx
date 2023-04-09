@@ -42,14 +42,19 @@ export const PauseButton: React.FC<{}> = () => {
 };
 
 export const StopButton: React.FC<{}> = () => {
-  const enabled = true; // TODO
+  const executionStatus = useStoreState((s) => s.controls.executionStatus);
+  const stopProgram = useStoreActions((a) => a.controls.stopProgram);
+
+  const enabled =
+    executionStatus.state === "paused" || executionStatus.state === "sleeping";
+
   return (
     <div className="ControlButton stop-button">
       <Button
         variant="danger"
         size="sm"
         disabled={!enabled}
-        onClick={() => {} /* TODO */}
+        onClick={() => stopProgram()}
       >
         STOP
       </Button>
