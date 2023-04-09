@@ -77,7 +77,14 @@ export const runPythonProgram = (
 
   const handleError = (e: any) => errorActions.append(e);
 
-  const codeText = "from ggb import *\n\n" + userCodeText;
+  const codePreambleLines = [
+    "from ggb import *",
+    "import time",
+    "time.sleep = interruptible_sleep",
+    "del time",
+  ];
+  const codePreamble = codePreambleLines.join("\n") + "\n";
+  const codeText = codePreamble + userCodeText;
 
   return Sk.misceval
     .asyncToPromise(() =>
