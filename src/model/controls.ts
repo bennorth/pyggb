@@ -57,6 +57,12 @@ export const controls: Controls = {
   setExecutionStatus: propSetterAction("executionStatus"),
 
   runProgram: thunk(async (a, _voidPayload, helpers) => {
+    const execStatus = helpers.getState().executionStatus;
+    if (execStatus.state === "paused") {
+      execStatus.resume();
+      return;
+    }
+
     const storeState = helpers.getStoreState();
     const actions = helpers.getStoreActions();
     const codeText = storeState.editor.codeText;
