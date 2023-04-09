@@ -20,6 +20,7 @@ export type Controls = {
   setExecutionStatus: Action<Controls, ExecutionState>;
   runProgram: Thunk<Controls, void, {}, PyGgbModel>;
   pauseProgram: Thunk<Controls, void, {}, PyGgbModel>;
+  stopProgram: Thunk<Controls, void, {}, PyGgbModel>;
 
   handleEnterSleep: Thunk<Controls, SleepInterruptionActions>;
   handleResumeSleepingRun: Thunk<Controls, void>;
@@ -160,6 +161,24 @@ export const controls: Controls = {
         break;
       default:
         logBadStateError("pauseProgram", ["sleeping"], execStatus.state);
+        break;
+    }
+  }),
+  stopProgram: thunk(async (a, _voidPayload, helpers) => {
+    const execStatus = helpers.getState().executionStatus;
+    switch (execStatus.state) {
+      case "sleeping":
+      case "paused":
+        // The "stop()" is slightly different in these two cases, but I think
+        // it's OK to merge the cases.
+        execStatus.stop();
+        break;
+      default:
+        logBadStateError(
+          "stopProgram",
+          ["sleeping", "paused"],
+          execStatus.state
+        );
         break;
     }
   }),
