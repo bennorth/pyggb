@@ -58,6 +58,7 @@ export const controls: Controls = {
 
   runProgram: thunk(async (a, _voidPayload, helpers) => {
     const execStatus = helpers.getState().executionStatus;
+
     if (execStatus.state === "paused") {
       execStatus.resume();
       return;
