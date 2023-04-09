@@ -22,6 +22,18 @@ export interface RunControlClient {
   handleCancelPausedRun(): void;
 }
 
+type SleepState = {
+  resolvePromise(value: SkObject): void;
+  rejectPromise(reason: any): void;
+  timeoutId: ReturnType<typeof setTimeout>;
+};
+
+const nullSleepState = {
+  resolvePromise(_value: SkObject) {},
+  rejectPromise(_reason: any) {},
+  timeoutId: null as any,
+};
+
 export function interruptibleSleep(
   client: RunControlClient,
   pyDelayS: SkObject
