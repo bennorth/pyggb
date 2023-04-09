@@ -63,6 +63,11 @@ export const controls: Controls = {
       return;
     }
 
+    if (execStatus.state !== "idle") {
+      logBadStateError("runProgram", ["idle", "paused"], execStatus.state);
+      return;
+    }
+
     const storeState = helpers.getStoreState();
     const actions = helpers.getStoreActions();
     const codeText = storeState.editor.codeText;
@@ -115,6 +120,12 @@ export const controls: Controls = {
       runControlClient,
       ggbApi
     );
+
+    const finalExecState = helpers.getState().executionStatus.state;
+    if (finalExecState !== "running") {
+      logBadStateError("runProgram", ["running"], finalExecState);
+    }
+
     a.setExecutionStatus({ state: "idle" });
   }),
 
