@@ -9,10 +9,9 @@ const TracebackEntryItem: React.FC<TracebackEntryItemProps> = ({ entry }) => {
   const rawSource = entry.filename;
   const source = rawSource === "<stdin>.py" ? "your program" : rawSource;
 
-  // Map linenumber back to the user's original program by taking
-  // account of the "from ggb import *" we inserted at the start when
-  // sending to Skulpt.
-  const userLineNumber = entry.lineno - 2;
+  // Map linenumber back to the user's original program by taking account of the
+  // preamble we inserted at the start when sending to Skulpt.
+  const userLineNumber = entry.lineno - 4;
 
   return (
     <p>
