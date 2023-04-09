@@ -1,4 +1,4 @@
-import { GgbApi, SkulptApi, AppApi, PyError, UiApi } from "./appApi";
+import { GgbApi, SkulptInteractionApi, AppApi, PyError, UiApi } from "./appApi";
 
 declare var Sk: any;
 
@@ -63,7 +63,9 @@ export const runPythonProgram = (
 
   // TODO: Seems a bit clunky to reuse errorActions and stdoutActions
   // like this.  Revisit?
-  const skApi: SkulptApi = { onError: (e) => errorActions.append(e) };
+  const skApi: SkulptInteractionApi = {
+    onError: (e) => errorActions.append(e),
+  };
   const uiApi: UiApi = { clearConsole: () => stdoutActions.clear() };
   const appApi: AppApi = { ggb: ggbApi, sk: skApi, ui: uiApi };
   (globalThis as any).$appApiHandoverQueue.enqueue(appApi);
