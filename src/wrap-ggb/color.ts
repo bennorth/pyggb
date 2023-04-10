@@ -94,3 +94,14 @@ export const interpretColorOrFail = (
     `"color" must be string, or list/tuple of three ints/floats`
   );
 };
+
+export const colorIntsFromString = (
+  hexColor: string
+): [number, number, number] => {
+  const mRGB = tryParseHexColor(hexColor.toLowerCase());
+  if (mRGB != null) {
+    return mRGB;
+  }
+
+  throw new Sk.builtin.ValueError(`"hexColor" must be #rgb or #rrggbb`);
+};
