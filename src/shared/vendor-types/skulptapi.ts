@@ -23,7 +23,19 @@ export interface SkTuple extends SkObject {
   v: Array<SkObject>;
 }
 
+export interface SkTracebackEntry {
+  lineno: number;
+  colno: number;
+  filename: string;
+}
+
+export interface SkBaseException extends SkObject {
+  args: SkTuple;
+  traceback: Array<SkTracebackEntry>;
+}
+
 export interface SkObject {
+  tp$name: string;
   tp$setattr(
     this: SkObject,
     name: SkString,

@@ -1,20 +1,6 @@
 import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
 
-export type TracebackEntry = {
-  lineno: number;
-  colno: number;
-  filename: string;
-};
-
-export type PyError = {
-  args: {
-    v: { length: number; [0]: { v: string } };
-  };
-  traceback: Array<TracebackEntry>;
-  tp$name: string;
-};
-
 export type SkulptInteractionApi = {
   onError: (error: PyError) => void;
 };
