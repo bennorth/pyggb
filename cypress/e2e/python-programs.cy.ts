@@ -62,13 +62,16 @@ describe("Runs Python programs", { testIsolation: false }, () => {
 
   const runsWithoutErrorSpecs: Array<RunsWithoutErrorSpec> = [
     {
-      label: "Set color to numeric triple",
+      label: "Get/set color as numeric triple",
       code: `
         A = Point(3, 4)
         A.color = [50, 100, 150]
         assert(A.color == "#326496")
         A.color = (0.25, 0.5, 0.125)
         assert(A.color == "#408020")
+        assert(A.color_ints == (64, 128, 32))
+        for exp_v, got_v in zip([64/255, 128/255, 32/255], A.color_floats):
+          assert(abs(got_v - exp_v) < 1.0e-10)
       `,
     },
     {
