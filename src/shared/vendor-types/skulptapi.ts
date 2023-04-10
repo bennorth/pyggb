@@ -104,6 +104,7 @@ type SkMiscEvalT = {
   callsimOrSuspend: (fun: any) => any;
   arrayFromIterable: (obj: SkObject) => Array<SkObject>;
   promiseToSuspension(p: Promise<SkObject>): any;
+  asyncToPromise<T>(f: () => T): Promise<T>;
 };
 
 type SkFfiT = {
@@ -115,6 +116,18 @@ export type SkulptApi = {
   builtin: SkBuiltinT;
   misceval: SkMiscEvalT;
   ffi: SkFfiT;
+
+  configure(options: object): void;
+  python3: object;
+
+  importMainWithBody(
+    name: string,
+    dumpJS: boolean,
+    body: string,
+    canSuspend: boolean
+  ): void;
+
+  builtinFiles?: { files: { [filename: string]: string } };
 };
 
 declare var Sk: SkulptApi;
