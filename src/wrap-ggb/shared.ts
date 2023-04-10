@@ -7,7 +7,7 @@ import {
   KeywordArgsArray,
 } from "./skulptapi";
 import { GgbApi } from "./ggbapi";
-import { parseColorOrFail } from "./color";
+import { interpretColorOrFail } from "./color";
 import { wrapExistingGgbObject } from "./type-registry";
 import { OperationSlots, operationSlots } from "./operations";
 
@@ -301,8 +301,7 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
       return new Sk.builtin.str(color);
     },
     $set(this: SkGgbObject, pyColor: SkObject) {
-      throwIfNotString(pyColor, "color");
-      const mRGB = parseColorOrFail(pyColor.v);
+      const mRGB = interpretColorOrFail(pyColor);
       ggbApi.setColor(this.$ggbLabel, ...mRGB);
     },
   },

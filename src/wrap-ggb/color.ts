@@ -1,6 +1,10 @@
 // Requires existence of map $hexRgbFromNamedColour on globalThis.
 
-import { SkulptApi } from "./skulptapi";
+import {
+  augmentedSkulptApi,
+  SkObject,
+  SkulptApi,
+} from "../shared/vendor-types/skulptapi";
 declare var Sk: SkulptApi;
 
 const tryParseColor = (rawColor: string): [number, number, number] | null => {
@@ -40,4 +44,49 @@ export const parseColorOrFail = (color: string): [number, number, number] => {
   if (mRGB == null)
     throw new Sk.builtin.ValueError(`the color "${color}" is not recognised`);
   return mRGB;
+};
+
+export const interpretColorOrFail = (
+  color: SkObject
+): [number, number, number] => {
+  if (Sk.builtin.checkString(color)) {
+    return parseColorOrFail(color.v);
+  }
+
+  if (
+    augmentedSkulptApi.checkList(color) ||
+    augmentedSkulptApi.checkTuple(color)
+  ) {
+    const components = color.v;
+
+    if (components.length !== 3) {
+      throw new Sk.builtin.ValueError(
+        `if a list/tuple, "color" must have three elements`
+      );
+    }
+
+    if (components.every(augmentedSkulptApi.checkInt)) {
+      if (components.every((x) => x.v >= 0 && x.v < 256))
+        return [components[0].v, components[1].v, components[2].v];
+      throw new Sk.builtin.ValueError(
+        `if "color" is a list/tuple of ints, each must be >=0 and <=255`
+      );
+    }
+
+    if (components.every(augmentedSkulptApi.checkFloat)) {
+      if (components.every((x) => x.v >= 0.0 && x.v <= 1.0)) {
+        // There are various ways to map the closed interval [0, 1] to
+        // the set {0, 1, ..., 255}.  Pick a reasonable one:
+        const intComponents = components.map((x) => Math.round(x.v * 255.0));
+        return [intComponents[0], intComponents[1], intComponents[2]];
+      }
+      throw new Sk.builtin.ValueError(
+        `if "color" is a list/tuple of floats, each must be >=0.0 and <=1.0`
+      );
+    }
+  }
+
+  throw new Sk.builtin.ValueError(
+    `"color" must be string, or list/tuple of three ints/floats`
+  );
 };

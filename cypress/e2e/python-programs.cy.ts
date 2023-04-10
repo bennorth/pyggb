@@ -62,6 +62,16 @@ describe("Runs Python programs", { testIsolation: false }, () => {
 
   const runsWithoutErrorSpecs: Array<RunsWithoutErrorSpec> = [
     {
+      label: "Set color to numeric triple",
+      code: `
+        A = Point(3, 4)
+        A.color = [50, 100, 150]
+        assert(A.color == "#326496")
+        A.color = (0.25, 0.5, 0.125)
+        assert(A.color == "#408020")
+      `,
+    },
+    {
       label: "Line(Point, Point)",
       code: `
         A = Point(3, 4)
