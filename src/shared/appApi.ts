@@ -1,6 +1,5 @@
 import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
-export { type GgbApi } from "./vendor-types/ggbapi";
 
 export type TracebackEntry = {
   lineno: number;
