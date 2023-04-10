@@ -3,13 +3,13 @@ import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/appApi";
 import { SkulptGgbModuleUrl } from "../shared/resources";
 import { db } from "../shared/db";
-import { propSetterAction } from "../shared/utils";
+import { propSetterAction, propSetterNonNullAction } from "../shared/utils";
 
 type BootStatus = "idle" | "running" | "done";
 
 export type Dependencies = {
   bootStatus: BootStatus;
-  ggbApi: GgbApi;
+  ggbApi: GgbApi | null;
   ggbPythonModuleText: string;
 
   allReady: Computed<Dependencies, boolean>;
@@ -29,7 +29,7 @@ export const dependencies: Dependencies = {
   allReady: computed((s) => s.ggbApi !== null && s.bootStatus === "done"),
 
   setBootStatus: propSetterAction("bootStatus"),
-  setGgbApi: propSetterAction("ggbApi"),
+  setGgbApi: propSetterNonNullAction("ggbApi"),
   setGgbPythonModuleText: propSetterAction("ggbPythonModuleText"),
 
   boot: thunk(async (a, _voidPayload, helpers) => {

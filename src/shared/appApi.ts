@@ -1,5 +1,5 @@
-// TODO: Replace this with proper type:
-export type GgbApi = any;
+import { GgbApi } from "../wrap-ggb/ggbapi";
+export { type GgbApi } from "../wrap-ggb/ggbapi";
 
 export type TracebackEntry = {
   lineno: number;
@@ -15,7 +15,7 @@ export type PyError = {
   tp$name: string;
 };
 
-export type SkulptApi = {
+export type SkulptInteractionApi = {
   onError: (error: PyError) => void;
 };
 
@@ -25,7 +25,7 @@ export type UiApi = {
 
 export type AppApi = {
   ggb: GgbApi;
-  sk: SkulptApi;
+  sk: SkulptInteractionApi;
   ui: UiApi;
 };
 
