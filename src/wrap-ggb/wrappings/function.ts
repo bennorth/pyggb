@@ -1,7 +1,11 @@
 import { AppApi } from "../../shared/appApi";
 import { ggbCompare } from "../operations";
 import { AugmentedGgbApi, augmentedGgbApi, SkGgbObject } from "../shared";
-import { KeywordArgsArray, SkObject, SkulptApi } from "../skulptapi";
+import {
+  KeywordArgsArray,
+  SkObject,
+  SkulptApi,
+} from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
 

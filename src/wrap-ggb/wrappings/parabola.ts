@@ -5,7 +5,7 @@ import {
   SkGgbObject,
   AugmentedGgbApi,
 } from "../shared";
-import { SkulptApi } from "../skulptapi";
+import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi;

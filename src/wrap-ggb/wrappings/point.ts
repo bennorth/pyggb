@@ -6,7 +6,7 @@ import {
   SkGgbObject,
   WrapExistingCtorSpec,
 } from "../shared";
-import { SkObject, SkulptApi } from "../skulptapi";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
 

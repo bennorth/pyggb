@@ -1,4 +1,5 @@
-import { GgbApi, SkulptInteractionApi, AppApi, PyError, UiApi } from "./appApi";
+import { SkulptInteractionApi, AppApi, PyError, UiApi } from "./appApi";
+import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
 
 declare var Sk: any;

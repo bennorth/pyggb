@@ -1,6 +1,6 @@
 import { AppApi } from "../shared/appApi";
 import { throwIfNotNumber } from "./shared";
-import { SkObject, SkulptApi } from "./skulptapi";
+import { SkObject, SkulptApi } from "../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
 

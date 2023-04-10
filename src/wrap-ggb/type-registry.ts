@@ -1,6 +1,6 @@
-import { GgbApi } from "./ggbapi";
+import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { WrapExistingCtorSpec, SkGgbObject } from "./shared";
-import { SkulptApi } from "./skulptapi";
+import { SkulptApi } from "../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
 

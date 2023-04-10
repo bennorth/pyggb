@@ -9,7 +9,11 @@ import {
   strOfNumber,
   strOfBool,
 } from "../shared";
-import { SkObject, SkulptApi, KeywordArgsArray } from "../skulptapi";
+import {
+  SkObject,
+  SkulptApi,
+  KeywordArgsArray,
+} from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi;

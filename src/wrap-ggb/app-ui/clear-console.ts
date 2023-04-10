@@ -1,5 +1,5 @@
 import { AppApi } from "../../shared/appApi";
-import { SkulptApi } from "../skulptapi";
+import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
 
