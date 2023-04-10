@@ -120,6 +120,7 @@ export type SkulptApi = {
 declare var Sk: SkulptApi;
 
 type AugmentedSkulptApi = {
+  checkString(x: SkObject): x is SkString;
   checkList(x: SkObject): x is SkList;
   checkTuple(x: SkObject): x is SkTuple;
   checkInt(x: SkObject): x is SkInt;
@@ -127,6 +128,9 @@ type AugmentedSkulptApi = {
 };
 
 export const augmentedSkulptApi: AugmentedSkulptApi = {
+  checkString(x: SkObject): x is SkString {
+    return x instanceof Sk.builtin.str;
+  },
   checkList(x: SkObject): x is SkList {
     return x instanceof Sk.builtin.list;
   },
