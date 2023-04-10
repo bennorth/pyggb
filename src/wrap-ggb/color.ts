@@ -7,14 +7,7 @@ import {
 } from "../shared/vendor-types/skulptapi";
 declare var Sk: SkulptApi;
 
-const tryParseColor = (rawColor: string): [number, number, number] | null => {
-  const hexRgbFromNamedColour: Map<string, string> = (globalThis as any)
-    .$hexRgbFromNamedColour;
-
-  const lcColor = rawColor.toLowerCase();
-  const mHex = hexRgbFromNamedColour.get(lcColor);
-  const color = mHex ?? lcColor;
-
+const tryParseHexColor = (color: string): [number, number, number] | null => {
   const mMatch6 = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/.exec(color);
   if (mMatch6 != null)
     return [
@@ -32,6 +25,17 @@ const tryParseColor = (rawColor: string): [number, number, number] | null => {
     ];
 
   return null;
+};
+
+const tryParseColor = (rawColor: string): [number, number, number] | null => {
+  const hexRgbFromNamedColour: Map<string, string> = (globalThis as any)
+    .$hexRgbFromNamedColour;
+
+  const lcColor = rawColor.toLowerCase();
+  const mHex = hexRgbFromNamedColour.get(lcColor);
+  const color = mHex ?? lcColor;
+
+  return tryParseHexColor(color);
 };
 
 /** Attempt to interpret the given `color` as a color, and, if
