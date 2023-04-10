@@ -16,6 +16,8 @@ import { register as registerIntersect } from "./wrappings/intersect";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
+import { register as registerInterruptibleSleep } from "./interruptible-sleep";
+
 import { SkulptApi } from "./skulptapi";
 declare var Sk: SkulptApi;
 
@@ -38,6 +40,8 @@ declare var Sk: SkulptApi;
   registerIntersect(mod, appApi);
 
   registerClearConsole(mod, appApi);
+
+  registerInterruptibleSleep(mod, appApi);
 
   return mod;
 };
