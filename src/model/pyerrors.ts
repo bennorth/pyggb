@@ -1,7 +1,7 @@
 import { action, Action, computed, Computed } from "easy-peasy";
 import { SkBaseException, SkulptApi } from "../shared/vendor-types/skulptapi";
 
-declare var Sk: any; // TODO: Get proper type from wrapping code?
+declare var Sk: SkulptApi;
 
 export type PyErrors = {
   errors: Array<SkBaseException>;
