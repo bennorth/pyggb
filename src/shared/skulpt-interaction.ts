@@ -1,6 +1,7 @@
-import { SkulptInteractionApi, AppApi, PyError, UiApi } from "./appApi";
+import { SkulptInteractionApi, AppApi, UiApi } from "./appApi";
 import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
+import { SkBaseException } from "./vendor-types/skulptapi";
 
 declare var Sk: any;
 
@@ -8,7 +9,7 @@ export type ModuleFilename = string;
 export type ModuleContents = string;
 export type LocalModules = Map<ModuleFilename, ModuleContents>;
 
-export const messageOfPyError = (err: PyError) => {
+export const messageOfPyError = (err: SkBaseException) => {
   if (err.tp$name == null) {
     return `[Internal error: ${err}]`;
   }
@@ -41,7 +42,7 @@ export interface StdoutActions {
 
 export interface ErrorActions {
   clear: () => void;
-  append: (newError: PyError) => void;
+  append: (newError: SkBaseException) => void;
 }
 
 export const runPythonProgram = (

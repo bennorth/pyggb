@@ -1,12 +1,12 @@
 import { action, Action, computed, Computed } from "easy-peasy";
-import { PyError } from "../shared/appApi";
+import { SkBaseException, SkulptApi } from "../shared/vendor-types/skulptapi";
 
 declare var Sk: any; // TODO: Get proper type from wrapping code?
 
 export type PyErrors = {
-  errors: Array<PyError>;
+  errors: Array<SkBaseException>;
   any: Computed<PyErrors, boolean>;
-  appendError: Action<PyErrors, PyError>;
+  appendError: Action<PyErrors, SkBaseException>;
   clearErrors: Action<PyErrors>;
 };
 

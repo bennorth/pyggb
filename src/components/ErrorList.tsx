@@ -1,10 +1,13 @@
 import React from "react";
 import { Alert } from "react-bootstrap";
-import { PyError, TracebackEntry } from "../shared/appApi";
 import { messageOfPyError } from "../shared/skulpt-interaction";
 import { useStoreState } from "../store";
+import {
+  SkBaseException,
+  SkTracebackEntry,
+} from "../shared/vendor-types/skulptapi";
 
-type TracebackEntryItemProps = { entry: TracebackEntry };
+type TracebackEntryItemProps = { entry: SkTracebackEntry };
 const TracebackEntryItem: React.FC<TracebackEntryItemProps> = ({ entry }) => {
   const rawSource = entry.filename;
   const source = rawSource === "<stdin>.py" ? "your program" : rawSource;
@@ -20,7 +23,7 @@ const TracebackEntryItem: React.FC<TracebackEntryItemProps> = ({ entry }) => {
   );
 };
 
-type ErrorReportProps = { error: PyError };
+type ErrorReportProps = { error: SkBaseException };
 const ErrorReport: React.FC<ErrorReportProps> = ({ error }) => {
   // Get traceback with deepest frame last.
   let traceback = error.traceback.slice();

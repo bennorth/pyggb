@@ -1,8 +1,9 @@
 import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
+import { SkBaseException } from "./vendor-types/skulptapi";
 
 export type SkulptInteractionApi = {
-  onError: (error: PyError) => void;
+  onError: (error: SkBaseException) => void;
 };
 
 export type UiApi = {
