@@ -62,13 +62,16 @@ describe("Runs Python programs", { testIsolation: false }, () => {
 
   const runsWithoutErrorSpecs: Array<RunsWithoutErrorSpec> = [
     {
-      label: "Set color to numeric triple",
+      label: "Get/set color as numeric triple",
       code: `
         A = Point(3, 4)
         A.color = [50, 100, 150]
         assert(A.color == "#326496")
         A.color = (0.25, 0.5, 0.125)
         assert(A.color == "#408020")
+        assert(A.color_ints == (64, 128, 32))
+        for exp_v, got_v in zip([64/255, 128/255, 32/255], A.color_floats):
+          assert(abs(got_v - exp_v) < 1.0e-10)
       `,
     },
     {
@@ -77,6 +80,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 4)
         B = Point(2, 1)
         k = Line(A, B)
+        k.line_thickness = 8
+        k.color = "blue"
       `,
     },
     {
@@ -114,6 +119,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 4)
         k = Circle(A, 2)
         l = Circle(A, Number(2))
+        l.line_thickness = 8
+        l.color = "red"
       `,
     },
     {
@@ -151,6 +158,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 0)
         B = Point(0, 4)
         v1 = Vector(A, B)
+        v1.line_thickness = 8
+        v1.color = "red"
       `,
     },
     {
@@ -181,6 +190,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         C = Point(-2, 1)
         D = Point(-1, -3)
         p = Polygon([A, B, C, D])
+        p.line_thickness = 8
+        p.color = "red"
         print("area =", p.area)
       `,
       expOutputs: ["area = 18.0"], // Pick's theorem
@@ -199,6 +210,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(0, Number(-4))
         k = Line(Point(-1, -5), Point(1, -5))
         p = Parabola(A, k)
+        p.line_thickness = 8
+        p.color = "red"
       `,
     },
     {

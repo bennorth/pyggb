@@ -107,6 +107,8 @@ export const register = (mod: any, appApi: AppApi) => {
         },
       },
       color: ggb.sharedGetSets.color,
+      color_ints: ggb.sharedGetSets.color_ints,
+      color_floats: ggb.sharedGetSets.color_floats,
       line_thickness: ggb.sharedGetSets.line_thickness,
       // TODO: List of segments?
     },

@@ -126,6 +126,8 @@ export const register = (mod: any, appApi: AppApi) => {
       is_visible: ggb.sharedGetSets.is_visible,
       is_independent: ggb.sharedGetSets.is_independent,
       color: ggb.sharedGetSets.color,
+      color_ints: ggb.sharedGetSets.color_ints,
+      color_floats: ggb.sharedGetSets.color_floats,
       size: ggb.sharedGetSets.size,
       x: {
         $get(this: SkGgbPoint) {

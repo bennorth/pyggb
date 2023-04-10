@@ -7,7 +7,7 @@ import {
   KeywordArgsArray,
 } from "../shared/vendor-types/skulptapi";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
-import { interpretColorOrFail } from "./color";
+import { colorIntsFromString, interpretColorOrFail } from "./color";
 import { wrapExistingGgbObject } from "./type-registry";
 import { OperationSlots, operationSlots } from "./operations";
 
@@ -271,6 +271,8 @@ type SharedGetSets = {
   is_visible: ReadWriteProperty;
   is_independent: ReadOnlyProperty;
   color: ReadWriteProperty;
+  color_ints: ReadOnlyProperty;
+  color_floats: ReadOnlyProperty;
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
 };
@@ -303,6 +305,22 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
     $set(this: SkGgbObject, pyColor: SkObject) {
       const mRGB = interpretColorOrFail(pyColor);
       ggbApi.setColor(this.$ggbLabel, ...mRGB);
+    },
+  },
+  color_ints: {
+    $get(this: SkGgbObject) {
+      const color = ggbApi.getColor(this.$ggbLabel);
+      const jsRgb = colorIntsFromString(color);
+      const pyRgb = jsRgb.map((x) => new Sk.builtin.int_(x));
+      return new Sk.builtin.tuple(pyRgb);
+    },
+  },
+  color_floats: {
+    $get(this: SkGgbObject) {
+      const color = ggbApi.getColor(this.$ggbLabel);
+      const jsRgb = colorIntsFromString(color);
+      const pyRgb = jsRgb.map((x) => new Sk.builtin.float_(x / 255.0));
+      return new Sk.builtin.tuple(pyRgb);
     },
   },
   size: {
