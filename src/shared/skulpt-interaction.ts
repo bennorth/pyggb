@@ -1,9 +1,13 @@
 import { SkulptInteractionApi, AppApi, UiApi } from "./appApi";
 import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
-import { SkBaseException, augmentedSkulptApi } from "./vendor-types/skulptapi";
+import {
+  SkBaseException,
+  SkulptApi,
+  augmentedSkulptApi,
+} from "./vendor-types/skulptapi";
 
-declare var Sk: any;
+declare var Sk: SkulptApi;
 
 export type ModuleFilename = string;
 export type ModuleContents = string;
