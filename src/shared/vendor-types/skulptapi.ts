@@ -77,18 +77,18 @@ type SkNoneT = {
 };
 
 type SkBuiltinT = {
-  int_: { new (obj: any): SkInt };
-  float_: { new (obj: any): SkFloat };
-  str: { new (obj: any): SkString };
-  bool: { new (obj: any): SkBool };
-  func: { new (f: SkJavaScriptFunction): SkObject };
-  list: { new (xs: SkObject | Array<SkObject>): SkList };
-  tuple: { new (xs: SkObject | Array<SkObject>): SkTuple };
+  int_: SkObject & { new (obj: any): SkInt };
+  float_: SkObject & { new (obj: any): SkFloat };
+  str: SkObject & { new (obj: any): SkString };
+  bool: SkObject & { new (obj: any): SkBool };
+  func: SkObject & { new (f: SkJavaScriptFunction): SkObject };
+  list: SkObject & { new (xs: SkObject | Array<SkObject>): SkList };
+  tuple: SkObject & { new (xs: SkObject | Array<SkObject>): SkTuple };
 
-  RuntimeError: { new (message: string): SkObject };
-  TypeError: { new (message: string): SkObject };
-  ValueError: { new (message: string): SkObject };
-  SystemExit: { new (): SkObject };
+  RuntimeError: SkObject & { new (message: string): SkObject };
+  TypeError: SkObject & { new (message: string): SkObject };
+  ValueError: SkObject & { new (message: string): SkObject };
+  SystemExit: SkObject & { new (): SkObject };
 
   isinstance(obj: SkObject, cls: SkObject): SkBool;
 
