@@ -23,7 +23,19 @@ export interface SkTuple extends SkObject {
   v: Array<SkObject>;
 }
 
+export interface SkTracebackEntry {
+  lineno: number;
+  colno: number;
+  filename: string;
+}
+
+export interface SkBaseException extends SkObject {
+  args: SkTuple;
+  traceback: Array<SkTracebackEntry>;
+}
+
 export interface SkObject {
+  tp$name: string;
   tp$setattr(
     this: SkObject,
     name: SkString,
@@ -65,18 +77,18 @@ type SkNoneT = {
 };
 
 type SkBuiltinT = {
-  int_: { new (obj: any): SkInt };
-  float_: { new (obj: any): SkFloat };
-  str: { new (obj: any): SkString };
-  bool: { new (obj: any): SkBool };
-  func: { new (f: SkJavaScriptFunction): SkObject };
-  list: { new (xs: SkObject | Array<SkObject>): SkList };
-  tuple: { new (xs: SkObject | Array<SkObject>): SkTuple };
+  int_: SkObject & { new (obj: any): SkInt };
+  float_: SkObject & { new (obj: any): SkFloat };
+  str: SkObject & { new (obj: any): SkString };
+  bool: SkObject & { new (obj: any): SkBool };
+  func: SkObject & { new (f: SkJavaScriptFunction): SkObject };
+  list: SkObject & { new (xs: SkObject | Array<SkObject>): SkList };
+  tuple: SkObject & { new (xs: SkObject | Array<SkObject>): SkTuple };
 
-  RuntimeError: { new (message: string): SkObject };
-  TypeError: { new (message: string): SkObject };
-  ValueError: { new (message: string): SkObject };
-  SystemExit: { new (): SkObject };
+  RuntimeError: SkObject & { new (message: string): SkObject };
+  TypeError: SkObject & { new (message: string): SkObject };
+  ValueError: SkObject & { new (message: string): SkObject };
+  SystemExit: SkObject & { new (): SkObject };
 
   isinstance(obj: SkObject, cls: SkObject): SkBool;
 
@@ -92,6 +104,7 @@ type SkMiscEvalT = {
   callsimOrSuspend: (fun: any) => any;
   arrayFromIterable: (obj: SkObject) => Array<SkObject>;
   promiseToSuspension(p: Promise<SkObject>): any;
+  asyncToPromise<T>(f: () => T): Promise<T>;
 };
 
 type SkFfiT = {
@@ -103,11 +116,24 @@ export type SkulptApi = {
   builtin: SkBuiltinT;
   misceval: SkMiscEvalT;
   ffi: SkFfiT;
+
+  configure(options: object): void;
+  python3: object;
+
+  importMainWithBody(
+    name: string,
+    dumpJS: boolean,
+    body: string,
+    canSuspend: boolean
+  ): void;
+
+  builtinFiles?: { files: { [filename: string]: string } };
 };
 
 declare var Sk: SkulptApi;
 
 type AugmentedSkulptApi = {
+  checkString(x: SkObject): x is SkString;
   checkList(x: SkObject): x is SkList;
   checkTuple(x: SkObject): x is SkTuple;
   checkInt(x: SkObject): x is SkInt;
@@ -115,6 +141,9 @@ type AugmentedSkulptApi = {
 };
 
 export const augmentedSkulptApi: AugmentedSkulptApi = {
+  checkString(x: SkObject): x is SkString {
+    return x instanceof Sk.builtin.str;
+  },
   checkList(x: SkObject): x is SkList {
     return x instanceof Sk.builtin.list;
   },

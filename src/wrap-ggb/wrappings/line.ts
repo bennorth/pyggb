@@ -1,6 +1,6 @@
 import { AppApi } from "../../shared/appApi";
 import { augmentedGgbApi, SkGgbObject, WrapExistingCtorSpec } from "../shared";
-import { SkulptApi } from "../skulptapi";
+import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
 

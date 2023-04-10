@@ -18,7 +18,7 @@ import { register as registerClearConsole } from "./app-ui/clear-console";
 
 import { register as registerInterruptibleSleep } from "./interruptible-sleep";
 
-import { SkulptApi } from "./skulptapi";
+import { SkulptApi } from "../shared/vendor-types/skulptapi";
 declare var Sk: SkulptApi;
 
 (globalThis as any).$skulptGgbModule = (appApi: AppApi) => {

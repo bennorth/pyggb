@@ -5,8 +5,8 @@ import {
   SkFloat,
   SkString,
   KeywordArgsArray,
-} from "./skulptapi";
-import { GgbApi } from "./ggbapi";
+} from "../shared/vendor-types/skulptapi";
+import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { interpretColorOrFail } from "./color";
 import { wrapExistingGgbObject } from "./type-registry";
 import { OperationSlots, operationSlots } from "./operations";
