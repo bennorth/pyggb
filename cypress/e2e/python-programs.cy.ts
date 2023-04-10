@@ -80,6 +80,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 4)
         B = Point(2, 1)
         k = Line(A, B)
+        k.line_thickness = 8
+        k.color = "blue"
       `,
     },
     {
@@ -117,6 +119,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 4)
         k = Circle(A, 2)
         l = Circle(A, Number(2))
+        l.line_thickness = 8
+        l.color = "red"
       `,
     },
     {
@@ -154,6 +158,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 0)
         B = Point(0, 4)
         v1 = Vector(A, B)
+        v1.line_thickness = 8
+        v1.color = "red"
       `,
     },
     {
@@ -184,6 +190,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         C = Point(-2, 1)
         D = Point(-1, -3)
         p = Polygon([A, B, C, D])
+        p.line_thickness = 8
+        p.color = "red"
         print("area =", p.area)
       `,
       expOutputs: ["area = 18.0"], // Pick's theorem
@@ -202,6 +210,8 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(0, Number(-4))
         k = Line(Point(-1, -5), Point(1, -5))
         p = Parabola(A, k)
+        p.line_thickness = 8
+        p.color = "red"
       `,
     },
     {
