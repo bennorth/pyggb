@@ -1,5 +1,10 @@
 import { AppApi } from "../../shared/appApi";
-import { augmentedGgbApi, SkGgbObject, WrapExistingCtorSpec } from "../shared";
+import {
+  augmentedGgbApi,
+  isInstance,
+  SkGgbObject,
+  WrapExistingCtorSpec,
+} from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
@@ -43,25 +48,18 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, _kwargs) {
-        const spec: SkGgbLineCtorSpec = (() => {
-          if (args.length !== 2) {
-            throw new Sk.builtin.TypeError("bad Line() args; need 2 args");
-          }
+        if (args.length !== 2) {
+          throw new Sk.builtin.TypeError("bad Line() args; need 2 args");
+        }
 
-          if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
-            throw new Sk.builtin.TypeError("bad Line() args; first not Point");
-          }
+        if (args.every(isInstance(mod.Point))) {
+          const points = [args[0] as SkGgbObject, args[1] as SkGgbObject];
+          return new mod.Line({ kind: "point-point", points });
+        }
 
-          if (Sk.builtin.isinstance(args[1], mod.Point).v) {
-            const points = [args[0] as SkGgbObject, args[1] as SkGgbObject];
-            return { kind: "point-point", points };
-          }
-
-          throw new Sk.builtin.TypeError(
-            "bad Line() args; unhandled type of second"
-          );
-        })();
-        return new mod.Line(spec);
+        throw new Sk.builtin.TypeError(
+          "bad 2-arg Line() call: must be (Point, Point)"
+        );
       },
     },
     methods: {
