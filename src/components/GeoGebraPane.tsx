@@ -1,6 +1,5 @@
 import { useStoreActions } from "../store";
 import React, { useEffect } from "react";
-import { cssValue } from "../shared/utils";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
 
 declare var GGBApplet: any;
