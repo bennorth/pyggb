@@ -57,16 +57,25 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, _kwargs) {
-        if (args.length !== 2)
-          throw new Sk.builtin.TypeError("expected 2 args for Parabola()");
-        ggb.throwIfNotGgbObjectOfType(args[0], "point", "Parabola ctor arg[0]");
-        ggb.throwIfNotGgbObjectOfType(args[1], "line", "Parabola ctor arg[1]");
+        if (args.length === 2) {
+          ggb.throwIfNotGgbObjectOfType(
+            args[0],
+            "point",
+            "Parabola ctor arg[0]"
+          );
+          ggb.throwIfNotGgbObjectOfType(
+            args[1],
+            "line",
+            "Parabola ctor arg[1]"
+          );
 
-        return new mod.Parabola({
-          kind: "focus-directrix",
-          focus: args[0],
-          directrix: args[1],
-        });
+          return new mod.Parabola({
+            kind: "focus-directrix",
+            focus: args[0],
+            directrix: args[1],
+          });
+        }
+        throw new Sk.builtin.TypeError("expected 2 args for Parabola()");
       },
     },
     methods: {
