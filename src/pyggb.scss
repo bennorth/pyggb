@@ -1,11 +1,3 @@
-$pyggbGeoGebraPaneWidth: 640;
-$pyggbGeoGebraPaneHeight: 640;
-
-:root {
-  --pyggb-geogebra-pane-width: #{$pyggbGeoGebraPaneWidth};
-  --pyggb-geogebra-pane-height: #{$pyggbGeoGebraPaneHeight};
-}
-
 App {
   position: absolute;
   width: 100%;
@@ -66,7 +58,7 @@ App {
 
   .main-content {
     display: grid;
-    grid-template-columns: 1fr #{$pyggbGeoGebraPaneWidth}px;
+    grid-template-columns: 1fr 1fr;
 
     .editor-maybe-errors-outer {
       position: relative;
@@ -164,14 +156,8 @@ App {
 
     .results {
       display: grid;
-      grid-template-rows: #{$pyggbGeoGebraPaneHeight}px 1fr;
+      grid-template-rows: 2fr minmax(9rem, 1fr);
 
-      .ggb {
-        .GeoGebraPane {
-          width: #{$pyggbGeoGebraPaneWidth}px;
-          height: #{$pyggbGeoGebraPaneHeight}px;
-        }
-      }
       .stdout-outer {
         background-color: #303030;
         color: #eee;

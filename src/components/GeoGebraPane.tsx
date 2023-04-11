@@ -1,6 +1,6 @@
 import { useStoreActions } from "../store";
 import React, { useEffect } from "react";
-import { cssValue } from "../shared/utils";
+import { GgbApi } from "../shared/vendor-types/ggbapi";
 
 declare var GGBApplet: any;
 
@@ -31,12 +31,20 @@ export const GeoGebraPane: React.FC<{}> = () => {
   const setGgbAppletApi = useStoreActions((a) => a.dependencies.setGgbApi);
 
   const divId = nextAppletDivId();
+  const containerId = `container-${divId}`;
+
+  let ggbApi: GgbApi | null = null;
 
   useEffect(() => {
+    const containerDiv = document.getElementById(containerId)?.parentElement;
+    if (containerDiv == null) {
+      console.error(`no containerDiv (parent of id "${containerId}")`);
+      return;
+    }
+
     const params = {
-      scaleContainerClass: "GeoGebraPane",
-      width: cssValue("--pyggb-geogebra-pane-width"),
-      height: cssValue("--pyggb-geogebra-pane-height"),
+      width: 1, // Will be overridden on load
+      height: 1, // Will be overridden on load
       showToolBar: false,
       showAlgebraInput: false,
       showMenuBar: false,
@@ -51,16 +59,32 @@ export const GeoGebraPane: React.FC<{}> = () => {
       preventFocus: false,
       showZoomButtons: true,
       appletOnLoad: (api: any) => {
+        ggbApi = api;
         api.setPerspective("G");
         setGgbAppletApi(api);
+        api.setSize(containerDiv.clientWidth, containerDiv.clientHeight);
       },
     };
 
     const appletDiv = document.getElementById(divId);
     if (appletDiv == null) {
-      console.error(`no appletDiv; could not find id "${divId}"`);
+      console.error(`no appletDiv (id "${divId}")`);
       return;
     }
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      if (ggbApi == null) {
+        // Maybe the applet hasn't loaded yet.
+        return;
+      }
+
+      const lastEntry = entries[entries.length - 1];
+      const contentBox = lastEntry.contentBoxSize[0];
+      const boxWidth = contentBox.inlineSize;
+      const boxHeight = contentBox.blockSize;
+      ggbApi.setSize(boxWidth, boxHeight);
+    });
+    resizeObserver.observe(containerDiv);
 
     const doneInject = appletDiv.getAttribute("data-PyGgb-injected") === "yes";
     if (doneInject) {
@@ -75,10 +99,14 @@ export const GeoGebraPane: React.FC<{}> = () => {
     }
 
     ggbApplet.inject(divId);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   });
 
   return (
-    <div className="GeoGebraPane">
+    <div className="GeoGebraPane" id={containerId}>
       <div id={divId}></div>
     </div>
   );
