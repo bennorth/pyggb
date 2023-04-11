@@ -57,8 +57,12 @@ export const register = (mod: any, appApi: AppApi) => {
           return new mod.Line({ kind: "point-point", points });
         }
 
+        if (args.every(ggb.isPythonOrGgbNumber)) {
+          return new mod.Line({ kind: "coefficients", coeffs: args });
+        }
+
         throw new Sk.builtin.TypeError(
-          "bad 2-arg Line() call: must be (Point, Point)"
+          "bad 2-arg Line() call: must be (Point, Point) or (m, c)"
         );
       },
     },
