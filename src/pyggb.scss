@@ -166,12 +166,6 @@ App {
       display: grid;
       grid-template-rows: 2fr minmax(9rem, 1fr);
 
-      .ggb {
-        .GeoGebraPane {
-          width: #{$pyggbGeoGebraPaneWidth}px;
-          height: #{$pyggbGeoGebraPaneHeight}px;
-        }
-      }
       .stdout-outer {
         background-color: #303030;
         color: #eee;
