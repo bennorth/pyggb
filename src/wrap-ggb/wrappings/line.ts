@@ -17,23 +17,21 @@ export const register = (mod: any, appApi: AppApi) => {
 
   const cls = Sk.abstr.buildNativeClass("Line", {
     constructor: function Line(this: SkGgbLine, spec: SkGgbLineCtorSpec) {
-      // TODO: This is messy; tidy up:
-      if (spec.kind === "wrap-existing") {
-        this.$ggbLabel = spec.label;
-        return;
-      }
-
-      const ggbArgs = (() => {
-        switch (spec.kind) {
-          case "point-point":
-            return spec.points.map((p) => p.$ggbLabel).join(",");
-          default:
-            throw new Sk.builtin.RuntimeError("should not get here");
+      switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          return;
         }
-      })();
-      const ggbCmd = `Line(${ggbArgs})`;
-      const lbl = ggb.evalCmd(ggbCmd);
-      this.$ggbLabel = lbl;
+        case "point-point": {
+          const ggbArgs = spec.points.map((p) => p.$ggbLabel).join(",");
+          const ggbCmd = `Line(${ggbArgs})`;
+          const lbl = ggb.evalCmd(ggbCmd);
+          this.$ggbLabel = lbl;
+          return;
+        }
+        default:
+          throw new Sk.builtin.RuntimeError("Point(): Bad ctor args");
+      }
     },
     slots: {
       tp$new(args, _kwargs) {
