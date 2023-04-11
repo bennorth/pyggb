@@ -1,6 +1,7 @@
 import { useStoreActions } from "../store";
 import React, { useEffect } from "react";
 import { cssValue } from "../shared/utils";
+import { GgbApi } from "../shared/vendor-types/ggbapi";
 
 declare var GGBApplet: any;
 
@@ -32,6 +33,8 @@ export const GeoGebraPane: React.FC<{}> = () => {
 
   const divId = nextAppletDivId();
 
+  let ggbApi: GgbApi | null = null;
+
   useEffect(() => {
     const params = {
       scaleContainerClass: "GeoGebraPane",
@@ -51,6 +54,7 @@ export const GeoGebraPane: React.FC<{}> = () => {
       preventFocus: false,
       showZoomButtons: true,
       appletOnLoad: (api: any) => {
+        ggbApi = api;
         api.setPerspective("G");
         setGgbAppletApi(api);
       },
