@@ -85,6 +85,12 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       `,
     },
     {
+      label: "Line(m, c)",
+      code: `
+        k = Line(0.5, 3)
+      `,
+    },
+    {
       label: "Point(x, y, kwargs)",
       code: `
         A = Point(3, 4, color="#f00", size=8)
