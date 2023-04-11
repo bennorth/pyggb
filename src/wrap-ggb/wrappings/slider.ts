@@ -129,6 +129,9 @@ export const register = (mod: any, appApi: AppApi) => {
         return new mod.Slider(spec);
       },
     },
+    getsets: {
+      value: ggb.sharedGetSets.value,
+    },
   });
 
   mod.Slider = cls;
