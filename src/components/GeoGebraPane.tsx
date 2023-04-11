@@ -68,7 +68,7 @@ export const GeoGebraPane: React.FC<{}> = () => {
 
     const appletDiv = document.getElementById(divId);
     if (appletDiv == null) {
-      console.error(`no appletDiv; could not find id "${divId}"`);
+      console.error(`no appletDiv (id "${divId}")`);
       return;
     }
 
