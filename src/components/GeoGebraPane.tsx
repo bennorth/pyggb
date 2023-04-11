@@ -32,6 +32,7 @@ export const GeoGebraPane: React.FC<{}> = () => {
   const setGgbAppletApi = useStoreActions((a) => a.dependencies.setGgbApi);
 
   const divId = nextAppletDivId();
+  const containerId = `container-${divId}`;
 
   let ggbApi: GgbApi | null = null;
 
@@ -82,7 +83,7 @@ export const GeoGebraPane: React.FC<{}> = () => {
   });
 
   return (
-    <div className="GeoGebraPane" id={`container-${divId}`}>
+    <div className="GeoGebraPane" id={containerId}>
       <div id={divId}></div>
     </div>
   );
