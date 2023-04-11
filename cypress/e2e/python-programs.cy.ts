@@ -215,6 +215,14 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       `,
     },
     {
+      label: "Parabola(a, b, c)",
+      code: `
+        p = Parabola(2, 1, -2)
+        A = Point(-0.25, -4)
+        assert(Distance(A, p) == 1.875)
+      `,
+    },
+    {
       label: "Distance(Point, Point)",
       code: `
         A = Point(-3, 0)
