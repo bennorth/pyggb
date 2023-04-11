@@ -164,7 +164,7 @@ App {
 
     .results {
       display: grid;
-      grid-template-rows: #{$pyggbGeoGebraPaneHeight}px 1fr;
+      grid-template-rows: 2fr minmax(9rem, 1fr);
 
       .ggb {
         .GeoGebraPane {
