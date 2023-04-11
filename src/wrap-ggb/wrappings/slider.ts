@@ -135,5 +135,5 @@ export const register = (mod: any, appApi: AppApi) => {
   });
 
   mod.Slider = cls;
-  registerObjectType("slider", cls); // TODO: Check GeoGebra type name
+  // Slider objects show up as "numeric".
 };
