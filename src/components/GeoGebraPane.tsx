@@ -73,6 +73,20 @@ export const GeoGebraPane: React.FC<{}> = () => {
       return;
     }
 
+    const resizeObserver = new ResizeObserver((entries) => {
+      if (ggbApi == null) {
+        // Maybe the applet hasn't loaded yet.
+        return;
+      }
+
+      const lastEntry = entries[entries.length - 1];
+      const contentBox = lastEntry.contentBoxSize[0];
+      const boxWidth = contentBox.inlineSize;
+      const boxHeight = contentBox.blockSize;
+      ggbApi.setSize(boxWidth, boxHeight);
+    });
+    resizeObserver.observe(containerDiv);
+
     const doneInject = appletDiv.getAttribute("data-PyGgb-injected") === "yes";
     if (doneInject) {
       return;
@@ -86,6 +100,10 @@ export const GeoGebraPane: React.FC<{}> = () => {
     }
 
     ggbApplet.inject(divId);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   });
 
   return (
