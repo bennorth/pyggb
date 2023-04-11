@@ -37,10 +37,15 @@ export const GeoGebraPane: React.FC<{}> = () => {
   let ggbApi: GgbApi | null = null;
 
   useEffect(() => {
+    const containerDiv = document.getElementById(containerId)?.parentElement;
+    if (containerDiv == null) {
+      console.error(`no containerDiv (parent of id "${containerId}")`);
+      return;
+    }
+
     const params = {
-      scaleContainerClass: "GeoGebraPane",
-      width: cssValue("--pyggb-geogebra-pane-width"),
-      height: cssValue("--pyggb-geogebra-pane-height"),
+      width: 1, // Will be overridden on load
+      height: 1, // Will be overridden on load
       showToolBar: false,
       showAlgebraInput: false,
       showMenuBar: false,
@@ -58,6 +63,7 @@ export const GeoGebraPane: React.FC<{}> = () => {
         ggbApi = api;
         api.setPerspective("G");
         setGgbAppletApi(api);
+        api.setSize(containerDiv.clientWidth, containerDiv.clientHeight);
       },
     };
 
