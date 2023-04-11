@@ -54,6 +54,14 @@ export const register = (mod: any, appApi: AppApi) => {
           console.log("Made Parabola?", lbl, spec);
           break;
         }
+        case "coefficients": {
+          const ggbCoeffs = spec.coeffs.map(ggb.numberValueOrLabel);
+          const ggbCmd = `y=(${ggbCoeffs[0]})x^2 + (${ggbCoeffs[1]})x + (${ggbCoeffs[2]})`;
+          const lbl = ggb.evalCmd(ggbCmd);
+          this.$ggbLabel = lbl;
+          // TODO: Set focus and directrix?
+          break;
+        }
         default:
           throw new Sk.builtin.RuntimeError(
             `bad Parabola spec.kind "${(spec as any).kind}"`
