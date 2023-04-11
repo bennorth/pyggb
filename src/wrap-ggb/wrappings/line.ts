@@ -30,6 +30,13 @@ export const register = (mod: any, appApi: AppApi) => {
           this.$ggbLabel = lbl;
           return;
         }
+        case "coefficients": {
+          const ggbCoeffs = spec.coeffs.map(ggb.numberValueOrLabel);
+          const ggbCmd = `y=(${ggbCoeffs[0]})x + (${ggbCoeffs[1]})`;
+          const lbl = ggb.evalCmd(ggbCmd);
+          this.$ggbLabel = lbl;
+          return;
+        }
         default:
           throw new Sk.builtin.RuntimeError("Point(): Bad ctor args");
       }
