@@ -5,7 +5,7 @@ import {
   SkGgbObject,
   AugmentedGgbApi,
 } from "../shared";
-import { SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi;
@@ -21,6 +21,10 @@ type SkGgbParabolaCtorSpec =
       kind: "focus-directrix";
       focus: SkGgbObject;
       directrix: SkGgbObject;
+    }
+  | {
+      kind: "coefficients";
+      coeffs: [SkObject, SkObject, SkObject];
     };
 
 export const register = (mod: any, appApi: AppApi) => {
