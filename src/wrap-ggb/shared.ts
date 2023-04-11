@@ -57,6 +57,10 @@ function _isGgbObject(obj: SkObject): obj is SkGgbObject {
   return "$ggbLabel" in obj;
 }
 
+function _ggbObjectType(ggbApi: GgbApi, obj: SkGgbObject): string {
+  return ggbApi.getObjectType(obj.$ggbLabel);
+}
+
 /** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject` of
  * the given GeoGebra type `requiredType` (for example, `"circle"`).  If
  * `requiredType` is omitted, test only whether `obj` is an
