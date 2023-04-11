@@ -151,6 +151,7 @@ export const register = (mod: any, appApi: AppApi) => {
           return this.$radiusNumber();
         },
       },
+      _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });
 

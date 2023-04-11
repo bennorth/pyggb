@@ -131,6 +131,7 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     getsets: {
       value: ggb.sharedGetSets.value,
+      _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });
 
