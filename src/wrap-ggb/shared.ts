@@ -280,6 +280,7 @@ type SharedGetSets = {
   color_floats: ReadOnlyProperty;
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
+  _ggb_type: ReadOnlyProperty;
 };
 
 /** Construct and return an object which contains various common
@@ -355,6 +356,11 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
       throwIfNotNumber(pyThickness, "line_thickness must be a number");
       // TODO: Verify integer and in range [1, 13]
       ggbApi.setLineThickness(this.$ggbLabel, pyThickness.v);
+    },
+  },
+  _ggb_type: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.str(ggbApi.getObjectType(this.$ggbLabel));
     },
   },
 });
