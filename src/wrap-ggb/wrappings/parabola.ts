@@ -88,6 +88,18 @@ export const register = (mod: any, appApi: AppApi) => {
             directrix: args[1],
           });
         }
+        if (args.length === 3) {
+          if (!args.every(ggb.isPythonOrGgbNumber)) {
+            throw new Sk.builtin.TypeError(
+              "Parabola(a, b, c): All args must be numbers"
+            );
+          }
+
+          return new mod.Parabola({
+            kind: "coefficients",
+            coeffs: args,
+          });
+        }
         throw new Sk.builtin.TypeError("expected 2 args for Parabola()");
       },
     },
