@@ -66,7 +66,7 @@ App {
 
   .main-content {
     display: grid;
-    grid-template-columns: 1fr #{$pyggbGeoGebraPaneWidth}px;
+    grid-template-columns: 1fr 1fr;
 
     .editor-maybe-errors-outer {
       position: relative;
