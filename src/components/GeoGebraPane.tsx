@@ -82,7 +82,7 @@ export const GeoGebraPane: React.FC<{}> = () => {
   });
 
   return (
-    <div className="GeoGebraPane">
+    <div className="GeoGebraPane" id={`container-${divId}`}>
       <div id={divId}></div>
     </div>
   );
