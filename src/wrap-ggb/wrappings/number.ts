@@ -56,16 +56,7 @@ export const register = (mod: any, appApi: AppApi) => {
       ...ggb.freeCopyMethodsSlice,
     },
     getsets: {
-      value: {
-        $get(this: SkGgbNumber) {
-          // TODO: Consider cache so get self-same Python float every time.
-          return new Sk.builtin.float_(this.$value());
-        },
-        $set(this: SkGgbNumber, pyValue: SkObject) {
-          throwIfNotNumber(pyValue, "value");
-          ggb.setValue(this.$ggbLabel, pyValue.v);
-        },
-      },
+      value: ggb.sharedGetSets.value,
     },
   });
 
