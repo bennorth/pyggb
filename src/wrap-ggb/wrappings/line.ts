@@ -1,6 +1,6 @@
 import { AppApi } from "../../shared/appApi";
 import { augmentedGgbApi, SkGgbObject, WrapExistingCtorSpec } from "../shared";
-import { SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
 
@@ -10,7 +10,8 @@ interface SkGgbLine extends SkGgbObject {}
 
 type SkGgbLineCtorSpec =
   | WrapExistingCtorSpec
-  | { kind: "point-point"; points: Array<SkGgbObject> };
+  | { kind: "point-point"; points: Array<SkGgbObject> }
+  | { kind: "coefficients"; coeffs: [SkObject, SkObject] };
 
 export const register = (mod: any, appApi: AppApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
