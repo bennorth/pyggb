@@ -38,7 +38,7 @@ export const register = (mod: any, appApi: AppApi) => {
       }
 
       switch (spec.kind) {
-        case "focus-directrix":
+        case "focus-directrix": {
           // TODO: Check focus is a point and directrix is a line.  Where does
           // that check belong?
           const ggbArgs = `${spec.focus.$ggbLabel},${spec.directrix.$ggbLabel}`;
@@ -49,6 +49,7 @@ export const register = (mod: any, appApi: AppApi) => {
           this.directrix = spec.directrix;
           console.log("Made Parabola?", lbl, spec);
           break;
+        }
         default:
           throw new Sk.builtin.RuntimeError(
             `bad Parabola spec.kind "${(spec as any).kind}"`
