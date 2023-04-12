@@ -1,8 +1,6 @@
 """
 Set and get properties of a point
 
-**Does not work yet.**
-
 Work with properties (like coordinates and colors) of a `Point` in the
 standard Python style.
 """
