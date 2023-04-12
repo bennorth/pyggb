@@ -270,6 +270,7 @@ type ReadWriteProperty = ReadOnlyProperty & {
 type SharedGetSets = {
   is_visible: ReadWriteProperty;
   is_independent: ReadOnlyProperty;
+  value: ReadWriteProperty;
   color: ReadWriteProperty;
   color_ints: ReadOnlyProperty;
   color_floats: ReadOnlyProperty;
@@ -295,6 +296,15 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
   is_independent: {
     $get(this: SkGgbObject) {
       return new Sk.builtin.bool(ggbApi.isIndependent(this.$ggbLabel));
+    },
+  },
+  value: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.float_(ggbApi.getValue(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyValue: SkObject) {
+      throwIfNotNumber(pyValue, "value");
+      ggbApi.setValue(this.$ggbLabel, pyValue.v);
     },
   },
   color: {
