@@ -57,8 +57,12 @@ function _isGgbObject(obj: SkObject): obj is SkGgbObject {
   return "$ggbLabel" in obj;
 }
 
-function _ggbObjectType(ggbApi: GgbApi, obj: SkGgbObject): string {
-  return ggbApi.getObjectType(obj.$ggbLabel);
+function _ggbType(ggbApi: GgbApi, objOrLabel: SkGgbObject | string): string {
+  if (typeof objOrLabel === "string") {
+    return ggbApi.getObjectType(objOrLabel);
+  } else {
+    return ggbApi.getObjectType(objOrLabel.$ggbLabel);
+  }
 }
 
 /** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject` of
