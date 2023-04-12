@@ -1,5 +1,3 @@
-// TODO: This needs review before it can be used.
-
 import { AppApi } from "../../shared/appApi";
 import {
   augmentedGgbApi,
