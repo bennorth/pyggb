@@ -5,7 +5,7 @@ import {
   SkGgbObject,
   AugmentedGgbApi,
 } from "../shared";
-import { SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi;
@@ -21,6 +21,10 @@ type SkGgbParabolaCtorSpec =
       kind: "focus-directrix";
       focus: SkGgbObject;
       directrix: SkGgbObject;
+    }
+  | {
+      kind: "coefficients";
+      coeffs: [SkObject, SkObject, SkObject];
     };
 
 export const register = (mod: any, appApi: AppApi) => {
@@ -38,7 +42,7 @@ export const register = (mod: any, appApi: AppApi) => {
       }
 
       switch (spec.kind) {
-        case "focus-directrix":
+        case "focus-directrix": {
           // TODO: Check focus is a point and directrix is a line.  Where does
           // that check belong?
           const ggbArgs = `${spec.focus.$ggbLabel},${spec.directrix.$ggbLabel}`;
@@ -49,6 +53,15 @@ export const register = (mod: any, appApi: AppApi) => {
           this.directrix = spec.directrix;
           console.log("Made Parabola?", lbl, spec);
           break;
+        }
+        case "coefficients": {
+          const ggbCoeffs = spec.coeffs.map(ggb.numberValueOrLabel);
+          const ggbCmd = `y=(${ggbCoeffs[0]})x^2 + (${ggbCoeffs[1]})x + (${ggbCoeffs[2]})`;
+          const lbl = ggb.evalCmd(ggbCmd);
+          this.$ggbLabel = lbl;
+          // TODO: Set focus and directrix?
+          break;
+        }
         default:
           throw new Sk.builtin.RuntimeError(
             `bad Parabola spec.kind "${(spec as any).kind}"`
@@ -57,16 +70,37 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, _kwargs) {
-        if (args.length !== 2)
-          throw new Sk.builtin.TypeError("expected 2 args for Parabola()");
-        ggb.throwIfNotGgbObjectOfType(args[0], "point", "Parabola ctor arg[0]");
-        ggb.throwIfNotGgbObjectOfType(args[1], "line", "Parabola ctor arg[1]");
+        if (args.length === 2) {
+          ggb.throwIfNotGgbObjectOfType(
+            args[0],
+            "point",
+            "Parabola ctor arg[0]"
+          );
+          ggb.throwIfNotGgbObjectOfType(
+            args[1],
+            "line",
+            "Parabola ctor arg[1]"
+          );
 
-        return new mod.Parabola({
-          kind: "focus-directrix",
-          focus: args[0],
-          directrix: args[1],
-        });
+          return new mod.Parabola({
+            kind: "focus-directrix",
+            focus: args[0],
+            directrix: args[1],
+          });
+        }
+        if (args.length === 3) {
+          if (!args.every(ggb.isPythonOrGgbNumber)) {
+            throw new Sk.builtin.TypeError(
+              "Parabola(a, b, c): All args must be numbers"
+            );
+          }
+
+          return new mod.Parabola({
+            kind: "coefficients",
+            coeffs: args,
+          });
+        }
+        throw new Sk.builtin.TypeError("expected 2 args for Parabola()");
       },
     },
     methods: {

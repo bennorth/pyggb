@@ -85,6 +85,12 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       `,
     },
     {
+      label: "Line(m, c)",
+      code: `
+        k = Line(0.5, 3)
+      `,
+    },
+    {
       label: "Point(x, y, kwargs)",
       code: `
         A = Point(3, 4, color="#f00", size=8)
@@ -212,6 +218,14 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         p = Parabola(A, k)
         p.line_thickness = 8
         p.color = "red"
+      `,
+    },
+    {
+      label: "Parabola(a, b, c)",
+      code: `
+        p = Parabola(2, 1, -2)
+        A = Point(-0.25, -4)
+        assert(Distance(A, p) == 1.875)
       `,
     },
     {
