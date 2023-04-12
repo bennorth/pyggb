@@ -80,6 +80,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 4)
         B = Point(2, 1)
         k = Line(A, B)
+        assert(k._ggb_type == "line")
         k.line_thickness = 8
         k.color = "blue"
       `,
@@ -88,12 +89,14 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       label: "Line(m, c)",
       code: `
         k = Line(0.5, 3)
+        assert(k._ggb_type == "line")
       `,
     },
     {
       label: "Point(x, y, kwargs)",
       code: `
         A = Point(3, 4, color="#f00", size=8)
+        assert(A._ggb_type == "point")
         B = Point(1, -5, is_visible=False)
         print(A.color)
       `,
@@ -103,6 +106,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       label: "Number",
       code: `
         x = Number(3.25)
+        assert(x._ggb_type == "numeric")
         print("x1 =", x.value)
         x.value = 4.5
         print("x2 =", x.value)
@@ -113,6 +117,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       label: "Boolean",
       code: `
         x = Boolean(True)
+        assert(x._ggb_type == "boolean")
         print("x1 =", x.value)
         x.value = False
         print("x2 =", x.value)
@@ -124,6 +129,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       code: `
         A = Point(3, 4)
         k = Circle(A, 2)
+        assert(k._ggb_type == "circle")
         l = Circle(A, Number(2))
         l.line_thickness = 8
         l.color = "red"
@@ -135,6 +141,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 2)
         B = Point(6, 2)
         k = Circle(A, B)
+        assert(k._ggb_type == "circle")
         print("radius =", k.radius)
       `,
       expOutputs: ["radius = 3.0"],
@@ -146,6 +153,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         B = Point(0, 2)
         C = Point(-2, 0)
         k = Circle(A, B, C)
+        assert(k._ggb_type == "circle")
         print("radius =", k.radius)
       `,
       expOutputs: ["radius = 2.0"],
@@ -154,6 +162,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       label: "Circle(Number, Number, Number)",
       code: `
         k = Circle(1, Number(2), 3.5)
+        assert(k._ggb_type == "circle")
         print("radius =", k.radius)
       `,
       expOutputs: ["radius = 3.5"],
@@ -164,6 +173,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 0)
         B = Point(0, 4)
         v1 = Vector(A, B)
+        assert(v1._ggb_type == "vector")
         v1.line_thickness = 8
         v1.color = "red"
       `,
@@ -172,6 +182,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       label: "Vector(Number, Number)",
       code: `
         v1 = Vector(3, 4)
+        assert(v1._ggb_type == "vector")
         v2 = Vector(2, Number(1))
         v3 = Vector(Number(4), -1)
         v4 = Vector(Number(3), Number(-2))
@@ -183,6 +194,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 0)
         B = Point(0, 4)
         k = Segment(A, B, line_thickness=8)
+        assert(k._ggb_type == "segment")
         print("length =", k.length)
         print("thickness =", k.line_thickness)
       `,
@@ -196,6 +208,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         C = Point(-2, 1)
         D = Point(-1, -3)
         p = Polygon([A, B, C, D])
+        assert(p._ggb_type == "quadrilateral")
         p.line_thickness = 8
         p.color = "red"
         print("area =", p.area)
@@ -208,6 +221,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(-2, -2)
         B = Point(0, -2)
         p = Polygon(A, B, 6)
+        assert(p._ggb_type == "polygon")
       `,
     },
     {
@@ -216,6 +230,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(0, Number(-4))
         k = Line(Point(-1, -5), Point(1, -5))
         p = Parabola(A, k)
+        assert(p._ggb_type == "parabola")
         p.line_thickness = 8
         p.color = "red"
       `,
@@ -224,6 +239,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       label: "Parabola(a, b, c)",
       code: `
         p = Parabola(2, 1, -2)
+        assert(p._ggb_type == "parabola")
         A = Point(-0.25, -4)
         assert(Distance(A, p) == 1.875)
       `,
@@ -308,6 +324,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       label: "Slider",
       code: `
         coeff_b = Slider(1, 5, increment=0.1)
+        assert(coeff_b._ggb_type == "numeric")
         parabola = Parabola(1.5, coeff_b, 0)
         line = Line(1, 0)
         intersections = Intersect(parabola, line)
@@ -365,6 +382,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       code: `
         A = Point(3, 4)
         A1 = A.free_copy()
+        assert(A1._ggb_type == "point")
         A.x = 4
         A1.x = 2
       `,
@@ -374,6 +392,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       code: `
         k = Circle(3, 4, 5)
         k1 = k.free_copy()
+        assert(k1._ggb_type == "circle")
       `,
     },
     {
@@ -383,6 +402,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         B = Point(2, 1)
         k = Line(A, B)
         k1 = k.free_copy()
+        assert(k1._ggb_type == "line")
       `,
     },
     {
@@ -392,6 +412,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         B = Number(3.0)
         x1 = A.x_number + B
         x2 = x1.free_copy()
+        assert(x2._ggb_type == "numeric")
       `,
     },
     {
@@ -400,6 +421,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         A = Point(3, 4)
         p = Function.compare_LT(A.x_number, A.y_number)
         p1 = p.free_copy()
+        assert(p1._ggb_type == "boolean")
       `,
     },
     {
@@ -409,6 +431,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         B = Point(1, 1)
         v = Vector(A, B)
         v1 = v.free_copy()
+        assert(v1._ggb_type == "vector")
       `,
     },
     {
@@ -418,6 +441,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         B = Point(1, 1)
         s = Segment(A, B)
         s1 = s.free_copy()
+        assert(s1._ggb_type == "segment")
       `,
     },
     {
@@ -429,6 +453,7 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         k = Line(B, C)
         c = Parabola(A, k)
         c1 = c.free_copy()
+        assert(c1._ggb_type == "parabola")
       `,
     },
   ];

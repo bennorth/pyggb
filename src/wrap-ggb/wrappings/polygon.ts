@@ -11,6 +11,10 @@ import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi;
 
+// TODO: If we pass an explicit list of points, we get a GGB object with
+// type like "quadrilateral" or "pentagon".  Haven't tested to see how
+// far this goes.  What are the consequences for, e.g., wrap-existing?
+
 interface SkGgbPolygon extends SkGgbObject {
   segments: Array<SkObject>;
 }
@@ -110,6 +114,7 @@ export const register = (mod: any, appApi: AppApi) => {
       color_ints: ggb.sharedGetSets.color_ints,
       color_floats: ggb.sharedGetSets.color_floats,
       line_thickness: ggb.sharedGetSets.line_thickness,
+      _ggb_type: ggb.sharedGetSets._ggb_type,
       // TODO: List of segments?
     },
   });

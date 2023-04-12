@@ -58,6 +58,7 @@ export const register = (mod: any, appApi: AppApi) => {
           ggb.setValue(this.$ggbLabel, value ? 1.0 : 0.0);
         },
       },
+      _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });
 

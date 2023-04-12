@@ -57,6 +57,10 @@ function _isGgbObject(obj: SkObject): obj is SkGgbObject {
   return "$ggbLabel" in obj;
 }
 
+function _ggbObjectType(ggbApi: GgbApi, obj: SkGgbObject): string {
+  return ggbApi.getObjectType(obj.$ggbLabel);
+}
+
 /** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject` of
  * the given GeoGebra type `requiredType` (for example, `"circle"`).  If
  * `requiredType` is omitted, test only whether `obj` is an
@@ -276,6 +280,7 @@ type SharedGetSets = {
   color_floats: ReadOnlyProperty;
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
+  _ggb_type: ReadOnlyProperty;
 };
 
 /** Construct and return an object which contains various common
@@ -351,6 +356,11 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
       throwIfNotNumber(pyThickness, "line_thickness must be a number");
       // TODO: Verify integer and in range [1, 13]
       ggbApi.setLineThickness(this.$ggbLabel, pyThickness.v);
+    },
+  },
+  _ggb_type: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.str(ggbApi.getObjectType(this.$ggbLabel));
     },
   },
 });

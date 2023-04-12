@@ -83,6 +83,7 @@ export const register = (mod: any, appApi: AppApi) => {
       color_ints: ggb.sharedGetSets.color_ints,
       color_floats: ggb.sharedGetSets.color_floats,
       line_thickness: ggb.sharedGetSets.line_thickness,
+      _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });
 

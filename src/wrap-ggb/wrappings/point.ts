@@ -158,6 +158,7 @@ export const register = (mod: any, appApi: AppApi) => {
           return this.$ggbNumberY;
         },
       },
+      _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });
 
