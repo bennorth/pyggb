@@ -305,6 +305,25 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       expOutputs: ["B = (2.4142, 4.4142)"],
     },
     {
+      label: "Slider",
+      code: `
+        coeff_b = Slider(1, 5, increment=0.1)
+        parabola = Parabola(1.5, coeff_b, 0)
+        line = Line(1, 0)
+        intersections = Intersect(parabola, line)
+        assert(len(intersections) == 1)
+        assert(intersections[0].x == 0.0)
+        assert(intersections[0].y == 0.0)
+        coeff_b.value = 4.0
+        intersections = Intersect(parabola, line)
+        assert(len(intersections) == 2)
+        assert(intersections[0].x == 0.0)
+        assert(intersections[0].y == 0.0)
+        assert(intersections[1].x == -2.0)
+        assert(intersections[1].y == -2.0)
+      `,
+    },
+    {
       label: "ClearConsole",
       code: `
         print("hello world")
