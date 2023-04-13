@@ -111,7 +111,7 @@ export const register = (
 
         throw new Sk.builtin.TypeError(
           "Point() arguments must be" +
-            " (x_coord, y_coord);" +
+            " (x_coord, y_coord)," +
             " or (ggb_object, parameter)"
         );
       },
