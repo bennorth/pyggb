@@ -50,7 +50,7 @@ const createNewPyGgbFile = () => {
 // per small program we run.  We just keep entering new programs into
 // the same pyggb "file".
 //
-describe("Runs Python programs", { testIsolation: false }, () => {
+describe("Runs valid Python programs", { testIsolation: false }, () => {
   before(createNewPyGgbFile);
 
   type RunsWithoutErrorSpec = {
