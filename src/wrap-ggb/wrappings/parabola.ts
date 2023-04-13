@@ -4,6 +4,7 @@ import {
   WrapExistingCtorSpec,
   SkGgbObject,
   AugmentedGgbApi,
+  withPropertiesFromNameValuePairs,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -69,12 +70,15 @@ export const register = (mod: any, appApi: AppApi) => {
       }
     },
     slots: {
-      tp$new(args, _kwargs) {
+      tp$new(args, kwargs) {
         const badArgsError = new Sk.builtin.TypeError(
           "Parabola() arguments must be" +
             " (focus_point, directrix_line)" +
             " or (x_squared_coefficient, x_coefficient, constant)"
         );
+
+        const make = (spec: SkGgbParabolaCtorSpec) =>
+          withPropertiesFromNameValuePairs(new mod.Parabola(spec), kwargs);
 
         switch (args.length) {
           case 2: {
@@ -82,7 +86,7 @@ export const register = (mod: any, appApi: AppApi) => {
               ggb.isGgbObjectOfType(args[0], "point") &&
               ggb.isGgbObjectOfType(args[1], "line")
             ) {
-              return new mod.Parabola({
+              return make({
                 kind: "focus-directrix",
                 focus: args[0],
                 directrix: args[1],
@@ -93,9 +97,11 @@ export const register = (mod: any, appApi: AppApi) => {
           }
           case 3: {
             if (args.every(ggb.isPythonOrGgbNumber)) {
-              return new mod.Parabola({
+              // We know that args is a three-element array of
+              // SkObjects, but TypeScript can't yet work that out.
+              return make({
                 kind: "coefficients",
-                coeffs: args,
+                coeffs: args as [SkObject, SkObject, SkObject],
               });
             }
 
