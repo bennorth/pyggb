@@ -500,6 +500,12 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     const regexp = new RegExp(`^ValueError: ${clsName}\\([^)]*\\):`);
     cy.get(".ErrorReport .message").contains(regexp).contains(messageFragment);
   };
+
+  type BadConstructionSpec = {
+    label: string;
+    code: string;
+    assertions: Array<() => void>;
+  };
 });
 
 /**
