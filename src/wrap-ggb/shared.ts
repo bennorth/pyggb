@@ -221,6 +221,20 @@ export function throwIfNotNumber(
     throw new Sk.builtin.TypeError(`${objName} must be a number`);
 }
 
+/** Assert that the given `label` is not `null`.  If it is, throw a
+ * `ValueError` with the given `message`.  Intended to be used after
+ * evaluating a GeoGebra command where we have no (easy) way of telling
+ * whether it will succeed, and have to leave that decision to GeoGebra.
+ * */
+export function throwIfLabelNull(
+  label: string | null,
+  message: string
+): asserts label is string {
+  if (label == null) {
+    throw new Sk.builtin.ValueError(message);
+  }
+}
+
 // The only type we use:
 type FastCallMethod = (
   this: SkGgbObject,
