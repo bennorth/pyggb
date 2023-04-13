@@ -5,6 +5,7 @@ import {
   withPropertiesFromNameValuePairs,
   SkGgbObject,
   WrapExistingCtorSpec,
+  throwIfLabelNull,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -50,6 +51,11 @@ export const register = (mod: any, appApi: AppApi) => {
         case "object-parameter": {
           const cmd = `Point(${spec.p}, ${ggb.numberValueOrLabel(spec.t)})`;
           const lbl = ggb.evalCmd(cmd);
+          throwIfLabelNull(
+            lbl,
+            "Point(object, parameter): could not find point" +
+              ` along "${ggb.ggbType(spec.p)}" object`
+          );
           this.$ggbLabel = lbl;
           break;
         }
