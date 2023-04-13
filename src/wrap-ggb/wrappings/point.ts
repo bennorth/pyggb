@@ -41,11 +41,12 @@ export const register = (mod: any, appApi: AppApi) => {
   const cls = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(this: SkGgbPoint, spec: SkGgbPointCtorSpec) {
       switch (spec.kind) {
-        case "new-from-coords":
+        case "new-from-coords": {
           const cmd = `(${spec.x}, ${spec.y})`;
           const lbl = ggb.evalCmd(cmd);
           this.$ggbLabel = lbl;
           break;
+        }
         case "wrap-existing":
           this.$ggbLabel = spec.label;
           break;
