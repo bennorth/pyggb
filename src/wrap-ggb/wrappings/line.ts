@@ -1,7 +1,6 @@
 import { AppApi } from "../../shared/appApi";
 import {
   augmentedGgbApi,
-  isInstance,
   SkGgbObject,
   WrapExistingCtorSpec,
 } from "../shared";
@@ -54,9 +53,8 @@ export const register = (mod: any, appApi: AppApi) => {
 
         switch (args.length) {
           case 2: {
-            if (args.every(isInstance(mod.Point))) {
-              const points = [args[0] as SkGgbObject, args[1] as SkGgbObject];
-              return new mod.Line({ kind: "point-point", points });
+            if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
+              return new mod.Line({ kind: "point-point", points: args });
             }
 
             if (args.every(ggb.isPythonOrGgbNumber)) {
