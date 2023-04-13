@@ -57,8 +57,12 @@ function _isGgbObject(obj: SkObject): obj is SkGgbObject {
   return "$ggbLabel" in obj;
 }
 
-function _ggbObjectType(ggbApi: GgbApi, obj: SkGgbObject): string {
-  return ggbApi.getObjectType(obj.$ggbLabel);
+function _ggbType(ggbApi: GgbApi, objOrLabel: SkGgbObject | string): string {
+  if (typeof objOrLabel === "string") {
+    return ggbApi.getObjectType(objOrLabel);
+  } else {
+    return ggbApi.getObjectType(objOrLabel.$ggbLabel);
+  }
 }
 
 /** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject` of
@@ -221,6 +225,20 @@ export function throwIfNotNumber(
     throw new Sk.builtin.TypeError(`${objName} must be a number`);
 }
 
+/** Assert that the given `label` is not `null`.  If it is, throw a
+ * `ValueError` with the given `message`.  Intended to be used after
+ * evaluating a GeoGebra command where we have no (easy) way of telling
+ * whether it will succeed, and have to leave that decision to GeoGebra.
+ * */
+export function throwIfLabelNull(
+  label: string | null,
+  message: string
+): asserts label is string {
+  if (label == null) {
+    throw new Sk.builtin.ValueError(message);
+  }
+}
+
 // The only type we use:
 type FastCallMethod = (
   this: SkGgbObject,
@@ -367,6 +385,7 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
 
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
+  ggbType(objOrLabel: SkGgbObject | string): string;
   throwIfNotGgbObject(
     obj: SkObject,
     objName: string
@@ -439,6 +458,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
 
   const api: AugmentedGgbApi = {
     isGgbObject: fixGgbArg_1(isGgbObject) as IsGgbObjectPredicate,
+    ggbType: fixGgbArg_1(_ggbType),
     throwIfNotGgbObject,
     throwIfNotGgbObjectOfType: fixGgbArg_3(throwIfNotGgbObjectOfType),
     throwIfNotPyOrGgbNumber: fixGgbArg_2(throwIfNotPyOrGgbNumber),

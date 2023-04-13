@@ -5,6 +5,7 @@ import {
   withPropertiesFromNameValuePairs,
   SkGgbObject,
   WrapExistingCtorSpec,
+  throwIfLabelNull,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -27,6 +28,11 @@ type SkGgbPointCtorSpec =
       kind: "new-from-coords";
       x: SkObject;
       y: SkObject;
+    }
+  | {
+      kind: "object-parameter";
+      p: SkGgbObject;
+      t: SkObject;
     };
 
 export const register = (mod: any, appApi: AppApi) => {
@@ -36,11 +42,23 @@ export const register = (mod: any, appApi: AppApi) => {
   const cls = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(this: SkGgbPoint, spec: SkGgbPointCtorSpec) {
       switch (spec.kind) {
-        case "new-from-coords":
+        case "new-from-coords": {
           const cmd = `(${spec.x}, ${spec.y})`;
           const lbl = ggb.evalCmd(cmd);
           this.$ggbLabel = lbl;
           break;
+        }
+        case "object-parameter": {
+          const cmd = `Point(${spec.p}, ${ggb.numberValueOrLabel(spec.t)})`;
+          const lbl = ggb.evalCmd(cmd);
+          throwIfLabelNull(
+            lbl,
+            "Point(object, parameter): could not find point" +
+              ` along "${ggb.ggbType(spec.p)}" object`
+          );
+          this.$ggbLabel = lbl;
+          break;
+        }
         case "wrap-existing":
           this.$ggbLabel = spec.label;
           break;
@@ -67,13 +85,30 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, kwargs) {
-        Sk.abstr.checkArgsLen("Point", args, 2, 2);
-        // TODO: Check args are sensible.
-        const x = ggb.numberValueOrLabel(args[0]);
-        const y = ggb.numberValueOrLabel(args[1]);
-        return withPropertiesFromNameValuePairs(
-          new mod.Point({ kind: "new-from-coords", x, y }),
-          kwargs
+        if (args.length === 2) {
+          if (args.every(ggb.isPythonOrGgbNumber)) {
+            const x = ggb.numberValueOrLabel(args[0]);
+            const y = ggb.numberValueOrLabel(args[1]);
+            return withPropertiesFromNameValuePairs(
+              new mod.Point({ kind: "new-from-coords", x, y }),
+              kwargs
+            );
+          }
+
+          if (ggb.isGgbObject(args[0]) && ggb.isPythonOrGgbNumber(args[1])) {
+            const p = args[0].$ggbLabel;
+            const t = args[1];
+            return withPropertiesFromNameValuePairs(
+              new mod.Point({ kind: "object-parameter", p, t }),
+              kwargs
+            );
+          }
+        }
+
+        throw new Sk.builtin.TypeError(
+          "Point() arguments must be" +
+            " (x_coord, y_coord);" +
+            " or (ggb_object, parameter)"
         );
       },
       tp$str(this: SkGgbPoint) {

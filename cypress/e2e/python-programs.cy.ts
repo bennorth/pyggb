@@ -103,6 +103,16 @@ describe("Runs Python programs", { testIsolation: false }, () => {
       expOutputs: ["#FF0000"],
     },
     {
+      label: "Point(line, param)",
+      code: `
+        A = Point(0, 0)
+        B = Point(4, 4)
+        k = Segment(A, B)
+        A = Point(k, 0.25)
+        assert(A.x == 1.0 and A.y == 1.0)
+      `,
+    },
+    {
       label: "Number",
       code: `
         x = Number(3.25)
