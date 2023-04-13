@@ -30,8 +30,8 @@ const ErrorReport: React.FC<ErrorReportProps> = ({ error }) => {
   traceback.reverse();
 
   return (
-    <Alert variant="danger">
-      <p>{messageOfPyError(error)}</p>
+    <Alert className="ErrorReport" variant="danger">
+      <p className="message">{messageOfPyError(error)}</p>
       <ul>
         {traceback.map((entry, i) => (
           <li key={i}>
