@@ -47,6 +47,12 @@ export const register = (mod: any, appApi: AppApi) => {
           this.$ggbLabel = lbl;
           break;
         }
+        case "object-parameter": {
+          const cmd = `Point(${spec.p}, ${ggb.numberValueOrLabel(spec.t)})`;
+          const lbl = ggb.evalCmd(cmd);
+          this.$ggbLabel = lbl;
+          break;
+        }
         case "wrap-existing":
           this.$ggbLabel = spec.label;
           break;
