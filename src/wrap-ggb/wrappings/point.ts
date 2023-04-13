@@ -79,14 +79,18 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, kwargs) {
-        Sk.abstr.checkArgsLen("Point", args, 2, 2);
-        // TODO: Check args are sensible.
-        const x = ggb.numberValueOrLabel(args[0]);
-        const y = ggb.numberValueOrLabel(args[1]);
-        return withPropertiesFromNameValuePairs(
-          new mod.Point({ kind: "new-from-coords", x, y }),
-          kwargs
-        );
+        if (args.length === 2) {
+          if (args.every(ggb.isPythonOrGgbNumber)) {
+            const x = ggb.numberValueOrLabel(args[0]);
+            const y = ggb.numberValueOrLabel(args[1]);
+            return withPropertiesFromNameValuePairs(
+              new mod.Point({ kind: "new-from-coords", x, y }),
+              kwargs
+            );
+          }
+        }
+
+        throw new Sk.builtin.TypeError("Point() takes 2 args");
       },
       tp$str(this: SkGgbPoint) {
         return new Sk.builtin.str(`(${this.$xCoord()}, ${this.$yCoord()})`);
