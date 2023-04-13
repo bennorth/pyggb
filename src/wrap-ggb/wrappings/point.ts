@@ -89,31 +89,36 @@ export const register = (
     },
     slots: {
       tp$new(args, kwargs) {
-        if (args.length === 2) {
-          if (args.every(ggb.isPythonOrGgbNumber)) {
-            const x = ggb.numberValueOrLabel(args[0]);
-            const y = ggb.numberValueOrLabel(args[1]);
-            return withPropertiesFromNameValuePairs(
-              new mod.Point({ kind: "coordinates", x, y }),
-              kwargs
-            );
-          }
-
-          if (ggb.isGgbObject(args[0]) && ggb.isPythonOrGgbNumber(args[1])) {
-            const p = args[0].$ggbLabel;
-            const t = args[1];
-            return withPropertiesFromNameValuePairs(
-              new mod.Point({ kind: "object-parameter", p, t }),
-              kwargs
-            );
-          }
-        }
-
-        throw new Sk.builtin.TypeError(
+        const badArgsError = new Sk.builtin.TypeError(
           "Point() arguments must be" +
-            " (x_coord, y_coord)," +
-            " or (ggb_object, parameter)"
+            " (x_coord, y_coord) or (object, parameter)"
         );
+
+        switch (args.length) {
+          case 2: {
+            if (args.every(ggb.isPythonOrGgbNumber)) {
+              const x = ggb.numberValueOrLabel(args[0]);
+              const y = ggb.numberValueOrLabel(args[1]);
+              return withPropertiesFromNameValuePairs(
+                new mod.Point({ kind: "coordinates", x, y }),
+                kwargs
+              );
+            }
+
+            if (ggb.isGgbObject(args[0]) && ggb.isPythonOrGgbNumber(args[1])) {
+              const p = args[0].$ggbLabel;
+              const t = args[1];
+              return withPropertiesFromNameValuePairs(
+                new mod.Point({ kind: "object-parameter", p, t }),
+                kwargs
+              );
+            }
+
+            throw badArgsError;
+          }
+          default:
+            throw badArgsError;
+        }
       },
       tp$str(this: SkGgbPoint) {
         return new Sk.builtin.str(`(${this.$xCoord()}, ${this.$yCoord()})`);
