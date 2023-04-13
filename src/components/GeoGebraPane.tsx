@@ -1,6 +1,5 @@
-import { useStoreActions } from "../store";
+import { useStoreActions, useStoreState } from "../store";
 import React, { useEffect } from "react";
-import { GgbApi } from "../shared/vendor-types/ggbapi";
 
 declare var GGBApplet: any;
 
@@ -28,12 +27,11 @@ const nextAppletDivId = (() => {
 })();
 
 export const GeoGebraPane: React.FC<{}> = () => {
+  const ggbApi = useStoreState((s) => s.dependencies.ggbApi);
   const setGgbAppletApi = useStoreActions((a) => a.dependencies.setGgbApi);
 
   const divId = nextAppletDivId();
   const containerId = `container-${divId}`;
-
-  let ggbApi: GgbApi | null = null;
 
   useEffect(() => {
     const containerDiv = document.getElementById(containerId)?.parentElement;
@@ -59,8 +57,9 @@ export const GeoGebraPane: React.FC<{}> = () => {
       preventFocus: false,
       showZoomButtons: true,
       appletOnLoad: (api: any) => {
-        ggbApi = api;
         api.setPerspective("G");
+        // Because we only do the inject once, the following does not
+        // cause a state-update/render loop:
         setGgbAppletApi(api);
         api.setSize(containerDiv.clientWidth, containerDiv.clientHeight);
       },
