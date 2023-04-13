@@ -26,7 +26,7 @@ interface SkGgbPoint extends SkGgbObject {
 type SkGgbPointCtorSpec =
   | WrapExistingCtorSpec
   | {
-      kind: "new-from-coords";
+      kind: "coordinates";
       x: string;
       y: string;
     }
@@ -46,7 +46,7 @@ export const register = (
   const cls = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(this: SkGgbPoint, spec: SkGgbPointCtorSpec) {
       switch (spec.kind) {
-        case "new-from-coords": {
+        case "coordinates": {
           const cmd = `(${spec.x}, ${spec.y})`;
           const lbl = ggb.evalCmd(cmd);
           this.$ggbLabel = lbl;
@@ -94,7 +94,7 @@ export const register = (
             const x = ggb.numberValueOrLabel(args[0]);
             const y = ggb.numberValueOrLabel(args[1]);
             return withPropertiesFromNameValuePairs(
-              new mod.Point({ kind: "new-from-coords", x, y }),
+              new mod.Point({ kind: "coordinates", x, y }),
               kwargs
             );
           }

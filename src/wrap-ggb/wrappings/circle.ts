@@ -115,7 +115,7 @@ export const register = (mod: any, appApi: AppApi) => {
                 return {
                   kind: "center-radius",
                   center: new mod.Point({
-                    kind: "new-from-coords",
+                    kind: "coordinates",
                     x: ggb.numberValueOrLabel(args[0]),
                     y: ggb.numberValueOrLabel(args[1]),
                   }),
