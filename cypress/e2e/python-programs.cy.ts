@@ -507,6 +507,15 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     assertions: Array<() => void>;
   };
 
+  const simpleBadArgsSpec = (codeFragment: string): BadConstructionSpec => {
+    const clsName = new RegExp("^([^()]*)\\(").exec(codeFragment)[1];
+    return {
+      label: `${codeFragment}`,
+      code: `\n${codeFragment}\n`,
+      assertions: [assertTypeError(clsName)],
+    };
+  };
+
   const badNoArgsSpec = (clsName: string): BadConstructionSpec => ({
     label: `${clsName}()`,
     code: `\n${clsName}()\n`,
