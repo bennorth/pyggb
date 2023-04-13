@@ -490,6 +490,11 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
 
 describe("Handles bad constructor calls", optsNoIsolation, () => {
   before(createNewPyGgbFile);
+
+  const assertTypeError = (clsName: string) => () => {
+    const regexp = new RegExp(`^TypeError: ${clsName}\\(\\) arguments must be`);
+    cy.get(".ErrorReport .message").contains(regexp);
+  };
 });
 
 /**
