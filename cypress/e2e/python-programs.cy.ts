@@ -495,6 +495,11 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     const regexp = new RegExp(`^TypeError: ${clsName}\\(\\) arguments must be`);
     cy.get(".ErrorReport .message").contains(regexp);
   };
+
+  const assertValueError = (clsName: string, messageFragment: string) => () => {
+    const regexp = new RegExp(`^ValueError: ${clsName}\\([^)]*\\):`);
+    cy.get(".ErrorReport .message").contains(regexp).contains(messageFragment);
+  };
 });
 
 /**
