@@ -506,6 +506,33 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     code: string;
     assertions: Array<() => void>;
   };
+
+  const badConstructionSpecs: Array<BadConstructionSpec> = [
+    {
+      label: 'Point("str", 3)',
+      code: `
+        Point("hello", 3)
+      `,
+      assertions: [assertTypeError("Point")],
+    },
+    {
+      label: "Point(3)",
+      code: `
+        Point(3)
+      `,
+      assertions: [assertTypeError("Point")],
+    },
+    {
+      label: "Point(Point, 3)",
+      code: `
+        A = Point(2, 3)
+        Point(A, 0.5)
+      `,
+      assertions: [
+        assertValueError("Point", 'could not find point along "point"'),
+      ],
+    },
+  ];
 });
 
 /**
