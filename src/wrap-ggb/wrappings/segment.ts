@@ -1,7 +1,6 @@
 import { AppApi } from "../../shared/appApi";
 import {
   augmentedGgbApi,
-  isInstance,
   withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
   SkGgbObject,
@@ -58,14 +57,28 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, kwargs) {
-        if (args.length !== 2 || !args.every(isInstance(mod.Point)))
-          throw new Sk.builtin.TypeError("bad Segment() args: need 2 Points");
-        const spec = {
-          kind: "new-from-points",
-          point1: args[0],
-          point2: args[1],
-        };
-        return withPropertiesFromNameValuePairs(new mod.Segment(spec), kwargs);
+        const badArgsError = new Sk.builtin.TypeError(
+          "Segment() arguments must be (point, point)"
+        );
+
+        const make = (spec: SkGgbSegmentCtorSpec) =>
+          withPropertiesFromNameValuePairs(new mod.Segment(spec), kwargs);
+
+        switch (args.length) {
+          case 2: {
+            if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
+              return make({
+                kind: "new-from-points",
+                point1: args[0],
+                point2: args[1],
+              });
+            }
+
+            throw badArgsError;
+          }
+          default:
+            throw badArgsError;
+        }
       },
     },
     methods: {
