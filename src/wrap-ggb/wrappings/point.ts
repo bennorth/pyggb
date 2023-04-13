@@ -35,7 +35,10 @@ type SkGgbPointCtorSpec =
       t: SkObject;
     };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register = (
+  mod: any,
+  appApi: AppApi
+) => {
   const ggb = augmentedGgbApi(appApi.ggb);
   const skApi = appApi.sk;
 
