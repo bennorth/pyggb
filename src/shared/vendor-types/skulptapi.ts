@@ -95,6 +95,7 @@ type SkBuiltinT = {
   checkNumber(obj: SkObject): obj is SkInt | SkFloat;
   checkBool(obj: SkObject): obj is SkBool;
   checkString(obj: SkObject): obj is SkString;
+  checkIterable(obj: SkObject): boolean; // TODO: Type predicate?
 
   none: SkNoneT;
 };
