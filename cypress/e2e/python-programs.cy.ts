@@ -522,13 +522,21 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
   const badConstructionSpecs: Array<BadConstructionSpec> = [
     badNoArgsSpec("Boolean"),
     badNoArgsSpec("Circle"),
+    badOneArgSpec("Circle"),
     badNoArgsSpec("Line"),
+    badOneArgSpec("Line"),
     badNoArgsSpec("Number"),
+    badOneArgSpec("Number"),
     badNoArgsSpec("Parabola"),
+    badOneArgSpec("Parabola"),
     badNoArgsSpec("Point"),
+    badOneArgSpec("Point"),
     badNoArgsSpec("Polygon"),
+    badOneArgSpec("Polygon"),
     badNoArgsSpec("Segment"),
+    badOneArgSpec("Segment"),
     badNoArgsSpec("Vector"),
+    badOneArgSpec("Vector"),
     {
       label: 'Point("str", 3)',
       code: `
