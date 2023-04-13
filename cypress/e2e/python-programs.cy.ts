@@ -513,6 +513,12 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     assertions: [assertTypeError(clsName)],
   });
 
+  const badOneArgSpec = (clsName: string): BadConstructionSpec => ({
+    label: `${clsName}(lambda)`,
+    code: `\n${clsName}(lambda x: x)\n`,
+    assertions: [assertTypeError(clsName)],
+  });
+
   const badConstructionSpecs: Array<BadConstructionSpec> = [
     badNoArgsSpec("Boolean"),
     badNoArgsSpec("Circle"),
