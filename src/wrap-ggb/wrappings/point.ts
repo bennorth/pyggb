@@ -6,6 +6,7 @@ import {
   SkGgbObject,
   WrapExistingCtorSpec,
   throwIfLabelNull,
+  SpecConstructible,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -36,7 +37,7 @@ type SkGgbPointCtorSpec =
     };
 
 export const register = (
-  mod: any,
+  mod: { Point: SpecConstructible<SkGgbPointCtorSpec, SkGgbPoint> },
   appApi: AppApi
 ) => {
   const ggb = augmentedGgbApi(appApi.ggb);
