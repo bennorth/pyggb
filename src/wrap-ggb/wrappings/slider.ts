@@ -102,28 +102,34 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, kwargs) {
-        if (args.length !== 2)
-          throw new Sk.builtin.TypeError("bad Slider() args; need 2 args");
+        const badArgsError = new Sk.builtin.TypeError(
+          "Slider() arguments must be" +
+            " (min_value_number, max_value_number, **kwargs)"
+        );
 
-        const bothNumbers = args.every(Sk.builtin.checkNumber);
-        if (!bothNumbers)
-          throw new Sk.builtin.TypeError(
-            "bad Slider() args; args must be numbers"
-          );
+        switch (args.length) {
+          case 2: {
+            if (args.every(Sk.builtin.checkNumber)) {
+              const spec = {
+                min: args[0].v,
+                max: args[1].v,
+                increment: kwNumber(kwargs, "increment", 0.1),
+                speed: kwNumber(kwargs, "speed", 1.0),
+                width: kwNumber(kwargs, "width", 100),
+                isAngle: kwBoolean(kwargs, "isAngle", false),
+                isHorizontal: kwBoolean(kwargs, "isHorizontal", true),
+                isAnimating: kwBoolean(kwargs, "isAnimating", false),
+                isRandom: kwBoolean(kwargs, "isRandom", false),
+              };
 
-        const spec = {
-          min: args[0].v,
-          max: args[1].v,
-          increment: kwNumber(kwargs, "increment", 0.1),
-          speed: kwNumber(kwargs, "speed", 1.0),
-          width: kwNumber(kwargs, "width", 100),
-          isAngle: kwBoolean(kwargs, "isAngle", false),
-          isHorizontal: kwBoolean(kwargs, "isHorizontal", true),
-          isAnimating: kwBoolean(kwargs, "isAnimating", false),
-          isRandom: kwBoolean(kwargs, "isRandom", false),
-        };
+              return new mod.Slider(spec);
+            }
 
-        return new mod.Slider(spec);
+            throw badArgsError;
+          }
+          default:
+            throw badArgsError;
+        }
       },
     },
     getsets: {
