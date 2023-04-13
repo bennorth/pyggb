@@ -23,7 +23,10 @@ import { SkulptApi } from "../shared/vendor-types/skulptapi";
 declare var Sk: SkulptApi;
 
 (globalThis as any).$skulptGgbModule = (appApi: AppApi) => {
-  let mod = { __name__: new Sk.builtin.str("ggb") };
+  // This object gets built up in stages, and each register() function
+  // expects a different type, so fudge it.  Perhaps there's a better
+  // way to do this?
+  let mod = { __name__: new Sk.builtin.str("ggb") } as any;
 
   registerPoint(mod, appApi);
   registerCircle(mod, appApi);

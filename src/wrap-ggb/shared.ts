@@ -27,6 +27,12 @@ export type WrapExistingCtorSpec = {
   label: string;
 };
 
+/** Something which is constructible from a "spec" argument of the given
+ * `SpecT` type, giving an object of the given `ObjectT` type.  */
+export interface SpecConstructible<SpecT, ObjectT> {
+  new (spec: SpecT): ObjectT;
+}
+
 /** Given a JavaScript number `x`, return a string representation of `x`
  * which GeoGebra will interpret correctly.  We don't want to feed
  * exponential notation in the form "4.1693084667370053e-38" directly to
