@@ -103,6 +103,13 @@ const everyElementIsGgbObject = (
   objs: Array<SkObject>
 ): objs is Array<SkGgbObject> => objs.every(_isGgbObject);
 
+const _everyElementIsGgbObjectOfType = (
+  ggbApi: GgbApi,
+  objs: Array<SkObject>,
+  requiredType: string
+): objs is Array<SkGgbObject> =>
+  objs.every((obj) => isGgbObject(ggbApi, obj, requiredType));
+
 /** Test whether the Skulpt/PyGgb object `obj` is either a Skulpt/Python
  * number or a GeoGebra `numeric` object. */
 export const isPythonOrGgbNumber = (ggbApi: GgbApi, obj: SkObject) =>
