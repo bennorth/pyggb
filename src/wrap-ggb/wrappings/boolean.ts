@@ -40,9 +40,18 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, _kwargs) {
-        // TODO: Check for exactly one arg.
-        const value = Sk.misceval.isTrue(args[0]);
-        return new mod.Boolean({ kind: "literal", value });
+        const badArgsError = new Sk.builtin.TypeError(
+          "Boolean() arguments must be (python_object)"
+        );
+
+        switch (args.length) {
+          case 1: {
+            const value = Sk.misceval.isTrue(args[0]);
+            return new mod.Boolean({ kind: "literal", value });
+          }
+          default:
+            throw badArgsError;
+        }
       },
     },
     methods: {
