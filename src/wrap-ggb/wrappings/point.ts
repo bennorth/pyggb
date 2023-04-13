@@ -94,24 +94,21 @@ export const register = (
             " (x_coord, y_coord) or (object, parameter)"
         );
 
+        const make = (spec: SkGgbPointCtorSpec) =>
+          withPropertiesFromNameValuePairs(new mod.Point(spec), kwargs);
+
         switch (args.length) {
           case 2: {
             if (args.every(ggb.isPythonOrGgbNumber)) {
               const x = ggb.numberValueOrLabel(args[0]);
               const y = ggb.numberValueOrLabel(args[1]);
-              return withPropertiesFromNameValuePairs(
-                new mod.Point({ kind: "coordinates", x, y }),
-                kwargs
-              );
+              return make({ kind: "coordinates", x, y });
             }
 
             if (ggb.isGgbObject(args[0]) && ggb.isPythonOrGgbNumber(args[1])) {
               const p = args[0].$ggbLabel;
               const t = args[1];
-              return withPropertiesFromNameValuePairs(
-                new mod.Point({ kind: "object-parameter", p, t }),
-                kwargs
-              );
+              return make({ kind: "object-parameter", p, t });
             }
 
             throw badArgsError;

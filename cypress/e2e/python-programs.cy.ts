@@ -90,7 +90,7 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
     {
       label: "Line(m, c)",
       code: `
-        k = Line(0.5, 3)
+        k = Line(0.5, 3, line_thickness=8)
         assert(k._ggb_type == "line")
       `,
     },
@@ -232,7 +232,7 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       code: `
         A = Point(-2, -2)
         B = Point(0, -2)
-        p = Polygon(A, B, 6)
+        p = Polygon(A, B, 6, color="red")
         assert(p._ggb_type == "polygon")
       `,
     },
@@ -241,7 +241,7 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       code: `
         A = Point(0, Number(-4))
         k = Line(Point(-1, -5), Point(1, -5))
-        p = Parabola(A, k)
+        p = Parabola(A, k, color="red")
         assert(p._ggb_type == "parabola")
         p.line_thickness = 8
         p.color = "red"
