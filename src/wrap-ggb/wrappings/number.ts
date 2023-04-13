@@ -3,7 +3,6 @@ import {
   augmentedGgbApi,
   SkGgbObject,
   strOfNumber,
-  throwIfNotNumber,
   WrapExistingCtorSpec,
 } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
@@ -42,8 +41,21 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, _kwargs) {
-        throwIfNotNumber(args[0], "constructor arg");
-        return new mod.Number({ kind: "literal", value: args[0].v });
+        const badArgsError = new Sk.builtin.TypeError(
+          "Number() arguments must be (python_number)"
+        );
+
+        switch (args.length) {
+          case 1: {
+            if (Sk.builtin.checkNumber(args[0])) {
+              return new mod.Number({ kind: "literal", value: args[0].v });
+            }
+
+            throw badArgsError;
+          }
+          default:
+            throw badArgsError;
+        }
       },
       ...ggb.sharedOpSlots,
     },

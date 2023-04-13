@@ -103,6 +103,13 @@ const everyElementIsGgbObject = (
   objs: Array<SkObject>
 ): objs is Array<SkGgbObject> => objs.every(_isGgbObject);
 
+const _everyElementIsGgbObjectOfType = (
+  ggbApi: GgbApi,
+  objs: Array<SkObject>,
+  requiredType: string
+): objs is Array<SkGgbObject> =>
+  objs.every((obj) => isGgbObject(ggbApi, obj, requiredType));
+
 /** Test whether the Skulpt/PyGgb object `obj` is either a Skulpt/Python
  * number or a GeoGebra `numeric` object. */
 export const isPythonOrGgbNumber = (ggbApi: GgbApi, obj: SkObject) =>
@@ -389,8 +396,14 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
   },
 });
 
+type EveryElementIsGgbObjectOfType = (
+  objs: Array<SkObject>,
+  requiredType: string
+) => objs is Array<SkGgbObject>;
+
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
+  isGgbObjectOfType(obj: SkObject, requiredType: string): obj is SkGgbObject;
   ggbType(objOrLabel: SkGgbObject | string): string;
   throwIfNotGgbObject(
     obj: SkObject,
@@ -406,6 +419,7 @@ export type AugmentedGgbApi = {
     objName: string
   ): asserts obj is SkInt | SkFloat | SkGgbObject;
   everyElementIsGgbObject: typeof everyElementIsGgbObject;
+  everyElementIsGgbObjectOfType: EveryElementIsGgbObjectOfType;
   isPythonOrGgbNumber(obj: SkObject): boolean;
   numberValueOrLabel(obj: SkObject): string;
   wrapExistingGgbObject(label: string): SkGgbObject;
@@ -464,11 +478,15 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
 
   const api: AugmentedGgbApi = {
     isGgbObject: fixGgbArg_1(isGgbObject) as IsGgbObjectPredicate,
+    isGgbObjectOfType: fixGgbArg_2(isGgbObject) as IsGgbObjectPredicate,
     ggbType: fixGgbArg_1(_ggbType),
     throwIfNotGgbObject,
     throwIfNotGgbObjectOfType: fixGgbArg_3(throwIfNotGgbObjectOfType),
     throwIfNotPyOrGgbNumber: fixGgbArg_2(throwIfNotPyOrGgbNumber),
     everyElementIsGgbObject,
+    everyElementIsGgbObjectOfType: fixGgbArg_2(
+      _everyElementIsGgbObjectOfType
+    ) as EveryElementIsGgbObjectOfType,
     isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
     numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
     wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),

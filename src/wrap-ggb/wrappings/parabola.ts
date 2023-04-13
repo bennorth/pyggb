@@ -70,37 +70,40 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, _kwargs) {
-        if (args.length === 2) {
-          ggb.throwIfNotGgbObjectOfType(
-            args[0],
-            "point",
-            "Parabola ctor arg[0]"
-          );
-          ggb.throwIfNotGgbObjectOfType(
-            args[1],
-            "line",
-            "Parabola ctor arg[1]"
-          );
+        const badArgsError = new Sk.builtin.TypeError(
+          "Parabola() arguments must be" +
+            " (focus_point, directrix_line)" +
+            " or (x_squared_coefficient, x_coefficient, constant)"
+        );
 
-          return new mod.Parabola({
-            kind: "focus-directrix",
-            focus: args[0],
-            directrix: args[1],
-          });
-        }
-        if (args.length === 3) {
-          if (!args.every(ggb.isPythonOrGgbNumber)) {
-            throw new Sk.builtin.TypeError(
-              "Parabola(a, b, c): All args must be numbers"
-            );
+        switch (args.length) {
+          case 2: {
+            if (
+              ggb.isGgbObjectOfType(args[0], "point") &&
+              ggb.isGgbObjectOfType(args[1], "line")
+            ) {
+              return new mod.Parabola({
+                kind: "focus-directrix",
+                focus: args[0],
+                directrix: args[1],
+              });
+            }
+
+            throw badArgsError;
           }
+          case 3: {
+            if (args.every(ggb.isPythonOrGgbNumber)) {
+              return new mod.Parabola({
+                kind: "coefficients",
+                coeffs: args,
+              });
+            }
 
-          return new mod.Parabola({
-            kind: "coefficients",
-            coeffs: args,
-          });
+            throw badArgsError;
+          }
+          default:
+            throw badArgsError;
         }
-        throw new Sk.builtin.TypeError("expected 2 args for Parabola()");
       },
     },
     methods: {

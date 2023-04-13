@@ -507,21 +507,52 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     assertions: Array<() => void>;
   };
 
+  const simpleBadArgsSpec = (codeFragment: string): BadConstructionSpec => {
+    const clsName = new RegExp("^([^()]*)\\(").exec(codeFragment)[1];
+    return {
+      label: `${codeFragment}`,
+      code: `\n${codeFragment}\n`,
+      assertions: [assertTypeError(clsName)],
+    };
+  };
+
+  const badNoArgsSpec = (clsName: string): BadConstructionSpec =>
+    simpleBadArgsSpec(`${clsName}()`);
+
+  const badOneArgSpec = (clsName: string): BadConstructionSpec =>
+    simpleBadArgsSpec(`${clsName}(lambda x: x)`);
+
   const badConstructionSpecs: Array<BadConstructionSpec> = [
-    {
-      label: 'Point("str", 3)',
-      code: `
-        Point("hello", 3)
-      `,
-      assertions: [assertTypeError("Point")],
-    },
-    {
-      label: "Point(3)",
-      code: `
-        Point(3)
-      `,
-      assertions: [assertTypeError("Point")],
-    },
+    badNoArgsSpec("Boolean"),
+    badNoArgsSpec("Circle"),
+    badOneArgSpec("Circle"),
+    badNoArgsSpec("Line"),
+    badOneArgSpec("Line"),
+    badNoArgsSpec("Number"),
+    badOneArgSpec("Number"),
+    badNoArgsSpec("Parabola"),
+    badOneArgSpec("Parabola"),
+    badNoArgsSpec("Point"),
+    badOneArgSpec("Point"),
+    badNoArgsSpec("Polygon"),
+    badOneArgSpec("Polygon"),
+    badNoArgsSpec("Segment"),
+    badOneArgSpec("Segment"),
+    badNoArgsSpec("Vector"),
+    badOneArgSpec("Vector"),
+    simpleBadArgsSpec('Circle("hello", 3)'),
+    simpleBadArgsSpec('Circle(Point(1, 2), "hello")'),
+    simpleBadArgsSpec("Circle(Point(1, 2), 2, 3)"),
+    simpleBadArgsSpec('Circle("one", "two", "three")'),
+    simpleBadArgsSpec('Line("hello", 3)'),
+    simpleBadArgsSpec("Line(Point(3, 4), 3)"),
+    simpleBadArgsSpec("Parabola(Point(3, 4), 3)"),
+    simpleBadArgsSpec('Parabola("hello", 3, 4)'),
+    simpleBadArgsSpec('Point("hello", 33)'),
+    simpleBadArgsSpec('Polygon("hello", 33, "world")'),
+    simpleBadArgsSpec("Segment(Point(1, 2), 33)"),
+    simpleBadArgsSpec("Slider(Point(1, 2), 33)"),
+    simpleBadArgsSpec("Vector(Point(1, 2), 33)"),
     {
       label: "Point(Point, 3)",
       code: `

@@ -1,7 +1,6 @@
 import { AppApi } from "../../shared/appApi";
 import {
   augmentedGgbApi,
-  isInstance,
   withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
   SkGgbObject,
@@ -59,24 +58,30 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, kwargs) {
-        const rawVector = (() => {
-          if (args.length === 2 && args.every(isInstance(mod.Point))) {
-            const spec = { kind: "points", point1: args[0], point2: args[1] };
-            return new mod.Vector(spec);
+        const badArgsError = new Sk.builtin.TypeError(
+          "Vector() arguments must be" +
+            " (start_point, end_point) or (x_component, y_component)"
+        );
+
+        const make = (spec: SkGgbVectorCtorSpec) =>
+          withPropertiesFromNameValuePairs(new mod.Vector(spec), kwargs);
+
+        switch (args.length) {
+          case 2: {
+            if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
+              return make({ kind: "points", point1: args[0], point2: args[1] });
+            }
+            if (args.every(ggb.isPythonOrGgbNumber)) {
+              return make({ kind: "components", e1: args[0], e2: args[1] });
+            }
+
+            throw badArgsError;
           }
-
-          if (args.length === 2 && args.every(ggb.isPythonOrGgbNumber)) {
-            const spec = { kind: "components", e1: args[0], e2: args[1] };
-            return new mod.Vector(spec);
-          }
-
-          throw new Sk.builtin.TypeError(
-            "bad Vector() args: need 2 Points or 2 numbers"
-          );
-        })();
-
-        return withPropertiesFromNameValuePairs(rawVector, kwargs);
+          default:
+            throw badArgsError;
+        }
       },
+
       // ...sharedOpSlots,
     },
     methods: {

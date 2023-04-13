@@ -67,35 +67,46 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, kwargs) {
-        const spec = (() => {
-          switch (args.length) {
-            case 1:
+        const badArgsError = new Sk.builtin.TypeError(
+          "Polygon() arguments must be" +
+            " (iterable_of_points)" +
+            " or (point, point, number_of_sides)"
+        );
+
+        const make = (spec: SkGgbPolygonCtorSpec) =>
+          withPropertiesFromNameValuePairs(new mod.Polygon(spec), kwargs);
+
+        switch (args.length) {
+          case 1: {
+            if (Sk.builtin.checkIterable(args[0])) {
               const points = Sk.misceval.arrayFromIterable(args[0]);
-              // TODO: Check each element of points is a ggb Point.
-              return { kind: "points-array", points };
-            case 3:
-              ggb.throwIfNotGgbObjectOfType(
-                args[0],
-                "point",
-                "Point() ctor arg[0]"
-              );
-              ggb.throwIfNotGgbObjectOfType(
-                args[1],
-                "point",
-                "Point() ctor arg[1]"
-              );
-              ggb.throwIfNotPyOrGgbNumber(args[2], "Point() ctor arg[2]");
-              return {
+
+              if (ggb.everyElementIsGgbObject(points)) {
+                return make({ kind: "points-array", points });
+              }
+            }
+
+            throw badArgsError;
+          }
+          case 3: {
+            if (
+              ggb.isGgbObjectOfType(args[0], "point") &&
+              ggb.isGgbObjectOfType(args[1], "point") &&
+              ggb.isPythonOrGgbNumber(args[2])
+            ) {
+              return make({
                 kind: "two-points-n-sides",
                 point1: args[0],
                 point2: args[1],
                 nSides: args[2],
-              };
-            default:
-              throw new Sk.builtin.TypeError(`bad arguments to Polygon()`);
+              });
+            }
+
+            throw badArgsError;
           }
-        })();
-        return withPropertiesFromNameValuePairs(new mod.Polygon(spec), kwargs);
+          default:
+            throw badArgsError;
+        }
       },
     },
     methods: {
