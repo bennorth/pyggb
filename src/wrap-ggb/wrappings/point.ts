@@ -27,6 +27,11 @@ type SkGgbPointCtorSpec =
       kind: "new-from-coords";
       x: SkObject;
       y: SkObject;
+    }
+  | {
+      kind: "object-parameter";
+      p: SkGgbObject;
+      t: SkObject;
     };
 
 export const register = (mod: any, appApi: AppApi) => {
