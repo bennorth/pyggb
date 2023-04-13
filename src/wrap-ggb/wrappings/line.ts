@@ -2,6 +2,7 @@ import { AppApi } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   SkGgbObject,
+  withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
@@ -46,19 +47,27 @@ export const register = (mod: any, appApi: AppApi) => {
       }
     },
     slots: {
-      tp$new(args, _kwargs) {
+      tp$new(args, kwargs) {
         const badArgsError = new Sk.builtin.TypeError(
           "Line() arguments must be (point, point) or (slope, intercept)"
         );
 
+        const make = (spec: SkGgbLineCtorSpec) =>
+          withPropertiesFromNameValuePairs(new mod.Line(spec), kwargs);
+
         switch (args.length) {
           case 2: {
             if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
-              return new mod.Line({ kind: "point-point", points: args });
+              return make({ kind: "point-point", points: args });
             }
 
             if (args.every(ggb.isPythonOrGgbNumber)) {
-              return new mod.Line({ kind: "coefficients", coeffs: args });
+              // We know that args is a two-element array of SkObjects,
+              // but TypeScript can't yet work that out.
+              return make({
+                kind: "coefficients",
+                coeffs: args as [SkObject, SkObject],
+              });
             }
 
             throw badArgsError;
