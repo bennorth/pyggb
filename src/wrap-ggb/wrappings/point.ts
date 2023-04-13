@@ -88,6 +88,15 @@ export const register = (mod: any, appApi: AppApi) => {
               kwargs
             );
           }
+
+          if (ggb.isGgbObject(args[0]) && ggb.isPythonOrGgbNumber(args[1])) {
+            const p = args[0].$ggbLabel;
+            const t = args[1];
+            return withPropertiesFromNameValuePairs(
+              new mod.Point({ kind: "object-parameter", p, t }),
+              kwargs
+            );
+          }
         }
 
         throw new Sk.builtin.TypeError("Point() takes 2 args");
