@@ -48,22 +48,26 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args, _kwargs) {
-        if (args.length !== 2) {
-          throw new Sk.builtin.TypeError("bad Line() args; need 2 args");
-        }
-
-        if (args.every(isInstance(mod.Point))) {
-          const points = [args[0] as SkGgbObject, args[1] as SkGgbObject];
-          return new mod.Line({ kind: "point-point", points });
-        }
-
-        if (args.every(ggb.isPythonOrGgbNumber)) {
-          return new mod.Line({ kind: "coefficients", coeffs: args });
-        }
-
-        throw new Sk.builtin.TypeError(
-          "bad 2-arg Line() call: must be (Point, Point) or (m, c)"
+        const badArgsError = new Sk.builtin.TypeError(
+          "Line() arguments must be (point, point) or (slope, intercept)"
         );
+
+        switch (args.length) {
+          case 2: {
+            if (args.every(isInstance(mod.Point))) {
+              const points = [args[0] as SkGgbObject, args[1] as SkGgbObject];
+              return new mod.Line({ kind: "point-point", points });
+            }
+
+            if (args.every(ggb.isPythonOrGgbNumber)) {
+              return new mod.Line({ kind: "coefficients", coeffs: args });
+            }
+
+            throw badArgsError;
+          }
+          default:
+            throw badArgsError;
+        }
       },
     },
     methods: {
