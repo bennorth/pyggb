@@ -540,13 +540,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     badOneArgSpec("Segment"),
     badNoArgsSpec("Vector"),
     badOneArgSpec("Vector"),
-    {
-      label: 'Point("str", 3)',
-      code: `
-        Point("hello", 3)
-      `,
-      assertions: [assertTypeError("Point")],
-    },
+    simpleBadArgsSpec('Point("hello", 33)'),
     {
       label: "Point(Point, 3)",
       code: `
