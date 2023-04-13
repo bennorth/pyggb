@@ -516,17 +516,11 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     };
   };
 
-  const badNoArgsSpec = (clsName: string): BadConstructionSpec => ({
-    label: `${clsName}()`,
-    code: `\n${clsName}()\n`,
-    assertions: [assertTypeError(clsName)],
-  });
+  const badNoArgsSpec = (clsName: string): BadConstructionSpec =>
+    simpleBadArgsSpec(`${clsName}()`);
 
-  const badOneArgSpec = (clsName: string): BadConstructionSpec => ({
-    label: `${clsName}(lambda)`,
-    code: `\n${clsName}(lambda x: x)\n`,
-    assertions: [assertTypeError(clsName)],
-  });
+  const badOneArgSpec = (clsName: string): BadConstructionSpec =>
+    simpleBadArgsSpec(`${clsName}(lambda x: x)`);
 
   const badConstructionSpecs: Array<BadConstructionSpec> = [
     badNoArgsSpec("Boolean"),
