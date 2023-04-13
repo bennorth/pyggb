@@ -30,26 +30,28 @@ const deIndent = (rawCode: string): string => {
   return strippedLines.join("\n") + "\n";
 };
 
+const chooseFileMenuEntry = (entryMatch: string) => {
+  cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
+  cy.get(".dropdown-item").contains(entryMatch).click();
+};
+
+const createNewPyGgbFile = () => {
+  cy.visit("/");
+  const filename = uuidv4();
+
+  chooseFileMenuEntry("New");
+  cy.get(".modal-body input").click().type(filename);
+  cy.get("button").contains("Create").click();
+  cy.get(".editor .busy-overlay").should("not.be.visible");
+  cy.get(".MenuBar").contains(filename);
+};
+
 // We specify no test isolation here, to avoid the heavy start-up cost
 // per small program we run.  We just keep entering new programs into
 // the same pyggb "file".
 //
 describe("Runs Python programs", { testIsolation: false }, () => {
-  const chooseFileMenuEntry = (entryMatch: string) => {
-    cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
-    cy.get(".dropdown-item").contains(entryMatch).click();
-  };
-
-  before(() => {
-    cy.visit("/");
-    const filename = uuidv4();
-
-    chooseFileMenuEntry("New");
-    cy.get(".modal-body input").click().type(filename);
-    cy.get("button").contains("Create").click();
-    cy.get(".editor .busy-overlay").should("not.be.visible");
-    cy.get(".MenuBar").contains(filename);
-  });
+  before(createNewPyGgbFile);
 
   type RunsWithoutErrorSpec = {
     label: string;
