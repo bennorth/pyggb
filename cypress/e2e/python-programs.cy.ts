@@ -5,53 +5,55 @@ class ConstructionVerificationState {
   // points when describing lines, say.
 }
 
+const allSpaces = new RegExp("^ *$");
+const initialSpaces = new RegExp("^ *");
+const deIndent = (rawCode: string): string => {
+  const allLines = rawCode.split("\n");
+
+  if (allLines[0] !== "") {
+    throw Error("need empty first line of code");
+  }
+  const nLines = allLines.length;
+  if (!allSpaces.test(allLines[nLines - 1])) {
+    throw Error("need all-spaces last line of code");
+  }
+
+  const lines = allLines.slice(1, nLines - 1);
+
+  const nonBlankLines = lines.filter((line) => !allSpaces.test(line));
+  const nonBlankIndents = nonBlankLines.map(
+    (line) => initialSpaces.exec(line)[0].length
+  );
+  const minNonBlankIndent = Math.min(...nonBlankIndents);
+
+  const strippedLines = lines.map((line) => line.substring(minNonBlankIndent));
+  return strippedLines.join("\n") + "\n";
+};
+
+const chooseFileMenuEntry = (entryMatch: string) => {
+  cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
+  cy.get(".dropdown-item").contains(entryMatch).click();
+};
+
+const createNewPyGgbFile = () => {
+  cy.visit("/");
+  const filename = uuidv4();
+
+  chooseFileMenuEntry("New");
+  cy.get(".modal-body input").click().type(filename);
+  cy.get("button").contains("Create").click();
+  cy.get(".editor .busy-overlay").should("not.be.visible");
+  cy.get(".MenuBar").contains(filename);
+};
+
+const optsNoIsolation = { testIsolation: false };
+
 // We specify no test isolation here, to avoid the heavy start-up cost
 // per small program we run.  We just keep entering new programs into
 // the same pyggb "file".
 //
-describe("Runs Python programs", { testIsolation: false }, () => {
-  const chooseFileMenuEntry = (entryMatch: string) => {
-    cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
-    cy.get(".dropdown-item").contains(entryMatch).click();
-  };
-
-  const allSpaces = new RegExp("^ *$");
-  const initialSpaces = new RegExp("^ *");
-  const deIndent = (rawCode: string): string => {
-    const allLines = rawCode.split("\n");
-
-    if (allLines[0] !== "") {
-      throw Error("need empty first line of code");
-    }
-    const nLines = allLines.length;
-    if (!allSpaces.test(allLines[nLines - 1])) {
-      throw Error("need all-spaces last line of code");
-    }
-
-    const lines = allLines.slice(1, nLines - 1);
-
-    const nonBlankLines = lines.filter((line) => !allSpaces.test(line));
-    const nonBlankIndents = nonBlankLines.map(
-      (line) => initialSpaces.exec(line)[0].length
-    );
-    const minNonBlankIndent = Math.min(...nonBlankIndents);
-
-    const strippedLines = lines.map((line) =>
-      line.substring(minNonBlankIndent)
-    );
-    return strippedLines.join("\n") + "\n";
-  };
-
-  before(() => {
-    cy.visit("/");
-    const filename = uuidv4();
-
-    chooseFileMenuEntry("New");
-    cy.get(".modal-body input").click().type(filename);
-    cy.get("button").contains("Create").click();
-    cy.get(".editor .busy-overlay").should("not.be.visible");
-    cy.get(".MenuBar").contains(filename);
-  });
+describe("Runs valid Python programs", optsNoIsolation, () => {
+  before(createNewPyGgbFile);
 
   type RunsWithoutErrorSpec = {
     label: string;
@@ -481,6 +483,64 @@ describe("Runs Python programs", { testIsolation: false }, () => {
         (spec.expNonOutputs ?? []).forEach((expNonOutput) =>
           cy.get(".stdout-inner").contains(expNonOutput).should("not.exist")
         );
+      });
+    });
+  });
+});
+
+describe("Handles bad constructor calls", optsNoIsolation, () => {
+  before(createNewPyGgbFile);
+
+  const assertTypeError = (clsName: string) => () => {
+    const regexp = new RegExp(`^TypeError: ${clsName}\\(\\) arguments must be`);
+    cy.get(".ErrorReport .message").contains(regexp);
+  };
+
+  const assertValueError = (clsName: string, messageFragment: string) => () => {
+    const regexp = new RegExp(`^ValueError: ${clsName}\\([^)]*\\):`);
+    cy.get(".ErrorReport .message").contains(regexp).contains(messageFragment);
+  };
+
+  type BadConstructionSpec = {
+    label: string;
+    code: string;
+    assertions: Array<() => void>;
+  };
+
+  const badConstructionSpecs: Array<BadConstructionSpec> = [
+    {
+      label: 'Point("str", 3)',
+      code: `
+        Point("hello", 3)
+      `,
+      assertions: [assertTypeError("Point")],
+    },
+    {
+      label: "Point(3)",
+      code: `
+        Point(3)
+      `,
+      assertions: [assertTypeError("Point")],
+    },
+    {
+      label: "Point(Point, 3)",
+      code: `
+        A = Point(2, 3)
+        Point(A, 0.5)
+      `,
+      assertions: [
+        assertValueError("Point", 'could not find point along "point"'),
+      ],
+    },
+  ];
+
+  badConstructionSpecs.forEach((spec) => {
+    it(`handles ${spec.label} ok`, () => {
+      cy.window().then((window) => {
+        const code = deIndent(spec.code);
+        window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(code);
+        cy.get("button").contains("RUN").click();
+        spec.assertions.forEach((assertion) => assertion());
       });
     });
   });
