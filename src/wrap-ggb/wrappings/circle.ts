@@ -75,61 +75,65 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     slots: {
       tp$new(args: Array<any>, kwargs: Array<any>) {
-        const spec = (() => {
-          switch (args.length) {
-            case 2:
-              if (!Sk.builtin.isinstance(args[0], mod.Point).v) {
-                throw new Sk.builtin.TypeError(
-                  `bad Circle() ctor arg[0] not Point`
-                );
-              }
+        const badArgsError = new Sk.builtin.TypeError(
+          "Circle() arguments must be" +
+            " (center_point, number), (center_point, circumference_point)" +
+            ", (circumference_point, circumference_point, circumference_point)" +
+            ", or (center_x, center_y, radius)"
+        );
+
+        const make = (spec: SkGgbCircleCtorSpec) =>
+          withPropertiesFromNameValuePairs(new mod.Circle(spec), kwargs);
+
+        switch (args.length) {
+          case 2: {
+            if (ggb.isGgbObjectOfType(args[0], "point")) {
               if (ggb.isPythonOrGgbNumber(args[1])) {
-                return {
+                return make({
                   kind: "center-radius",
                   center: args[0],
                   radius: args[1],
-                };
+                });
               }
-              if (Sk.builtin.isinstance(args[1], mod.Point).v) {
-                return {
+
+              if (ggb.isGgbObjectOfType(args[1], "point")) {
+                return make({
                   kind: "center-point",
                   center: args[0],
                   point: args[1],
-                };
+                });
               }
+
               // TODO: isinstance(args[1], mod.Segment)
-              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
-            case 3:
-              const allPoints = args.every(
-                (arg) => Sk.builtin.isinstance(arg, mod.Point).v
-              );
-              if (allPoints) {
-                return {
-                  kind: "3-points",
-                  points: args,
-                };
-              }
+            }
 
-              const allNumbers = args.every(ggb.isPythonOrGgbNumber);
-              if (allNumbers) {
-                return {
-                  kind: "center-radius",
-                  center: new mod.Point({
-                    kind: "coordinates",
-                    x: ggb.numberValueOrLabel(args[0]),
-                    y: ggb.numberValueOrLabel(args[1]),
-                  }),
-                  radius: args[2],
-                };
-              }
-              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
-
-            default:
-              throw new Sk.builtin.TypeError(`bad Circle() ctor args`);
+            throw badArgsError;
           }
-        })();
+          case 3: {
+            if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
+              return make({
+                kind: "3-points",
+                points: args,
+              });
+            }
 
-        return withPropertiesFromNameValuePairs(new mod.Circle(spec), kwargs);
+            if (args.every(ggb.isPythonOrGgbNumber)) {
+              return make({
+                kind: "center-radius",
+                center: new mod.Point({
+                  kind: "coordinates",
+                  x: ggb.numberValueOrLabel(args[0]),
+                  y: ggb.numberValueOrLabel(args[1]),
+                }),
+                radius: args[2],
+              });
+            }
+
+            throw badArgsError;
+          }
+          default:
+            throw badArgsError;
+        }
       },
     },
     methods: {
