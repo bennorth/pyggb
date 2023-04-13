@@ -27,12 +27,12 @@ type SkGgbPointCtorSpec =
   | WrapExistingCtorSpec
   | {
       kind: "new-from-coords";
-      x: SkObject;
-      y: SkObject;
+      x: string;
+      y: string;
     }
   | {
       kind: "object-parameter";
-      p: SkGgbObject;
+      p: string;
       t: SkObject;
     };
 
