@@ -4,9 +4,9 @@
 
 ```
 PUBLIC_URL=/pyggb npm run build
-rsync --delete --checksum -nrtv --exclude=.git build/ pages/
-# Then if that looks OK, same without "-n":
-rsync --delete --checksum -rtv --exclude=.git build/ pages/
+rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -nrtv build/ pages/
+# Then if that looks OK, same without "-nv":
+rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -rt build/ pages/
 # Commit in pages/ worktree
 # Push to GitHub
 # Wait a few minutes
@@ -37,3 +37,6 @@ line to your local `.git/info/exclude` file:
 ```
 public/vendor/geogebra/GeoGebra
 ```
+
+The above "Release instructions" refer to this vendor bundle, but
+should work whether or not you are using a local copy of the bundle.
