@@ -99,7 +99,11 @@ export const register = (mod: any, appApi: AppApi) => {
           }
         }
 
-        throw new Sk.builtin.TypeError("Point() takes 2 args");
+        throw new Sk.builtin.TypeError(
+          "Point() arguments must be" +
+            " (x_coord, y_coord);" +
+            " or (ggb_object, parameter)"
+        );
       },
       tp$str(this: SkGgbPoint) {
         return new Sk.builtin.str(`(${this.$xCoord()}, ${this.$yCoord()})`);
