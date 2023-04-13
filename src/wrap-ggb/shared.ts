@@ -385,6 +385,7 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
 
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
+  ggbType(objOrLabel: SkGgbObject | string): string;
   throwIfNotGgbObject(
     obj: SkObject,
     objName: string
@@ -457,6 +458,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
 
   const api: AugmentedGgbApi = {
     isGgbObject: fixGgbArg_1(isGgbObject) as IsGgbObjectPredicate,
+    ggbType: fixGgbArg_1(_ggbType),
     throwIfNotGgbObject,
     throwIfNotGgbObjectOfType: fixGgbArg_3(throwIfNotGgbObjectOfType),
     throwIfNotPyOrGgbNumber: fixGgbArg_2(throwIfNotPyOrGgbNumber),
