@@ -19,7 +19,7 @@ interface SkGgbSegment extends SkGgbObject {
 type SkGgbSegmentCtorSpec =
   | WrapExistingCtorSpec
   | {
-      kind: "new-from-points";
+      kind: "two-points";
       point1: SkGgbObject;
       point2: SkGgbObject;
     };
@@ -33,7 +33,7 @@ export const register = (mod: any, appApi: AppApi) => {
       spec: SkGgbSegmentCtorSpec
     ) {
       switch (spec.kind) {
-        case "new-from-points":
+        case "two-points":
           const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
           const ggbCmd = `Segment(${ggbArgs})`;
           const lbl = ggb.evalCmd(ggbCmd);
@@ -68,7 +68,7 @@ export const register = (mod: any, appApi: AppApi) => {
           case 2: {
             if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
               return make({
-                kind: "new-from-points",
+                kind: "two-points",
                 point1: args[0],
                 point2: args[1],
               });
