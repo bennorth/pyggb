@@ -28,7 +28,7 @@ type SkGgbCircleCtorSpec =
       point: SkGgbObject;
     }
   | {
-      kind: "3-points";
+      kind: "three-points";
       points: Array<SkGgbObject>;
     };
 
@@ -52,7 +52,7 @@ export const register = (mod: any, appApi: AppApi) => {
           }
           case "center-point":
             return `${spec.center.$ggbLabel},${spec.point.$ggbLabel}`;
-          case "3-points":
+          case "three-points":
             return spec.points.map((p) => p.$ggbLabel).join(",");
           default:
             throw new Sk.builtin.RuntimeError("should not get here");
@@ -112,7 +112,7 @@ export const register = (mod: any, appApi: AppApi) => {
           case 3: {
             if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
               return make({
-                kind: "3-points",
+                kind: "three-points",
                 points: args,
               });
             }
