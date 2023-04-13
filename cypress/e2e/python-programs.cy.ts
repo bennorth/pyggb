@@ -507,6 +507,12 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     assertions: Array<() => void>;
   };
 
+  const badNoArgsSpec = (clsName: string): BadConstructionSpec => ({
+    label: `${clsName}()`,
+    code: `\n${clsName}()\n`,
+    assertions: [assertTypeError(clsName)],
+  });
+
   const badConstructionSpecs: Array<BadConstructionSpec> = [
     {
       label: 'Point("str", 3)',
