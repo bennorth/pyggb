@@ -46,11 +46,13 @@ const createNewPyGgbFile = () => {
   cy.get(".MenuBar").contains(filename);
 };
 
+const optsNoIsolation = { testIsolation: false };
+
 // We specify no test isolation here, to avoid the heavy start-up cost
 // per small program we run.  We just keep entering new programs into
 // the same pyggb "file".
 //
-describe("Runs valid Python programs", { testIsolation: false }, () => {
+describe("Runs valid Python programs", optsNoIsolation, () => {
   before(createNewPyGgbFile);
 
   type RunsWithoutErrorSpec = {
