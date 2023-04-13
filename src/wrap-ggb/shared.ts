@@ -396,6 +396,11 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
   },
 });
 
+type EveryElementIsGgbObjectOfType = (
+  objs: Array<SkObject>,
+  requiredType: string
+) => objs is Array<SkGgbObject>;
+
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
   isGgbObjectOfType(obj: SkObject, requiredType: string): obj is SkGgbObject;
@@ -414,6 +419,7 @@ export type AugmentedGgbApi = {
     objName: string
   ): asserts obj is SkInt | SkFloat | SkGgbObject;
   everyElementIsGgbObject: typeof everyElementIsGgbObject;
+  everyElementIsGgbObjectOfType: EveryElementIsGgbObjectOfType;
   isPythonOrGgbNumber(obj: SkObject): boolean;
   numberValueOrLabel(obj: SkObject): string;
   wrapExistingGgbObject(label: string): SkGgbObject;
@@ -478,6 +484,9 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     throwIfNotGgbObjectOfType: fixGgbArg_3(throwIfNotGgbObjectOfType),
     throwIfNotPyOrGgbNumber: fixGgbArg_2(throwIfNotPyOrGgbNumber),
     everyElementIsGgbObject,
+    everyElementIsGgbObjectOfType: fixGgbArg_2(
+      _everyElementIsGgbObjectOfType
+    ) as EveryElementIsGgbObjectOfType,
     isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
     numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
     wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),
