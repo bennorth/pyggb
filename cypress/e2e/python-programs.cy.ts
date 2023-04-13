@@ -533,6 +533,17 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
       ],
     },
   ];
+
+  badConstructionSpecs.forEach((spec) => {
+    it(`handles ${spec.label} ok`, () => {
+      cy.window().then((window) => {
+        const code = deIndent(spec.code);
+        window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(code);
+        cy.get("button").contains("RUN").click();
+        spec.assertions.forEach((assertion) => assertion());
+      });
+    });
+  });
 });
 
 /**
