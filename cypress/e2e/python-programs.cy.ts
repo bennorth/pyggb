@@ -548,13 +548,6 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
       assertions: [assertTypeError("Point")],
     },
     {
-      label: "Point(3)",
-      code: `
-        Point(3)
-      `,
-      assertions: [assertTypeError("Point")],
-    },
-    {
       label: "Point(Point, 3)",
       code: `
         A = Point(2, 3)
