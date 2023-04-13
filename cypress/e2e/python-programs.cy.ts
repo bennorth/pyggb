@@ -488,6 +488,10 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
   });
 });
 
+describe("Handles bad constructor calls", optsNoIsolation, () => {
+  before(createNewPyGgbFile);
+});
+
 /**
  * How to specify what should happen as the result of running a program under
  * test?  Want to say that certain points (with particular properties, such as
