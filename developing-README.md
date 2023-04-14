@@ -64,5 +64,6 @@ line to your local `.git/info/exclude` file:
 public/vendor/geogebra/GeoGebra
 ```
 
-The above "Release instructions" refer to this vendor bundle, but
-should work whether or not you are using a local copy of the bundle.
+The above "Release process" instructions refer to this vendor bundle,
+but should work whether or not you are using a local copy of the
+bundle.
