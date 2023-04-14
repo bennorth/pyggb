@@ -28,6 +28,15 @@ The script, if successful, will finish by printing a summary to
 stdout, including printing a docker command line to serve the
 directory via Nginx.
 
+If deployment will be a path other than `python`, you can override
+this via the `PYGGB_HOSTED_BASE_PATH` environment variable:
+
+``` shell
+PYGGB_ORIGIN_REPO=https://github.com/geogebra/pyggb.git \
+    PYGGB_HOSTED_BASE_PATH=pyggb \
+    ./tools/build-from-clone.sh
+```
+
 
 ## Where to get GeoGebra bundle
 
