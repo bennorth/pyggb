@@ -2,7 +2,7 @@
 
 ## Release process
 
-```
+``` shell
 PUBLIC_URL=/pyggb npm run build
 rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -nrtv build/ pages/
 # Then if that looks OK, same without "-nv":
@@ -16,7 +16,7 @@ rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -rt 
 
 For deploying to `https://some.site.com/python`:
 
-```
+``` shell
 # If default "node" is not v18, something like:
 nvm use v18
 
@@ -53,14 +53,14 @@ Unzip this into `public/vendor/geogebra`, which will result in a directory
 `public/vendor/geogebra/README.txt`, which can be removed. Then run the
 development server with
 
-```
+``` shell
 REACT_APP_LOCAL_GEOGEBRA=yes npm start
 ```
 
 To avoid the contents of this bundle showing up as untracked files in Git, add a
 line to your local `.git/info/exclude` file:
 
-```
+``` shell
 public/vendor/geogebra/GeoGebra
 ```
 
