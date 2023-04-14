@@ -2,6 +2,8 @@
 
 ## Release process
 
+For deploying to `github.io`:
+
 ``` shell
 PUBLIC_URL=/pyggb npm run build
 rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -nrtv build/ pages/
