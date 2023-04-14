@@ -42,9 +42,9 @@ PYGGB_ORIGIN_REPO=https://github.com/geogebra/pyggb.git \
 
 A recent copy of `deployggb.js` is checked in to the repo. By default, the app
 uses GeoGebra's CDN to provide the main files. To override this for local
-development, fetch the latest GeoGebra bundle from
+development, fetch the latest GeoGebra bundle from the GeoGebra site:
 
-- [https://download.geogebra.org/package/geogebra-math-apps-bundle]
+- [GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)
 
 as per [GeoGebra's
 instructions](https://wiki.geogebra.org/en/Reference:GeoGebra_Apps_Embedding#Offline_and_Self-Hosted_Solution).
