@@ -12,6 +12,23 @@ rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -rt 
 # Wait a few minutes
 ```
 
+## Build from fresh clone
+
+For deploying to `https://some.site.com/python`:
+
+```
+# If default "node" is not v18, something like:
+nvm use v18
+
+# Adjust PYGGB_ORIGIN_REPO if required:
+PYGGB_ORIGIN_REPO=https://github.com/geogebra/pyggb.git ./tools/build-from-clone.sh
+```
+
+The script, if successful, will finish by printing a summary to
+stdout, including printing a docker command line to serve the
+directory via Nginx.
+
+
 ## Where to get GeoGebra bundle
 
 A recent copy of `deployggb.js` is checked in to the repo. By default, the app
