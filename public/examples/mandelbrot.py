@@ -8,6 +8,9 @@ colours, we can draw a view of it.
 _Based on a demonstration by Zoltan Kovacs._
 """
 
+# Depending on the size of your screen, you might need to adjust the
+# size of the points and/or zoom the output GeoGebra display.
+
 import time
 
 startx = -2.0
