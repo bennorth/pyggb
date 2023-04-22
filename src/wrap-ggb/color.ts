@@ -50,6 +50,18 @@ export const parseColorOrFail = (color: string): [number, number, number] => {
   return mRGB;
 };
 
+/** Convert the given `color` object into an _RGB_ triple of [0, 255]
+ * ints.  The given `color` should be:
+ *
+ * * a string, in which case it should be a named color, of the form
+ *   `"#RGB"`, or of the form `"#RRGGBB`"; or
+ * * a three-element list or tuple, where each element is a number.
+ *
+ * In the latter case, the numbers are taken as (_red_, _green_, _blue_)
+ * with each number being between 0 and 1, inclusive.
+ *
+ * If the given `color` is not as above, a `ValueError` is raised.
+ * */
 export const interpretColorOrFail = (
   color: SkObject
 ): [number, number, number] => {
