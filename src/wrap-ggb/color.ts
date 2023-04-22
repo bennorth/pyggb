@@ -79,7 +79,10 @@ export const interpretColorOrFail = (
       throw new Sk.builtin.ValueError(
         `if "color" is a list/tuple of numbers, each must be >=0.0 and <=1.0`
       );
-    }
+    } else
+      throw new Sk.builtin.ValueError(
+        `if "color" is a list/tuple, each element must be a number`
+      );
   }
 
   throw new Sk.builtin.ValueError(
