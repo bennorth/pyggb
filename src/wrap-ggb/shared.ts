@@ -306,6 +306,7 @@ type SharedGetSets = {
   is_visible: ReadWriteProperty;
   is_independent: ReadOnlyProperty;
   value: ReadWriteProperty;
+  opacity: ReadWriteProperty;
   color: ReadWriteProperty;
   color_ints: ReadOnlyProperty;
   color_floats: ReadOnlyProperty;
@@ -341,6 +342,16 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
     $set(this: SkGgbObject, pyValue: SkObject) {
       throwIfNotNumber(pyValue, "value");
       ggbApi.setValue(this.$ggbLabel, pyValue.v);
+    },
+  },
+  opacity: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.float_(ggbApi.getFilling(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyValue: SkObject) {
+      throwIfNotNumber(pyValue, "opacity");
+      // TODO: Detect whether pyValue.v is in valid range [0, 1].
+      ggbApi.setFilling(this.$ggbLabel, pyValue.v);
     },
   },
   color: {
