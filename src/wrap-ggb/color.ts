@@ -69,14 +69,6 @@ export const interpretColorOrFail = (
       );
     }
 
-    if (components.every(augmentedSkulptApi.checkInt)) {
-      if (components.every((x) => x.v >= 0 && x.v < 256))
-        return [components[0].v, components[1].v, components[2].v];
-      throw new Sk.builtin.ValueError(
-        `if "color" is a list/tuple of ints, each must be >=0 and <=255`
-      );
-    }
-
     if (components.every(augmentedSkulptApi.checkFloat)) {
       if (components.every((x) => x.v >= 0.0 && x.v <= 1.0)) {
         // There are various ways to map the closed interval [0, 1] to
