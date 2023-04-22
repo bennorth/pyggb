@@ -71,6 +71,8 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
         assert(A.color == "#408020")
         for exp_v, got_v in zip([64/255, 128/255, 32/255], A.color_floats):
           assert(abs(got_v - exp_v) < 1.0e-10)
+        A.color = [0, 0.5, 1]
+        assert(A.color == "#0080FF")
       `,
     },
     {
