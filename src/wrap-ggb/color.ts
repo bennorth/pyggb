@@ -69,7 +69,7 @@ export const interpretColorOrFail = (
       );
     }
 
-    if (components.every(augmentedSkulptApi.checkFloat)) {
+    if (components.every(Sk.builtin.checkNumber)) {
       if (components.every((x) => x.v >= 0.0 && x.v <= 1.0)) {
         // There are various ways to map the closed interval [0, 1] to
         // the set {0, 1, ..., 255}.  Pick a reasonable one:
