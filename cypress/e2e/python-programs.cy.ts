@@ -173,11 +173,12 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
     {
       label: "Circle(Number, Number, Number)",
       code: `
-        k = Circle(1, Number(2), 3.5)
+        k = Circle(1, Number(2), 3.5, opacity=0.875)
         assert(k._ggb_type == "circle")
         print("radius =", k.radius)
+        print("opacity =", k.opacity)
       `,
-      expOutputs: ["radius = 3.5"],
+      expOutputs: ["radius = 3.5", "opacity = 0.875"],
     },
     {
       label: "Vector(Point, Point)",
@@ -232,9 +233,11 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       code: `
         A = Point(-2, -2)
         B = Point(0, -2)
-        p = Polygon(A, B, 6, color="red")
+        p = Polygon(A, B, 6, color="red", opacity=0.75)
         assert(p._ggb_type == "polygon")
+        print("opacity =", p.opacity)
       `,
+      expOutputs: ["opacity = 0.75"],
     },
     {
       label: "Parabola(Point, Line)",

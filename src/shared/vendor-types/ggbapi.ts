@@ -11,6 +11,9 @@ export type GgbApi = {
   getValue(label: string): number;
   setValue(label: string, value: number): void;
 
+  getFilling(label: string): number;
+  setFilling(label: string, value: number): void;
+
   getXcoord(label: string): number;
   getYcoord(label: string): number;
   setCoords(label: string, x: number, y: number): void;
