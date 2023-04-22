@@ -65,7 +65,7 @@ export const interpretColorOrFail = (
 
     if (components.length !== 3) {
       throw new Sk.builtin.ValueError(
-        `if a list/tuple, "color" must have three elements`
+        `if "color" is a list/tuple, it must have three elements`
       );
     }
 
