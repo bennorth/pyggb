@@ -350,7 +350,7 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
     },
     $set(this: SkGgbObject, pyValue: SkObject) {
       throwIfNotNumber(pyValue, "opacity");
-      // TODO: Detect whether pyValue.v is in valid range [0, 1].
+      // Ggb ignores values outside [0, 1]; behave the same.
       ggbApi.setFilling(this.$ggbLabel, pyValue.v);
     },
   },
