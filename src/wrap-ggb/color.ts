@@ -77,13 +77,13 @@ export const interpretColorOrFail = (
         return [intComponents[0], intComponents[1], intComponents[2]];
       }
       throw new Sk.builtin.ValueError(
-        `if "color" is a list/tuple of floats, each must be >=0.0 and <=1.0`
+        `if "color" is a list/tuple of numbers, each must be >=0.0 and <=1.0`
       );
     }
   }
 
   throw new Sk.builtin.ValueError(
-    `"color" must be string, or list/tuple of three ints/floats`
+    `"color" must be string, or list/tuple of three numbers`
   );
 };
 
