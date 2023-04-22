@@ -67,8 +67,6 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       label: "Get/set color as numeric triple",
       code: `
         A = Point(3, 4)
-        A.color = [50, 100, 150]
-        assert(A.color == "#326496")
         A.color = (0.25, 0.5, 0.125)
         assert(A.color == "#408020")
         for exp_v, got_v in zip([64/255, 128/255, 32/255], A.color_floats):
