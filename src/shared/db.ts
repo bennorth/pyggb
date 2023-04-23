@@ -1,4 +1,5 @@
 import Dexie, { Table } from "dexie";
+import { SemaphoreItem } from "./semaphore";
 
 export type UserFile = {
   id?: number;
@@ -19,12 +20,15 @@ const kDefaultCodeText = "# Start writing your code!\n";
 
 export class PyGgbDexie extends Dexie {
   userFiles!: Table<UserFile>;
+  semaphore: SemaphoreItem;
 
   constructor() {
     super("pyggb");
     this.version(1).stores({
       userFiles: "++id,name",
     });
+
+    this.semaphore = new SemaphoreItem(1);
   }
 
   async allFiles(): Promise<Array<UserFilePreview>> {
