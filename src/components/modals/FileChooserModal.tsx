@@ -7,6 +7,7 @@ import { db, UserFilePreview } from "../../shared/db";
 import { useJsonResource } from "../../shared/hooks";
 import { ExampleProgramPreview } from "../../shared/resources";
 import { useStoreActions, useStoreState } from "../../store";
+import { FileChoiceActivity } from "../../model/modals/file-chooser";
 
 type FileChoiceProps = UserFilePreview & {
   dismiss: () => void;
@@ -24,6 +25,13 @@ const FileChoice: React.FC<FileChoiceProps> = (props) => {
       {props.name}
     </li>
   );
+};
+
+const useSetPlainActivity = (
+  kind: Exclude<FileChoiceActivity["kind"], "confirm-delete-user-file">
+) => {
+  const setActivity = useStoreActions((a) => a.modals.fileChooser.setActivity);
+  return () => setActivity({ kind });
 };
 
 type FileChoiceScope = "user-file" | "example";
