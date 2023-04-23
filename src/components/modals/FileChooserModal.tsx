@@ -8,6 +8,7 @@ import { useJsonResource } from "../../shared/hooks";
 import { ExampleProgramPreview } from "../../shared/resources";
 import { useStoreActions, useStoreState } from "../../store";
 import { FileChoiceActivity } from "../../model/modals/file-chooser";
+import { assertNever } from "../../shared/utils";
 
 type FileChoiceProps = UserFilePreview & {
   isCurrent: boolean;
@@ -203,49 +204,17 @@ const ConfirmDeletion: React.FC<UserFilePreview> = ({ id, name }) => {
 };
 
 export const FileChooserModal: React.FC<{}> = () => {
-  const [scope, setScope] = useState<FileChoiceScope>("user-file");
-
-  const active = useStoreState((s) => s.modals.fileChooser.active);
-  const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
-
-  const dismiss = () => setActive(false);
-  const setScopeFun =
-    (scope: FileChoiceScope): (() => void) =>
-    () =>
-      setScope(scope);
-
-  const content = (() => {
-    switch (scope) {
-      case "user-file":
-        return <UserFileList />;
-      case "example":
-        return <ExampleList />;
-      default:
-        return <div>ERROR</div>;
-    }
-  })();
-
-  const filesButtonVar = scope === "user-file" ? "primary" : "outline-primary";
-  const examplesButtonVar = scope === "example" ? "primary" : "outline-primary";
-
-  return (
-    <Modal size="xl" show={active}>
-      <Modal.Header>
-        <Modal.Title>
-          <Button onClick={setScopeFun("user-file")} variant={filesButtonVar}>
-            My programs
-          </Button>{" "}
-          <Button onClick={setScopeFun("example")} variant={examplesButtonVar}>
-            Examples
-          </Button>
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{content}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={dismiss}>
-          Cancel
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
+  const activity = useStoreState((s) => s.modals.fileChooser.activity);
+  switch (activity.kind) {
+    case "none":
+      return null;
+    case "choose-user-file":
+      return <UserFileList />;
+    case "choose-example":
+      return <ExampleList />;
+    case "confirm-delete-user-file":
+      return <ConfirmDeletion id={activity.id} name={activity.name} />;
+    default:
+      return assertNever(activity);
+  }
 };
