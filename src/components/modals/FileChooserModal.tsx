@@ -38,28 +38,45 @@ type FileChoiceScope = "user-file" | "example";
 
 const UserFileList: React.FC<{}> = () => {
   const userFiles = useLiveQuery(() => db.withLock(() => db.allFiles()));
-  const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
+  const dismiss = useSetPlainActivity("none");
+  const switchToExamples = useSetPlainActivity("choose-example");
 
-  const dismiss = () => setActive(false);
-
-  if (userFiles == null) {
-    return <div>LOADING...</div>;
-  }
+  const content =
+    userFiles == null ? (
+      <div>LOADING...</div>
+    ) : (
+      <>
+        {userFiles.length === 0 && <p>No files yet</p>}
+        <ul className="FileChoice-list">
+          {userFiles.map((f) => (
+            <FileChoice
+              key={f.id}
+              id={f.id}
+              name={f.name}
+              dismiss={dismiss}
+            ></FileChoice>
+          ))}
+        </ul>
+      </>
+    );
 
   return (
-    <>
-      {userFiles.length === 0 && <p>No files yet</p>}
-      <ul className="FileChoice-list">
-        {userFiles.map((f) => (
-          <FileChoice
-            key={f.id}
-            id={f.id}
-            name={f.name}
-            dismiss={dismiss}
-          ></FileChoice>
-        ))}
-      </ul>
-    </>
+    <Modal size="xl" show={true} animation={false}>
+      <Modal.Header>
+        <Modal.Title>
+          <Button variant="primary">My programs</Button>{" "}
+          <Button onClick={switchToExamples} variant="outline-primary">
+            Examples
+          </Button>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{content}</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={dismiss}>
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
