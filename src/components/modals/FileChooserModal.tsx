@@ -57,6 +57,14 @@ const useLaunchDeletion = () => {
     setActivity({ kind: "confirm-delete-user-file", id: f.id, name: f.name });
 };
 
+const useMaybeCurrentUserFileId = () => {
+  const backingState = useStoreState((s) => s.editor.backingFileState);
+  if (backingState.status === "booting") return null;
+  const source = backingState.source;
+  if (source.kind === "example") return null;
+  return source.id;
+};
+
 type FileChoiceScope = "user-file" | "example";
 
 const UserFileList: React.FC<{}> = () => {
