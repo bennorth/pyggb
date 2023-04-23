@@ -137,6 +137,10 @@ export class PyGgbDexie extends Dexie {
 
     await this.userFiles.put(newFile);
   }
+
+  async deleteFile(id: number): Promise<void> {
+    await this.userFiles.delete(id);
+  }
 }
 
 // TODO: Need some thought as to what the user experience is when they
