@@ -31,6 +31,15 @@ export class PyGgbDexie extends Dexie {
     this.semaphore = new SemaphoreItem(1);
   }
 
+  async withLock<T extends () => any>(fun: T): Promise<Awaited<ReturnType<T>>> {
+    try {
+      await this.semaphore.acquire();
+      return await fun();
+    } finally {
+      this.semaphore.release();
+    }
+  }
+
   async allFiles(): Promise<Array<UserFilePreview>> {
     let allFiles = await this.userFiles
       .toCollection()
