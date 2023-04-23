@@ -138,6 +138,35 @@ const ExampleList: React.FC<{}> = () => {
   );
 };
 
+const ConfirmDeletion: React.FC<UserFilePreview> = ({ id, name }) => {
+  const dismiss = useSetPlainActivity("choose-user-file");
+  const doDelete = async () => {
+    await db.withLock(async () => {
+      await db.deleteFile(id);
+      dismiss();
+    });
+  };
+
+  return (
+    <Modal size="xl" show={true} animation={false}>
+      <Modal.Header>
+        <Modal.Title>Really delete "{name}"?</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        Are you sure you want to delete your program "{name}"?
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={dismiss}>
+          Cancel
+        </Button>
+        <Button variant="danger" onClick={doDelete}>
+          Delete
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
 export const FileChooserModal: React.FC<{}> = () => {
   const [scope, setScope] = useState<FileChoiceScope>("user-file");
 
