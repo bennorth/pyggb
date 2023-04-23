@@ -83,39 +83,59 @@ const UserFileList: React.FC<{}> = () => {
 const ExampleList: React.FC<{}> = () => {
   const loadExample = useStoreActions((a) => a.editor.loadExample);
   const examples = useJsonResource("examples/index.json");
-  const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
-
-  const dismiss = () => setActive(false);
+  const switchToUserFiles = useSetPlainActivity("choose-user-file");
+  const dismiss = useSetPlainActivity("none");
 
   const load = (ex: ExampleProgramPreview) => () => {
     loadExample(ex);
     dismiss();
   };
 
-  switch (examples.status) {
-    case "idle":
-    case "pending":
-      return <div>Loading...</div>;
-    case "failed":
-      return <div>Error!</div>;
-    case "succeeded":
-      // TODO: Validate examples.data is Array<ExampleProgramPreview>.
-      return (
-        <ul className="ExampleList">
-          {(examples.data as Array<ExampleProgramPreview>).map((ex, idx) => {
-            return (
-              <li key={idx} onClick={load(ex)}>
-                <h1>{ex.name}</h1>
-                <ReactMarkdown
-                  children={ex.docMarkdown}
-                  remarkPlugins={[remarkGfm]}
-                />
-              </li>
-            );
-          })}
-        </ul>
-      );
-  }
+  const content = (() => {
+    switch (examples.status) {
+      case "idle":
+      case "pending":
+        return <div>Loading...</div>;
+      case "failed":
+        return <div>Error!</div>;
+      case "succeeded":
+        // TODO: Validate examples.data is Array<ExampleProgramPreview>.
+        return (
+          <ul className="ExampleList">
+            {(examples.data as Array<ExampleProgramPreview>).map((ex, idx) => {
+              return (
+                <li key={idx} onClick={load(ex)}>
+                  <h1>{ex.name}</h1>
+                  <ReactMarkdown
+                    children={ex.docMarkdown}
+                    remarkPlugins={[remarkGfm]}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        );
+    }
+  })();
+
+  return (
+    <Modal size="xl" show={true} animation={false}>
+      <Modal.Header>
+        <Modal.Title>
+          <Button onClick={switchToUserFiles} variant="outline-primary">
+            My programs
+          </Button>{" "}
+          <Button variant="primary">Examples</Button>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{content}</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={dismiss}>
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
 };
 
 export const FileChooserModal: React.FC<{}> = () => {
