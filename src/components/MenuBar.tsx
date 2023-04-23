@@ -90,8 +90,8 @@ export const MenuBar: React.FC<{}> = () => {
   const allDependenciesReady = useStoreState((s) => s.dependencies.allReady);
   const backingState = useStoreState((s) => s.editor.backingFileState);
   const codeText = useStoreState((s) => s.editor.codeText);
-  const fileChooserSetActive = useStoreActions(
-    (a) => a.modals.fileChooser.setActive
+  const fileChooserSetActivity = useStoreActions(
+    (a) => a.modals.fileChooser.setActivity
   );
   const newFileLaunch = useStoreActions((a) => a.modals.newFile.launch);
   const downloadPythonLaunch = useStoreActions(
@@ -99,7 +99,9 @@ export const MenuBar: React.FC<{}> = () => {
   );
   const saveCodeTextAction = useStoreActions((a) => a.editor.saveCodeText);
 
-  const launchFileChooser = () => fileChooserSetActive(true);
+  const launchFileChooser = () =>
+    fileChooserSetActivity({ kind: "choose-user-file" });
+
   const launchNewFile = () => newFileLaunch(undefined);
   const saveCodeText = () => saveCodeTextAction();
 
