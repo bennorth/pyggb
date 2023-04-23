@@ -71,6 +71,8 @@ const UserFileList: React.FC<{}> = () => {
   const userFiles = useLiveQuery(() => db.withLock(() => db.allFiles()));
   const dismiss = useSetPlainActivity("none");
   const switchToExamples = useSetPlainActivity("choose-example");
+  const maybeCurrentUserFileId = useMaybeCurrentUserFileId();
+  const launchDeletion = useLaunchDeletion();
 
   const content =
     userFiles == null ? (
@@ -85,6 +87,8 @@ const UserFileList: React.FC<{}> = () => {
               id={f.id}
               name={f.name}
               dismiss={dismiss}
+              isCurrent={f.id === maybeCurrentUserFileId}
+              launchDeletionConfirmation={launchDeletion(f)}
             ></FileChoice>
           ))}
         </ul>
