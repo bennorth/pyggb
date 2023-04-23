@@ -51,6 +51,12 @@ const useSetPlainActivity = (
   return () => setActivity({ kind });
 };
 
+const useLaunchDeletion = () => {
+  const setActivity = useStoreActions((a) => a.modals.fileChooser.setActivity);
+  return (f: UserFilePreview) => () =>
+    setActivity({ kind: "confirm-delete-user-file", id: f.id, name: f.name });
+};
+
 type FileChoiceScope = "user-file" | "example";
 
 const UserFileList: React.FC<{}> = () => {
