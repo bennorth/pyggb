@@ -10,7 +10,9 @@ import { useStoreActions, useStoreState } from "../../store";
 import { FileChoiceActivity } from "../../model/modals/file-chooser";
 
 type FileChoiceProps = UserFilePreview & {
+  isCurrent: boolean;
   dismiss: () => void;
+  launchDeletionConfirmation(): void;
 };
 
 const FileChoice: React.FC<FileChoiceProps> = (props) => {
@@ -20,9 +22,24 @@ const FileChoice: React.FC<FileChoiceProps> = (props) => {
     props.dismiss();
   };
 
+  const deleteElement = props.isCurrent ? (
+    <Button disabled>X</Button>
+  ) : (
+    <Button
+      variant="danger"
+      onClick={(e) => {
+        e.stopPropagation();
+        props.launchDeletionConfirmation();
+      }}
+    >
+      DELETE
+    </Button>
+  );
+
   return (
     <li className="FileChoice" onClick={load}>
-      {props.name}
+      <span className="file-name">{props.name}</span>
+      {deleteElement}
     </li>
   );
 };
