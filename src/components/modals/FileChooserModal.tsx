@@ -1,5 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import React, { useState } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Button, Modal } from "react-bootstrap";
@@ -65,8 +65,6 @@ const useMaybeCurrentUserFileId = () => {
   if (source.kind === "example") return null;
   return source.id;
 };
-
-type FileChoiceScope = "user-file" | "example";
 
 const UserFileList: React.FC<{}> = () => {
   const userFiles = useLiveQuery(() => db.withLock(() => db.allFiles()));
