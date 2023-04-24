@@ -2,7 +2,6 @@ import classnames from "classnames";
 import React, { useEffect, useState } from "react";
 import { Container, Navbar, NavDropdown, Spinner } from "react-bootstrap";
 import { OperationalBackingFileState } from "../model/editor";
-import { db } from "../shared/db";
 import { assertNever } from "../shared/utils";
 import { useStoreActions, useStoreState } from "../store";
 import { RunButton, PauseButton, StopButton } from "./RunButton";
@@ -18,7 +17,6 @@ type FilenameEditState =
 const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   backingFileState,
 }) => {
-  const loadFromBacking = useStoreActions((a) => a.editor.loadFromBacking);
   const renameAction = useStoreActions((a) => a.editor.renameCurrentAndRefresh);
 
   const [editState, setEditState] = useState<FilenameEditState>({
