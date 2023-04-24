@@ -52,7 +52,7 @@ describe("File management", () => {
     cy.get("span.FilenameDisplayOrEdit").contains(newFilename);
   });
 
-  it("can create two files and switch between them", () => {
+  it("can create two files, switch between them, delete one", () => {
     const f1 = uuidv4();
     const f2 = uuidv4();
 
@@ -99,6 +99,20 @@ describe("File management", () => {
           const editorText = window["PYGGB_CYPRESS"].ACE_EDITOR.getValue();
           console.log("editorText", editorText);
           expect(editorText).to.equal(`# This is file ${f1}\n`);
+
+          chooseFileMenuEntry("Open");
+          cy.get(".FileChoice")
+            .contains(f2)
+            .parent()
+            .find("button")
+            .contains("DELETE")
+            .click({ force: true });
+
+          cy.get("div.modal").contains(`delete your program "${f2}"`);
+          cy.get("button").contains("Delete").click();
+
+          cy.get(".FileChoice").contains(f1);
+          cy.get(".FileChoice").contains(f2).should("not.exist");
         });
       });
     });
