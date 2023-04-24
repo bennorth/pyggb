@@ -502,6 +502,12 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
   });
 });
 
+type CodeWithErrorSpec = {
+  label: string;
+  code: string;
+  assertions: Array<() => void>;
+};
+
 describe("Handles bad constructor calls", optsNoIsolation, () => {
   before(createNewPyGgbFile);
 
@@ -513,12 +519,6 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
   const assertValueError = (clsName: string, messageFragment: string) => () => {
     const regexp = new RegExp(`^ValueError: ${clsName}\\([^)]*\\):`);
     cy.get(".ErrorReport .message").contains(regexp).contains(messageFragment);
-  };
-
-  type CodeWithErrorSpec = {
-    label: string;
-    code: string;
-    assertions: Array<() => void>;
   };
 
   const simpleBadArgsSpec = (codeFragment: string): CodeWithErrorSpec => {
