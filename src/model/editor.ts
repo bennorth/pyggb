@@ -106,7 +106,7 @@ export const editor: Editor = {
     };
     a.setBackingFileState(loadingState);
 
-    const userFile = await db.userFiles.get(userFilePreview.id);
+    const userFile = await db.getFile(userFilePreview.id);
     if (userFile == null) {
       console.error(
         `could not get user-file ${JSON.stringify(userFilePreview)}`
