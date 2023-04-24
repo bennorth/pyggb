@@ -36,6 +36,22 @@ describe("File management", () => {
     });
   });
 
+  it("can rename a file", () => {
+    const filename = uuidv4();
+    const newFilename = uuidv4();
+
+    chooseFileMenuEntry("New");
+    cy.get(".modal-body input").click().type(filename);
+    cy.get("button").contains("Create").click();
+    cy.get("div.modal").should("not.exist");
+    cy.get(".editor .busy-overlay").should("not.be.visible");
+    cy.get(".MenuBar").contains(filename);
+
+    cy.get("span.FilenameDisplayOrEdit").dblclick();
+    cy.get("input").clear().type(newFilename).type("{enter}");
+    cy.get("span.FilenameDisplayOrEdit").contains(newFilename);
+  });
+
   it("can create two files and switch between them", () => {
     const f1 = uuidv4();
     const f2 = uuidv4();
