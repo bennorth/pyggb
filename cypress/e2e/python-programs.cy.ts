@@ -515,13 +515,13 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     cy.get(".ErrorReport .message").contains(regexp).contains(messageFragment);
   };
 
-  type BadConstructionSpec = {
+  type CodeWithErrorSpec = {
     label: string;
     code: string;
     assertions: Array<() => void>;
   };
 
-  const simpleBadArgsSpec = (codeFragment: string): BadConstructionSpec => {
+  const simpleBadArgsSpec = (codeFragment: string): CodeWithErrorSpec => {
     const clsName = new RegExp("^([^()]*)\\(").exec(codeFragment)[1];
     return {
       label: `${codeFragment}`,
@@ -530,13 +530,13 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     };
   };
 
-  const badNoArgsSpec = (clsName: string): BadConstructionSpec =>
+  const badNoArgsSpec = (clsName: string): CodeWithErrorSpec =>
     simpleBadArgsSpec(`${clsName}()`);
 
-  const badOneArgSpec = (clsName: string): BadConstructionSpec =>
+  const badOneArgSpec = (clsName: string): CodeWithErrorSpec =>
     simpleBadArgsSpec(`${clsName}(lambda x: x)`);
 
-  const badConstructionSpecs: Array<BadConstructionSpec> = [
+  const badConstructionSpecs: Array<CodeWithErrorSpec> = [
     badNoArgsSpec("Boolean"),
     badNoArgsSpec("Circle"),
     badOneArgSpec("Circle"),
