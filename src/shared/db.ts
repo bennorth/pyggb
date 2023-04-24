@@ -46,6 +46,10 @@ export class PyGgbDexie extends Dexie {
     }
   }
 
+  async getFile(id: number) {
+    return await this.userFiles.get(id);
+  }
+
   async mostRecentlyOpenedPreview(): Promise<UserFilePreview> {
     const mostRecentFile = await (async () => {
       let mostRecent: UserFilePreview | null = null;
