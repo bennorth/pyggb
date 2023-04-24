@@ -29,7 +29,7 @@ const FileChoice: React.FC<FileChoiceProps> = (props) => {
 type FileChoiceScope = "user-file" | "example";
 
 const UserFileList: React.FC<{}> = () => {
-  const userFiles = useLiveQuery(() => db.allFiles());
+  const userFiles = useLiveQuery(() => db.withLock(() => db.allFiles()));
   const setActive = useStoreActions((a) => a.modals.fileChooser.setActive);
 
   const dismiss = () => setActive(false);
