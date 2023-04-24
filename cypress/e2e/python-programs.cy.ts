@@ -545,7 +545,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
   const badOneArgSpec = (clsName: string): CodeWithErrorSpec =>
     simpleBadArgsSpec(`${clsName}(lambda x: x)`);
 
-  const badConstructionSpecs: Array<CodeWithErrorSpec> = [
+  const specs: Array<CodeWithErrorSpec> = [
     badNoArgsSpec("Boolean"),
     badNoArgsSpec("Circle"),
     badOneArgSpec("Circle"),
@@ -588,9 +588,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     },
   ];
 
-  badConstructionSpecs.forEach((spec) =>
-    it(`handles ${spec.label} ok`, runBadCode(spec))
-  );
+  specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
 });
 
 /**
