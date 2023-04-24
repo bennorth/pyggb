@@ -174,7 +174,7 @@ export const editor: Editor = {
     storeActions.pyStdout.clearContent();
   }),
 
-  maybeUpdateBacking: thunk(async (a, snapshot, helpers) => {
+  maybeUpdateBacking: thunkWithDbLock(async (a, snapshot, helpers) => {
     const state = helpers.getState();
 
     if (state.codeTextSeqNum > snapshot.seqNum) {
