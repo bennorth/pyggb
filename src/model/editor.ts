@@ -206,8 +206,8 @@ export const editor: Editor = {
     }
   }),
 
-  createNew: thunk(async (a, descriptor) => {
+  createNew: thunkWithDbLock(async (a, descriptor) => {
     const preview = await db.createNewFile(descriptor);
-    await a.loadFromBacking(preview);
+    await a._loadFromBacking(preview);
   }),
 };
