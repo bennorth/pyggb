@@ -1,4 +1,5 @@
 import Dexie, { Table } from "dexie";
+import { SemaphoreItem } from "./semaphore";
 
 export type UserFile = {
   id?: number;
@@ -19,12 +20,24 @@ const kDefaultCodeText = "# Start writing your code!\n";
 
 export class PyGgbDexie extends Dexie {
   userFiles!: Table<UserFile>;
+  semaphore: SemaphoreItem;
 
   constructor() {
     super("pyggb");
     this.version(1).stores({
       userFiles: "++id,name",
     });
+
+    this.semaphore = new SemaphoreItem(1);
+  }
+
+  async withLock<T extends () => any>(fun: T): Promise<Awaited<ReturnType<T>>> {
+    try {
+      await this.semaphore.acquire();
+      return await fun();
+    } finally {
+      this.semaphore.release();
+    }
   }
 
   async allFiles(): Promise<Array<UserFilePreview>> {
@@ -44,6 +57,10 @@ export class PyGgbDexie extends Dexie {
         mtime: Date.now(),
       });
     }
+  }
+
+  async getFile(id: number) {
+    return await this.userFiles.get(id);
   }
 
   async mostRecentlyOpenedPreview(): Promise<UserFilePreview> {

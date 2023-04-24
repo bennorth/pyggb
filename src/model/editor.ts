@@ -3,6 +3,7 @@ import { PyGgbModel } from ".";
 import { db, NewFileDescriptor, UserFilePreview } from "../shared/db";
 import { ExampleProgramPreview } from "../shared/resources";
 import { assertNever, fetchAsText, propSetterAction } from "../shared/utils";
+import { thunkWithDbLock } from "./thunk-with-db-lock";
 
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
@@ -39,10 +40,12 @@ export type Editor = {
   saveCodeText: Thunk<Editor>;
   updateCodeTextAndScheduleSave: Thunk<Editor, string, {}, PyGgbModel>;
   setBackingFileState: Action<Editor, BackingFileState>;
+  _loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
   loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
   loadExample: Thunk<Editor, ExampleProgramPreview, {}, PyGgbModel>;
   maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, {}, PyGgbModel>;
   createNew: Thunk<Editor, NewFileDescriptor>;
+  renameCurrentAndRefresh: Thunk<Editor, string, {}, PyGgbModel>;
 };
 
 const InitialCodeTextSeqNum = 1001;
@@ -87,7 +90,7 @@ export const editor: Editor = {
   setBackingFileState: propSetterAction("backingFileState"),
   setBackedSeqNum: propSetterAction("backedSeqNum"),
 
-  loadFromBacking: thunk(async (a, userFilePreview, helpers) => {
+  _loadFromBacking: thunk(async (a, userFilePreview, helpers) => {
     const state = helpers.getState();
     const status = state.backingFileState.status;
     if (status !== "booting" && status !== "idle") {
@@ -106,7 +109,7 @@ export const editor: Editor = {
     };
     a.setBackingFileState(loadingState);
 
-    const userFile = await db.userFiles.get(userFilePreview.id);
+    const userFile = await db.getFile(userFilePreview.id);
     if (userFile == null) {
       console.error(
         `could not get user-file ${JSON.stringify(userFilePreview)}`
@@ -127,11 +130,15 @@ export const editor: Editor = {
     storeActions.pyErrors.clearErrors();
     storeActions.pyStdout.clearContent();
   }),
+  loadFromBacking: thunkWithDbLock((a, userFilePreview) =>
+    a._loadFromBacking(userFilePreview)
+  ),
+
   loadExample: thunk(async (a, example, helpers) => {
     const state = helpers.getState();
     const status = state.backingFileState.status;
     if (status !== "booting" && status !== "idle") {
-      console.error(`loadFromBacking(): in bad state ${status}`);
+      console.error(`loadExample(): in bad state ${status}`);
       return;
     }
 
@@ -168,7 +175,7 @@ export const editor: Editor = {
     storeActions.pyStdout.clearContent();
   }),
 
-  maybeUpdateBacking: thunk(async (a, snapshot, helpers) => {
+  maybeUpdateBacking: thunkWithDbLock(async (a, snapshot, helpers) => {
     const state = helpers.getState();
 
     if (state.codeTextSeqNum > snapshot.seqNum) {
@@ -200,8 +207,24 @@ export const editor: Editor = {
     }
   }),
 
-  createNew: thunk(async (a, descriptor) => {
+  createNew: thunkWithDbLock(async (a, descriptor) => {
     const preview = await db.createNewFile(descriptor);
-    await a.loadFromBacking(preview);
+    await a._loadFromBacking(preview);
+  }),
+
+  renameCurrentAndRefresh: thunkWithDbLock(async (a, newName, helpers) => {
+    const backingState = helpers.getState().backingFileState;
+    if (backingState.status === "booting") {
+      throw new Error('renameAndRefresh(): bad state "booting"');
+    }
+
+    const source = backingState.source;
+    const sourceKind = source.kind;
+    if (sourceKind !== "user-program") {
+      throw new Error(`renameAndRefresh(): bad source.kind "${sourceKind}"`);
+    }
+
+    await db.renameFile(source.id, newName);
+    await a._loadFromBacking({ id: source.id, name: newName });
   }),
 };

@@ -43,9 +43,11 @@ export const dependencies: Dependencies = {
     const text = await response.text();
     a.setGgbPythonModuleText(text);
 
-    await db.ensureUserFilesNonEmpty();
-    const fileIdToBootWith = await db.mostRecentlyOpenedPreview();
-    await allActions.editor.loadFromBacking(fileIdToBootWith);
+    await db.withLock(async () => {
+      await db.ensureUserFilesNonEmpty();
+      const fileIdToBootWith = await db.mostRecentlyOpenedPreview();
+      await allActions.editor._loadFromBacking(fileIdToBootWith);
+    });
 
     a.setBootStatus("done");
   }),
