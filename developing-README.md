@@ -5,6 +5,7 @@
 For deploying to `github.io`:
 
 ``` shell
+./tools/build-examples.sh
 PUBLIC_URL=/pyggb npm run build
 rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -nrtv build/ pages/
 # Then if that looks OK, same without "-nv":
