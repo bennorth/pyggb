@@ -508,6 +508,15 @@ type CodeWithErrorSpec = {
   assertions: Array<() => void>;
 };
 
+const runBadCode = (spec: CodeWithErrorSpec) => () => {
+  cy.window().then((window) => {
+    const code = deIndent(spec.code);
+    window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(code);
+    cy.get("button").contains("RUN").click();
+    spec.assertions.forEach((assertion) => assertion());
+  });
+};
+
 describe("Handles bad constructor calls", optsNoIsolation, () => {
   before(createNewPyGgbFile);
 
