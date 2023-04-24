@@ -45,6 +45,7 @@ export type Editor = {
   loadExample: Thunk<Editor, ExampleProgramPreview, {}, PyGgbModel>;
   maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, {}, PyGgbModel>;
   createNew: Thunk<Editor, NewFileDescriptor>;
+  renameCurrentAndRefresh: Thunk<Editor, string, {}, PyGgbModel>;
 };
 
 const InitialCodeTextSeqNum = 1001;
@@ -209,5 +210,21 @@ export const editor: Editor = {
   createNew: thunkWithDbLock(async (a, descriptor) => {
     const preview = await db.createNewFile(descriptor);
     await a._loadFromBacking(preview);
+  }),
+
+  renameCurrentAndRefresh: thunkWithDbLock(async (a, newName, helpers) => {
+    const backingState = helpers.getState().backingFileState;
+    if (backingState.status === "booting") {
+      throw new Error('renameAndRefresh(): bad state "booting"');
+    }
+
+    const source = backingState.source;
+    const sourceKind = source.kind;
+    if (sourceKind !== "user-program") {
+      throw new Error(`renameAndRefresh(): bad source.kind "${sourceKind}"`);
+    }
+
+    await db.renameFile(source.id, newName);
+    await a._loadFromBacking({ id: source.id, name: newName });
   }),
 };
