@@ -3,6 +3,7 @@ import { PyGgbModel } from ".";
 import { db, NewFileDescriptor, UserFilePreview } from "../shared/db";
 import { ExampleProgramPreview } from "../shared/resources";
 import { assertNever, fetchAsText, propSetterAction } from "../shared/utils";
+import { thunkWithDbLock } from "./thunk-with-db-lock";
 
 export type OperationalBackingFileStatus = "idle" | "loading" | "saving";
 
@@ -39,6 +40,7 @@ export type Editor = {
   saveCodeText: Thunk<Editor>;
   updateCodeTextAndScheduleSave: Thunk<Editor, string, {}, PyGgbModel>;
   setBackingFileState: Action<Editor, BackingFileState>;
+  _loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
   loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
   loadExample: Thunk<Editor, ExampleProgramPreview, {}, PyGgbModel>;
   maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, {}, PyGgbModel>;
@@ -87,7 +89,7 @@ export const editor: Editor = {
   setBackingFileState: propSetterAction("backingFileState"),
   setBackedSeqNum: propSetterAction("backedSeqNum"),
 
-  loadFromBacking: thunk(async (a, userFilePreview, helpers) => {
+  _loadFromBacking: thunk(async (a, userFilePreview, helpers) => {
     const state = helpers.getState();
     const status = state.backingFileState.status;
     if (status !== "booting" && status !== "idle") {
@@ -127,6 +129,10 @@ export const editor: Editor = {
     storeActions.pyErrors.clearErrors();
     storeActions.pyStdout.clearContent();
   }),
+  loadFromBacking: thunkWithDbLock((a, userFilePreview) =>
+    a._loadFromBacking(userFilePreview)
+  ),
+
   loadExample: thunk(async (a, example, helpers) => {
     const state = helpers.getState();
     const status = state.backingFileState.status;
