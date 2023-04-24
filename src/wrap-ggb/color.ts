@@ -50,6 +50,18 @@ export const parseColorOrFail = (color: string): [number, number, number] => {
   return mRGB;
 };
 
+/** Convert the given `color` object into an _RGB_ triple of [0, 255]
+ * ints.  The given `color` should be:
+ *
+ * * a string, in which case it should be a named color, of the form
+ *   `"#RGB"`, or of the form `"#RRGGBB`"; or
+ * * a three-element list or tuple, where each element is a number.
+ *
+ * In the latter case, the numbers are taken as (_red_, _green_, _blue_)
+ * with each number being between 0 and 1, inclusive.
+ *
+ * If the given `color` is not as above, a `ValueError` is raised.
+ * */
 export const interpretColorOrFail = (
   color: SkObject
 ): [number, number, number] => {
@@ -65,19 +77,11 @@ export const interpretColorOrFail = (
 
     if (components.length !== 3) {
       throw new Sk.builtin.ValueError(
-        `if a list/tuple, "color" must have three elements`
+        `if "color" is a list/tuple, it must have three elements`
       );
     }
 
-    if (components.every(augmentedSkulptApi.checkInt)) {
-      if (components.every((x) => x.v >= 0 && x.v < 256))
-        return [components[0].v, components[1].v, components[2].v];
-      throw new Sk.builtin.ValueError(
-        `if "color" is a list/tuple of ints, each must be >=0 and <=255`
-      );
-    }
-
-    if (components.every(augmentedSkulptApi.checkFloat)) {
+    if (components.every(Sk.builtin.checkNumber)) {
       if (components.every((x) => x.v >= 0.0 && x.v <= 1.0)) {
         // There are various ways to map the closed interval [0, 1] to
         // the set {0, 1, ..., 255}.  Pick a reasonable one:
@@ -85,13 +89,16 @@ export const interpretColorOrFail = (
         return [intComponents[0], intComponents[1], intComponents[2]];
       }
       throw new Sk.builtin.ValueError(
-        `if "color" is a list/tuple of floats, each must be >=0.0 and <=1.0`
+        `if "color" is a list/tuple of numbers, each must be >=0.0 and <=1.0`
       );
-    }
+    } else
+      throw new Sk.builtin.ValueError(
+        `if "color" is a list/tuple, each element must be a number`
+      );
   }
 
   throw new Sk.builtin.ValueError(
-    `"color" must be string, or list/tuple of three ints/floats`
+    `"color" must be string, or list/tuple of three numbers`
   );
 };
 

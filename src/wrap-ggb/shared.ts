@@ -308,7 +308,6 @@ type SharedGetSets = {
   value: ReadWriteProperty;
   opacity: ReadWriteProperty;
   color: ReadWriteProperty;
-  color_ints: ReadOnlyProperty;
   color_floats: ReadOnlyProperty;
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
@@ -362,14 +361,6 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
     $set(this: SkGgbObject, pyColor: SkObject) {
       const mRGB = interpretColorOrFail(pyColor);
       ggbApi.setColor(this.$ggbLabel, ...mRGB);
-    },
-  },
-  color_ints: {
-    $get(this: SkGgbObject) {
-      const color = ggbApi.getColor(this.$ggbLabel);
-      const jsRgb = colorIntsFromString(color);
-      const pyRgb = jsRgb.map((x) => new Sk.builtin.int_(x));
-      return new Sk.builtin.tuple(pyRgb);
     },
   },
   color_floats: {
