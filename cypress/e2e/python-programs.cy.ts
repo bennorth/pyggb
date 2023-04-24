@@ -109,8 +109,20 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
         A = Point(0, 0)
         B = Point(4, 4)
         k = Segment(A, B)
-        A = Point(k, 0.25)
-        assert(A.x == 1.0 and A.y == 1.0)
+        C = Point(k, 0.25)
+        assert(C.x == 1.0 and C.y == 1.0)
+      `,
+    },
+    {
+      label: "Point(object)",
+      code: `
+        A = Point(0, 0)
+        B = Point(4, 4)
+        k = Segment(A, B)
+        C = Point(k)
+        assert(C.x == C.y)
+        assert(C.x >= 0.0)
+        assert(C.x <= 4.0)
       `,
     },
     {

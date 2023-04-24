@@ -31,6 +31,10 @@ type SkGgbPointCtorSpec =
       y: string;
     }
   | {
+      kind: "arbitrary-on-object";
+      obj: string;
+    }
+  | {
       kind: "object-parameter";
       p: string;
       t: SkObject;
@@ -49,6 +53,17 @@ export const register = (
         case "coordinates": {
           const cmd = `(${spec.x}, ${spec.y})`;
           const lbl = ggb.evalCmd(cmd);
+          this.$ggbLabel = lbl;
+          break;
+        }
+        case "arbitrary-on-object": {
+          const cmd = `Point(${spec.obj})`;
+          const lbl = ggb.evalCmd(cmd);
+          throwIfLabelNull(
+            lbl,
+            "Point(object): could not find arbitrary point" +
+              ` along "${ggb.ggbType(spec.obj)}" object`
+          );
           this.$ggbLabel = lbl;
           break;
         }
@@ -98,6 +113,14 @@ export const register = (
           withPropertiesFromNameValuePairs(new mod.Point(spec), kwargs);
 
         switch (args.length) {
+          case 1: {
+            if (ggb.isGgbObject(args[0])) {
+              const obj = args[0].$ggbLabel;
+              return make({ kind: "arbitrary-on-object", obj });
+            }
+
+            throw badArgsError;
+          }
           case 2: {
             if (args.every(ggb.isPythonOrGgbNumber)) {
               const x = ggb.numberValueOrLabel(args[0]);
