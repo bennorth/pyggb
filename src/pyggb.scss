@@ -189,6 +189,23 @@ App {
 
 .FileChoice-list {
   @include hoverable-ul-of-cards();
+
+  li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    span.file-name {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+    }
+    button {
+      visibility: hidden;
+      padding: 2px 6px;
+    }
+    &:hover button:not([disabled]) {
+      visibility: visible;
+    }
+  }
 }
 
 ul.ExampleList {
