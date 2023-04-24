@@ -56,6 +56,17 @@ export const register = (
           this.$ggbLabel = lbl;
           break;
         }
+        case "arbitrary-on-object": {
+          const cmd = `Point(${spec.obj})`;
+          const lbl = ggb.evalCmd(cmd);
+          throwIfLabelNull(
+            lbl,
+            "Point(object): could not find arbitrary point" +
+              ` along "${ggb.ggbType(spec.obj)}" object`
+          );
+          this.$ggbLabel = lbl;
+          break;
+        }
         case "object-parameter": {
           const cmd = `Point(${spec.p}, ${ggb.numberValueOrLabel(spec.t)})`;
           const lbl = ggb.evalCmd(cmd);
