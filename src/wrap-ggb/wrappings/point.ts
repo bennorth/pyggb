@@ -113,6 +113,14 @@ export const register = (
           withPropertiesFromNameValuePairs(new mod.Point(spec), kwargs);
 
         switch (args.length) {
+          case 1: {
+            if (ggb.isGgbObject(args[0])) {
+              const obj = args[0].$ggbLabel;
+              return make({ kind: "arbitrary-on-object", obj });
+            }
+
+            throw badArgsError;
+          }
           case 2: {
             if (args.every(ggb.isPythonOrGgbNumber)) {
               const x = ggb.numberValueOrLabel(args[0]);
