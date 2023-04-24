@@ -18,6 +18,7 @@ describe("File management", () => {
     cy.get("button").contains("Create").click();
 
     // Name of newly-created file should appear in the navbar / menubar:
+    cy.get("div.modal").should("not.exist");
     cy.get(".editor .busy-overlay").should("not.be.visible");
     cy.get(".MenuBar").contains(filename);
 
@@ -45,6 +46,7 @@ describe("File management", () => {
     cy.get("button").contains("Create").click();
 
     // Name of newly-created file should appear in the navbar / menubar:
+    cy.get("div.modal").should("not.exist");
     cy.get(".editor .busy-overlay").should("not.be.visible");
     cy.get(".MenuBar").contains(f1);
 
@@ -59,6 +61,7 @@ describe("File management", () => {
       cy.get(".modal-body input").click().type(f2);
       cy.get("button").contains("Create").click();
 
+      cy.get("div.modal").should("not.exist");
       cy.get(".editor .busy-overlay").should("not.be.visible");
       cy.get(".MenuBar").contains(f2);
 
@@ -72,6 +75,7 @@ describe("File management", () => {
         chooseFileMenuEntry("Open");
 
         cy.get(".FileChoice").contains(f1).click();
+        cy.get("div.modal").should("not.exist");
         cy.get(".editor .busy-overlay").should("not.be.visible");
         cy.get(".MenuBar").contains(f1);
 
