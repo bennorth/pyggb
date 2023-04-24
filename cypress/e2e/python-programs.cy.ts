@@ -502,6 +502,21 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
   });
 });
 
+type CodeWithErrorSpec = {
+  label: string;
+  code: string;
+  assertions: Array<() => void>;
+};
+
+const runBadCode = (spec: CodeWithErrorSpec) => () => {
+  cy.window().then((window) => {
+    const code = deIndent(spec.code);
+    window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(code);
+    cy.get("button").contains("RUN").click();
+    spec.assertions.forEach((assertion) => assertion());
+  });
+};
+
 describe("Handles bad constructor calls", optsNoIsolation, () => {
   before(createNewPyGgbFile);
 
@@ -515,13 +530,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     cy.get(".ErrorReport .message").contains(regexp).contains(messageFragment);
   };
 
-  type BadConstructionSpec = {
-    label: string;
-    code: string;
-    assertions: Array<() => void>;
-  };
-
-  const simpleBadArgsSpec = (codeFragment: string): BadConstructionSpec => {
+  const simpleBadArgsSpec = (codeFragment: string): CodeWithErrorSpec => {
     const clsName = new RegExp("^([^()]*)\\(").exec(codeFragment)[1];
     return {
       label: `${codeFragment}`,
@@ -530,13 +539,13 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     };
   };
 
-  const badNoArgsSpec = (clsName: string): BadConstructionSpec =>
+  const badNoArgsSpec = (clsName: string): CodeWithErrorSpec =>
     simpleBadArgsSpec(`${clsName}()`);
 
-  const badOneArgSpec = (clsName: string): BadConstructionSpec =>
+  const badOneArgSpec = (clsName: string): CodeWithErrorSpec =>
     simpleBadArgsSpec(`${clsName}(lambda x: x)`);
 
-  const badConstructionSpecs: Array<BadConstructionSpec> = [
+  const specs: Array<CodeWithErrorSpec> = [
     badNoArgsSpec("Boolean"),
     badNoArgsSpec("Circle"),
     badOneArgSpec("Circle"),
@@ -579,16 +588,46 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     },
   ];
 
-  badConstructionSpecs.forEach((spec) => {
-    it(`handles ${spec.label} ok`, () => {
-      cy.window().then((window) => {
-        const code = deIndent(spec.code);
-        window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(code);
-        cy.get("button").contains("RUN").click();
-        spec.assertions.forEach((assertion) => assertion());
-      });
-    });
-  });
+  specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
+});
+
+describe("handles attempt to set bad attribute value", optsNoIsolation, () => {
+  before(createNewPyGgbFile);
+
+  const assertValueError = (messageFragment: string) => () => {
+    cy.get(".ErrorReport .message")
+      .contains(/^ValueError:/)
+      .contains(messageFragment);
+  };
+
+  const specs: Array<CodeWithErrorSpec> = [
+    {
+      label: "Point.color = [0.5, 0.5, 1.5]",
+      code: `
+        A = Point(1, 1)
+        A.color = [0.5, 0.5, 1.5]
+      `,
+      assertions: [assertValueError("must be >=0.0 and <=1.0")],
+    },
+    {
+      label: "Point.color = [0.5, 0.5]",
+      code: `
+        A = Point(1, 1)
+        A.color = [0.5, 0.5]
+      `,
+      assertions: [assertValueError("must have three elements")],
+    },
+    {
+      label: 'Point.color = [0.5, 0.5, "hello"]',
+      code: `
+        A = Point(1, 1)
+        A.color = [0.5, 0.5, "hello"]
+      `,
+      assertions: [assertValueError("each element must be a number")],
+    },
+  ];
+
+  specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
 });
 
 /**
