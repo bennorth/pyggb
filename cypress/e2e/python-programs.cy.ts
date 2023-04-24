@@ -591,6 +591,45 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
   specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
 });
 
+describe("handles attempt to set bad attribute value", optsNoIsolation, () => {
+  before(createNewPyGgbFile);
+
+  const assertValueError = (messageFragment: string) => () => {
+    cy.get(".ErrorReport .message")
+      .contains(/^ValueError:/)
+      .contains(messageFragment);
+  };
+
+  const specs: Array<CodeWithErrorSpec> = [
+    {
+      label: "Point.color = [0.5, 0.5, 1.5]",
+      code: `
+        A = Point(1, 1)
+        A.color = [0.5, 0.5, 1.5]
+      `,
+      assertions: [assertValueError("must be >=0.0 and <=1.0")],
+    },
+    {
+      label: "Point.color = [0.5, 0.5]",
+      code: `
+        A = Point(1, 1)
+        A.color = [0.5, 0.5]
+      `,
+      assertions: [assertValueError("must have three elements")],
+    },
+    {
+      label: 'Point.color = [0.5, 0.5, "hello"]',
+      code: `
+        A = Point(1, 1)
+        A.color = [0.5, 0.5, "hello"]
+      `,
+      assertions: [assertValueError("each element must be a number")],
+    },
+  ];
+
+  specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
+});
+
 /**
  * How to specify what should happen as the result of running a program under
  * test?  Want to say that certain points (with particular properties, such as
