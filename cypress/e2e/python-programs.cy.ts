@@ -114,6 +114,18 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       `,
     },
     {
+      label: "Point(object)",
+      code: `
+        A = Point(0, 0)
+        B = Point(4, 4)
+        k = Segment(A, B)
+        C = Point(k)
+        assert(C.x == C.y)
+        assert(C.x >= 0.0)
+        assert(C.x <= 4.0)
+      `,
+    },
+    {
       label: "Number",
       code: `
         x = Number(3.25)
