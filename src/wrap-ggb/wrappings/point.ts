@@ -31,6 +31,10 @@ type SkGgbPointCtorSpec =
       y: string;
     }
   | {
+      kind: "arbitrary-on-object";
+      obj: string;
+    }
+  | {
       kind: "object-parameter";
       p: string;
       t: SkObject;
