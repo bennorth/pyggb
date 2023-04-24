@@ -131,7 +131,7 @@ export const editor: Editor = {
     const state = helpers.getState();
     const status = state.backingFileState.status;
     if (status !== "booting" && status !== "idle") {
-      console.error(`loadFromBacking(): in bad state ${status}`);
+      console.error(`loadExample(): in bad state ${status}`);
       return;
     }
 
