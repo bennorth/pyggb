@@ -5,6 +5,7 @@ import { OperationalBackingFileState } from "../model/editor";
 import { assertNever } from "../shared/utils";
 import { useStoreActions, useStoreState } from "../store";
 import { RunButton, PauseButton, StopButton } from "./RunButton";
+import { AboutButton } from "./AboutButton";
 
 type FilenameProps = {
   backingFileState: OperationalBackingFileState;
@@ -165,6 +166,9 @@ export const MenuBar: React.FC<{}> = () => {
           <Spinner size="sm" className={spinnerClasses}></Spinner>
           {maybeBackingName}
         </Navbar.Text>
+        <Navbar.Brand>
+          <AboutButton />
+        </Navbar.Brand>
       </Container>
     </Navbar>
   );
