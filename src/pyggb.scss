@@ -25,6 +25,10 @@ App {
   }
 
   .container-fluid.MenuBar {
+    .navbar-brand:last-child {
+      margin-right: 0px;
+    }
+
     background-color: #303030;
     color: white;
     margin: 0rem;
@@ -42,9 +46,14 @@ App {
     }
 
     .backing-state {
+      display: flex;
+      flex-direction: row;
+      width: 1rem; // Will be adjusted by grow/shrink
       margin-left: 3rem;
       color: white;
       font-style: italic;
+      flex-grow: 1;
+      flex-shrink: 1;
 
       .spinner-border {
         visibility: hidden;
