@@ -163,7 +163,9 @@ export const MenuBar: React.FC<{}> = () => {
           <NavDropdown.Item onClick={downloadPython}>Download</NavDropdown.Item>
         </NavDropdown>
         <Navbar.Text className="backing-state">
-          <Spinner size="sm" className={spinnerClasses}></Spinner>
+          <div className="spinner-container">
+            <Spinner size="sm" className={spinnerClasses}></Spinner>
+          </div>
           {maybeBackingName}
         </Navbar.Text>
         <Navbar.Brand>
