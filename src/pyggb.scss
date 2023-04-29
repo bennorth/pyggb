@@ -55,6 +55,15 @@ App {
       flex-grow: 1;
       flex-shrink: 1;
 
+      .spinner-container {
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
       .spinner-border {
         visibility: hidden;
         &.visible {
