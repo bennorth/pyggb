@@ -233,3 +233,28 @@ ul.ExampleList {
     background-color: #606060;
   }
 }
+
+.AboutPyGgbModal {
+  .modal-body {
+    padding-bottom: 0px;
+  }
+
+  section.logo-and-text {
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    p {
+      margin-bottom: 0px;
+      &:first-child {
+        margin-top: 0.5rem;
+        margin-right: 1rem;
+      }
+    }
+
+    img {
+      width: 60px;
+    }
+
+    margin-bottom: 1rem;
+  }
+}
