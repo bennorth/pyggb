@@ -71,6 +71,13 @@ App {
         }
         margin-right: 1rem;
       }
+
+      .FilenameDisplayOrEdit {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 1rem;
+      }
     }
   }
 
