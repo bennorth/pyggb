@@ -27,6 +27,7 @@ export type Controls = {
   handleResumeSleepingRun: Thunk<Controls, void>;
   handleEnterPause: Thunk<Controls, PauseResolutionActions>;
   handleResumePausedRun: Thunk<Controls, void>;
+  handleFinishRun: Thunk<Controls, void>;
 };
 
 const logBadStateError = (
@@ -154,6 +155,11 @@ export const controls: Controls = {
   handleResumePausedRun: thunk((a, _voidPayload, helpers) => {
     if (stateIsValid(helpers, "paused", "handleResumePausedRun")) {
       a.setExecutionStatus({ state: "running" });
+    }
+  }),
+  handleFinishRun: thunk((a, _voidPayload, helpers) => {
+    if (stateIsValid(helpers, "running", "handleFinishRun")) {
+      a.setExecutionStatus({ state: "idle" });
     }
   }),
 
