@@ -14,6 +14,27 @@ interface SkGgbEllipse extends SkGgbObject {
   // TODO: Anything here?
 }
 
+type SkGgbEllipseCtorSpec =
+  | WrapExistingCtorSpec
+  | {
+      kind: "foci-semimajor-axis-length";
+      focus1: SkGgbObject;
+      focus2: SkGgbObject;
+      semimajorAxis: SkObject;
+    }
+  | {
+      kind: "foci-semimajor-axis-segment";
+      focus1: SkGgbObject;
+      focus2: SkGgbObject;
+      semimajorAxis: SkGgbObject;
+    }
+  | {
+      kind: "foci-point";
+      focus1: SkGgbObject;
+      focus2: SkGgbObject;
+      point: SkGgbObject;
+    };
+
 export const register = (mod: any, appApi: AppApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
