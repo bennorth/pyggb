@@ -70,7 +70,13 @@ interface SkAbstrT {
   ) => void;
 }
 
-type SkJavaScriptFunction = (...args: Array<SkObject>) => SkObject;
+type SkSuspension = {
+  $isSuspension: true;
+};
+
+type SkJavaScriptFunction = (
+  ...args: Array<SkObject>
+) => SkObject | SkSuspension;
 
 type SkNoneT = {
   none$: SkObject;
@@ -102,9 +108,9 @@ type SkBuiltinT = {
 
 type SkMiscEvalT = {
   isTrue: (obj: SkObject) => boolean;
-  callsimOrSuspend: (fun: any) => any;
+  callsimOrSuspend: (fun: any, ...args: Array<SkObject>) => any;
   arrayFromIterable: (obj: SkObject) => Array<SkObject>;
-  promiseToSuspension(p: Promise<SkObject>): any;
+  promiseToSuspension(p: Promise<SkObject>): SkSuspension;
   asyncToPromise<T>(f: () => T): Promise<T>;
 };
 

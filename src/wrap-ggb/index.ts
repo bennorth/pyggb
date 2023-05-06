@@ -17,6 +17,8 @@ import { register as registerIntersect } from "./wrappings/intersect";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
+import { register as registerOnTemperatureReport } from "./web-hid/on-temperature-report";
+
 import { register as registerInterruptibleSleep } from "./interruptible-sleep";
 
 import { SkulptApi } from "../shared/vendor-types/skulptapi";
@@ -45,6 +47,8 @@ declare var Sk: SkulptApi;
   registerIntersect(mod, appApi);
 
   registerClearConsole(mod, appApi);
+
+  registerOnTemperatureReport(mod, appApi);
 
   registerInterruptibleSleep(mod, appApi);
 
