@@ -367,6 +367,36 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       ],
     },
     {
+      label: "Intersect(Ellipse, Ellipse)",
+      code: `
+        import math
+
+        A = Point(-2, 0)
+        B = Point(2, 0)
+        C = Point(0, -2)
+        D = Point(0, 2)
+
+        sma = 1.0 + math.sqrt(5.0)
+        k1 = Ellipse(A, B, sma)
+        k2 = Ellipse(C, D, sma)
+
+        def print_4dp(p):
+            print(f"({p.x:.04f}, {p.y:.04f})")
+
+        print_4dp(Intersect(k1, k2, 1))
+        print_4dp(Intersect(k1, k2, 2))
+        print_4dp(Intersect(k1, k2, 3))
+        print_4dp(Intersect(k1, k2, 4))
+      `,
+      expOutputs: [
+        // Not necessarily in this order:
+        "(2.0000, 2.0000)",
+        "(2.0000, -2.0000)",
+        "(-2.0000, 2.0000)",
+        "(-2.0000, -2.0000)",
+      ],
+    },
+    {
       label: "Rotate(Vector)",
       code: `
         import math
