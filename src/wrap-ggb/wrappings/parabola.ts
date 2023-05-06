@@ -42,8 +42,6 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         case "focus-directrix": {
-          // TODO: Check focus is a point and directrix is a line.  Where does
-          // that check belong?
           const ggbArgs = `${spec.focus.$ggbLabel},${spec.directrix.$ggbLabel}`;
           const ggbCmd = `Parabola(${ggbArgs})`;
           const lbl = ggb.evalCmd(ggbCmd);
