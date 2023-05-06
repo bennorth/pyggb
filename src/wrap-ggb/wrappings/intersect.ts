@@ -1,9 +1,5 @@
 import { AppApi } from "../../shared/appApi";
-import {
-  AugmentedGgbApi,
-  augmentedGgbApi,
-  isSingletonOfEmpty,
-} from "../shared";
+import { augmentedGgbApi } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
