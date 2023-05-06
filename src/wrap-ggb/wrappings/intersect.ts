@@ -23,7 +23,7 @@ export const register = (mod: any, appApi: AppApi) => {
 
   const fun = new Sk.builtin.func((...args) => {
     const badArgsError = new Sk.builtin.TypeError(
-      "bad Intersect() args; need 2 Geogebra objects and a number"
+      "Intersect() arguments must be two Geogebra objects and a number"
     );
 
     if (
