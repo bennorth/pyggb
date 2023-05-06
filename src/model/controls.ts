@@ -22,6 +22,7 @@ export type Controls = {
   pauseProgram: Thunk<Controls, void, {}, PyGgbModel>;
   stopProgram: Thunk<Controls, void, {}, PyGgbModel>;
 
+  handleStartRun: Thunk<Controls, void>;
   handleEnterSleep: Thunk<Controls, SleepInterruptionActions>;
   handleResumeSleepingRun: Thunk<Controls, void>;
   handleEnterPause: Thunk<Controls, PauseResolutionActions>;
@@ -130,6 +131,11 @@ export const controls: Controls = {
     a.setExecutionStatus({ state: "idle" });
   }),
 
+  handleStartRun: thunk((a, _voidPayload, helpers) => {
+    if (stateIsValid(helpers, "idle", "handleStartRun")) {
+      a.setExecutionStatus({ state: "running" });
+    }
+  }),
   handleEnterSleep: thunk((a, interruptionActions, helpers) => {
     if (stateIsValid(helpers, "running", "handleEnterSleep")) {
       a.setExecutionStatus({ state: "sleeping", ...interruptionActions });
