@@ -1,5 +1,5 @@
 import { AppApi } from "../../shared/appApi";
-import { augmentedGgbApi } from "../shared";
+import { augmentedGgbApi, assembledCommand } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
@@ -18,8 +18,7 @@ export const register = (mod: any, appApi: AppApi) => {
       throw new Sk.builtin.TypeError("angle arg must be ggb Numeric or number");
     })();
 
-    const ggbArgs = `${args[0].$ggbLabel},${angleArg}`;
-    const ggbCmd = `Rotate(${ggbArgs})`;
+    const ggbCmd = assembledCommand("Rotate", [args[0].$ggbLabel, angleArg]);
     const label = ggb.evalCmd(ggbCmd);
     return ggb.wrapExistingGgbObject(label);
   });
