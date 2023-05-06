@@ -133,6 +133,14 @@ export const register = (mod: any, appApi: AppApi) => {
     methods: {
       ...ggb.freeCopyMethodsSlice,
     },
+    getsets: {
+      is_visible: ggb.sharedGetSets.is_visible,
+      color: ggb.sharedGetSets.color,
+      color_floats: ggb.sharedGetSets.color_floats,
+      opacity: ggb.sharedGetSets.opacity,
+      line_thickness: ggb.sharedGetSets.line_thickness,
+      _ggb_type: ggb.sharedGetSets._ggb_type,
+    },
   });
 
   mod.Ellipse = cls;
