@@ -70,6 +70,10 @@ interface SkAbstrT {
   ) => void;
 }
 
+type SkSuspension = {
+  $isSuspension: true;
+};
+
 type SkJavaScriptFunction = (...args: Array<SkObject>) => SkObject;
 
 type SkNoneT = {
