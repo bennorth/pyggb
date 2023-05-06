@@ -80,7 +80,7 @@ export const register = (mod: any, appApi: AppApi) => {
       },
     },
     slots: {
-      tp$new(args: Array<any>, kwargs: Array<any>) {
+      tp$new(args, kwargs) {
         const badArgsError = new Sk.builtin.TypeError(
           "Circle() arguments must be" +
             " (center_point, number), (center_point, circumference_point)" +
