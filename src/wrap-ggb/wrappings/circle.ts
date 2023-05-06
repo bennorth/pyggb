@@ -4,6 +4,7 @@ import {
   withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
   SkGgbObject,
+  setGgbLabelFromArgs,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -39,11 +40,7 @@ export const register = (mod: any, appApi: AppApi) => {
     constructor: function Circle(this: SkGgbCircle, spec: SkGgbCircleCtorSpec) {
       this.radiusNumber = null;
 
-      const setLabelFromArgs = (argsStr: string) => {
-        const ggbCmd = `Circle(${argsStr})`;
-        const lbl = ggb.evalCmd(ggbCmd);
-        this.$ggbLabel = lbl;
-      };
+      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Circle");
 
       switch (spec.kind) {
         case "wrap-existing": {
@@ -52,15 +49,15 @@ export const register = (mod: any, appApi: AppApi) => {
         }
         case "center-radius": {
           const radiusArg = ggb.numberValueOrLabel(spec.radius);
-          setLabelFromArgs(`${spec.center.$ggbLabel},${radiusArg}`);
+          setLabelArgs([spec.center.$ggbLabel, radiusArg]);
           break;
         }
         case "center-point": {
-          setLabelFromArgs(`${spec.center.$ggbLabel},${spec.point.$ggbLabel}`);
+          setLabelArgs([spec.center.$ggbLabel, spec.point.$ggbLabel]);
           break;
         }
         case "three-points": {
-          setLabelFromArgs(spec.points.map((p) => p.$ggbLabel).join(","));
+          setLabelArgs(spec.points.map((p) => p.$ggbLabel));
           break;
         }
         default:
