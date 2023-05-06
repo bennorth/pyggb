@@ -20,6 +20,10 @@ type DeviceAcquisitionStatus =
   | "failed"
   | "succeeded";
 
+export interface HidInputReportEventClient {
+  onInputreport(event: HIDInputReportEvent): Promise<void>;
+}
+
 export type WebHid = {
   acquisitionStatus: DeviceAcquisitionStatus;
   setAcquisitionStatus: Action<WebHid, DeviceAcquisitionStatus>;
