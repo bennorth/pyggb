@@ -110,7 +110,7 @@ type SkMiscEvalT = {
   isTrue: (obj: SkObject) => boolean;
   callsimOrSuspend: (fun: any) => any;
   arrayFromIterable: (obj: SkObject) => Array<SkObject>;
-  promiseToSuspension(p: Promise<SkObject>): any;
+  promiseToSuspension(p: Promise<SkObject>): SkSuspension;
   asyncToPromise<T>(f: () => T): Promise<T>;
 };
 
