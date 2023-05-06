@@ -31,6 +31,7 @@ export const register = (mod: any, appApi: AppApi) => {
   const uiApi = appApi.ui;
   const skApi = appApi.sk;
 
+  let haveRegisteredAsClient = false;
   let pyHandlers: Array<SkObject> = [];
   let runningHandlers = false;
 
@@ -60,5 +61,16 @@ export const register = (mod: any, appApi: AppApi) => {
     }
 
     runningHandlers = false;
+  }
+
+  async function registerHandler(pyFun: SkObject): Promise<SkObject> {
+    if (!haveRegisteredAsClient) {
+      // Let errors escape.
+      await hidApi.register({ onInputreport: broadcastToHandlers });
+      haveRegisteredAsClient = true;
+    }
+
+    pyHandlers.push(pyFun);
+    return pyFun;
   }
 };
