@@ -35,6 +35,8 @@ export type WebHid = {
   client: HidInputReportEventClient;
   setClient: Action<WebHid, HidInputReportEventClient>;
   forwardEvent: Thunk<WebHid, HIDInputReportEvent>;
+
+  openDevice: Thunk<WebHid>;
 };
 
 export let webHid: WebHid = {
@@ -47,5 +49,44 @@ export let webHid: WebHid = {
   forwardEvent: thunk(async (_a, event, helpers) => {
     const client = helpers.getState().client;
     await client.onInputreport(event);
+  }),
+
+  openDevice: thunk(async (a, _voidPayload, helpers) => {
+    const state = helpers.getState();
+    switch (state.acquisitionStatus) {
+      case "not-yet-requested":
+      case "failed":
+        // Continue with main body; handle "failed" like this to let
+        // the user change their mind.
+        break;
+      case "requesting":
+      case "succeeded":
+        // Either we already have the device or we're in the middle of
+        // asking for it.
+        return;
+    }
+
+    a.setAcquisitionStatus("requesting");
+
+    try {
+      const filterOpts = { filters: kDeviceFilters };
+      const devices = await navigator.hid.requestDevice(filterOpts);
+
+      if (devices.length === 0) {
+        console.warn("no HID devices granted by user");
+        a.setAcquisitionStatus("failed");
+        return;
+      }
+
+      const device = devices[0];
+
+      await device.open();
+      device.addEventListener("inputreport", (e) => a.forwardEvent(e));
+
+      a.setAcquisitionStatus("succeeded");
+    } catch (err) {
+      console.error("Error setting up HID device", err);
+      a.setAcquisitionStatus("failed");
+    }
   }),
 };
