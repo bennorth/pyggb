@@ -24,6 +24,10 @@ export interface HidInputReportEventClient {
   onInputreport(event: HIDInputReportEvent): Promise<void>;
 }
 
+const kNopClient: HidInputReportEventClient = {
+  onInputreport: (_event) => Promise.resolve(),
+};
+
 export type WebHid = {
   acquisitionStatus: DeviceAcquisitionStatus;
   setAcquisitionStatus: Action<WebHid, DeviceAcquisitionStatus>;
