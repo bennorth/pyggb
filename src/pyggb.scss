@@ -25,6 +25,10 @@ App {
   }
 
   .container-fluid.MenuBar {
+    .navbar-brand:last-child {
+      margin-right: 0px;
+    }
+
     background-color: #303030;
     color: white;
     margin: 0rem;
@@ -42,9 +46,23 @@ App {
     }
 
     .backing-state {
+      display: flex;
+      flex-direction: row;
+      width: 1rem; // Will be adjusted by grow/shrink
       margin-left: 3rem;
       color: white;
       font-style: italic;
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      .spinner-container {
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
 
       .spinner-border {
         visibility: hidden;
@@ -52,6 +70,13 @@ App {
           visibility: visible;
         }
         margin-right: 1rem;
+      }
+
+      .FilenameDisplayOrEdit {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 1rem;
       }
     }
   }
@@ -222,5 +247,30 @@ ul.ExampleList {
   user-select: none;
   &:hover {
     background-color: #606060;
+  }
+}
+
+.AboutPyGgbModal {
+  .modal-body {
+    padding-bottom: 0px;
+  }
+
+  section.logo-and-text {
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    p {
+      margin-bottom: 0px;
+      &:first-child {
+        margin-top: 0.5rem;
+        margin-right: 1rem;
+      }
+    }
+
+    img {
+      width: 60px;
+    }
+
+    margin-bottom: 1rem;
   }
 }

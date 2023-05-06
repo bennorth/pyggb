@@ -5,6 +5,7 @@ import { useStoreActions } from "./store";
 import { FileChooserModal } from "./components/modals/FileChooserModal";
 import { NewFileModal } from "./components/modals/NewFileModal";
 import { DownloadPythonModal } from "./components/modals/DownloadPythonModal";
+import { AboutPyGgbModal } from "./components/modals/AboutPyGgbModal";
 
 function App() {
   const bootDependencies = useStoreActions((a) => a.dependencies.boot);
@@ -18,6 +19,7 @@ function App() {
       <FileChooserModal />
       <NewFileModal />
       <DownloadPythonModal />
+      <AboutPyGgbModal />
       <IDE />
     </div>
   );
