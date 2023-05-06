@@ -37,31 +37,37 @@ export const register = (mod: any, appApi: AppApi) => {
 
   const cls = Sk.abstr.buildNativeClass("Circle", {
     constructor: function Circle(this: SkGgbCircle, spec: SkGgbCircleCtorSpec) {
-      // TODO: This is messy; tidy up:
-      if (spec.kind === "wrap-existing") {
-        this.$ggbLabel = spec.label;
-        this.radiusNumber = null;
-        return;
-      }
-
-      const ggbArgs = (() => {
-        switch (spec.kind) {
-          case "center-radius": {
-            const radiusArg = ggb.numberValueOrLabel(spec.radius);
-            return `${spec.center.$ggbLabel},${radiusArg}`;
-          }
-          case "center-point":
-            return `${spec.center.$ggbLabel},${spec.point.$ggbLabel}`;
-          case "three-points":
-            return spec.points.map((p) => p.$ggbLabel).join(",");
-          default:
-            throw new Sk.builtin.RuntimeError("should not get here");
-        }
-      })();
-      const ggbCmd = `Circle(${ggbArgs})`;
-      const lbl = ggb.evalCmd(ggbCmd);
-      this.$ggbLabel = lbl;
       this.radiusNumber = null;
+
+      const setLabelFromArgs = (argsStr: string) => {
+        const ggbCmd = `Circle(${argsStr})`;
+        const lbl = ggb.evalCmd(ggbCmd);
+        this.$ggbLabel = lbl;
+      };
+
+      switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
+        case "center-radius": {
+          const radiusArg = ggb.numberValueOrLabel(spec.radius);
+          setLabelFromArgs(`${spec.center.$ggbLabel},${radiusArg}`);
+          break;
+        }
+        case "center-point": {
+          setLabelFromArgs(`${spec.center.$ggbLabel},${spec.point.$ggbLabel}`);
+          break;
+        }
+        case "three-points": {
+          setLabelFromArgs(spec.points.map((p) => p.$ggbLabel).join(","));
+          break;
+        }
+        default:
+          throw new Sk.builtin.RuntimeError(
+            `bad Circle spec kind "${(spec as any).kind}"`
+          );
+      }
     },
     proto: {
       $radiusNumber(this: SkGgbCircle) {
