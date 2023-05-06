@@ -24,13 +24,14 @@ export const register = (mod: any, appApi: AppApi) => {
       spec: SkGgbBooleanCtorSpec
     ) {
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
         case "literal":
           const ggbCmd = spec.value ? "true" : "false";
           const label = ggb.evalCmd(ggbCmd);
           this.$ggbLabel = label;
-          break;
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
           break;
         default:
           throw new Sk.builtin.TypeError(
