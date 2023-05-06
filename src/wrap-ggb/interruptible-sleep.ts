@@ -15,10 +15,12 @@ export interface PauseResolutionActions {
 }
 
 export interface RunControlClient {
+  handleStartRun(): void;
   handleEnterSleep(actions: SleepInterruptionActions): void;
   handleResumeSleepingRun(): void;
   handleEnterPause(actions: PauseResolutionActions): void;
   handleResumePausedRun(): void;
+  handleFinishRun(): void;
 }
 
 type SleepState = {

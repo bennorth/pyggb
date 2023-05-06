@@ -22,10 +22,12 @@ export type Controls = {
   pauseProgram: Thunk<Controls, void, {}, PyGgbModel>;
   stopProgram: Thunk<Controls, void, {}, PyGgbModel>;
 
+  handleStartRun: Thunk<Controls, void>;
   handleEnterSleep: Thunk<Controls, SleepInterruptionActions>;
   handleResumeSleepingRun: Thunk<Controls, void>;
   handleEnterPause: Thunk<Controls, PauseResolutionActions>;
   handleResumePausedRun: Thunk<Controls, void>;
+  handleFinishRun: Thunk<Controls, void>;
 };
 
 const logBadStateError = (
@@ -106,13 +108,15 @@ export const controls: Controls = {
     await actions.editor.saveCodeText();
 
     const runControlClient: RunControlClient = {
+      handleStartRun: () => a.handleStartRun(),
       handleEnterSleep: (actions) => a.handleEnterSleep(actions),
       handleResumeSleepingRun: () => a.handleResumeSleepingRun(),
       handleEnterPause: (actions) => a.handleEnterPause(actions),
       handleResumePausedRun: () => a.handleResumePausedRun(),
+      handleFinishRun: () => a.handleFinishRun(),
     };
 
-    a.setExecutionStatus({ state: "running" });
+    runControlClient.handleStartRun();
     await runPythonProgram(
       codeText,
       localModules,
@@ -121,15 +125,14 @@ export const controls: Controls = {
       runControlClient,
       ggbApi
     );
-
-    const finalExecState = helpers.getState().executionStatus.state;
-    if (finalExecState !== "running") {
-      logBadStateError("runProgram", ["running"], finalExecState);
-    }
-
-    a.setExecutionStatus({ state: "idle" });
+    runControlClient.handleFinishRun();
   }),
 
+  handleStartRun: thunk((a, _voidPayload, helpers) => {
+    if (stateIsValid(helpers, "idle", "handleStartRun")) {
+      a.setExecutionStatus({ state: "running" });
+    }
+  }),
   handleEnterSleep: thunk((a, interruptionActions, helpers) => {
     if (stateIsValid(helpers, "running", "handleEnterSleep")) {
       a.setExecutionStatus({ state: "sleeping", ...interruptionActions });
@@ -148,6 +151,11 @@ export const controls: Controls = {
   handleResumePausedRun: thunk((a, _voidPayload, helpers) => {
     if (stateIsValid(helpers, "paused", "handleResumePausedRun")) {
       a.setExecutionStatus({ state: "running" });
+    }
+  }),
+  handleFinishRun: thunk((a, _voidPayload, helpers) => {
+    if (stateIsValid(helpers, "running", "handleFinishRun")) {
+      a.setExecutionStatus({ state: "idle" });
     }
   }),
 
