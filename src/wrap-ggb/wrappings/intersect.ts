@@ -1,5 +1,5 @@
 import { AppApi } from "../../shared/appApi";
-import { augmentedGgbApi } from "../shared";
+import { assembledCommand, augmentedGgbApi } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
@@ -30,12 +30,11 @@ export const register = (mod: any, appApi: AppApi) => {
       throw badArgsError;
     }
 
-    const ggbArgs = [
+    const ggbCmd = assembledCommand("Intersect", [
       args[0].$ggbLabel,
       args[1].$ggbLabel,
       ggb.numberValueOrLabel(args[2]),
-    ];
-    const ggbCmd = `Intersect(${ggbArgs.join(",")})`;
+    ]);
 
     // It seems that always get a Point.  If there is no Nth
     // intersection, the Point has NaN coords.
