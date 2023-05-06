@@ -74,7 +74,9 @@ type SkSuspension = {
   $isSuspension: true;
 };
 
-type SkJavaScriptFunction = (...args: Array<SkObject>) => SkObject;
+type SkJavaScriptFunction = (
+  ...args: Array<SkObject>
+) => SkObject | SkSuspension;
 
 type SkNoneT = {
   none$: SkObject;
