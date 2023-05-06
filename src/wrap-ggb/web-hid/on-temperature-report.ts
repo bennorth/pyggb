@@ -30,4 +30,35 @@ export const register = (mod: any, appApi: AppApi) => {
   const hidApi = appApi.hid;
   const uiApi = appApi.ui;
   const skApi = appApi.sk;
+
+  let pyHandlers: Array<SkObject> = [];
+  let runningHandlers = false;
+
+  async function broadcastToHandlers(event: HIDInputReportEvent) {
+    if (runningHandlers) {
+      console.log("ignoring HID event; handlers already running");
+      return;
+    }
+
+    runningHandlers = true;
+
+    const value = valueOfEvent(event);
+    const pyValue = new Sk.builtin.float_(value);
+
+    for (const fun of pyHandlers) {
+      uiApi.runControlClient.handleStartRun();
+      try {
+        await Sk.misceval.asyncToPromise(() =>
+          Sk.misceval.callsimOrSuspend(fun, pyValue)
+        );
+      } catch (err) {
+        skApi.onError(err as any);
+        break;
+      } finally {
+        uiApi.runControlClient.handleFinishRun();
+      }
+    }
+
+    runningHandlers = false;
+  }
 };
