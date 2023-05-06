@@ -266,6 +266,16 @@ export const setGgbLabelFromCmd =
     obj.$ggbLabel = lbl;
   };
 
+/** Set the `$ggbLabel` property of the given `obj` from the result of
+ * assembling a GeoGebra command from the given `command` and `args`.
+ * Curried for more concise use within a constructor. */
+export const setGgbLabelFromArgs =
+  (ggb: AugmentedGgbApi, obj: SkGgbObject, command: string) =>
+  (args: Array<string>) => {
+    const fullCommand = assembledCommand(command, args);
+    setGgbLabelFromCmd(ggb, obj)(fullCommand);
+  };
+
 // The only type we use:
 type FastCallMethod = (
   this: SkGgbObject,
