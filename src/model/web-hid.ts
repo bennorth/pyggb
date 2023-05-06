@@ -1,4 +1,4 @@
-import { Action, Thunk, action, thunk } from "easy-peasy";
+import { Action, Thunk, thunk } from "easy-peasy";
 import { propSetterAction } from "../shared/utils";
 
 const kDeviceFilters = [
