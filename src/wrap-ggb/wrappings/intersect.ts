@@ -19,7 +19,7 @@ declare var Sk: SkulptApi;
 // always returns a native Python list.
 
 export const register = (mod: any, appApi: AppApi) => {
-  const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
+  const ggb = augmentedGgbApi(appApi.ggb);
 
   const fun = new Sk.builtin.func((...args) => {
     if (args.length !== 2 || !args.every(ggb.isGgbObject))
