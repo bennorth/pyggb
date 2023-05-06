@@ -31,6 +31,10 @@ export const register = (mod: any, appApi: AppApi) => {
   const cls = Sk.abstr.buildNativeClass("Vector", {
     constructor: function Vector(this: SkGgbVector, spec: SkGgbVectorCtorSpec) {
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
         case "points": {
           const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
           const ggbCmd = `Vector(${ggbArgs})`;
@@ -47,9 +51,6 @@ export const register = (mod: any, appApi: AppApi) => {
           this.$ggbLabel = lbl;
           break;
         }
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
-          break;
         default:
           throw new Sk.builtin.TypeError(
             `bad Vector() spec.kind "${(spec as any).kind}"`
