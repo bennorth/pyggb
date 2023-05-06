@@ -596,6 +596,8 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     badOneArgSpec("Segment"),
     badNoArgsSpec("Vector"),
     badOneArgSpec("Vector"),
+    badNoArgsSpec("Intersect"),
+    badOneArgSpec("Intersect"),
     simpleBadArgsSpec('Circle("hello", 3)'),
     simpleBadArgsSpec('Circle(Point(1, 2), "hello")'),
     simpleBadArgsSpec("Circle(Point(1, 2), 2, 3)"),
