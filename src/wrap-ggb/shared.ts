@@ -252,6 +252,11 @@ export function throwIfLabelNull(
   }
 }
 
+/** Assemble a full GeoGebra command from the base `command` and the
+ * array of string `args`. */
+export const assembledCommand = (command: string, args: Array<string>) =>
+  `${command}(${args.join(",")})`;
+
 // The only type we use:
 type FastCallMethod = (
   this: SkGgbObject,
