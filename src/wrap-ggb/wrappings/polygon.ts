@@ -66,7 +66,9 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         default:
-          throw new Sk.builtin.RuntimeError(`bad spec kind "${spec.kind}"`);
+          throw new Sk.builtin.RuntimeError(
+            `bad Polygon spec kind "${(spec as any).kind}"`
+          );
       }
     },
     slots: {

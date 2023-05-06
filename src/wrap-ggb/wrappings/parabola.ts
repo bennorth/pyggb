@@ -60,7 +60,7 @@ export const register = (mod: any, appApi: AppApi) => {
         }
         default:
           throw new Sk.builtin.RuntimeError(
-            `bad Parabola spec.kind "${(spec as any).kind}"`
+            `bad Parabola spec kind "${(spec as any).kind}"`
           );
       }
     },

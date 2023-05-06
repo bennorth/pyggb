@@ -51,7 +51,7 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         default:
           throw new Sk.builtin.TypeError(
-            `bad Segment() spec.kind "${(spec as any).kind}"`
+            `bad Segment spec kind "${(spec as any).kind}"`
           );
       }
     },

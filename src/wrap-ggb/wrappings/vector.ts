@@ -50,7 +50,7 @@ export const register = (mod: any, appApi: AppApi) => {
         }
         default:
           throw new Sk.builtin.TypeError(
-            `bad Vector() spec.kind "${(spec as any).kind}"`
+            `bad Vector spec kind "${(spec as any).kind}"`
           );
       }
     },

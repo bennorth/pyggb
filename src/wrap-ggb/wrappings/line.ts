@@ -43,7 +43,9 @@ export const register = (mod: any, appApi: AppApi) => {
           return;
         }
         default:
-          throw new Sk.builtin.RuntimeError("Line(): Bad ctor args");
+          throw new Sk.builtin.RuntimeError(
+            `bad Line spec kind "${(spec as any).kind}"`
+          );
       }
     },
     slots: {

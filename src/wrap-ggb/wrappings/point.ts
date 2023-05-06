@@ -83,7 +83,7 @@ export const register = (
         }
         default:
           throw new Sk.builtin.TypeError(
-            `bad Point() spec.kind "${(spec as any).kind}"`
+            `bad Point spec kind "${(spec as any).kind}"`
           );
       }
 

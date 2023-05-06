@@ -37,7 +37,7 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         default:
           throw new Sk.builtin.TypeError(
-            `bad spec.kind "${(spec as any).kind}" for Number`
+            `bad Number spec kind "${(spec as any).kind}"`
           );
       }
     },
