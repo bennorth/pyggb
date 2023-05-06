@@ -34,6 +34,7 @@ export type WebHid = {
 
   client: HidInputReportEventClient;
   setClient: Action<WebHid, HidInputReportEventClient>;
+  forwardEvent: Thunk<WebHid, HIDInputReportEvent>;
 };
 
 export let webHid: WebHid = {
@@ -42,4 +43,9 @@ export let webHid: WebHid = {
 
   client: kNopClient,
   setClient: propSetterAction("client"),
+
+  forwardEvent: thunk(async (_a, event, helpers) => {
+    const client = helpers.getState().client;
+    await client.onInputreport(event);
+  }),
 };
