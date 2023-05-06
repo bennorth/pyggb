@@ -101,6 +101,11 @@ export const controls: Controls = {
       append: actions.pyErrors.appendError,
     };
 
+    const hidApi = {
+      clearRegistration: actions.webHid.clearClientRegistration,
+      register: actions.webHid.registerClient,
+    };
+
     // This seems to have the side-effect that the "load/save" spinner
     // is visible while the program is running, or until the first
     // suspension point.  This is useful but it would be good to do it
@@ -122,6 +127,7 @@ export const controls: Controls = {
       localModules,
       stdoutActions,
       errorActions,
+      hidApi,
       runControlClient,
       ggbApi
     );
