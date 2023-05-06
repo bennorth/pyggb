@@ -36,13 +36,11 @@ export const register = (mod: any, appApi: AppApi) => {
       this: SkGgbParabola,
       spec: SkGgbParabolaCtorSpec
     ) {
-      // TODO: This is messy; tidy up:
-      if (spec.kind === "wrap-existing") {
-        this.$ggbLabel = spec.label;
-        return;
-      }
-
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
         case "focus-directrix": {
           // TODO: Check focus is a point and directrix is a line.  Where does
           // that check belong?
