@@ -10,6 +10,7 @@ export const register = (mod: any, appApi: AppApi) => {
   const fun = new Sk.builtin.func((...args) => {
     if (args.length !== 2 || !ggb.isGgbObject(args[0]))
       throw new Sk.builtin.TypeError("need 2 args to Rotate()");
+
     const angleArg = (() => {
       const pyAngle = args[1];
       if (ggb.isPythonOrGgbNumber(pyAngle)) {

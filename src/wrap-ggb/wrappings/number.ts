@@ -32,9 +32,10 @@ export const register = (mod: any, appApi: AppApi) => {
           this.$ggbLabel = spec.label;
           break;
         }
-        case "literal":
+        case "literal": {
           setLabelCmd(strOfNumber(spec.value));
           break;
+        }
         default:
           throw new Sk.builtin.TypeError(
             `bad Number spec kind "${(spec as any).kind}"`

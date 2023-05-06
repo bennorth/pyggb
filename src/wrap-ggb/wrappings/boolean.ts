@@ -28,11 +28,12 @@ export const register = (mod: any, appApi: AppApi) => {
           this.$ggbLabel = spec.label;
           break;
         }
-        case "literal":
+        case "literal": {
           const ggbCmd = spec.value ? "true" : "false";
           const label = ggb.evalCmd(ggbCmd);
           this.$ggbLabel = label;
           break;
+        }
         default:
           throw new Sk.builtin.TypeError(
             `bad Boolean spec kind "${(spec as any).kind}"`
