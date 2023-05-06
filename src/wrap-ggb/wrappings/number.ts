@@ -1,6 +1,7 @@
 import { AppApi } from "../../shared/appApi";
 import {
   augmentedGgbApi,
+  setGgbLabelFromCmd,
   SkGgbObject,
   strOfNumber,
   WrapExistingCtorSpec,
@@ -24,15 +25,15 @@ export const register = (mod: any, appApi: AppApi) => {
 
   const cls = Sk.abstr.buildNativeClass("Number", {
     constructor: function Number(this: SkGgbNumber, spec: SkGgbNumberCtorSpec) {
+      const setLabelCmd = setGgbLabelFromCmd(ggb, this);
+
       switch (spec.kind) {
         case "wrap-existing": {
           this.$ggbLabel = spec.label;
           break;
         }
         case "literal":
-          const ggbCmd = strOfNumber(spec.value);
-          const label = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = label;
+          setLabelCmd(strOfNumber(spec.value));
           break;
         default:
           throw new Sk.builtin.TypeError(
