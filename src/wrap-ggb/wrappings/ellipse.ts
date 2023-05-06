@@ -130,6 +130,9 @@ export const register = (mod: any, appApi: AppApi) => {
         }
       },
     },
+    methods: {
+      ...ggb.freeCopyMethodsSlice,
+    },
   });
 
   mod.Ellipse = cls;
