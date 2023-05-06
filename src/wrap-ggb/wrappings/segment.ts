@@ -33,14 +33,6 @@ export const register = (mod: any, appApi: AppApi) => {
       spec: SkGgbSegmentCtorSpec
     ) {
       switch (spec.kind) {
-        case "two-points":
-          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
-          const ggbCmd = `Segment(${ggbArgs})`;
-          const lbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = lbl;
-          this.point1 = spec.point1;
-          this.point2 = spec.point2;
-          break;
         case "wrap-existing":
           this.$ggbLabel = spec.label;
           // TODO: Can we reliably parse ggbApi.getDefinitionString() output to
@@ -48,6 +40,14 @@ export const register = (mod: any, appApi: AppApi) => {
           // objects we have already wrapped for Python use?
           //
           // Can get from GGB with Point(SEGMENT, 0) and Point(SEGMENT, 1).
+          break;
+        case "two-points":
+          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
+          const ggbCmd = `Segment(${ggbArgs})`;
+          const lbl = ggb.evalCmd(ggbCmd);
+          this.$ggbLabel = lbl;
+          this.point1 = spec.point1;
+          this.point2 = spec.point2;
           break;
         default:
           throw new Sk.builtin.TypeError(
