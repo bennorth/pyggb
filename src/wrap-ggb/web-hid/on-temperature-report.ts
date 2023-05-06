@@ -25,3 +25,9 @@ function valueOfEvent(event: HIDInputReportEvent): number {
       return 0;
   }
 }
+
+export const register = (mod: any, appApi: AppApi) => {
+  const hidApi = appApi.hid;
+  const uiApi = appApi.ui;
+  const skApi = appApi.sk;
+};
