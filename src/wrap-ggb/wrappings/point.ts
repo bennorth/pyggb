@@ -50,6 +50,10 @@ export const register = (
   const cls = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(this: SkGgbPoint, spec: SkGgbPointCtorSpec) {
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
         case "coordinates": {
           const cmd = `(${spec.x}, ${spec.y})`;
           const lbl = ggb.evalCmd(cmd);
@@ -78,9 +82,6 @@ export const register = (
           this.$ggbLabel = lbl;
           break;
         }
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
-          break;
         default:
           throw new Sk.builtin.TypeError(
             `bad Point() spec.kind "${(spec as any).kind}"`
