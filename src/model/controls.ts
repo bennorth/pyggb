@@ -108,13 +108,15 @@ export const controls: Controls = {
     await actions.editor.saveCodeText();
 
     const runControlClient: RunControlClient = {
+      handleStartRun: () => a.handleStartRun(),
       handleEnterSleep: (actions) => a.handleEnterSleep(actions),
       handleResumeSleepingRun: () => a.handleResumeSleepingRun(),
       handleEnterPause: (actions) => a.handleEnterPause(actions),
       handleResumePausedRun: () => a.handleResumePausedRun(),
+      handleFinishRun: () => a.handleFinishRun(),
     };
 
-    a.setExecutionStatus({ state: "running" });
+    runControlClient.handleStartRun();
     await runPythonProgram(
       codeText,
       localModules,
@@ -123,13 +125,7 @@ export const controls: Controls = {
       runControlClient,
       ggbApi
     );
-
-    const finalExecState = helpers.getState().executionStatus.state;
-    if (finalExecState !== "running") {
-      logBadStateError("runProgram", ["running"], finalExecState);
-    }
-
-    a.setExecutionStatus({ state: "idle" });
+    runControlClient.handleFinishRun();
   }),
 
   handleStartRun: thunk((a, _voidPayload, helpers) => {
