@@ -1,4 +1,4 @@
-import { SkulptInteractionApi, AppApi, UiApi } from "./appApi";
+import { SkulptInteractionApi, AppApi, UiApi, HidApi } from "./appApi";
 import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
 import {
@@ -58,6 +58,7 @@ export const runPythonProgram = (
   localModules: LocalModules,
   stdoutActions: StdoutActions,
   errorActions: ErrorActions,
+  hidApi: HidApi,
   runControlClient: RunControlClient,
   ggbApi: GgbApi
 ) => {
@@ -82,7 +83,7 @@ export const runPythonProgram = (
     clearConsole: () => stdoutActions.clear(),
     runControlClient: runControlClient,
   };
-  const appApi: AppApi = { ggb: ggbApi, sk: skApi, ui: uiApi };
+  const appApi: AppApi = { ggb: ggbApi, sk: skApi, ui: uiApi, hid: hidApi };
   (globalThis as any).$appApiHandoverQueue.enqueue(appApi);
 
   const handleError = (e: any) => errorActions.append(e);
