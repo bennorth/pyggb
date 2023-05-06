@@ -4,6 +4,7 @@ import {
   withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
   SkGgbObject,
+  setGgbLabelFromArgs,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -43,6 +44,8 @@ export const register = (mod: any, appApi: AppApi) => {
       this: SkGgbEllipse,
       spec: SkGgbEllipseCtorSpec
     ) {
+      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Ellipse");
+
       switch (spec.kind) {
         case "wrap-existing": {
           this.$ggbLabel = spec.label;
@@ -52,27 +55,21 @@ export const register = (mod: any, appApi: AppApi) => {
           const focus1 = spec.focus1.$ggbLabel;
           const focus2 = spec.focus2.$ggbLabel;
           const smAxis = ggb.numberValueOrLabel(spec.semimajorAxis);
-          const ggbCmd = `Ellipse(${focus1},${focus2},${smAxis})`;
-          const ggbLbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = ggbLbl;
+          setLabelArgs([focus1, focus2, smAxis]);
           break;
         }
         case "foci-semimajor-axis-segment": {
           const focus1 = spec.focus1.$ggbLabel;
           const focus2 = spec.focus2.$ggbLabel;
           const smAxis = spec.semimajorAxis.$ggbLabel;
-          const ggbCmd = `Ellipse(${focus1},${focus2},${smAxis})`;
-          const ggbLbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = ggbLbl;
+          setLabelArgs([focus1, focus2, smAxis]);
           break;
         }
         case "foci-point": {
           const focus1 = spec.focus1.$ggbLabel;
           const focus2 = spec.focus2.$ggbLabel;
           const point = spec.point.$ggbLabel;
-          const ggbCmd = `Ellipse(${focus1},${focus2},${point})`;
-          const ggbLbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = ggbLbl;
+          setLabelArgs([focus1, focus2, point]);
           break;
         }
         default:

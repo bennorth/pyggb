@@ -4,6 +4,7 @@ import {
   withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
   SkGgbObject,
+  setGgbLabelFromArgs,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -37,31 +38,33 @@ export const register = (mod: any, appApi: AppApi) => {
 
   const cls = Sk.abstr.buildNativeClass("Circle", {
     constructor: function Circle(this: SkGgbCircle, spec: SkGgbCircleCtorSpec) {
-      // TODO: This is messy; tidy up:
-      if (spec.kind === "wrap-existing") {
-        this.$ggbLabel = spec.label;
-        this.radiusNumber = null;
-        return;
-      }
-
-      const ggbArgs = (() => {
-        switch (spec.kind) {
-          case "center-radius": {
-            const radiusArg = ggb.numberValueOrLabel(spec.radius);
-            return `${spec.center.$ggbLabel},${radiusArg}`;
-          }
-          case "center-point":
-            return `${spec.center.$ggbLabel},${spec.point.$ggbLabel}`;
-          case "three-points":
-            return spec.points.map((p) => p.$ggbLabel).join(",");
-          default:
-            throw new Sk.builtin.RuntimeError("should not get here");
-        }
-      })();
-      const ggbCmd = `Circle(${ggbArgs})`;
-      const lbl = ggb.evalCmd(ggbCmd);
-      this.$ggbLabel = lbl;
       this.radiusNumber = null;
+
+      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Circle");
+
+      switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
+        case "center-radius": {
+          const radiusArg = ggb.numberValueOrLabel(spec.radius);
+          setLabelArgs([spec.center.$ggbLabel, radiusArg]);
+          break;
+        }
+        case "center-point": {
+          setLabelArgs([spec.center.$ggbLabel, spec.point.$ggbLabel]);
+          break;
+        }
+        case "three-points": {
+          setLabelArgs(spec.points.map((p) => p.$ggbLabel));
+          break;
+        }
+        default:
+          throw new Sk.builtin.RuntimeError(
+            `bad Circle spec kind "${(spec as any).kind}"`
+          );
+      }
     },
     proto: {
       $radiusNumber(this: SkGgbCircle) {
@@ -74,7 +77,7 @@ export const register = (mod: any, appApi: AppApi) => {
       },
     },
     slots: {
-      tp$new(args: Array<any>, kwargs: Array<any>) {
+      tp$new(args, kwargs) {
         const badArgsError = new Sk.builtin.TypeError(
           "Circle() arguments must be" +
             " (center_point, number), (center_point, circumference_point)" +

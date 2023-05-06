@@ -5,6 +5,8 @@ import {
   SkGgbObject,
   AugmentedGgbApi,
   withPropertiesFromNameValuePairs,
+  setGgbLabelFromArgs,
+  setGgbLabelFromCmd,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -36,36 +38,29 @@ export const register = (mod: any, appApi: AppApi) => {
       this: SkGgbParabola,
       spec: SkGgbParabolaCtorSpec
     ) {
-      // TODO: This is messy; tidy up:
-      if (spec.kind === "wrap-existing") {
-        this.$ggbLabel = spec.label;
-        return;
-      }
+      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Parabola");
+      const setLabelCmd = setGgbLabelFromCmd(ggb, this);
 
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
         case "focus-directrix": {
-          // TODO: Check focus is a point and directrix is a line.  Where does
-          // that check belong?
-          const ggbArgs = `${spec.focus.$ggbLabel},${spec.directrix.$ggbLabel}`;
-          const ggbCmd = `Parabola(${ggbArgs})`;
-          const lbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = lbl;
+          setLabelArgs([spec.focus.$ggbLabel, spec.directrix.$ggbLabel]);
           this.focus = spec.focus;
           this.directrix = spec.directrix;
-          console.log("Made Parabola?", lbl, spec);
           break;
         }
         case "coefficients": {
-          const ggbCoeffs = spec.coeffs.map(ggb.numberValueOrLabel);
-          const ggbCmd = `y=(${ggbCoeffs[0]})x^2 + (${ggbCoeffs[1]})x + (${ggbCoeffs[2]})`;
-          const lbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = lbl;
+          const [a, b, c] = spec.coeffs.map(ggb.numberValueOrLabel);
+          setLabelCmd(`y=(${a})x^2 + (${b})x + (${c})`);
           // TODO: Set focus and directrix?
           break;
         }
         default:
           throw new Sk.builtin.RuntimeError(
-            `bad Parabola spec.kind "${(spec as any).kind}"`
+            `bad Parabola spec kind "${(spec as any).kind}"`
           );
       }
     },

@@ -5,6 +5,7 @@ import {
   WrapExistingCtorSpec,
   SkGgbObject,
   AugmentedGgbApi,
+  assembledCommand,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -42,9 +43,10 @@ export const register = (mod: any, appApi: AppApi) => {
     ) {
       switch (spec.kind) {
         case "points-array": {
-          const ggbLabels = spec.points.map((p) => p.$ggbLabel);
-          const ggbArgs = ggbLabels.join(",");
-          const ggbCmd = `Polygon(${ggbArgs})`;
+          const ggbCmd = assembledCommand(
+            "Polygon",
+            spec.points.map((p) => p.$ggbLabel)
+          );
           const lbls = ggb.evalCmd(ggbCmd).split(",");
           // TODO: Should have n.args + 1 labels here; check this.
           this.$ggbLabel = lbls[0];
@@ -52,9 +54,11 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         case "two-points-n-sides": {
-          const nSidesArg = ggb.numberValueOrLabel(spec.nSides);
-          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel},${nSidesArg}`;
-          const ggbCmd = `Polygon(${ggbArgs})`;
+          const ggbCmd = assembledCommand("Polygon", [
+            spec.point1.$ggbLabel,
+            spec.point2.$ggbLabel,
+            ggb.numberValueOrLabel(spec.nSides),
+          ]);
           const lbls = ggb.evalCmd(ggbCmd).split(",");
           // TODO: Should have n.args + 1 labels here; check this.
           this.$ggbLabel = lbls[0];
@@ -62,7 +66,9 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         default:
-          throw new Sk.builtin.RuntimeError(`bad spec kind "${spec.kind}"`);
+          throw new Sk.builtin.RuntimeError(
+            `bad Polygon spec kind "${(spec as any).kind}"`
+          );
       }
     },
     slots: {

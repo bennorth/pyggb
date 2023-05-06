@@ -4,6 +4,7 @@ import {
   withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
   SkGgbObject,
+  setGgbLabelFromArgs,
 } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -32,16 +33,10 @@ export const register = (mod: any, appApi: AppApi) => {
       this: SkGgbSegment,
       spec: SkGgbSegmentCtorSpec
     ) {
+      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Segment");
+
       switch (spec.kind) {
-        case "two-points":
-          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
-          const ggbCmd = `Segment(${ggbArgs})`;
-          const lbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = lbl;
-          this.point1 = spec.point1;
-          this.point2 = spec.point2;
-          break;
-        case "wrap-existing":
+        case "wrap-existing": {
           this.$ggbLabel = spec.label;
           // TODO: Can we reliably parse ggbApi.getDefinitionString() output to
           // recover the two points?  Do we need to keep a registry of which GGB
@@ -49,9 +44,16 @@ export const register = (mod: any, appApi: AppApi) => {
           //
           // Can get from GGB with Point(SEGMENT, 0) and Point(SEGMENT, 1).
           break;
+        }
+        case "two-points": {
+          setLabelArgs([spec.point1.$ggbLabel, spec.point2.$ggbLabel]);
+          this.point1 = spec.point1;
+          this.point2 = spec.point2;
+          break;
+        }
         default:
           throw new Sk.builtin.TypeError(
-            `bad Segment() spec.kind "${(spec as any).kind}"`
+            `bad Segment spec kind "${(spec as any).kind}"`
           );
       }
     },

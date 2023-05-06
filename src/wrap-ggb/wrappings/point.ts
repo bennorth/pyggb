@@ -7,6 +7,8 @@ import {
   WrapExistingCtorSpec,
   throwIfLabelNull,
   SpecConstructible,
+  setGgbLabelFromArgs,
+  setGgbLabelFromCmd,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -49,41 +51,39 @@ export const register = (
 
   const cls = Sk.abstr.buildNativeClass("Point", {
     constructor: function Point(this: SkGgbPoint, spec: SkGgbPointCtorSpec) {
+      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Point");
+      const setLabelCmd = setGgbLabelFromCmd(ggb, this);
+
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
         case "coordinates": {
-          const cmd = `(${spec.x}, ${spec.y})`;
-          const lbl = ggb.evalCmd(cmd);
-          this.$ggbLabel = lbl;
+          setLabelCmd(`(${spec.x}, ${spec.y})`);
           break;
         }
         case "arbitrary-on-object": {
-          const cmd = `Point(${spec.obj})`;
-          const lbl = ggb.evalCmd(cmd);
+          setLabelArgs([spec.obj]);
           throwIfLabelNull(
-            lbl,
+            this.$ggbLabel,
             "Point(object): could not find arbitrary point" +
               ` along "${ggb.ggbType(spec.obj)}" object`
           );
-          this.$ggbLabel = lbl;
           break;
         }
         case "object-parameter": {
-          const cmd = `Point(${spec.p}, ${ggb.numberValueOrLabel(spec.t)})`;
-          const lbl = ggb.evalCmd(cmd);
+          setLabelArgs([spec.p, ggb.numberValueOrLabel(spec.t)]);
           throwIfLabelNull(
-            lbl,
+            this.$ggbLabel,
             "Point(object, parameter): could not find point" +
               ` along "${ggb.ggbType(spec.p)}" object`
           );
-          this.$ggbLabel = lbl;
           break;
         }
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
-          break;
         default:
           throw new Sk.builtin.TypeError(
-            `bad Point() spec.kind "${(spec as any).kind}"`
+            `bad Point spec kind "${(spec as any).kind}"`
           );
       }
 

@@ -1,6 +1,8 @@
 import { AppApi } from "../../shared/appApi";
 import {
   augmentedGgbApi,
+  setGgbLabelFromArgs,
+  setGgbLabelFromCmd,
   SkGgbObject,
   withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
@@ -23,27 +25,27 @@ export const register = (mod: any, appApi: AppApi) => {
 
   const cls = Sk.abstr.buildNativeClass("Line", {
     constructor: function Line(this: SkGgbLine, spec: SkGgbLineCtorSpec) {
+      const setLabelCmd = setGgbLabelFromCmd(ggb, this);
+      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Line");
+
       switch (spec.kind) {
         case "wrap-existing": {
           this.$ggbLabel = spec.label;
           return;
         }
         case "point-point": {
-          const ggbArgs = spec.points.map((p) => p.$ggbLabel).join(",");
-          const ggbCmd = `Line(${ggbArgs})`;
-          const lbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = lbl;
+          setLabelArgs(spec.points.map((p) => p.$ggbLabel));
           return;
         }
         case "coefficients": {
           const ggbCoeffs = spec.coeffs.map(ggb.numberValueOrLabel);
-          const ggbCmd = `y=(${ggbCoeffs[0]})x + (${ggbCoeffs[1]})`;
-          const lbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = lbl;
+          setLabelCmd(`y=(${ggbCoeffs[0]})x + (${ggbCoeffs[1]})`);
           return;
         }
         default:
-          throw new Sk.builtin.RuntimeError("Point(): Bad ctor args");
+          throw new Sk.builtin.RuntimeError(
+            `bad Line spec kind "${(spec as any).kind}"`
+          );
       }
     },
     slots: {

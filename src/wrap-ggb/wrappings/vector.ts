@@ -4,6 +4,7 @@ import {
   withPropertiesFromNameValuePairs,
   WrapExistingCtorSpec,
   SkGgbObject,
+  setGgbLabelFromArgs,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -30,29 +31,26 @@ export const register = (mod: any, appApi: AppApi) => {
 
   const cls = Sk.abstr.buildNativeClass("Vector", {
     constructor: function Vector(this: SkGgbVector, spec: SkGgbVectorCtorSpec) {
+      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Vector");
+
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          break;
+        }
         case "points": {
-          const ggbArgs = `${spec.point1.$ggbLabel},${spec.point2.$ggbLabel}`;
-          const ggbCmd = `Vector(${ggbArgs})`;
-          const lbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = lbl;
+          setLabelArgs([spec.point1.$ggbLabel, spec.point2.$ggbLabel]);
           break;
         }
         case "components": {
           const e1Arg = ggb.numberValueOrLabel(spec.e1);
           const e2Arg = ggb.numberValueOrLabel(spec.e2);
-          const ggbArgs = `${e1Arg},${e2Arg}`;
-          const ggbCmd = `Vector((${ggbArgs}))`;
-          const lbl = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = lbl;
+          setLabelArgs([`(${e1Arg},${e2Arg})`]);
           break;
         }
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
-          break;
         default:
           throw new Sk.builtin.TypeError(
-            `bad Vector() spec.kind "${(spec as any).kind}"`
+            `bad Vector spec kind "${(spec as any).kind}"`
           );
       }
     },
