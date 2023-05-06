@@ -22,22 +22,31 @@ export const register = (mod: any, appApi: AppApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const fun = new Sk.builtin.func((...args) => {
-    if (args.length !== 2 || !args.every(ggb.isGgbObject))
-      throw new Sk.builtin.TypeError(
-        "bad Intersect() args; need 2 Geogebra objects"
-      );
+    const badArgsError = new Sk.builtin.TypeError(
+      "bad Intersect() args; need 2 Geogebra objects and a number"
+    );
 
-    const ggbArgs = `${args[0].$ggbLabel},${args[1].$ggbLabel}`;
-    const ggbCmd = `Intersect(${ggbArgs})`;
-    const commandResponse = ggb.evalCmd(ggbCmd);
+    if (
+      args.length !== 3 ||
+      !ggb.isGgbObject(args[0]) ||
+      !ggb.isGgbObject(args[1]) ||
+      !ggb.isPythonOrGgbNumber(args[2])
+    ) {
+      throw badArgsError;
+    }
 
-    // TODO: Handle null response, e.g., if you try to Intersect two points.
+    const ggbArgs = [
+      args[0].$ggbLabel,
+      args[1].$ggbLabel,
+      ggb.numberValueOrLabel(args[2]),
+    ];
+    const ggbCmd = `Intersect(${ggbArgs.join(",")})`;
 
-    const rawLabels = commandResponse.split(",");
+    // It seems that always get a Point.  If there is no Nth
+    // intersection, the Point has NaN coords.
+    const label = ggb.evalCmd(ggbCmd);
 
-    // TODO: Seem to get back a label even if given objects do not intersect.
-    // How to handle this?  Do we actually need the isSingletonOfEmpty() call?
-    const labels = isSingletonOfEmpty(rawLabels) ? [] : rawLabels;
+    return ggb.wrapExistingGgbObject(label);
 
     // TODO: Will we always get Points back?  Assert this?  Do we need to
     // distinguish between free and derived points?  What happens if when we
