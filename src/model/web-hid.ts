@@ -37,6 +37,8 @@ export type WebHid = {
   forwardEvent: Thunk<WebHid, HIDInputReportEvent>;
 
   openDevice: Thunk<WebHid>;
+
+  registerClient: Thunk<WebHid, HidInputReportEventClient>;
 };
 
 export let webHid: WebHid = {
@@ -88,5 +90,13 @@ export let webHid: WebHid = {
       console.error("Error setting up HID device", err);
       a.setAcquisitionStatus("failed");
     }
+  }),
+
+  registerClient: thunk(async (a, client, helpers) => {
+    await a.openDevice();
+    if (helpers.getState().acquisitionStatus !== "succeeded")
+      throw new Error("failed to acquire HID device");
+
+    a.setClient(client);
   }),
 };
