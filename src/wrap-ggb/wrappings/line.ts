@@ -43,7 +43,7 @@ export const register = (mod: any, appApi: AppApi) => {
           return;
         }
         default:
-          throw new Sk.builtin.RuntimeError("Point(): Bad ctor args");
+          throw new Sk.builtin.RuntimeError("Line(): Bad ctor args");
       }
     },
     slots: {
