@@ -73,6 +73,7 @@ export const runPythonProgram = (
   stdoutActions.clear();
   errorActions.clear();
   ggbApi.reset();
+  hidApi.clearRegistration();
 
   // TODO: Seems a bit clunky to reuse errorActions and stdoutActions
   // like this.  Revisit?
