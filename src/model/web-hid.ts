@@ -39,6 +39,7 @@ export type WebHid = {
   openDevice: Thunk<WebHid>;
 
   registerClient: Thunk<WebHid, HidInputReportEventClient>;
+  clearClientRegistration: Thunk<WebHid>;
 };
 
 export let webHid: WebHid = {
@@ -98,5 +99,9 @@ export let webHid: WebHid = {
       throw new Error("failed to acquire HID device");
 
     a.setClient(client);
+  }),
+
+  clearClientRegistration: thunk((a) => {
+    a.setClient(kNopClient);
   }),
 };
