@@ -1,6 +1,7 @@
 import { AppApi } from "../shared/appApi";
 import { register as registerPoint } from "./wrappings/point";
 import { register as registerCircle } from "./wrappings/circle";
+import { register as registerEllipse } from "./wrappings/ellipse";
 import { register as registerLine } from "./wrappings/line";
 import { register as registerNumber } from "./wrappings/number";
 import { register as registerBoolean } from "./wrappings/boolean";
@@ -32,6 +33,7 @@ declare var Sk: SkulptApi;
 
   registerPoint(mod, appApi);
   registerCircle(mod, appApi);
+  registerEllipse(mod, appApi);
   registerLine(mod, appApi);
   registerNumber(mod, appApi);
   registerBoolean(mod, appApi);

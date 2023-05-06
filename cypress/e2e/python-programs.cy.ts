@@ -192,6 +192,37 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       expOutputs: ["radius = 3.5", "opacity = 0.875"],
     },
     {
+      label: "Ellipse(Point, Point, Number)",
+      code: `
+        A = Point(2, 0)
+        B = Point(-2, 0)
+        k1 = Ellipse(A, B, Number(4.0), color="red")
+        k2 = Ellipse(A, B, 3.0, opacity=0.8)
+        assert(k1._ggb_type == "ellipse")
+        assert(k2._ggb_type == "ellipse")
+      `,
+    },
+    {
+      label: "Ellipse(Point, Point, Segment)",
+      code: `
+        A = Point(2, 0)
+        B = Point(-2, 0)
+        s = Segment(Point(0, 0), Point(3, 4))
+        k1 = Ellipse(A, B, s)
+        assert(k1._ggb_type == "ellipse")
+      `,
+    },
+    {
+      label: "Ellipse(Point, Point, Point)",
+      code: `
+        A = Point(2, 0)
+        B = Point(-2, 0)
+        C = Point(4, 1)
+        k1 = Ellipse(A, B, C)
+        assert(k1._ggb_type == "ellipse")
+      `,
+    },
+    {
       label: "Vector(Point, Point)",
       code: `
         A = Point(3, 0)
@@ -549,6 +580,8 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     badNoArgsSpec("Boolean"),
     badNoArgsSpec("Circle"),
     badOneArgSpec("Circle"),
+    badNoArgsSpec("Ellipse"),
+    badOneArgSpec("Ellipse"),
     badNoArgsSpec("Line"),
     badOneArgSpec("Line"),
     badNoArgsSpec("Number"),
@@ -567,6 +600,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     simpleBadArgsSpec('Circle(Point(1, 2), "hello")'),
     simpleBadArgsSpec("Circle(Point(1, 2), 2, 3)"),
     simpleBadArgsSpec('Circle("one", "two", "three")'),
+    simpleBadArgsSpec('Ellipse("one", "two", "three")'),
     simpleBadArgsSpec('Line("hello", 3)'),
     simpleBadArgsSpec("Line(Point(3, 4), 3)"),
     simpleBadArgsSpec("Parabola(Point(3, 4), 3)"),
