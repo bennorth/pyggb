@@ -257,6 +257,15 @@ export function throwIfLabelNull(
 export const assembledCommand = (command: string, args: Array<string>) =>
   `${command}(${args.join(",")})`;
 
+/** Set the `$ggbLabel` property of the given `obj` from the result of
+ * executing the given `fullCommand`.  Curried for more concise use
+ * within a constructor. */
+export const setGgbLabelFromCmd =
+  (ggb: AugmentedGgbApi, obj: SkGgbObject) => (fullCommand: string) => {
+    const lbl = ggb.evalCmd(fullCommand);
+    obj.$ggbLabel = lbl;
+  };
+
 // The only type we use:
 type FastCallMethod = (
   this: SkGgbObject,
