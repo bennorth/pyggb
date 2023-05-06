@@ -31,9 +31,15 @@ const kNopClient: HidInputReportEventClient = {
 export type WebHid = {
   acquisitionStatus: DeviceAcquisitionStatus;
   setAcquisitionStatus: Action<WebHid, DeviceAcquisitionStatus>;
+
+  client: HidInputReportEventClient;
+  setClient: Action<WebHid, HidInputReportEventClient>;
 };
 
 export let webHid: WebHid = {
   acquisitionStatus: "not-yet-requested",
   setAcquisitionStatus: propSetterAction("acquisitionStatus"),
+
+  client: kNopClient,
+  setClient: propSetterAction("client"),
 };
