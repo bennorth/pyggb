@@ -7,8 +7,22 @@ variables:
   PYGGB_HOSTED_BASE_PATH: python
 
 stages:
+  - build-examples
   - build
   - release
+
+build-examples:
+  stage: build-examples
+  tags:
+    - docker
+  image: python:3.11.3-alpine3.17
+  script:
+    - python3 tools/build_examples_index.py ./public/examples > ./public/examples/index.json
+  artifacts:
+    paths:
+      - public/examples/index.json
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 build:
   stage: build
