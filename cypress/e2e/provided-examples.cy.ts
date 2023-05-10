@@ -12,6 +12,42 @@ describe("runs provided examples", optsNoIsolation, () => {
 
   const specs: Array<SampleCodeSpec> = [
     // TODO
+    {
+      filename: "circles_and_points.py",
+    },
+    {
+      filename: "draw_slowly.py",
+    },
+    {
+      filename: "dynamic_triangle_area.py",
+    },
+    {
+      filename: "exponential_growth.py",
+    },
+    {
+      filename: "get_set_properties.py",
+    },
+    {
+      filename: "intersect_line_parabola.py",
+    },
+    {
+      filename: "juggling.py",
+    },
+    {
+      filename: "line_through_points.py",
+    },
+    {
+      filename: "mandelbrot.py",
+    },
+    {
+      filename: "random_walk.py",
+    },
+    {
+      filename: "regression.py",
+    },
+    {
+      filename: "string_art.py",
+    },
   ];
 
   specs.forEach((spec) => {
