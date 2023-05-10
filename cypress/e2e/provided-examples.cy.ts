@@ -19,7 +19,6 @@ describe("runs provided examples", optsNoIsolation, () => {
   };
 
   const specs: Array<SampleCodeSpec> = [
-    // TODO
     {
       filename: "circles_and_points.py",
     },
