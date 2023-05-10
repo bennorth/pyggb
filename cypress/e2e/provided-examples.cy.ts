@@ -37,6 +37,13 @@ describe("runs provided examples", optsNoIsolation, () => {
     },
     {
       filename: "intersect_line_parabola.py",
+      // y = x ;  y = (3/2)x² + 4x
+      //
+      // (3/2)x² + 4x = x
+      // (3/2)x² + 3x = 0
+      // x² + 2x = 0
+      // x(x + 2) = 0
+      expOutputs: ["1: (0, 0)", "2: (-2, -2)"],
     },
     {
       filename: "juggling.py",
