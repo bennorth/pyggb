@@ -43,6 +43,8 @@ describe("runs provided examples", optsNoIsolation, () => {
     },
     {
       filename: "random_walk.py",
+      expDoneOutput: false,
+      expOutputs: ["Starting walk 2"],
     },
     {
       filename: "regression.py",
