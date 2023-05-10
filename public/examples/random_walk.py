@@ -13,6 +13,7 @@ n_walks = 20
 n_steps = 100
 
 for j in range(n_walks):
+    print(f"Starting walk {j}")
     x = 0
     y = 0
     P = Point(x, y)
