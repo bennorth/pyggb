@@ -3,6 +3,14 @@ import { createNewPyGgbFile, optsNoIsolation } from "./shared";
 describe("runs provided examples", optsNoIsolation, () => {
   before(createNewPyGgbFile);
 
+  // Some examples run forever, or at least for longer than we want to
+  // wait.  Once we've seen the output we expect, stop them.  The
+  // "force" is because when an example does run to completion, the STOP
+  // button is disabled so Cypress is reluctant to click it.
+  afterEach(() => {
+    cy.get("button").contains("STOP").click({ force: true });
+  });
+
   type SampleCodeSpec = {
     filename: string;
     skip?: boolean;
