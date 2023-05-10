@@ -1,5 +1,6 @@
-import { v4 as uuidv4 } from "uuid";
+import { createNewPyGgbFile, optsNoIsolation } from "./shared";
 
+// TODO (see also note at end):
 class ConstructionVerificationState {
   // List of things we expect to see, in an order which lets us refer back to
   // points when describing lines, say.
@@ -29,24 +30,6 @@ const deIndent = (rawCode: string): string => {
   const strippedLines = lines.map((line) => line.substring(minNonBlankIndent));
   return strippedLines.join("\n") + "\n";
 };
-
-const chooseFileMenuEntry = (entryMatch: string) => {
-  cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
-  cy.get(".dropdown-item").contains(entryMatch).click();
-};
-
-const createNewPyGgbFile = () => {
-  cy.visit("/");
-  const filename = uuidv4();
-
-  chooseFileMenuEntry("New");
-  cy.get(".modal-body input").click().type(filename);
-  cy.get("button").contains("Create").click();
-  cy.get(".editor .busy-overlay").should("not.be.visible");
-  cy.get(".MenuBar").contains(filename);
-};
-
-const optsNoIsolation = { testIsolation: false };
 
 // We specify no test isolation here, to avoid the heavy start-up cost
 // per small program we run.  We just keep entering new programs into

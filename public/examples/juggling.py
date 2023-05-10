@@ -86,6 +86,8 @@ def mk_ball(i):
 
 balls = [mk_ball(i) for i in range(n_balls)]
 
+print("Let's go!")
+
 while True:
     ph.value += 0.0075
     time.sleep(1 / 60)

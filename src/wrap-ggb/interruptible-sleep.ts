@@ -42,6 +42,9 @@ export function interruptibleSleep(
   throwIfNotNumber(pyDelayS, "delay");
   const delayMs = 1000 * pyDelayS.v;
 
+  const useZeroDelay = (window as any)["PYGGB_CYPRESS"]?.ZERO_DELAY ?? false;
+  const effectiveDelayMs = useZeroDelay ? 0 : delayMs;
+
   let sleepState: SleepState = nullSleepState;
 
   const sleepPromise = new Promise<SkObject>((resolve, reject) => {
@@ -53,7 +56,7 @@ export function interruptibleSleep(
     sleepState = {
       resolvePromise: resolve,
       rejectPromise: reject,
-      timeoutId: setTimeout(resumeSleepingRun, delayMs),
+      timeoutId: setTimeout(resumeSleepingRun, effectiveDelayMs),
     };
   });
 

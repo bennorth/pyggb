@@ -13,4 +13,6 @@ print(parabola)
 print(line)
 
 coeff_b.value = 4.0
-print(Intersect(parabola, line))
+print("Intersections are:")
+print("1:", Intersect(parabola, line, 1))
+print("2:", Intersect(parabola, line, 2))
