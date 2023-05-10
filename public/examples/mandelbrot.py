@@ -37,6 +37,7 @@ ystep = (endy - starty) / (n_points_per_axis - 1)
 
 for i in range(n_points_per_axis):
     x = startx + i * xstep
+    print(f"Plotting for x = {x:.03f}")
     for j in range(n_points_per_axis):
         y = starty + j * ystep
         it = Mandelbrot_iter(x, y)
