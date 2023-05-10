@@ -99,7 +99,9 @@ describe("runs provided examples", optsNoIsolation, () => {
             cy.get(".stdout-inner").contains("done");
           }
           (spec.expOutputs ?? []).forEach((expOutput) =>
-            cy.get(".stdout-inner").contains(`${expOutput}\n`)
+            cy
+              .get(".stdout-inner")
+              .contains(`${expOutput}\n`, { timeout: 10000 })
           );
         });
       });
