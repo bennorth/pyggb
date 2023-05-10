@@ -40,6 +40,8 @@ describe("runs provided examples", optsNoIsolation, () => {
     },
     {
       filename: "mandelbrot.py",
+      expDoneOutput: false,
+      expOutputs: ["Plotting for x = -1.500"],
     },
     {
       filename: "random_walk.py",
