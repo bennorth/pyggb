@@ -32,6 +32,8 @@ describe("runs provided examples", optsNoIsolation, () => {
     },
     {
       filename: "juggling.py",
+      expDoneOutput: false,
+      expOutputs: ["Let's go!"],
     },
     {
       filename: "line_through_points.py",
