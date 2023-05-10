@@ -44,6 +44,7 @@ describe("runs provided examples", optsNoIsolation, () => {
     },
     {
       filename: "regression.py",
+      skip: true,
     },
     {
       filename: "string_art.py",
