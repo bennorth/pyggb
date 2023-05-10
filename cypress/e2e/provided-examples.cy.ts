@@ -71,6 +71,18 @@ describe("runs provided examples", optsNoIsolation, () => {
     },
   ];
 
+  it("tests all examples", () => {
+    cy.task("readdir", "public/examples").then((dirEntries: Array<string>) => {
+      const exampleFilenames = dirEntries.filter((e) => e.endsWith(".py"));
+      let filesWithSpec = new Set<string>(specs.map((s) => s.filename));
+      const examplesWithoutSpec = exampleFilenames.filter(
+        (n) => !filesWithSpec.has(n)
+      );
+      console.log(exampleFilenames, filesWithSpec, examplesWithoutSpec);
+      expect(examplesWithoutSpec.length, "all examples should be tested").eq(0);
+    });
+  });
+
   specs.forEach((spec) => {
     it(`runs example "${spec.filename}"`, () => {
       if (spec.skip ?? false) {
