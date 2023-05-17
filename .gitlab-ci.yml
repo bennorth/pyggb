@@ -1,0 +1,47 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+variables:
+  S3_STATIC_BUCKET: python-geogebra
+  PYGGB_HOSTED_BASE_PATH: python
+
+stages:
+  - build-examples
+  - build
+  - release
+
+build-examples:
+  stage: build-examples
+  tags:
+    - docker
+  image: python:3.11.3-alpine3.17
+  script:
+    - python3 tools/build_examples_index.py ./public/examples > ./public/examples/index.json
+  artifacts:
+    paths:
+      - public/examples/index.json
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+build:
+  stage: build
+  tags:
+    - docker
+  image: node:18.16-alpine
+  before_script:
+    - npm clean-install
+  script:
+    - PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH} npm run build
+  artifacts:
+    paths:
+      - build
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+publish:
+  stage: release
+  script:
+    - aws s3 sync ./build s3://${S3_STATIC_BUCKET}/${PYGGB_HOSTED_BASE_PATH}
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
