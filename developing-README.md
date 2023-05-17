@@ -70,3 +70,19 @@ public/vendor/geogebra/GeoGebra
 The above "Release process" instructions refer to this vendor bundle,
 but should work whether or not you are using a local copy of the
 bundle.
+
+
+## Use of Piwik tracking code
+
+To disable tracking while developing, set the following environment
+variable:
+
+``` shell
+REACT_APP_DISABLE_PWIKI=yes npm start
+```
+
+This can be combined with the ability to use a local GeoGebra bundle:
+
+``` shell
+REACT_APP_LOCAL_GEOGEBRA=yes REACT_APP_DISABLE_PWIKI=yes npm start
+```
