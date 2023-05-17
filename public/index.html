@@ -53,10 +53,10 @@
           qP.push("data_layer_name=" + dataLayerName),
           isStgDebug && qP.push("stg_debug");
         var qPString = qP.length > 0 ? "?" + qP.join("&") : "";
-        (tags.async = !0),
-          (tags.src =
-            "https://geogebra.containers.piwik.pro/" + id + ".js" + qPString),
-          scripts.parentNode.insertBefore(tags, scripts);
+        tags.async = !0;
+        tags.src =
+          "https://geogebra.containers.piwik.pro/" + id + ".js" + qPString;
+        scripts.parentNode.insertBefore(tags, scripts);
         !(function (a, n, i) {
           a[n] = a[n] || {};
           for (var c = 0; c < i.length; c++)
