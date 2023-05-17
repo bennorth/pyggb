@@ -37,8 +37,8 @@ export const AboutPyGgbModal: React.FC<{}> = () => {
             bugs, make feature requests and share cool programs you’ve made at{" "}
             <NewTabA href="https://www.reddit.com/r/pyggb/">
               <code>/r/pyggb</code>
-            </NewTabA>
-            .
+            </NewTabA>{" "}
+            or tag them as <code>#pyggb</code>.
           </p>
         </section>
         <section className="logo-and-text">
