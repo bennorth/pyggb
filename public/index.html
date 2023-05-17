@@ -54,6 +54,7 @@
           isStgDebug && qP.push("stg_debug");
         var qPString = qP.length > 0 ? "?" + qP.join("&") : "";
         tags.async = !0;
+        tags.defer = !0;
         tags.src =
           "https://geogebra.containers.piwik.pro/" + id + ".js" + qPString;
         scripts.parentNode.insertBefore(tags, scripts);
