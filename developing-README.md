@@ -74,15 +74,6 @@ bundle.
 
 ## Use of Piwik tracking code
 
-To disable tracking while developing, set the following environment
-variable:
-
-``` shell
-REACT_APP_DISABLE_PWIKI=yes npm start
-```
-
-This can be combined with the ability to use a local GeoGebra bundle:
-
-``` shell
-REACT_APP_LOCAL_GEOGEBRA=yes REACT_APP_DISABLE_PWIKI=yes npm start
-```
+The tracking code is disabled while developing.  This is detected by
+asking whether the location is `localhost:3000`.  See comment in
+`index.html` for details.
