@@ -100,6 +100,7 @@ export const MenuBar: React.FC<{}> = () => {
   const downloadPythonLaunch = useStoreActions(
     (a) => a.modals.downloadPython.launch
   );
+  const shareAsLinkLaunch = useStoreActions((a) => a.modals.shareAsUrl.launch);
   const saveCodeTextAction = useStoreActions((a) => a.editor.saveCodeText);
 
   const launchFileChooser = () =>
@@ -108,18 +109,23 @@ export const MenuBar: React.FC<{}> = () => {
   const launchNewFile = () => newFileLaunch(undefined);
   const saveCodeText = () => saveCodeTextAction();
 
-  const downloadPython = (() => {
+  const { downloadPython, shareAsLink } = (() => {
     switch (backingState.status) {
-      case "booting":
-        return () => {};
+      case "booting": {
+        return { downloadPython: doNothing, shareAsLink: doNothing };
+      }
       case "idle":
       case "loading":
-      case "saving":
-        return () =>
+      case "saving": {
+        const downloadPython = () =>
           downloadPythonLaunch({
             storedName: backingState.name,
             content: codeText,
           });
+        const shareAsLink = () =>
+          shareAsLinkLaunch({ name: backingState.name, codeText });
+        return { downloadPython, shareAsLink };
+      }
       default:
         return assertNever(backingState);
     }
