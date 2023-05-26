@@ -19,3 +19,5 @@ type NewFileFromQueryState =
   | { kind: "idle" }
   | { kind: "preparing" }
   | { kind: "offering"; name: string; codeText: string };
+
+const idleState: NewFileFromQueryState = { kind: "idle" };
