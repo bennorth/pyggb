@@ -24,6 +24,7 @@ function zlibDecompress(
 type NewFileFromQueryState =
   | { kind: "idle" }
   | { kind: "preparing" }
+  | { kind: "failed" }
   | { kind: "offering"; name: string; codeText: string };
 
 const idleState: NewFileFromQueryState = { kind: "idle" };
