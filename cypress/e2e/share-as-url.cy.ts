@@ -61,4 +61,18 @@ describe("Share as URL", () => {
       });
     });
   });
+
+  it("handles corrupt URLs", () => {
+    const badShareUrl =
+      "/" +
+      "?name=laksdjflkasjdflkajsdf" +
+      "&code=asdfjhkasdfkjlhasdkjlhasldjkh";
+
+    cy.visit(badShareUrl);
+    cy.get(".modal-body").contains("link does not work");
+    cy.get("button").contains("Create").should("be.disabled");
+    cy.get("button").contains("Cancel").click();
+    cy.get("div.modal").should("not.exist");
+    cy.get(".editor .busy-overlay").should("not.be.visible");
+  });
 });
