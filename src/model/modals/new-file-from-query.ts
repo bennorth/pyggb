@@ -1,7 +1,10 @@
 import { Action, Thunk, thunk } from "easy-peasy";
 import { propSetterAction } from "../../shared/utils";
 import { PyGgbModel } from "..";
-import { AsyncInflateOptions, decompress } from "fflate";
+import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
+import { decode as stringFromUtf8BinaryString } from "utf8";
+import { decode as binaryStringFromB64String } from "base-64";
+import { URLSearchParams } from "url";
 
 function zlibDecompress(
   data: Uint8Array,
@@ -29,6 +32,7 @@ export type NewFileFromQuery = {
   state: NewFileFromQueryState;
   setState: Action<NewFileFromQuery, NewFileFromQueryState>;
 
+  bootFromSearchParams: Thunk<NewFileFromQuery, URLSearchParams>;
   acceptOffer: Thunk<NewFileFromQuery, void, any, PyGgbModel>;
   rejectOffer: Thunk<NewFileFromQuery>;
 };
@@ -36,6 +40,31 @@ export type NewFileFromQuery = {
 export let newFileFromQuery: NewFileFromQuery = {
   state: idleState,
   setState: propSetterAction("state"),
+
+  bootFromSearchParams: thunk(async (actions, urlSearchParams) => {
+    const mB64Name = urlSearchParams.get("name");
+    const mB64Code = urlSearchParams.get("code");
+    if (mB64Name == null || mB64Code == null) {
+      return;
+    }
+
+    const publicUrl = process.env.PUBLIC_URL;
+    const rootUrl = publicUrl === "" ? "/" : publicUrl;
+    window.history.replaceState(null, "", rootUrl);
+    actions.setState({ kind: "preparing" });
+
+    // See comment in share-as-url.ts regarding the dancing back and
+    // forth with data types and representations here.
+
+    const bstrUtf8Name = binaryStringFromB64String(mB64Name);
+    const name = stringFromUtf8BinaryString(bstrUtf8Name);
+
+    const bstrZlibCode = binaryStringFromB64String(mB64Code);
+    const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
+    const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
+
+    actions.setState({ kind: "offering", name, codeText });
+  }),
 
   acceptOffer: thunk(async (a, _voidPayload, helpers) => {
     const state = helpers.getState().state;
