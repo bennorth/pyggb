@@ -56,6 +56,8 @@ export const NewFileFromQueryModal = () => {
     }
   })();
 
+  const createButtonDisabled = state.kind !== "offering";
+
   return (
     <Modal className="NewFileFromQueryModal" show={true}>
       <Modal.Header>
@@ -66,7 +68,11 @@ export const NewFileFromQueryModal = () => {
         <Button variant="secondary" onClick={dismiss}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={create}>
+        <Button
+          variant="primary"
+          onClick={create}
+          disabled={createButtonDisabled}
+        >
           Create
         </Button>
       </Modal.Footer>
