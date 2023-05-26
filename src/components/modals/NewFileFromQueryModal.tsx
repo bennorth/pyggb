@@ -32,6 +32,8 @@ export const NewFileFromQueryModal = () => {
     switch (state.kind) {
       case "preparing":
         return <Spinner></Spinner>;
+      case "failed":
+        return <p>Sorry, that link does not work.</p>;
       case "offering": {
         const namePreview = previewFromString(state.name, 24);
         const codePreviewLines = previewFromFullCode(state.codeText, 4, 48);
