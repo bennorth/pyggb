@@ -1,4 +1,5 @@
-import { Spinner, Button } from "react-bootstrap";
+import { Spinner, Button, Modal } from "react-bootstrap";
+import { useStoreActions, useStoreState } from "../../store";
 import React, { useState } from "react";
 
 const BodyComputing = () => {
@@ -25,5 +26,34 @@ const BodyReady: React.FC<BodyReadyProps> = ({ url }) => {
       <input className="shareUrl" readOnly size={45} value={url} />
       <Button onClick={copy}>{buttonLabel}</Button>
     </div>
+  );
+};
+
+export const ShareAsUrlModal = () => {
+  const state = useStoreState((s) => s.modals.shareAsUrl);
+  const close = useStoreActions((a) => a.modals.shareAsUrl.close);
+
+  if (state.state.kind === "idle") {
+    return null;
+  }
+
+  const dismiss = () => close();
+
+  const body = (() => {
+    switch (state.state.kind) {
+      case "computing":
+        return <BodyComputing />;
+      case "ready":
+        return <BodyReady url={state.state.url} />;
+    }
+  })();
+
+  return (
+    <Modal show={true} onHide={dismiss}>
+      <Modal.Header closeButton>
+        <Modal.Title>Share file as link</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{body}</Modal.Body>
+    </Modal>
   );
 };
