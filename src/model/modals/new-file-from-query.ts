@@ -54,17 +54,22 @@ export let newFileFromQuery: NewFileFromQuery = {
     window.history.replaceState(null, "", rootUrl);
     actions.setState({ kind: "preparing" });
 
-    // See comment in share-as-url.ts regarding the dancing back and
-    // forth with data types and representations here.
+    try {
+      // See comment in share-as-url.ts regarding the dancing back and
+      // forth with data types and representations here.
 
-    const bstrUtf8Name = binaryStringFromB64String(mB64Name);
-    const name = stringFromUtf8BinaryString(bstrUtf8Name);
+      const bstrUtf8Name = binaryStringFromB64String(mB64Name);
+      const name = stringFromUtf8BinaryString(bstrUtf8Name);
 
-    const bstrZlibCode = binaryStringFromB64String(mB64Code);
-    const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
-    const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
+      const bstrZlibCode = binaryStringFromB64String(mB64Code);
+      const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
+      const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
 
-    actions.setState({ kind: "offering", name, codeText });
+      actions.setState({ kind: "offering", name, codeText });
+    } catch (err) {
+      console.error("newFileFromQuery():", err);
+      actions.setState({ kind: "failed" });
+    }
   }),
 
   acceptOffer: thunk(async (a, _voidPayload, helpers) => {
