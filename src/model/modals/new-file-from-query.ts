@@ -85,3 +85,26 @@ export let newFileFromQuery: NewFileFromQuery = {
 export function previewFromString(text: string, nChars: number): string {
   return text.length <= nChars ? text : text.substring(0, nChars - 1) + "…";
 }
+
+type CodePreviewLine =
+  | { kind: "code"; content: string }
+  | { kind: "ellipsis"; content: "⋮" };
+
+export function previewFromFullCode(
+  codeText: string,
+  nLines: number,
+  nCharsPerLine: number
+): Array<CodePreviewLine> {
+  const allLines = codeText.split("\n");
+  const lines = allLines.slice(0, nLines);
+
+  const trimmedLines: Array<CodePreviewLine> = lines.map((line) => ({
+    kind: "code",
+    content: previewFromString(line, nCharsPerLine),
+  }));
+
+  const extraLines: Array<CodePreviewLine> =
+    allLines.length > nLines ? [{ kind: "ellipsis", content: "⋮" }] : [];
+
+  return trimmedLines.concat(extraLines);
+}
