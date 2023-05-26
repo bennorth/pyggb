@@ -1,3 +1,5 @@
+import { Action } from "easy-peasy";
+import { propSetterAction } from "../../shared/utils";
 import { AsyncZlibOptions, zlib } from "fflate";
 
 type ShareAsUrlState =
@@ -21,3 +23,13 @@ function zlibCompress(
     });
   });
 }
+
+export type ShareAsUrl = {
+  state: ShareAsUrlState;
+  setState: Action<ShareAsUrl, ShareAsUrlState>;
+};
+
+export let shareAsUrl: ShareAsUrl = {
+  state: idleState,
+  setState: propSetterAction("state"),
+};
