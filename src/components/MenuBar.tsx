@@ -87,6 +87,8 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   }
 };
 
+const doNothing = () => {};
+
 export const MenuBar: React.FC<{}> = () => {
   const allDependenciesReady = useStoreState((s) => s.dependencies.allReady);
   const backingState = useStoreState((s) => s.editor.backingFileState);
@@ -98,6 +100,7 @@ export const MenuBar: React.FC<{}> = () => {
   const downloadPythonLaunch = useStoreActions(
     (a) => a.modals.downloadPython.launch
   );
+  const shareAsLinkLaunch = useStoreActions((a) => a.modals.shareAsUrl.launch);
   const saveCodeTextAction = useStoreActions((a) => a.editor.saveCodeText);
 
   const launchFileChooser = () =>
@@ -106,18 +109,23 @@ export const MenuBar: React.FC<{}> = () => {
   const launchNewFile = () => newFileLaunch(undefined);
   const saveCodeText = () => saveCodeTextAction();
 
-  const downloadPython = (() => {
+  const { downloadPython, shareAsLink } = (() => {
     switch (backingState.status) {
-      case "booting":
-        return () => {};
+      case "booting": {
+        return { downloadPython: doNothing, shareAsLink: doNothing };
+      }
       case "idle":
       case "loading":
-      case "saving":
-        return () =>
+      case "saving": {
+        const downloadPython = () =>
           downloadPythonLaunch({
             storedName: backingState.name,
             content: codeText,
           });
+        const shareAsLink = () =>
+          shareAsLinkLaunch({ name: backingState.name, codeText });
+        return { downloadPython, shareAsLink };
+      }
       default:
         return assertNever(backingState);
     }
@@ -161,6 +169,9 @@ export const MenuBar: React.FC<{}> = () => {
           <NavDropdown.Item disabled>Make a copy</NavDropdown.Item>
           <NavDropdown.Item onClick={saveCodeText}>Save now</NavDropdown.Item>
           <NavDropdown.Item onClick={downloadPython}>Download</NavDropdown.Item>
+          <NavDropdown.Item onClick={shareAsLink}>
+            Share as link
+          </NavDropdown.Item>
         </NavDropdown>
         <Navbar.Text className="backing-state">
           <div className="spinner-container">

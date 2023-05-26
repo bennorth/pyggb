@@ -1,4 +1,4 @@
-import { createNewPyGgbFile, optsNoIsolation } from "./shared";
+import { createNewPyGgbFile, deIndent, optsNoIsolation } from "./shared";
 
 // TODO (see also note at end):
 class ConstructionVerificationState {
@@ -6,37 +6,12 @@ class ConstructionVerificationState {
   // points when describing lines, say.
 }
 
-const allSpaces = new RegExp("^ *$");
-const initialSpaces = new RegExp("^ *");
-const deIndent = (rawCode: string): string => {
-  const allLines = rawCode.split("\n");
-
-  if (allLines[0] !== "") {
-    throw Error("need empty first line of code");
-  }
-  const nLines = allLines.length;
-  if (!allSpaces.test(allLines[nLines - 1])) {
-    throw Error("need all-spaces last line of code");
-  }
-
-  const lines = allLines.slice(1, nLines - 1);
-
-  const nonBlankLines = lines.filter((line) => !allSpaces.test(line));
-  const nonBlankIndents = nonBlankLines.map(
-    (line) => initialSpaces.exec(line)[0].length
-  );
-  const minNonBlankIndent = Math.min(...nonBlankIndents);
-
-  const strippedLines = lines.map((line) => line.substring(minNonBlankIndent));
-  return strippedLines.join("\n") + "\n";
-};
-
 // We specify no test isolation here, to avoid the heavy start-up cost
 // per small program we run.  We just keep entering new programs into
 // the same pyggb "file".
 //
 describe("Runs valid Python programs", optsNoIsolation, () => {
-  before(createNewPyGgbFile);
+  before(() => createNewPyGgbFile());
 
   type RunsWithoutErrorSpec = {
     label: string;
@@ -562,7 +537,7 @@ const runBadCode = (spec: CodeWithErrorSpec) => () => {
 };
 
 describe("Handles bad constructor calls", optsNoIsolation, () => {
-  before(createNewPyGgbFile);
+  before(() => createNewPyGgbFile());
 
   const assertTypeError = (clsName: string) => () => {
     const regexp = new RegExp(`^TypeError: ${clsName}\\(\\) arguments must be`);
@@ -641,7 +616,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
 });
 
 describe("handles attempt to set bad attribute value", optsNoIsolation, () => {
-  before(createNewPyGgbFile);
+  before(() => createNewPyGgbFile());
 
   const assertValueError = (messageFragment: string) => () => {
     cy.get(".ErrorReport .message")

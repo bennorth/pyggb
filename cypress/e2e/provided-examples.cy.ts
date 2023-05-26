@@ -1,7 +1,7 @@
 import { createNewPyGgbFile, optsNoIsolation } from "./shared";
 
 describe("runs provided examples", optsNoIsolation, () => {
-  before(createNewPyGgbFile);
+  before(() => createNewPyGgbFile());
 
   // Some examples run forever, or at least for longer than we want to
   // wait.  Once we've seen the output we expect, stop them.  The
