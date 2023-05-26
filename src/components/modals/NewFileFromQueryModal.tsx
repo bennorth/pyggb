@@ -1,6 +1,10 @@
 import { Button, Modal, Spinner } from "react-bootstrap";
 import { useStoreActions, useStoreState } from "../../store";
 import { useEffect } from "react";
+import {
+  previewFromFullCode,
+  previewFromString,
+} from "../../model/modals/new-file-from-query";
 
 export const NewFileFromQueryModal = () => {
   const state = useStoreState((s) => s.modals.newFileFromQuery.state);
@@ -29,12 +33,21 @@ export const NewFileFromQueryModal = () => {
       case "preparing":
         return <Spinner></Spinner>;
       case "offering": {
+        const namePreview = previewFromString(state.name, 24);
+        const codePreviewLines = previewFromFullCode(state.codeText, 4, 48);
         return (
           <>
             <p>
-              Create file <code>{state.name}</code>?
+              Create file <strong>{namePreview}</strong>?
             </p>
-            <div className="code-preview">{state.codeText}</div>
+            <p>Preview:</p>
+            <div className="code-preview">
+              {codePreviewLines.map((line, idx) => (
+                <pre key={idx}>
+                  <code className={line.kind}>{line.content}</code>
+                </pre>
+              ))}
+            </div>
           </>
         );
       }
