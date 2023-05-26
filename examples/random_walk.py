@@ -10,11 +10,13 @@ import time
 import random
 
 n_walks = 20
+n_steps = 100
+
 for j in range(n_walks):
+    print(f"Starting walk {j}")
     x = 0
     y = 0
     P = Point(x, y)
-    n_steps = 100
     for i in range(n_steps):
         w = random.randint(1, 4)
         if w == 1:
