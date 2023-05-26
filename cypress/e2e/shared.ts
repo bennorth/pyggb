@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const optsNoIsolation = { testIsolation: false };
 
-const chooseFileMenuEntry = (entryMatch: string) => {
+export const chooseFileMenuEntry = (entryMatch: string) => {
   cy.get(".MenuBar .nav-link", { timeout: 10000 }).contains("File").click();
   cy.get(".dropdown-item").contains(entryMatch).click();
 };

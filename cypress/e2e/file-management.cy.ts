@@ -1,14 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
+import { chooseFileMenuEntry } from "./shared";
 
 describe("File management", () => {
   beforeEach(() => {
     cy.visit("/");
   });
-
-  const chooseFileMenuEntry = (entryMatch: string) => {
-    cy.get(".MenuBar .nav-link").contains("File").click();
-    cy.get(".dropdown-item").contains(entryMatch).click();
-  };
 
   it("can create new file", () => {
     const filename = uuidv4();
