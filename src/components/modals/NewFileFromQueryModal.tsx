@@ -28,7 +28,7 @@ export const NewFileFromQueryModal = () => {
     switch (state.kind) {
       case "preparing":
         return <Spinner></Spinner>;
-      case "offering":
+      case "offering": {
         return (
           <>
             <p>
@@ -37,6 +37,7 @@ export const NewFileFromQueryModal = () => {
             <div className="code-preview">{state.codeText}</div>
           </>
         );
+      }
     }
   })();
 
