@@ -27,9 +27,15 @@ const idleState: NewFileFromQueryState = { kind: "idle" };
 export type NewFileFromQuery = {
   state: NewFileFromQueryState;
   setState: Action<NewFileFromQuery, NewFileFromQueryState>;
+
+  rejectOffer: Thunk<NewFileFromQuery>;
 };
 
 export let newFileFromQuery: NewFileFromQuery = {
   state: idleState,
   setState: propSetterAction("state"),
+
+  rejectOffer: thunk((a) => {
+    a.setState(idleState);
+  }),
 };
