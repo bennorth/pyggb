@@ -24,6 +24,11 @@ function zlibCompress(
   });
 }
 
+type LaunchArgs = {
+  name: string;
+  codeText: string;
+};
+
 export type ShareAsUrl = {
   state: ShareAsUrlState;
   setState: Action<ShareAsUrl, ShareAsUrlState>;
