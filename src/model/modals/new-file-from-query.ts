@@ -14,3 +14,8 @@ function zlibDecompress(
     });
   });
 }
+
+type NewFileFromQueryState =
+  | { kind: "idle" }
+  | { kind: "preparing" }
+  | { kind: "offering"; name: string; codeText: string };
