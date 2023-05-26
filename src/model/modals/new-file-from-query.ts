@@ -81,3 +81,7 @@ export let newFileFromQuery: NewFileFromQuery = {
     a.setState(idleState);
   }),
 };
+
+export function previewFromString(text: string, nChars: number): string {
+  return text.length <= nChars ? text : text.substring(0, nChars - 1) + "…";
+}
