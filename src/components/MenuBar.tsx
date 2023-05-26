@@ -87,6 +87,8 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   }
 };
 
+const doNothing = () => {};
+
 export const MenuBar: React.FC<{}> = () => {
   const allDependenciesReady = useStoreState((s) => s.dependencies.allReady);
   const backingState = useStoreState((s) => s.editor.backingFileState);
