@@ -169,6 +169,9 @@ export const MenuBar: React.FC<{}> = () => {
           <NavDropdown.Item disabled>Make a copy</NavDropdown.Item>
           <NavDropdown.Item onClick={saveCodeText}>Save now</NavDropdown.Item>
           <NavDropdown.Item onClick={downloadPython}>Download</NavDropdown.Item>
+          <NavDropdown.Item onClick={shareAsLink}>
+            Share as link
+          </NavDropdown.Item>
         </NavDropdown>
         <Navbar.Text className="backing-state">
           <div className="spinner-container">
