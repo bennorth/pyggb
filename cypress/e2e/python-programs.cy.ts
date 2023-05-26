@@ -36,7 +36,7 @@ const deIndent = (rawCode: string): string => {
 // the same pyggb "file".
 //
 describe("Runs valid Python programs", optsNoIsolation, () => {
-  before(createNewPyGgbFile);
+  before(() => createNewPyGgbFile());
 
   type RunsWithoutErrorSpec = {
     label: string;
@@ -562,7 +562,7 @@ const runBadCode = (spec: CodeWithErrorSpec) => () => {
 };
 
 describe("Handles bad constructor calls", optsNoIsolation, () => {
-  before(createNewPyGgbFile);
+  before(() => createNewPyGgbFile());
 
   const assertTypeError = (clsName: string) => () => {
     const regexp = new RegExp(`^TypeError: ${clsName}\\(\\) arguments must be`);
@@ -641,7 +641,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
 });
 
 describe("handles attempt to set bad attribute value", optsNoIsolation, () => {
-  before(createNewPyGgbFile);
+  before(() => createNewPyGgbFile());
 
   const assertValueError = (messageFragment: string) => () => {
     cy.get(".ErrorReport .message")

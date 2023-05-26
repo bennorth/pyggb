@@ -7,13 +7,13 @@ export const chooseFileMenuEntry = (entryMatch: string) => {
   cy.get(".dropdown-item").contains(entryMatch).click();
 };
 
-export const createNewPyGgbFile = () => {
+export const createNewPyGgbFile = (filename?: string) => {
   cy.visit("/");
-  const filename = uuidv4();
+  const effectiveFilename = filename ?? uuidv4();
 
   chooseFileMenuEntry("New");
-  cy.get(".modal-body input").click().type(filename);
+  cy.get(".modal-body input").click().type(effectiveFilename);
   cy.get("button").contains("Create").click();
   cy.get(".editor .busy-overlay").should("not.be.visible");
-  cy.get(".MenuBar").contains(filename);
+  cy.get(".MenuBar").contains(effectiveFilename);
 };
