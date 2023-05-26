@@ -1,4 +1,4 @@
-import { Action } from "easy-peasy";
+import { Action, Thunk, thunk } from "easy-peasy";
 import { propSetterAction } from "../../shared/utils";
 import { AsyncZlibOptions, zlib } from "fflate";
 
@@ -27,9 +27,15 @@ function zlibCompress(
 export type ShareAsUrl = {
   state: ShareAsUrlState;
   setState: Action<ShareAsUrl, ShareAsUrlState>;
+
+  close: Thunk<ShareAsUrl>;
 };
 
 export let shareAsUrl: ShareAsUrl = {
   state: idleState,
   setState: propSetterAction("state"),
+
+  close: thunk((a) => {
+    a.setState(idleState);
+  }),
 };
