@@ -274,3 +274,27 @@ ul.ExampleList {
     margin-bottom: 1rem;
   }
 }
+
+.ShareAsUrlModalBody {
+  height: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &.computing {
+    justify-content: center;
+  }
+
+  &.ready {
+    justify-content: space-between;
+    input {
+      font-size: 0.85rem;
+    }
+    button {
+      padding: 0.25rem;
+      font-size: 0.9rem;
+      width: 3rem;
+    }
+  }
+}
