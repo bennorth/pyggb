@@ -26,6 +26,9 @@ import { SkulptApi } from "../shared/vendor-types/skulptapi";
 declare var Sk: SkulptApi;
 
 (globalThis as any).$skulptGgbModule = (appApi: AppApi) => {
+  // For ease of debugging:
+  (window as any).ggbApplet = appApi.ggb;
+
   // This object gets built up in stages, and each register() function
   // expects a different type, so fudge it.  Perhaps there's a better
   // way to do this?

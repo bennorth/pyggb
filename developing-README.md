@@ -2,13 +2,14 @@
 
 ## Release process
 
-For deploying to `github.io`:
+For deploying to `github.io`, assuming a git worktree `./pages/`
+checked out on the branch `github-pages`:
 
 ``` shell
 ./tools/build-examples.sh
 PUBLIC_URL=/pyggb npm run build
-rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -nrtv build/ pages/
-# Then if that looks OK, same without "-nv":
+rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -rtvn build/ pages/
+# Then if that looks OK, same without "vn" options:
 rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -rt build/ pages/
 # Commit in pages/ worktree
 # Push to GitHub

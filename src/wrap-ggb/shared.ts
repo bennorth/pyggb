@@ -263,6 +263,11 @@ export const assembledCommand = (command: string, args: Array<string>) =>
 export const setGgbLabelFromCmd =
   (ggb: AugmentedGgbApi, obj: SkGgbObject) => (fullCommand: string) => {
     const lbl = ggb.evalCmd(fullCommand);
+    if (lbl == null) {
+      throw new Sk.builtin.RuntimeError(
+        `Ggb command "${fullCommand}" returned null`
+      );
+    }
     obj.$ggbLabel = lbl;
   };
 

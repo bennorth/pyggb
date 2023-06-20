@@ -30,12 +30,22 @@ const ggbBinaryOpFun =
       const wArg = numberValueOrLabel(ggbApi, w);
       const ggbCmd = buildCommand(vArg, wArg);
       const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      if (lbl == null) {
+        throw new Sk.builtin.TypeError(
+          `ggbBinaryOpFun(num, num): Ggb command "${ggbCmd}" returned null`
+        );
+      }
       return wrapExistingGgbObject(ggbApi, lbl);
     }
 
     if (isGgbObject(ggbApi, v) && isGgbObject(ggbApi, w)) {
       const ggbCmd = buildCommand(v.$ggbLabel, w.$ggbLabel);
       const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+      if (lbl == null) {
+        throw new Sk.builtin.TypeError(
+          `ggbBinaryOpFun(obj, obj): Ggb command "${ggbCmd}" returned null`
+        );
+      }
       // TODO: What if the operation doesn't make sense?
       return wrapExistingGgbObject(ggbApi, lbl);
     }
