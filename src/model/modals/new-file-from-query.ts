@@ -43,9 +43,9 @@ export let newFileFromQuery: NewFileFromQuery = {
   setState: propSetterAction("state"),
 
   bootFromSearchParams: thunk(async (actions, urlSearchParams) => {
-    const mB64Name = urlSearchParams.get("name");
+    const name = urlSearchParams.get("name");
     const mB64Code = urlSearchParams.get("code");
-    if (mB64Name == null || mB64Code == null) {
+    if (name == null || mB64Code == null) {
       return;
     }
 
@@ -57,10 +57,6 @@ export let newFileFromQuery: NewFileFromQuery = {
     try {
       // See comment in share-as-url.ts regarding the dancing back and
       // forth with data types and representations here.
-
-      const bstrUtf8Name = binaryStringFromB64String(mB64Name);
-      const name = stringFromUtf8BinaryString(bstrUtf8Name);
-
       const bstrZlibCode = binaryStringFromB64String(mB64Code);
       const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
       const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
