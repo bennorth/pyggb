@@ -6,7 +6,6 @@ import { FileChooserModal } from "./components/modals/FileChooserModal";
 import { NewFileModal } from "./components/modals/NewFileModal";
 import { DownloadPythonModal } from "./components/modals/DownloadPythonModal";
 import { AboutPyGgbModal } from "./components/modals/AboutPyGgbModal";
-import { NewFileFromQueryModal } from "./components/modals/NewFileFromQueryModal";
 import { ShareAsUrlModal } from "./components/modals/ShareAsUrlModal";
 
 function App() {
@@ -20,7 +19,6 @@ function App() {
   return (
     <div className="App">
       <ShareAsUrlModal />
-      <NewFileFromQueryModal />
       <FileChooserModal />
       <NewFileModal />
       <DownloadPythonModal />
