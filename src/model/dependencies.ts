@@ -102,5 +102,17 @@ export const dependencies: Dependencies = {
     // here via a "share" link, decode that link.  Otherwise, use the
     // most recent program they were working on, creating one if this is
     // the first time they've ever used the app.
+
+    const name = urlSearchParams.get("name");
+    const b64Code = urlSearchParams.get("code");
+    if (name == null || b64Code == null) {
+      // No/malformed sharing link.  Fetch most recent user program.
+      const userFile = await db.withLock(async () => {
+        await db.ensureUserFilesNonEmpty();
+        return await db.mostRecentlyOpenedPreview();
+      });
+
+      return { userFile, autoRun: false };
+    }
   }),
 };
