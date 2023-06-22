@@ -1,9 +1,9 @@
-import { Action, computed, Computed, thunk, Thunk } from "easy-peasy";
+import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { SkulptGgbModuleUrl } from "../shared/resources";
 import { db } from "../shared/db";
-import { propSetterAction, propSetterNonNullAction } from "../shared/utils";
+import { propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
 
 type BootStatus = "idle" | "running" | "done";
@@ -32,7 +32,11 @@ export const dependencies: Dependencies = {
   allReady: computed((s) => s.ggbApi !== null && s.bootStatus === "done"),
 
   setBootStatus: propSetterAction("bootStatus"),
-  setGgbApi: propSetterNonNullAction("ggbApi"),
+  setGgbApi: action((state, ggbApi) => {
+    state.ggbApi = ggbApi;
+    state.ggbApiReady.release();
+  }),
+
   setGgbPythonModuleText: propSetterAction("ggbPythonModuleText"),
 
   boot: thunk(async (a, _voidPayload, helpers) => {
