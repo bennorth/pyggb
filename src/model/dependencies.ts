@@ -5,7 +5,25 @@ import { SkulptGgbModuleUrl } from "../shared/resources";
 import { db } from "../shared/db";
 import { propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
+import { decode as stringFromUtf8BinaryString } from "utf8";
+import { decode as binaryStringFromB64String } from "base-64";
+import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
 import { URLSearchParams } from "url";
+
+function zlibDecompress(
+  data: Uint8Array,
+  opts: AsyncInflateOptions
+): Promise<Uint8Array> {
+  return new Promise<Uint8Array>((resolve, reject) => {
+    decompress(data, opts, (err, data) => {
+      if (err != null) {
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+}
 
 type BootStatus = "idle" | "running" | "done";
 
