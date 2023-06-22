@@ -45,6 +45,13 @@ export type Dependencies = {
   setGgbPythonModuleText: Action<Dependencies, string>;
 
   boot: Thunk<Dependencies, URLSearchParams, {}, PyGgbModel>;
+  _bootInitialCode: Thunk<
+    Dependencies,
+    URLSearchParams,
+    {},
+    PyGgbModel,
+    Promise<ActionAfterChoosingProgram>
+  >;
 };
 
 export const dependencies: Dependencies = {
@@ -88,5 +95,12 @@ export const dependencies: Dependencies = {
     });
 
     a.setBootStatus("done");
+  }),
+
+  _bootInitialCode: thunk(async (_a, urlSearchParams) => {
+    // Initial code is taken from one of two places.  If the user got
+    // here via a "share" link, decode that link.  Otherwise, use the
+    // most recent program they were working on, creating one if this is
+    // the first time they've ever used the app.
   }),
 };
