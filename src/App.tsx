@@ -13,7 +13,8 @@ function App() {
   const bootDependencies = useStoreActions((a) => a.dependencies.boot);
 
   useEffect(() => {
-    bootDependencies();
+    const url = new URL(window.location.href);
+    bootDependencies(url.searchParams);
   });
 
   return (
