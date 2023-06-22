@@ -2,7 +2,7 @@ import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { SkulptGgbModuleUrl } from "../shared/resources";
-import { db } from "../shared/db";
+import { db, UserFilePreview } from "../shared/db";
 import { propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
 import { decode as stringFromUtf8BinaryString } from "utf8";
@@ -26,6 +26,11 @@ function zlibDecompress(
 }
 
 type BootStatus = "idle" | "running" | "done";
+
+type ActionAfterChoosingProgram = {
+  userFile: UserFilePreview;
+  autoRun: boolean;
+};
 
 export type Dependencies = {
   bootStatus: BootStatus;
