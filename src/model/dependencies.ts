@@ -114,5 +114,25 @@ export const dependencies: Dependencies = {
 
       return { userFile, autoRun: false };
     }
+
+    // Create program from URL data.
+
+    const publicUrl = process.env.PUBLIC_URL;
+    const rootUrl = publicUrl === "" ? "/" : publicUrl;
+    window.history.replaceState(null, "", rootUrl);
+
+    // See comment in share-as-url.ts regarding the dancing back and
+    // forth with data types and representations here.
+    const bstrZlibCode = binaryStringFromB64String(b64Code);
+    const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
+    const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
+
+    const descriptor = { name, codeText };
+    const userFile = await db.getOrCreateNew(descriptor);
+
+    // Default is to auto-run; specify autorun=false to inhibit.
+    const autoRun = urlSearchParams.get("autorun") !== "false";
+
+    return { userFile, autoRun };
   }),
 };
