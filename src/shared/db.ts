@@ -122,6 +122,21 @@ export class PyGgbDexie extends Dexie {
     return firstMatch != null;
   }
 
+  /** Find the first name of the form `"nameStem (NNN)"` (as `NNN`
+   * counts from 1 upwards) which is not the name of an existing user
+   * file.
+   * */
+  async unusedFileName(nameStem: string) {
+    let suffix = 0;
+    let candidateName = "";
+
+    do {
+      candidateName = `${nameStem} (${++suffix})`;
+    } while (await this.hasFileWithName(candidateName));
+
+    return candidateName;
+  }
+
   // TODO: What happens if a renameFile() call and a updateFile() call
   // try to run at the same time?
 
