@@ -50,6 +50,8 @@ export const dependencies: Dependencies = {
     const text = await response.text();
     a.setGgbPythonModuleText(text);
 
+    await helpers.getState().ggbApiReady.acquire();
+
     await db.withLock(async () => {
       await db.ensureUserFilesNonEmpty();
       const fileIdToBootWith = await db.mostRecentlyOpenedPreview();
