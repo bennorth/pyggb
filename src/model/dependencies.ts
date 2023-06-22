@@ -5,6 +5,7 @@ import { SkulptGgbModuleUrl } from "../shared/resources";
 import { db } from "../shared/db";
 import { propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
+import { URLSearchParams } from "url";
 
 type BootStatus = "idle" | "running" | "done";
 
@@ -20,7 +21,7 @@ export type Dependencies = {
   setGgbApi: Action<Dependencies, GgbApi>;
   setGgbPythonModuleText: Action<Dependencies, string>;
 
-  boot: Thunk<Dependencies, void, {}, PyGgbModel>;
+  boot: Thunk<Dependencies, URLSearchParams, {}, PyGgbModel>;
 };
 
 export const dependencies: Dependencies = {
@@ -39,7 +40,7 @@ export const dependencies: Dependencies = {
 
   setGgbPythonModuleText: propSetterAction("ggbPythonModuleText"),
 
-  boot: thunk(async (a, _voidPayload, helpers) => {
+  boot: thunk(async (a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
     const status = helpers.getState().bootStatus;
     if (status !== "idle") return;
