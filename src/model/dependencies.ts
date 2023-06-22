@@ -30,6 +30,8 @@ export const dependencies: Dependencies = {
   ggbApiReady: new SemaphoreItem(1, 1),
   ggbPythonModuleText: "",
 
+  // TODO: Check the argument 'once bootStatus is "done", we must have a
+  // non-null ggbApi', and if valid, remove redundancy:
   allReady: computed((s) => s.ggbApi !== null && s.bootStatus === "done"),
 
   setBootStatus: propSetterAction("bootStatus"),
@@ -47,6 +49,8 @@ export const dependencies: Dependencies = {
     if (status !== "idle") return;
 
     a.setBootStatus("running");
+
+    // TODO: Do the following jobs in parallel?
 
     const response = await fetch(SkulptGgbModuleUrl);
     const text = await response.text();
