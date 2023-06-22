@@ -4,12 +4,14 @@ import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { SkulptGgbModuleUrl } from "../shared/resources";
 import { db } from "../shared/db";
 import { propSetterAction, propSetterNonNullAction } from "../shared/utils";
+import { SemaphoreItem } from "../shared/semaphore";
 
 type BootStatus = "idle" | "running" | "done";
 
 export type Dependencies = {
   bootStatus: BootStatus;
   ggbApi: GgbApi | null;
+  ggbApiReady: SemaphoreItem;
   ggbPythonModuleText: string;
 
   allReady: Computed<Dependencies, boolean>;
@@ -24,6 +26,7 @@ export type Dependencies = {
 export const dependencies: Dependencies = {
   bootStatus: "idle",
   ggbApi: null,
+  ggbApiReady: new SemaphoreItem(1, 1),
   ggbPythonModuleText: "",
 
   allReady: computed((s) => s.ggbApi !== null && s.bootStatus === "done"),
