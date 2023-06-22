@@ -42,6 +42,7 @@ export const dependencies: Dependencies = {
 
   boot: thunk(async (a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
+
     const status = helpers.getState().bootStatus;
     if (status !== "idle") return;
 
