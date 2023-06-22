@@ -117,6 +117,11 @@ export class PyGgbDexie extends Dexie {
     return { id: newFileId, name: descriptor.name };
   }
 
+  async hasFileWithName(name: string): Promise<boolean> {
+    const firstMatch = await this.userFiles.where("name").equals(name).first();
+    return firstMatch != null;
+  }
+
   // TODO: What happens if a renameFile() call and a updateFile() call
   // try to run at the same time?
 
