@@ -88,13 +88,15 @@ export const dependencies: Dependencies = {
 
     await helpers.getState().ggbApiReady.acquire();
 
-    await db.withLock(async () => {
-      await db.ensureUserFilesNonEmpty();
-      const fileIdToBootWith = await db.mostRecentlyOpenedPreview();
-      await allActions.editor._loadFromBacking(fileIdToBootWith);
-    });
+    const loadAction = await a._bootInitialCode(urlSearchParams);
+
+    await allActions.editor.loadFromBacking(loadAction.userFile);
 
     a.setBootStatus("done");
+
+    if (loadAction.autoRun) {
+      allActions.controls.runProgram();
+    }
   }),
 
   _bootInitialCode: thunk(async (_a, urlSearchParams) => {
