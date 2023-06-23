@@ -18,6 +18,19 @@ export type NewFileDescriptor = {
 
 const kDefaultCodeText = "# Start writing your code!\n";
 
+/** If the given `name` is of the form `"something (NNN)"` for some
+ * string of decimal digits `NNN`, then return the `"something"` part.
+ * Otherwise, return the `name` unchange.  E.g.:
+ *
+ *  * `"Banana (23)"` -> `"Banana"`
+ *  * `"Apple"` -> `"Apple"`
+ * */
+function withoutNumberSuffix(name: string) {
+  const re = new RegExp("^(.*) \\([0-9]+\\)$");
+  const m = re.exec(name);
+  return m == null ? name : m[1];
+}
+
 export class PyGgbDexie extends Dexie {
   userFiles!: Table<UserFile>;
   semaphore: SemaphoreItem;
@@ -115,6 +128,79 @@ export class PyGgbDexie extends Dexie {
 
     const newFileId = (await this.userFiles.add(newFile)) as number;
     return { id: newFileId, name: descriptor.name };
+  }
+
+  async hasFileWithName(name: string): Promise<boolean> {
+    const firstMatch = await this.userFiles.where("name").equals(name).first();
+    return firstMatch != null;
+  }
+
+  /** Find the first name of the form `"nameStem (NNN)"` (as `NNN`
+   * counts from 1 upwards) which is not the name of an existing user
+   * file.
+   * */
+  async unusedFileName(nameStem: string) {
+    let suffix = 0;
+    let candidateName = "";
+
+    do {
+      candidateName = `${nameStem} (${++suffix})`;
+    } while (await this.hasFileWithName(candidateName));
+
+    return candidateName;
+  }
+
+  /** If there exists at least one file matching the given `descriptor`
+   * exactly (on name and code-text), return a preview of the first such
+   * file.
+   *
+   * Otherwise, if there exists at least one file matching in name but
+   * with differing contents, create a new file with contents as in the
+   * given `descriptor`, and with name like the name within the given
+   * `descriptor` but distinguished via a numeric suffix.  Return a
+   * preview of the newly-created file.
+   *
+   * This is a bit of a heuristic for what people are likely to want. If
+   * the user already has `"Grapefruit (1)"` and someone sends them a
+   * link for a project `"Grapefruit (1)"`, we probably want to create
+   * `"Grapefruit (2)"` for them.  But if they have `"Class notes
+   * (20230623)"` and someone sends them a link to for `"Class notes
+   * (20230623)"`, we probably should (but currently don't) create
+   * `"Class notes (20230623) (1)"`.  See how we get on with the current
+   * scheme.
+   * */
+  async getOrCreateNew(
+    descriptor: Required<NewFileDescriptor>
+  ): Promise<UserFilePreview> {
+    const matchesByName = await this.userFiles
+      .where("name")
+      .equals(descriptor.name)
+      .toArray();
+
+    const existingFile = matchesByName.find(
+      (f) => f.codeText === descriptor.codeText
+    );
+
+    if (existingFile != null) {
+      existingFile.mtime = Date.now();
+      await this.userFiles.put(existingFile);
+      return {
+        id: existingFile.id!,
+        name: existingFile.name,
+      };
+    }
+
+    if (matchesByName.length > 0) {
+      const unnumberedStem = withoutNumberSuffix(descriptor.name);
+      const unusedName = await this.unusedFileName(unnumberedStem);
+
+      return await this.createNewFile({
+        name: unusedName,
+        codeText: descriptor.codeText,
+      });
+    }
+
+    return await this.createNewFile(descriptor);
   }
 
   // TODO: What happens if a renameFile() call and a updateFile() call

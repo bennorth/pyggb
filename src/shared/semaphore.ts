@@ -26,10 +26,10 @@ export class SemaphoreItem {
   private maxConcurrent: number;
   private count: number;
 
-  constructor(maxConcurrent: number) {
+  constructor(maxConcurrent: number, initialCount?: number) {
     this.queue = [];
     this.maxConcurrent = maxConcurrent;
-    this.count = 0;
+    this.count = initialCount ?? 0;
   }
 
   get canAcquire(): boolean {

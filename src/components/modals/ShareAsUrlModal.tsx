@@ -1,4 +1,4 @@
-import { Spinner, Button, Modal } from "react-bootstrap";
+import { Spinner, Button, Modal, Form } from "react-bootstrap";
 import { useStoreActions, useStoreState } from "../../store";
 import React, { useState } from "react";
 
@@ -13,38 +13,58 @@ const BodyComputing = () => {
 type BodyReadyProps = { url: string };
 const BodyReady: React.FC<BodyReadyProps> = ({ url }) => {
   const [showCopiedIndicator, setShowCopiedIndicator] = useState(false);
+  const [autoRun, setAutoRun] = useState(true);
+  const fullUrl = url + (autoRun ? "" : "&autorun=false");
 
   const copy = async () => {
-    await navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(fullUrl);
     setShowCopiedIndicator(true);
     setTimeout(() => setShowCopiedIndicator(false), 1200);
   };
 
+  const toggleAutoRun = () => {
+    setAutoRun(!autoRun);
+  };
+
   const buttonLabel = showCopiedIndicator ? "✓" : "Copy";
+
   return (
     <div className="ShareAsUrlModalBody ready">
-      <input className="shareUrl" readOnly size={45} value={url} />
-      <Button onClick={copy}>{buttonLabel}</Button>
+      <div className="content">
+        <div className="toggle">
+          <Form.Check
+            checked={autoRun}
+            onChange={toggleAutoRun}
+            type="switch"
+            id="share-as-url-autorun-toggle"
+            label="Run program automatically from link?"
+          />
+        </div>
+        <div className="text-and-button">
+          <input className="shareUrl" readOnly size={45} value={fullUrl} />
+          <Button onClick={copy}>{buttonLabel}</Button>
+        </div>
+      </div>
     </div>
   );
 };
 
 export const ShareAsUrlModal = () => {
-  const state = useStoreState((s) => s.modals.shareAsUrl);
+  const state = useStoreState((s) => s.modals.shareAsUrl.state);
   const close = useStoreActions((a) => a.modals.shareAsUrl.close);
 
-  if (state.state.kind === "idle") {
+  if (state.kind === "idle") {
     return null;
   }
 
   const dismiss = () => close();
 
   const body = (() => {
-    switch (state.state.kind) {
+    switch (state.kind) {
       case "computing":
         return <BodyComputing />;
       case "ready":
-        return <BodyReady url={state.state.url} />;
+        return <BodyReady url={state.url} />;
     }
   })();
 

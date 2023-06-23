@@ -6,24 +6,25 @@ import { FileChooserModal } from "./components/modals/FileChooserModal";
 import { NewFileModal } from "./components/modals/NewFileModal";
 import { DownloadPythonModal } from "./components/modals/DownloadPythonModal";
 import { AboutPyGgbModal } from "./components/modals/AboutPyGgbModal";
-import { NewFileFromQueryModal } from "./components/modals/NewFileFromQueryModal";
 import { ShareAsUrlModal } from "./components/modals/ShareAsUrlModal";
+import { FailedFileFromQueryModal } from "./components/modals/FailedFileFromQueryModal";
 
 function App() {
   const bootDependencies = useStoreActions((a) => a.dependencies.boot);
 
   useEffect(() => {
-    bootDependencies();
+    const url = new URL(window.location.href);
+    bootDependencies(url.searchParams);
   });
 
   return (
     <div className="App">
       <ShareAsUrlModal />
-      <NewFileFromQueryModal />
       <FileChooserModal />
       <NewFileModal />
       <DownloadPythonModal />
       <AboutPyGgbModal />
+      <FailedFileFromQueryModal />
       <IDE />
     </div>
   );

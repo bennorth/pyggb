@@ -54,15 +54,12 @@ export let shareAsUrl: ShareAsUrl = {
     // in all, there's quite a lot of back/forth here which could be
     // cleaned up by rewriting some of the utilities.
 
-    const bstrName = utf8BinaryStringFromString(args.name);
     const bstrCode = utf8BinaryStringFromString(args.codeText);
     const u8sZlibCode = await zlibCompress(strToU8(bstrCode), {});
-
-    const pName = b64StringFromBinaryString(bstrName);
     const pCode = b64StringFromBinaryString(strFromU8(u8sZlibCode, true));
 
     let url = new URL(window.location.href);
-    url.searchParams.set("name", pName);
+    url.searchParams.set("name", args.name);
     url.searchParams.set("code", pCode);
 
     a.setState({ kind: "ready", url: url.toString() });
