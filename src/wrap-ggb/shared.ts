@@ -276,7 +276,7 @@ export const setGgbLabelFromCmd =
       userOptions ?? {}
     );
     const lbl = ggb.evalCmd(fullCommand);
-    if (lbl == null) {
+    if (lbl == null && !options.allowNullLabel) {
       throw new Sk.builtin.RuntimeError(
         `Ggb command "${fullCommand}" returned null`
       );
