@@ -257,6 +257,10 @@ export function throwIfLabelNull(
 export const assembledCommand = (command: string, args: Array<string>) =>
   `${command}(${args.join(",")})`;
 
+export type GgbEvalCmdOptions = {
+  allowNullLabel: boolean;
+};
+
 /** Set the `$ggbLabel` property of the given `obj` from the result of
  * executing the given `fullCommand`.  Curried for more concise use
  * within a constructor. */
