@@ -120,7 +120,7 @@ export const dependencies: Dependencies = {
       })
   ),
 
-  _bootInitialCode: thunk(async (_a, urlSearchParams, helpers) => {
+  _bootInitialCode: thunk(async (a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
 
     // Initial code is taken from one of two places.  If the user got
@@ -132,11 +132,7 @@ export const dependencies: Dependencies = {
     const b64Code = urlSearchParams.get("code");
     if (name == null || b64Code == null) {
       // No/malformed sharing link.  Fetch most recent user program.
-      const userFile = await db.withLock(async () => {
-        await db.ensureUserFilesNonEmpty();
-        return await db.mostRecentlyOpenedPreview();
-      });
-
+      const userFile = await a._mostRecentUserFilePreview();
       return { userFile, autoRun: false };
     }
 
@@ -165,10 +161,7 @@ export const dependencies: Dependencies = {
           "  Opening your most recent program instead."
       );
 
-      const userFile = await db.withLock(async () => {
-        await db.ensureUserFilesNonEmpty();
-        return await db.mostRecentlyOpenedPreview();
-      });
+      const userFile = await a._mostRecentUserFilePreview();
 
       return { userFile, autoRun: false };
     }
