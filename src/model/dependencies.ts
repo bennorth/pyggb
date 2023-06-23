@@ -45,6 +45,15 @@ export type Dependencies = {
   setGgbPythonModuleText: Action<Dependencies, string>;
 
   boot: Thunk<Dependencies, URLSearchParams, {}, PyGgbModel>;
+
+  _mostRecentUserFilePreview: Thunk<
+    Dependencies,
+    void,
+    {},
+    PyGgbModel,
+    Promise<UserFilePreview>
+  >;
+
   _bootInitialCode: Thunk<
     Dependencies,
     URLSearchParams,
@@ -102,6 +111,14 @@ export const dependencies: Dependencies = {
       allActions.controls.runProgram();
     }
   }),
+
+  _mostRecentUserFilePreview: thunk(
+    async (_a) =>
+      await db.withLock(async () => {
+        await db.ensureUserFilesNonEmpty();
+        return await db.mostRecentlyOpenedPreview();
+      })
+  ),
 
   _bootInitialCode: thunk(async (_a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
