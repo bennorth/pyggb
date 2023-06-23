@@ -3,6 +3,10 @@ import { NewFile, newFile } from "./new-file";
 import { DownloadPython, downloadPython } from "./download-python";
 import { AboutPyGgb, aboutPyGgb } from "./about-pyggb";
 import { ShareAsUrl, shareAsUrl } from "./share-as-url";
+import {
+  FailedFileFromQuery,
+  failedFileFromQuery,
+} from "./failed-file-from-query";
 
 export type Modals = {
   fileChooser: FileChooser;
@@ -10,6 +14,7 @@ export type Modals = {
   downloadPython: DownloadPython;
   aboutPyGgb: AboutPyGgb;
   shareAsUrl: ShareAsUrl;
+  failedFileFromQuery: FailedFileFromQuery;
 };
 
 export const modals: Modals = {
@@ -18,4 +23,5 @@ export const modals: Modals = {
   downloadPython,
   aboutPyGgb,
   shareAsUrl,
+  failedFileFromQuery,
 };
