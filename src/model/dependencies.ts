@@ -1,7 +1,7 @@
 import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
-import { SkulptGgbModuleUrl } from "../shared/resources";
+import { kSkulptGgbModuleUrl } from "../shared/resources";
 import { db, UserFilePreview } from "../shared/db";
 import { propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
