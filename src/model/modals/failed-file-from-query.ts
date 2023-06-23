@@ -14,3 +14,15 @@ export type FailedFileFromQuery = {
   launch: Thunk<FailedFileFromQuery, string>;
   dismiss: Thunk<FailedFileFromQuery>;
 };
+
+export let failedFileFromQuery: FailedFileFromQuery = {
+  state: kIdleFailedFileFromQueryState,
+  setState: propSetterAction("state"),
+
+  launch: thunk((a, message) =>
+    a.setState({ kind: "awaiting-user-acknowledgment", message })
+  ),
+  dismiss: thunk((a) => {
+    a.setState(kIdleFailedFileFromQueryState);
+  }),
+};
