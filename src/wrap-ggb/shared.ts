@@ -257,13 +257,26 @@ export function throwIfLabelNull(
 export const assembledCommand = (command: string, args: Array<string>) =>
   `${command}(${args.join(",")})`;
 
+export type GgbEvalCmdOptions = {
+  allowNullLabel: boolean;
+};
+
+const kGgbEvalCmdOptionsDefaults: GgbEvalCmdOptions = {
+  allowNullLabel: false,
+};
+
 /** Set the `$ggbLabel` property of the given `obj` from the result of
  * executing the given `fullCommand`.  Curried for more concise use
  * within a constructor. */
 export const setGgbLabelFromCmd =
-  (ggb: AugmentedGgbApi, obj: SkGgbObject) => (fullCommand: string) => {
+  (ggb: AugmentedGgbApi, obj: SkGgbObject) =>
+  (fullCommand: string, userOptions?: Partial<GgbEvalCmdOptions>) => {
+    const options: Required<GgbEvalCmdOptions> = Object.assign(
+      Object.assign({}, kGgbEvalCmdOptionsDefaults),
+      userOptions ?? {}
+    );
     const lbl = ggb.evalCmd(fullCommand);
-    if (lbl == null) {
+    if (lbl == null && !options.allowNullLabel) {
       throw new Sk.builtin.RuntimeError(
         `Ggb command "${fullCommand}" returned null`
       );
@@ -276,9 +289,9 @@ export const setGgbLabelFromCmd =
  * Curried for more concise use within a constructor. */
 export const setGgbLabelFromArgs =
   (ggb: AugmentedGgbApi, obj: SkGgbObject, command: string) =>
-  (args: Array<string>) => {
+  (args: Array<string>, userOptions?: Partial<GgbEvalCmdOptions>) => {
     const fullCommand = assembledCommand(command, args);
-    setGgbLabelFromCmd(ggb, obj)(fullCommand);
+    setGgbLabelFromCmd(ggb, obj)(fullCommand, userOptions);
   };
 
 // The only type we use:
