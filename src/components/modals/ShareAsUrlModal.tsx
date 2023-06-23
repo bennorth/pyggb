@@ -30,21 +30,21 @@ const BodyReady: React.FC<BodyReadyProps> = ({ url }) => {
 };
 
 export const ShareAsUrlModal = () => {
-  const state = useStoreState((s) => s.modals.shareAsUrl);
+  const state = useStoreState((s) => s.modals.shareAsUrl.state);
   const close = useStoreActions((a) => a.modals.shareAsUrl.close);
 
-  if (state.state.kind === "idle") {
+  if (state.kind === "idle") {
     return null;
   }
 
   const dismiss = () => close();
 
   const body = (() => {
-    switch (state.state.kind) {
+    switch (state.kind) {
       case "computing":
         return <BodyComputing />;
       case "ready":
-        return <BodyReady url={state.state.url} />;
+        return <BodyReady url={state.url} />;
     }
   })();
 
