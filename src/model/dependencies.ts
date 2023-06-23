@@ -82,15 +82,23 @@ export const dependencies: Dependencies = {
 
     // TODO: Do the following jobs in parallel?
 
-    // TODO: Should we handle failure to load Skulpt Ggb module code?
-    const text = await fetchAsText(kSkulptGgbModuleUrl);
-    a.setGgbPythonModuleText(text!);
+    const fetchSkulptGgbCode = async () => {
+      // TODO: Should we handle failure to load Skulpt Ggb module code?
+      const text = await fetchAsText(kSkulptGgbModuleUrl);
+      a.setGgbPythonModuleText(text!);
+    };
+
+    await fetchSkulptGgbCode();
 
     await helpers.getState().ggbApiReady.acquire();
 
-    const loadAction = await a._bootInitialCode(urlSearchParams);
+    const loadInitialUserCode = async () => {
+      const loadAction = await a._bootInitialCode(urlSearchParams);
+      await allActions.editor.loadFromBacking(loadAction.userFile);
+      return loadAction;
+    };
 
-    await allActions.editor.loadFromBacking(loadAction.userFile);
+    const loadAction = await loadInitialUserCode();
 
     a.setBootStatus("done");
 
