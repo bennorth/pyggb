@@ -92,13 +92,11 @@ export const dependencies: Dependencies = {
       return loadAction;
     };
 
-    // TODO: Do the following jobs in parallel?
-
-    await fetchSkulptGgbCode();
-
-    await helpers.getState().ggbApiReady.acquire();
-
-    const loadAction = await loadInitialUserCode();
+    const [, , loadAction] = await Promise.all([
+      fetchSkulptGgbCode(),
+      helpers.getState().ggbApiReady.acquire(),
+      loadInitialUserCode(),
+    ]);
 
     a.setBootStatus("done");
 
