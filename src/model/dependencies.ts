@@ -3,7 +3,7 @@ import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { kSkulptGgbModuleUrl } from "../shared/resources";
 import { db, UserFilePreview } from "../shared/db";
-import { propSetterAction } from "../shared/utils";
+import { fetchAsText, propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
 import { decode as stringFromUtf8BinaryString } from "utf8";
 import { decode as binaryStringFromB64String } from "base-64";
@@ -82,9 +82,9 @@ export const dependencies: Dependencies = {
 
     // TODO: Do the following jobs in parallel?
 
-    const response = await fetch(SkulptGgbModuleUrl);
-    const text = await response.text();
-    a.setGgbPythonModuleText(text);
+    // TODO: Should we handle failure to load Skulpt Ggb module code?
+    const text = await fetchAsText(kSkulptGgbModuleUrl);
+    a.setGgbPythonModuleText(text!);
 
     await helpers.getState().ggbApiReady.acquire();
 
