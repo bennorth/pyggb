@@ -298,33 +298,3 @@ ul.ExampleList {
     }
   }
 }
-
-.NewFileFromQueryModal {
-  .modal-body {
-    &.preparing {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-    }
-
-    &.offering {
-      .code-preview {
-        background-color: #eee;
-        pre {
-          &:first-child {
-            padding-top: 0.5rem;
-          }
-          margin: 0px 0.5rem 0px 0.5rem;
-          min-height: 1rem;
-
-          code.ellipsis {
-            font-weight: bold;
-            font-size: 1.1111rem;
-            color: black;
-          }
-        }
-      }
-    }
-  }
-}
