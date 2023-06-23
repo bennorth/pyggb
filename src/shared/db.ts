@@ -18,6 +18,19 @@ export type NewFileDescriptor = {
 
 const kDefaultCodeText = "# Start writing your code!\n";
 
+/** If the given `name` is of the form `"something (NNN)"` for some
+ * string of decimal digits `NNN`, then return the `"something"` part.
+ * Otherwise, return the `name` unchange.  E.g.:
+ *
+ *  * `"Banana (23)"` -> `"Banana"`
+ *  * `"Apple"` -> `"Apple"`
+ * */
+function withoutNumberSuffix(name: string) {
+  const re = new RegExp("^(.*) \\([0-9]+\\)$");
+  const m = re.exec(name);
+  return m == null ? name : m[1];
+}
+
 export class PyGgbDexie extends Dexie {
   userFiles!: Table<UserFile>;
   semaphore: SemaphoreItem;
