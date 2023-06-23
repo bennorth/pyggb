@@ -276,7 +276,7 @@ ul.ExampleList {
 }
 
 .ShareAsUrlModalBody {
-  height: 2rem;
+  height: 5rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -287,14 +287,23 @@ ul.ExampleList {
   }
 
   &.ready {
-    justify-content: space-between;
-    input {
-      font-size: 0.85rem;
-    }
-    button {
-      padding: 0.25rem;
-      font-size: 0.9rem;
-      width: 3rem;
+    .content {
+      width: 100%;
+
+      .text-and-button {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        input {
+          font-size: 0.85rem;
+        }
+        button {
+          padding: 0.25rem;
+          font-size: 0.9rem;
+          width: 3rem;
+        }
+      }
     }
   }
 }
