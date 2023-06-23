@@ -73,7 +73,11 @@ export const register = (
           break;
         }
         case "object-parameter": {
-          setLabelArgs([spec.p, ggb.numberValueOrLabel(spec.t)]);
+          // Handle a null return value from evalCmd() manually, to give
+          // a more helpful error message.
+          setLabelArgs([spec.p, ggb.numberValueOrLabel(spec.t)], {
+            allowNullLabel: true,
+          });
           throwIfLabelNull(
             this.$ggbLabel,
             "Point(object, parameter): could not find point" +
