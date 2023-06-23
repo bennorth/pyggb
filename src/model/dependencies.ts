@@ -45,6 +45,15 @@ export type Dependencies = {
   setGgbPythonModuleText: Action<Dependencies, string>;
 
   boot: Thunk<Dependencies, URLSearchParams, {}, PyGgbModel>;
+
+  _mostRecentUserFilePreview: Thunk<
+    Dependencies,
+    void,
+    {},
+    PyGgbModel,
+    Promise<UserFilePreview>
+  >;
+
   _bootInitialCode: Thunk<
     Dependencies,
     URLSearchParams,
@@ -60,9 +69,7 @@ export const dependencies: Dependencies = {
   ggbApiReady: new SemaphoreItem(1, 1),
   ggbPythonModuleText: "",
 
-  // TODO: Check the argument 'once bootStatus is "done", we must have a
-  // non-null ggbApi', and if valid, remove redundancy:
-  allReady: computed((s) => s.ggbApi !== null && s.bootStatus === "done"),
+  allReady: computed((s) => s.bootStatus === "done"),
 
   setBootStatus: propSetterAction("bootStatus"),
   setGgbApi: action((state, ggbApi) => {
@@ -105,7 +112,15 @@ export const dependencies: Dependencies = {
     }
   }),
 
-  _bootInitialCode: thunk(async (_a, urlSearchParams, helpers) => {
+  _mostRecentUserFilePreview: thunk(
+    async (_a) =>
+      await db.withLock(async () => {
+        await db.ensureUserFilesNonEmpty();
+        return await db.mostRecentlyOpenedPreview();
+      })
+  ),
+
+  _bootInitialCode: thunk(async (a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
 
     // Initial code is taken from one of two places.  If the user got
@@ -117,11 +132,7 @@ export const dependencies: Dependencies = {
     const b64Code = urlSearchParams.get("code");
     if (name == null || b64Code == null) {
       // No/malformed sharing link.  Fetch most recent user program.
-      const userFile = await db.withLock(async () => {
-        await db.ensureUserFilesNonEmpty();
-        return await db.mostRecentlyOpenedPreview();
-      });
-
+      const userFile = await a._mostRecentUserFilePreview();
       return { userFile, autoRun: false };
     }
 
@@ -150,10 +161,7 @@ export const dependencies: Dependencies = {
           "  Opening your most recent program instead."
       );
 
-      const userFile = await db.withLock(async () => {
-        await db.ensureUserFilesNonEmpty();
-        return await db.mostRecentlyOpenedPreview();
-      });
+      const userFile = await a._mostRecentUserFilePreview();
 
       return { userFile, autoRun: false };
     }
