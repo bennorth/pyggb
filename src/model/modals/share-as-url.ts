@@ -50,8 +50,8 @@ export let shareAsUrl: ShareAsUrl = {
     // strings", i.e., JavaScript strings where every codepoint is
     // <=0xff.  The zlib library works with Uint8Arrays.  The utility
     // functions strToU8() and strFromU8() take a second "latin1"
-    // argument, which achieve pass-through of all 8-bit values.  All in
-    // all, there's quite a lot of back/forth here which could be
+    // argument, which achieves pass-through of all 8-bit values.  All
+    // in all, there's quite a lot of back/forth here which could be
     // cleaned up by rewriting some of the utilities.
 
     const bstrName = utf8BinaryStringFromString(args.name);

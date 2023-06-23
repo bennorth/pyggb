@@ -143,18 +143,6 @@ export class PyGgbDexie extends Dexie {
   }
 }
 
-// TODO: Need some thought as to what the user experience is when they
-// first come to the app.  Would be annoying if they had to create a new
-// file before doing anything, but annoying for us if we had to handle
-// two different backing states: temp-unnamed-file vs dexie-stored.  And
-// what if they closed tab before saving?  Keep track of
-// "explicitly-saved" flag per project?  Something a bit like Emacs's
-// *scratch* buffer, but preserved from one session to the next? Special
-// filename with a character which isn't allowed for user files?  Or
-// just one they'd have to on purpose choose to overwrite?
-//
-// Just need something half-reasonable for initial tech PoC.
-//
 // Boots with most recently opened file in editor.  If list of files
 // empty, create one called "Untitled" --- that can be a boot/dependency
 // action.
