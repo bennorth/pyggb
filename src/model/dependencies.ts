@@ -62,7 +62,7 @@ export const dependencies: Dependencies = {
 
   // TODO: Check the argument 'once bootStatus is "done", we must have a
   // non-null ggbApi', and if valid, remove redundancy:
-  allReady: computed((s) => s.ggbApi !== null && s.bootStatus === "done"),
+  allReady: computed((s) => s.bootStatus === "done"),
 
   setBootStatus: propSetterAction("bootStatus"),
   setGgbApi: action((state, ggbApi) => {
