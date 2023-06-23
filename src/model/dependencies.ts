@@ -60,8 +60,6 @@ export const dependencies: Dependencies = {
   ggbApiReady: new SemaphoreItem(1, 1),
   ggbPythonModuleText: "",
 
-  // TODO: Check the argument 'once bootStatus is "done", we must have a
-  // non-null ggbApi', and if valid, remove redundancy:
   allReady: computed((s) => s.bootStatus === "done"),
 
   setBootStatus: propSetterAction("bootStatus"),
