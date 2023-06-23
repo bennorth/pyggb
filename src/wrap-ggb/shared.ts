@@ -289,9 +289,9 @@ export const setGgbLabelFromCmd =
  * Curried for more concise use within a constructor. */
 export const setGgbLabelFromArgs =
   (ggb: AugmentedGgbApi, obj: SkGgbObject, command: string) =>
-  (args: Array<string>) => {
+  (args: Array<string>, userOptions?: Partial<GgbEvalCmdOptions>) => {
     const fullCommand = assembledCommand(command, args);
-    setGgbLabelFromCmd(ggb, obj)(fullCommand);
+    setGgbLabelFromCmd(ggb, obj)(fullCommand, userOptions);
   };
 
 // The only type we use:
