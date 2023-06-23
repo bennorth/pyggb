@@ -269,7 +269,12 @@ const kGgbEvalCmdOptionsDefaults: GgbEvalCmdOptions = {
  * executing the given `fullCommand`.  Curried for more concise use
  * within a constructor. */
 export const setGgbLabelFromCmd =
-  (ggb: AugmentedGgbApi, obj: SkGgbObject) => (fullCommand: string) => {
+  (ggb: AugmentedGgbApi, obj: SkGgbObject) =>
+  (fullCommand: string, userOptions?: Partial<GgbEvalCmdOptions>) => {
+    const options: Required<GgbEvalCmdOptions> = Object.assign(
+      Object.assign({}, kGgbEvalCmdOptionsDefaults),
+      userOptions ?? {}
+    );
     const lbl = ggb.evalCmd(fullCommand);
     if (lbl == null) {
       throw new Sk.builtin.RuntimeError(
