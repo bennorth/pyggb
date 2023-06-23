@@ -261,6 +261,10 @@ export type GgbEvalCmdOptions = {
   allowNullLabel: boolean;
 };
 
+const kGgbEvalCmdOptionsDefaults: GgbEvalCmdOptions = {
+  allowNullLabel: false,
+};
+
 /** Set the `$ggbLabel` property of the given `obj` from the result of
  * executing the given `fullCommand`.  Curried for more concise use
  * within a constructor. */
