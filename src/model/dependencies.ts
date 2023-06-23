@@ -99,7 +99,9 @@ export const dependencies: Dependencies = {
     }
   }),
 
-  _bootInitialCode: thunk(async (_a, urlSearchParams) => {
+  _bootInitialCode: thunk(async (_a, urlSearchParams, helpers) => {
+    const allActions = helpers.getStoreActions();
+
     // Initial code is taken from one of two places.  If the user got
     // here via a "share" link, decode that link.  Otherwise, use the
     // most recent program they were working on, creating one if this is
@@ -118,23 +120,36 @@ export const dependencies: Dependencies = {
     }
 
     // Create program from URL data.
+    try {
+      const publicUrl = process.env.PUBLIC_URL;
+      const rootUrl = publicUrl === "" ? "/" : publicUrl;
+      window.history.replaceState(null, "", rootUrl);
 
-    const publicUrl = process.env.PUBLIC_URL;
-    const rootUrl = publicUrl === "" ? "/" : publicUrl;
-    window.history.replaceState(null, "", rootUrl);
+      // See comment in share-as-url.ts regarding the dancing back and
+      // forth with data types and representations here.
+      const bstrZlibCode = binaryStringFromB64String(b64Code);
+      const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
+      const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
 
-    // See comment in share-as-url.ts regarding the dancing back and
-    // forth with data types and representations here.
-    const bstrZlibCode = binaryStringFromB64String(b64Code);
-    const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
-    const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
+      const descriptor = { name, codeText };
+      const userFile = await db.getOrCreateNew(descriptor);
 
-    const descriptor = { name, codeText };
-    const userFile = await db.getOrCreateNew(descriptor);
+      // Default is to auto-run; specify autorun=false to inhibit.
+      const autoRun = urlSearchParams.get("autorun") !== "false";
 
-    // Default is to auto-run; specify autorun=false to inhibit.
-    const autoRun = urlSearchParams.get("autorun") !== "false";
+      return { userFile, autoRun };
+    } catch {
+      allActions.modals.failedFileFromQuery.launch(
+        "Sorry, something went wrong trying to use that link." +
+          "  Opening your most recent program instead."
+      );
 
-    return { userFile, autoRun };
+      const userFile = await db.withLock(async () => {
+        await db.ensureUserFilesNonEmpty();
+        return await db.mostRecentlyOpenedPreview();
+      });
+
+      return { userFile, autoRun: false };
+    }
   }),
 };
