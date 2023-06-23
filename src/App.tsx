@@ -7,6 +7,7 @@ import { NewFileModal } from "./components/modals/NewFileModal";
 import { DownloadPythonModal } from "./components/modals/DownloadPythonModal";
 import { AboutPyGgbModal } from "./components/modals/AboutPyGgbModal";
 import { ShareAsUrlModal } from "./components/modals/ShareAsUrlModal";
+import { FailedFileFromQueryModal } from "./components/modals/FailedFileFromQueryModal";
 
 function App() {
   const bootDependencies = useStoreActions((a) => a.dependencies.boot);
@@ -23,6 +24,7 @@ function App() {
       <NewFileModal />
       <DownloadPythonModal />
       <AboutPyGgbModal />
+      <FailedFileFromQueryModal />
       <IDE />
     </div>
   );
