@@ -3,6 +3,8 @@ import * as fs from "node:fs/promises";
 
 export default defineConfig({
   e2e: {
+    experimentalRunAllSpecs: true,
+
     baseUrl: "http://localhost:3000/",
     viewportWidth: 1200,
     viewportHeight: 1024,

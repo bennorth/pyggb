@@ -1,9 +1,9 @@
 import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
-import { SkulptGgbModuleUrl } from "../shared/resources";
+import { kSkulptGgbModuleUrl } from "../shared/resources";
 import { db, UserFilePreview } from "../shared/db";
-import { propSetterAction } from "../shared/utils";
+import { fetchAsText, propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
 import { decode as stringFromUtf8BinaryString } from "utf8";
 import { decode as binaryStringFromB64String } from "base-64";
@@ -80,21 +80,27 @@ export const dependencies: Dependencies = {
 
     a.setBootStatus("running");
 
-    // TODO: Do the following jobs in parallel?
+    const fetchSkulptGgbCode = async () => {
+      // TODO: Should we handle failure to load Skulpt Ggb module code?
+      const text = await fetchAsText(kSkulptGgbModuleUrl);
+      a.setGgbPythonModuleText(text!);
+    };
 
-    const response = await fetch(SkulptGgbModuleUrl);
-    const text = await response.text();
-    a.setGgbPythonModuleText(text);
+    const loadInitialUserCode = async () => {
+      const loadAction = await a._bootInitialCode(urlSearchParams);
+      await allActions.editor.loadFromBacking(loadAction.userFile);
+      return loadAction.autoRun;
+    };
 
-    await helpers.getState().ggbApiReady.acquire();
-
-    const loadAction = await a._bootInitialCode(urlSearchParams);
-
-    await allActions.editor.loadFromBacking(loadAction.userFile);
+    const [, , autoRun] = await Promise.all([
+      fetchSkulptGgbCode(),
+      helpers.getState().ggbApiReady.acquire(),
+      loadInitialUserCode(),
+    ]);
 
     a.setBootStatus("done");
 
-    if (loadAction.autoRun) {
+    if (autoRun) {
       allActions.controls.runProgram();
     }
   }),
