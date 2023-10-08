@@ -123,10 +123,17 @@ export const dependencies: Dependencies = {
   _bootInitialCode: thunk(async (a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
 
-    // Initial code is taken from one of two places.  If the user got
-    // here via a "share" link, decode that link.  Otherwise, use the
-    // most recent program they were working on, creating one if this is
-    // the first time they've ever used the app.
+    // Initial code is taken from one of three places:
+    //
+    // If the URL includes the query param "newBlank", create a new
+    // project called "New project" and no code.  (If the user already
+    // has a project called "New project" whose contents are not empty,
+    // create an empty "New project (1)", etc.)
+    //
+    // If the user got here via a "share" link, decode that link.
+    //
+    // Otherwise, use the most recent program they were working on,
+    // creating one if this is the first time they've ever used the app.
 
     const startWithBlank = urlSearchParams.has("newBlank");
     if (startWithBlank) {
