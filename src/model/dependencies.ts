@@ -128,6 +128,13 @@ export const dependencies: Dependencies = {
     // most recent program they were working on, creating one if this is
     // the first time they've ever used the app.
 
+    const startWithBlank = urlSearchParams.has("newBlank");
+    if (startWithBlank) {
+      const descriptor = { name: "New project", codeText: "" };
+      const userFile = await db.getOrCreateNew(descriptor);
+      return { userFile, autoRun: false };
+    }
+
     const name = urlSearchParams.get("name");
     const b64Code = urlSearchParams.get("code");
     if (name == null || b64Code == null) {
