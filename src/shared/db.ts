@@ -20,7 +20,7 @@ const kDefaultCodeText = "# Start writing your code!\n";
 
 /** If the given `name` is of the form `"something (NNN)"` for some
  * string of decimal digits `NNN`, then return the `"something"` part.
- * Otherwise, return the `name` unchange.  E.g.:
+ * Otherwise, return the `name` unchanged.  E.g.:
  *
  *  * `"Banana (23)"` -> `"Banana"`
  *  * `"Apple"` -> `"Apple"`
