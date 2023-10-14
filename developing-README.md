@@ -71,10 +71,3 @@ public/vendor/geogebra/GeoGebra
 The above "Release process" instructions refer to this vendor bundle,
 but should work whether or not you are using a local copy of the
 bundle.
-
-
-## Use of Piwik tracking code
-
-The tracking code is disabled while developing.  This is detected by
-asking whether the location is `localhost:3000`.  See comment in
-`index.html` for details.
