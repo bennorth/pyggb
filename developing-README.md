@@ -1,5 +1,41 @@
 # Development notes
 
+## Brief outline of design
+
+The design consists of various parts:
+
+### Python implementation
+
+Provided by [Skulpt](https://skulpt.org/), brought in as "vendored" code.
+
+The user's Python code is compiled into JavaScript by Skulpt and run.
+A custom module (see below) provides the connection between Python and
+GeoGebra, creating GeoGebra objects and wrapping them in a Python
+object.
+
+There is a custom `sleep()` implementation, to allow the user to
+interrupt program execution and also to allow GeoGebra the chance to
+run.
+
+### GeoGebra engine
+
+Brought in via its [embedding
+mechanism](https://wiki.geogebra.org/en/Reference:GeoGebra_Apps_Embedding)
+and using its
+[API](https://wiki.geogebra.org/en/Reference:GeoGebra_Apps_API).
+
+### Python–GeoGebra glue
+
+Via a Skulpt/Python module written in TypeScript.  Various GeoGebra
+objects are wrapped so that Python-level access is possible.
+
+### Webapp
+
+The front-end, written using React, with
+[easy-peasy](https://easy-peasy.vercel.app/) for state management.
+User's files are persisted using in-browser IndexedDB storage.
+
+
 ## Release process
 
 For deploying to `github.io`, assuming a git worktree `./pages/`
