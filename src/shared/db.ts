@@ -204,11 +204,11 @@ export class PyGgbDexie extends Dexie {
       .startsWith(unnumberedStem)
       .toArray();
 
-    const matchesByName = potentialMatchesByName.filter((userFile) =>
+    const matchesByStem = potentialMatchesByName.filter((userFile) =>
       equalsOrIsNumberedVariant(userFile.name, unnumberedStem)
     );
 
-    const existingFile = matchesByName.find(
+    const existingFile = matchesByStem.find(
       (userFile) => userFile.codeText === descriptor.codeText
     );
 
@@ -221,7 +221,7 @@ export class PyGgbDexie extends Dexie {
       };
     }
 
-    if (matchesByName.length > 0) {
+    if (matchesByStem.length > 0) {
       const unusedName = await this.unusedFileName(unnumberedStem);
 
       return await this.createNewFile({
