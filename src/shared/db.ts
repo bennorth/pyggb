@@ -31,6 +31,26 @@ function withoutNumberSuffix(name: string) {
   return m == null ? name : m[1];
 }
 
+/** Return whether the `candidate` string is either equal to `stem`, or
+ * consists of `stem` followed by a string of the form `⟨SPACE⟩(n)`
+ * for a decimal number `n`. */
+export function equalsOrIsNumberedVariant(
+  candidate: string,
+  stem: string
+): boolean {
+  if (!candidate.startsWith(stem)) {
+    return false;
+  }
+
+  const tail = candidate.substring(stem.length);
+  if (tail === "") {
+    return true;
+  }
+
+  const tailMatch = new RegExp("^ [(][1-9][0-9]*[)]$");
+  return tailMatch.test(tail);
+}
+
 export class PyGgbDexie extends Dexie {
   userFiles!: Table<UserFile>;
   semaphore: SemaphoreItem;
@@ -140,6 +160,11 @@ export class PyGgbDexie extends Dexie {
    * file.
    * */
   async unusedFileName(nameStem: string) {
+    const nameStemExists = await this.hasFileWithName(nameStem);
+    if (!nameStemExists) {
+      return nameStem;
+    }
+
     let suffix = 0;
     let candidateName = "";
 
@@ -151,14 +176,22 @@ export class PyGgbDexie extends Dexie {
   }
 
   /** If there exists at least one file matching the given `descriptor`
-   * exactly (on name and code-text), return a preview of the first such
-   * file.
+   * on name-stem and code-text, return a preview of the first such
+   * file.  Here, "name-stem" means the name without any suffix of the
+   * form `⟨SPACE⟩(n)` for some decimal number `n`.
    *
-   * Otherwise, if there exists at least one file matching in name but
-   * with differing contents, create a new file with contents as in the
-   * given `descriptor`, and with name like the name within the given
-   * `descriptor` but distinguished via a numeric suffix.  Return a
-   * preview of the newly-created file.
+   * Otherwise:
+   *
+   * If there exists at least one file matching in name-stem but with
+   * differing contents, create a new file with contents as in the given
+   * `descriptor`, and with name like the name within the given
+   * `descriptor` but distinguished via an unused numeric suffix. Return
+   * a preview of the newly-created file.
+   *
+   * Otherwise:
+   *
+   * Create and return a new file with the given descriptor's name (not
+   * name-stem) and contents.
    *
    * This is a bit of a heuristic for what people are likely to want. If
    * the user already has `"Grapefruit (1)"` and someone sends them a
@@ -172,13 +205,19 @@ export class PyGgbDexie extends Dexie {
   async getOrCreateNew(
     descriptor: Required<NewFileDescriptor>
   ): Promise<UserFilePreview> {
-    const matchesByName = await this.userFiles
+    const unnumberedStem = withoutNumberSuffix(descriptor.name);
+
+    const potentialMatchesByName = await this.userFiles
       .where("name")
-      .equals(descriptor.name)
+      .startsWith(unnumberedStem)
       .toArray();
 
-    const existingFile = matchesByName.find(
-      (f) => f.codeText === descriptor.codeText
+    const matchesByStem = potentialMatchesByName.filter((userFile) =>
+      equalsOrIsNumberedVariant(userFile.name, unnumberedStem)
+    );
+
+    const existingFile = matchesByStem.find(
+      (userFile) => userFile.codeText === descriptor.codeText
     );
 
     if (existingFile != null) {
@@ -190,8 +229,7 @@ export class PyGgbDexie extends Dexie {
       };
     }
 
-    if (matchesByName.length > 0) {
-      const unnumberedStem = withoutNumberSuffix(descriptor.name);
+    if (matchesByStem.length > 0) {
       const unusedName = await this.unusedFileName(unnumberedStem);
 
       return await this.createNewFile({

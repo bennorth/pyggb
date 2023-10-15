@@ -123,6 +123,10 @@ export const dependencies: Dependencies = {
   _bootInitialCode: thunk(async (a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
 
+    // For use if auto-creating a project:
+    const publicUrl = process.env.PUBLIC_URL;
+    const rootUrl = publicUrl === "" ? "/" : publicUrl;
+
     // Initial code is taken from one of three places:
     //
     // If the URL includes the query param "newBlank", create a new
@@ -137,6 +141,7 @@ export const dependencies: Dependencies = {
 
     const startWithBlank = urlSearchParams.has("newBlank");
     if (startWithBlank) {
+      window.history.replaceState(null, "", rootUrl);
       const descriptor = { name: "New project", codeText: "" };
       const userFile = await db.getOrCreateNew(descriptor);
       return { userFile, autoRun: false };
@@ -152,8 +157,6 @@ export const dependencies: Dependencies = {
 
     // Create program from URL data.
     try {
-      const publicUrl = process.env.PUBLIC_URL;
-      const rootUrl = publicUrl === "" ? "/" : publicUrl;
       window.history.replaceState(null, "", rootUrl);
 
       // See comment in share-as-url.ts regarding the dancing back and
