@@ -72,3 +72,16 @@ public/vendor/geogebra/GeoGebra
 The above "Release process" instructions refer to this vendor bundle,
 but should work whether or not you are using a local copy of the
 bundle.
+
+
+## Future work
+
+### Wrap the `FitPoly()` command
+
+Generating the command is fairly straightforward, and produces the
+correct GeoGebra object.  However, what you get back is a `function`
+object, which is not currently wrapped.
+
+### Export project to GeoGebra
+
+A "download as GGB file" feature should not be too difficult to write.
