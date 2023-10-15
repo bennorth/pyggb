@@ -203,7 +203,7 @@ export class PyGgbDexie extends Dexie {
       .toArray();
 
     const existingFile = matchesByName.find(
-      (f) => f.codeText === descriptor.codeText
+      (userFile) => userFile.codeText === descriptor.codeText
     );
 
     if (existingFile != null) {
