@@ -197,10 +197,16 @@ export class PyGgbDexie extends Dexie {
   async getOrCreateNew(
     descriptor: Required<NewFileDescriptor>
   ): Promise<UserFilePreview> {
-    const matchesByName = await this.userFiles
+    const unnumberedStem = withoutNumberSuffix(descriptor.name);
+
+    const potentialMatchesByName = await this.userFiles
       .where("name")
-      .equals(descriptor.name)
+      .startsWith(unnumberedStem)
       .toArray();
+
+    const matchesByName = potentialMatchesByName.filter((userFile) =>
+      equalsOrIsNumberedVariant(userFile.name, unnumberedStem)
+    );
 
     const existingFile = matchesByName.find(
       (userFile) => userFile.codeText === descriptor.codeText
@@ -216,7 +222,6 @@ export class PyGgbDexie extends Dexie {
     }
 
     if (matchesByName.length > 0) {
-      const unnumberedStem = withoutNumberSuffix(descriptor.name);
       const unusedName = await this.unusedFileName(unnumberedStem);
 
       return await this.createNewFile({
