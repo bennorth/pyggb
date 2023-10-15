@@ -176,14 +176,22 @@ export class PyGgbDexie extends Dexie {
   }
 
   /** If there exists at least one file matching the given `descriptor`
-   * exactly (on name and code-text), return a preview of the first such
-   * file.
+   * on name-stem and code-text, return a preview of the first such
+   * file.  Here, "name-stem" means the name without any suffix of the
+   * form `⟨SPACE⟩(n)` for some decimal number `n`.
    *
-   * Otherwise, if there exists at least one file matching in name but
-   * with differing contents, create a new file with contents as in the
-   * given `descriptor`, and with name like the name within the given
-   * `descriptor` but distinguished via a numeric suffix.  Return a
-   * preview of the newly-created file.
+   * Otherwise:
+   *
+   * If there exists at least one file matching in name-stem but with
+   * differing contents, create a new file with contents as in the given
+   * `descriptor`, and with name like the name within the given
+   * `descriptor` but distinguished via an unused numeric suffix. Return
+   * a preview of the newly-created file.
+   *
+   * Otherwise:
+   *
+   * Create and return a new file with the given descriptor's name (not
+   * name-stem) and contents.
    *
    * This is a bit of a heuristic for what people are likely to want. If
    * the user already has `"Grapefruit (1)"` and someone sends them a
