@@ -141,6 +141,7 @@ export const dependencies: Dependencies = {
 
     const startWithBlank = urlSearchParams.has("newBlank");
     if (startWithBlank) {
+      window.history.replaceState(null, "", rootUrl);
       const descriptor = { name: "New project", codeText: "" };
       const userFile = await db.getOrCreateNew(descriptor);
       return { userFile, autoRun: false };
