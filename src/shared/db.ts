@@ -160,6 +160,11 @@ export class PyGgbDexie extends Dexie {
    * file.
    * */
   async unusedFileName(nameStem: string) {
+    const nameStemExists = await this.hasFileWithName(nameStem);
+    if (!nameStemExists) {
+      return nameStem;
+    }
+
     let suffix = 0;
     let candidateName = "";
 
