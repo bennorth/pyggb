@@ -31,6 +31,26 @@ function withoutNumberSuffix(name: string) {
   return m == null ? name : m[1];
 }
 
+/** Return whether the `candidate` string is either equal to `stem`, or
+ * consists of `stem` followed by a string of the form `⟨SPACE⟩(n)`
+ * for a decimal number `n`. */
+export function equalsOrIsNumberedVariant(
+  candidate: string,
+  stem: string
+): boolean {
+  if (!candidate.startsWith(stem)) {
+    return false;
+  }
+
+  const tail = candidate.substring(stem.length);
+  if (tail === "") {
+    return true;
+  }
+
+  const tailMatch = new RegExp("^ [(][1-9][0-9]*[)]$");
+  return tailMatch.test(tail);
+}
+
 export class PyGgbDexie extends Dexie {
   userFiles!: Table<UserFile>;
   semaphore: SemaphoreItem;
