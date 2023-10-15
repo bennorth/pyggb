@@ -1,5 +1,41 @@
 # Development notes
 
+## Brief outline of design
+
+The design consists of various parts:
+
+### Python implementation
+
+Provided by [Skulpt](https://skulpt.org/), brought in as "vendored" code.
+
+The user's Python code is compiled into JavaScript by Skulpt and run.
+A custom module (see below) provides the connection between Python and
+GeoGebra, creating GeoGebra objects and wrapping them in a Python
+object.
+
+There is a custom `sleep()` implementation, to allow the user to
+interrupt program execution and also to allow GeoGebra the chance to
+run.
+
+### GeoGebra engine
+
+Brought in via its [embedding
+mechanism](https://wiki.geogebra.org/en/Reference:GeoGebra_Apps_Embedding)
+and using its
+[API](https://wiki.geogebra.org/en/Reference:GeoGebra_Apps_API).
+
+### Python–GeoGebra glue
+
+Via a Skulpt/Python module written in TypeScript.  Various GeoGebra
+objects are wrapped so that Python-level access is possible.
+
+### Webapp
+
+The front-end, written using React, with
+[easy-peasy](https://easy-peasy.vercel.app/) for state management.
+User's files are persisted using in-browser IndexedDB storage.
+
+
 ## Release process
 
 For deploying to `github.io`, assuming a git worktree `./pages/`
@@ -15,6 +51,7 @@ rsync --exclude=.git --exclude vendor/geogebra/GeoGebra --delete --checksum -rt 
 # Push to GitHub
 # Wait a few minutes
 ```
+
 
 ## Build from fresh clone
 
@@ -71,3 +108,16 @@ public/vendor/geogebra/GeoGebra
 The above "Release process" instructions refer to this vendor bundle,
 but should work whether or not you are using a local copy of the
 bundle.
+
+
+## Future work
+
+### Wrap the `FitPoly()` command
+
+Generating the command is fairly straightforward, and produces the
+correct GeoGebra object.  However, what you get back is a `function`
+object, which is not currently wrapped.
+
+### Export project to GeoGebra
+
+A "download as GGB file" feature should not be too difficult to write.
