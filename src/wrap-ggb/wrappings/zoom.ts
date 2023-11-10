@@ -28,6 +28,17 @@ export const register = (mod: any, appApi: AppApi) => {
       case 0:
         ggb.evalCmd("ZoomIn()");
         break;
+      case 1: {
+        // ZoomIn(scale)
+
+        const scale = args[0];
+        throwBadArgsUnless(ggb.isPythonOrGgbNumber(scale));
+
+        const scaleArg = ggb.numberValueOrLabel(scale);
+        const ggbCmd = assembledCommand("ZoomIn", [scaleArg]);
+        ggb.evalCmd(ggbCmd);
+        break;
+      }
       default:
         throw badArgsError;
     }
