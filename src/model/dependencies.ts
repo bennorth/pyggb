@@ -9,6 +9,7 @@ import { decode as stringFromUtf8BinaryString } from "utf8";
 import { decode as binaryStringFromB64String } from "base-64";
 import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
 import { URLSearchParams } from "url";
+import { publicIndexUrl } from "./index-url";
 
 function zlibDecompress(
   data: Uint8Array,
@@ -123,13 +124,13 @@ export const dependencies: Dependencies = {
   _bootInitialCode: thunk(async (a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
 
-    // For use if auto-creating a project.  Ensure `rootUrl` ends with a
-    // "/" so that the relative URLs for the images in the About box are
-    // resolved correctly when serving under a subdirectory (as opposed
-    // to the root).
-    const publicUrl = process.env.PUBLIC_URL;
-    const rawRootUrl = publicUrl === "" ? "/" : publicUrl;
-    const rootUrl = rawRootUrl.endsWith("/") ? rawRootUrl : `${rawRootUrl}/`;
+    // For use if auto-creating a project.  Force-replace the address
+    // with one including the "index.html", otherwise if the user
+    // re-shares, they get a URL without "index.html", and then the
+    // server-side redirection from (e.g.) "/python/?blah" to
+    // "/python/index.html" can drop the query string, depending on
+    // http-server configuration.  Ugh.
+    const indexUrl = publicIndexUrl();
 
     // Initial code is taken from one of three places:
     //
@@ -145,7 +146,7 @@ export const dependencies: Dependencies = {
 
     const startWithBlank = urlSearchParams.has("newBlank");
     if (startWithBlank) {
-      window.history.replaceState(null, "", rootUrl);
+      window.history.replaceState(null, "", indexUrl);
       const descriptor = { name: "New project", codeText: "" };
       const userFile = await db.getOrCreateNew(descriptor);
       return { userFile, autoRun: false };
@@ -161,7 +162,7 @@ export const dependencies: Dependencies = {
 
     // Create program from URL data.
     try {
-      window.history.replaceState(null, "", rootUrl);
+      window.history.replaceState(null, "", indexUrl);
 
       // See comment in share-as-url.ts regarding the dancing back and
       // forth with data types and representations here.
