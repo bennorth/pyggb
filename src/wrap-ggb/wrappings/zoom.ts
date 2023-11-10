@@ -25,6 +25,9 @@ export const register = (mod: any, appApi: AppApi) => {
     }
 
     switch (args.length) {
+      case 0:
+        ggb.evalCmd("ZoomIn()");
+        break;
       default:
         throw badArgsError;
     }
