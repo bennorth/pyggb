@@ -24,6 +24,11 @@ export const register = (mod: any, appApi: AppApi) => {
       }
     }
 
+    switch (args.length) {
+      default:
+        throw badArgsError;
+    }
+
     return Sk.builtin.none.none$;
   });
 
