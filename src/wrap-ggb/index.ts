@@ -15,6 +15,7 @@ import { register as registerFunction } from "./wrappings/function";
 import { register as registerIf } from "./wrappings/if";
 import { register as registerDistance } from "./wrappings/distance";
 import { register as registerIntersect } from "./wrappings/intersect";
+import { register as registerZoom } from "./wrappings/zoom";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
@@ -50,6 +51,7 @@ declare var Sk: SkulptApi;
   registerIf(mod, appApi);
   registerDistance(mod, appApi);
   registerIntersect(mod, appApi);
+  registerZoom(mod, appApi);
 
   registerClearConsole(mod, appApi);
 
