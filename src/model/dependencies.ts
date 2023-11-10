@@ -125,7 +125,8 @@ export const dependencies: Dependencies = {
 
     // For use if auto-creating a project:
     const publicUrl = process.env.PUBLIC_URL;
-    const rootUrl = publicUrl === "" ? "/" : publicUrl;
+    const rawRootUrl = publicUrl === "" ? "/" : publicUrl;
+    const rootUrl = rawRootUrl.endsWith("/") ? rawRootUrl : `${rawRootUrl}/`;
 
     // Initial code is taken from one of three places:
     //
