@@ -9,6 +9,7 @@ import { decode as stringFromUtf8BinaryString } from "utf8";
 import { decode as binaryStringFromB64String } from "base-64";
 import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
 import { URLSearchParams } from "url";
+import { publicIndexUrl } from "./index-url";
 
 function zlibDecompress(
   data: Uint8Array,
@@ -129,10 +130,7 @@ export const dependencies: Dependencies = {
     // server-side redirection from (e.g.) "/python/?blah" to
     // "/python/index.html" can drop the query string, depending on
     // http-server configuration.  Ugh.
-    const publicUrl = process.env.PUBLIC_URL;
-    const rawRootUrl = publicUrl === "" ? "/" : publicUrl;
-    const rootUrl = rawRootUrl.endsWith("/") ? rawRootUrl : `${rawRootUrl}/`;
-    const indexUrl = `${rootUrl}index.html`;
+    const indexUrl = publicIndexUrl();
 
     // Initial code is taken from one of three places:
     //
