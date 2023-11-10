@@ -76,6 +76,14 @@ export const register = (mod: any, appApi: AppApi) => {
         }
         break;
       }
+      case 4: {
+        // ZoomIn(minX, minY, maxX, maxY)
+        throwBadArgsUnless(args.every(ggb.isPythonOrGgbNumber));
+        const bboxArgs = args.map(ggb.numberValueOrLabel);
+        const zoomCmd = assembledCommand("ZoomIn", bboxArgs);
+        ggb.evalCmd(zoomCmd);
+        break;
+      }
       default:
         throw badArgsError;
     }
