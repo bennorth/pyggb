@@ -39,6 +39,43 @@ export const register = (mod: any, appApi: AppApi) => {
         ggb.evalCmd(ggbCmd);
         break;
       }
+      case 2: {
+        // ZoomIn(scale, centre)
+
+        const scale = args[0];
+        throwBadArgsUnless(ggb.isPythonOrGgbNumber(scale));
+        const scaleArg = ggb.numberValueOrLabel(scale);
+
+        const centre = args[1];
+        if (ggb.isGgbObjectOfType(centre, "point")) {
+          const centreArg = centre.$ggbLabel;
+          const ggbCmd = assembledCommand("ZoomIn", [scaleArg, centreArg]);
+          ggb.evalCmd(ggbCmd);
+        } else {
+          const centreIsSeq =
+            augmentedSkulptApi.checkList(centre) ||
+            augmentedSkulptApi.checkTuple(centre);
+          throwBadArgsUnless(
+            centreIsSeq &&
+              centre.v.length === 2 &&
+              centre.v.every(ggb.isPythonOrGgbNumber)
+          );
+
+          // TypeScript is not quite clever enough to work out we
+          // definitely have a list or tuple by this point.
+          const centreArray = (centre as any).v;
+
+          const [xArg, yArg] = centreArray.map(ggb.numberValueOrLabel);
+          const centrePointCmd = `(${xArg},${yArg})`;
+          const centrePoint = ggb.evalCmd(centrePointCmd);
+
+          const zoomCmd = assembledCommand("ZoomIn", [scaleArg, centrePoint]);
+          ggb.evalCmd(zoomCmd);
+
+          ggb.deleteObject(centrePoint);
+        }
+        break;
+      }
       default:
         throw badArgsError;
     }
