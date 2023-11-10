@@ -123,7 +123,10 @@ export const dependencies: Dependencies = {
   _bootInitialCode: thunk(async (a, urlSearchParams, helpers) => {
     const allActions = helpers.getStoreActions();
 
-    // For use if auto-creating a project:
+    // For use if auto-creating a project.  Ensure `rootUrl` ends with a
+    // "/" so that the relative URLs for the images in the About box are
+    // resolved correctly when serving under a subdirectory (as opposed
+    // to the root).
     const publicUrl = process.env.PUBLIC_URL;
     const rawRootUrl = publicUrl === "" ? "/" : publicUrl;
     const rootUrl = rawRootUrl.endsWith("/") ? rawRootUrl : `${rawRootUrl}/`;
