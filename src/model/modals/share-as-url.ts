@@ -3,6 +3,7 @@ import { propSetterAction } from "../../shared/utils";
 import { AsyncZlibOptions, strToU8, strFromU8, zlib } from "fflate";
 import { encode as utf8BinaryStringFromString } from "utf8";
 import { encode as b64StringFromBinaryString } from "base-64";
+import { publicIndexUrl } from "../index-url";
 
 type ShareAsUrlState =
   | { kind: "idle" }
@@ -58,7 +59,7 @@ export let shareAsUrl: ShareAsUrl = {
     const u8sZlibCode = await zlibCompress(strToU8(bstrCode), {});
     const pCode = b64StringFromBinaryString(strFromU8(u8sZlibCode, true));
 
-    let url = new URL(window.location.href);
+    let url = publicIndexUrl();
     url.searchParams.set("name", args.name);
     url.searchParams.set("code", pCode);
 
