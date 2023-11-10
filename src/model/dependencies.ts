@@ -130,6 +130,7 @@ export const dependencies: Dependencies = {
     const publicUrl = process.env.PUBLIC_URL;
     const rawRootUrl = publicUrl === "" ? "/" : publicUrl;
     const rootUrl = rawRootUrl.endsWith("/") ? rawRootUrl : `${rawRootUrl}/`;
+    const indexUrl = `${rootUrl}index.html`;
 
     // Initial code is taken from one of three places:
     //
@@ -145,7 +146,7 @@ export const dependencies: Dependencies = {
 
     const startWithBlank = urlSearchParams.has("newBlank");
     if (startWithBlank) {
-      window.history.replaceState(null, "", rootUrl);
+      window.history.replaceState(null, "", indexUrl);
       const descriptor = { name: "New project", codeText: "" };
       const userFile = await db.getOrCreateNew(descriptor);
       return { userFile, autoRun: false };
@@ -161,7 +162,7 @@ export const dependencies: Dependencies = {
 
     // Create program from URL data.
     try {
-      window.history.replaceState(null, "", rootUrl);
+      window.history.replaceState(null, "", indexUrl);
 
       // See comment in share-as-url.ts regarding the dancing back and
       // forth with data types and representations here.
