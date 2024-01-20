@@ -76,6 +76,8 @@ const kwBoolean = (
 
 export const register = (mod: any, appApi: AppApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
+  const skApi = appApi.sk;
+
   const cls = Sk.abstr.buildNativeClass("Slider", {
     constructor: function Slider(this: SkGgbSlider, spec: SkGgbSliderCtorSpec) {
       // TODO: This is messy; tidy up:
@@ -132,6 +134,17 @@ export const register = (mod: any, appApi: AppApi) => {
           default:
             throw badArgsError;
         }
+      },
+    },
+    proto: {
+      $fireUpdateEvents(this: SkGgbSlider) {
+        this.$updateHandlers.forEach((fun) => {
+          try {
+            Sk.misceval.callsimOrSuspend(fun);
+          } catch (e) {
+            skApi.onError(e as any);
+          }
+        });
       },
     },
     getsets: {
