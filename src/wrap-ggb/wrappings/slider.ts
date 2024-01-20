@@ -150,6 +150,15 @@ export const register = (mod: any, appApi: AppApi) => {
         });
       },
     },
+    methods: {
+      when_changed: {
+        $meth(this: SkGgbSlider, pyFun: any) {
+          this.$updateHandlers.push(pyFun);
+          return pyFun;
+        },
+        $flags: { OneArg: true },
+      },
+    },
     getsets: {
       value: ggb.sharedGetSets.value,
       label_visible: ggb.sharedGetSets.label_visible,
