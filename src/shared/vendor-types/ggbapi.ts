@@ -30,6 +30,9 @@ export type GgbApi = {
   getLabelStyle(label: string): number;
   setLabelStyle(label: string, style: number): void;
 
+  getCaption(label: string): string;
+  setCaption(label: string, caption: string): number;
+
   deleteObject(label: string): void;
 
   evalCommandGetLabels(cmd: string): string;
