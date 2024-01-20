@@ -354,6 +354,7 @@ type SharedGetSets = {
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
   label_style: ReadWriteProperty;
+  caption: ReadWriteProperty;
   _ggb_type: ReadOnlyProperty;
 };
 
@@ -448,6 +449,16 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
             " 2 (value), or 3 (caption)"
         );
       ggbApi.setLabelStyle(this.$ggbLabel, pyStyle.v);
+    },
+  },
+  caption: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.str(ggbApi.getCaption(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyCaption: SkObject) {
+      throwIfNotString(pyCaption, "caption must be a string");
+      ggbApi.setCaption(this.$ggbLabel, pyCaption.v);
+      ggbApi.setLabelStyle(this.$ggbLabel, 3);
     },
   },
   _ggb_type: {
