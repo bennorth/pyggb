@@ -99,6 +99,8 @@ export const register = (mod: any, appApi: AppApi) => {
       const ggbCmd = `Slider(${ggbArgs})`;
       const lbl = ggb.evalCmd(ggbCmd);
       this.$ggbLabel = lbl;
+
+      this.$updateHandlers = [];
     },
     slots: {
       tp$new(args, kwargs) {
