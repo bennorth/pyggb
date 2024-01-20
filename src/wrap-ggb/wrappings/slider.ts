@@ -103,6 +103,9 @@ export const register = (mod: any, appApi: AppApi) => {
       this.$ggbLabel = lbl;
 
       this.$updateHandlers = [];
+      ggb.registerObjectUpdateListener(this.$ggbLabel, () =>
+        this.$fireUpdateEvents()
+      );
     },
     slots: {
       tp$new(args, kwargs) {
