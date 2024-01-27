@@ -68,6 +68,13 @@ interface SkAbstrT {
     minargs: number,
     maxargs: number
   ) => void;
+  copyKeywordsToNamedArgs: (
+    funcName: string,
+    argNames: Array<string | null>,
+    args: Array<SkObject>,
+    kwargs: KeywordArgsArray,
+    defaults: Array<SkObject>
+  ) => Array<SkObject>;
 }
 
 type SkSuspension = {
@@ -86,7 +93,11 @@ type SkBuiltinT = {
   int_: SkObject & { new (obj: any): SkInt };
   float_: SkObject & { new (obj: any): SkFloat };
   str: SkObject & { new (obj: any): SkString };
-  bool: SkObject & { new (obj: any): SkBool };
+  bool: SkObject & {
+    new (obj: any): SkBool;
+    true$: SkBool;
+    false$: SkBool;
+  };
   func: SkObject & { new (f: SkJavaScriptFunction): SkObject };
   list: SkObject & { new (xs: SkObject | Array<SkObject>): SkList };
   tuple: SkObject & { new (xs: SkObject | Array<SkObject>): SkTuple };
