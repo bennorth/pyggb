@@ -317,7 +317,8 @@ const withPropertiesMethodsSlice: MethodDescriptorsSlice = {
   with_properties: {
     $flags: { FastCall: true },
     $meth(args, kwargs) {
-      if (args.length !== 0) throw new Sk.builtin.TypeError("only kwargs");
+      if (args.length !== 0)
+        throw new Sk.builtin.TypeError("expecting only kwargs");
       return withPropertiesFromNameValuePairs(this, kwargs);
     },
   },

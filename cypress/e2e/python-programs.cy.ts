@@ -583,6 +583,16 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       `,
       expOutputs: ["s label True 3", "s caption 'Hello world'"],
     },
+    {
+      label: "NumberOfObjects()",
+      code: `
+        p = Point(3, 4)
+        print(f"got {NumberOfObjects()} objects")
+      `,
+      // Create a Ggb "number" for each of x and y coord, and also a Ggb
+      // "point" for the actual point.
+      expOutputs: ["got 3 objects"],
+    },
   ];
 
   runsWithoutErrorSpecs.forEach((spec) => {
