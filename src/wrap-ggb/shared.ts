@@ -338,6 +338,17 @@ const freeCopyMethodsSlice = (ggbApi: GgbApi): MethodDescriptorsSlice => ({
   },
 });
 
+const deleteMethodsSlice = (ggbApi: GgbApi): MethodDescriptorsSlice => ({
+  // "delete" is reserved word for Skulpt; use mangled name:
+  delete_$rw$: {
+    $flags: { NoArgs: true },
+    $meth(this: SkGgbObject) {
+      ggbApi.deleteObject(this.$ggbLabel);
+      return Sk.builtin.none.none$;
+    },
+  },
+});
+
 type ReadOnlyProperty = {
   $get(this: SkGgbObject): SkObject;
 };
@@ -514,6 +525,7 @@ export type AugmentedGgbApi = {
   wrapExistingGgbObject(label: string): SkGgbObject;
   sharedGetSets: SharedGetSets;
   freeCopyMethodsSlice: MethodDescriptorsSlice;
+  deleteMethodsSlice: MethodDescriptorsSlice;
   withPropertiesMethodsSlice: MethodDescriptorsSlice;
   evalCmd(cmd: string): string;
   getValue(label: string): number;
@@ -581,6 +593,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),
     sharedGetSets: sharedGetSets(ggbApi),
     freeCopyMethodsSlice: freeCopyMethodsSlice(ggbApi),
+    deleteMethodsSlice: deleteMethodsSlice(ggbApi),
     withPropertiesMethodsSlice,
     evalCmd,
     getValue,
