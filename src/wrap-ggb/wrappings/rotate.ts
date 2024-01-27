@@ -1,11 +1,11 @@
 import { AppApi } from "../../shared/appApi";
-import { augmentedGgbApi, assembledCommand } from "../shared";
+import { augmentedGgbApi, assembledCommand, AugmentedGgbApi } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
 
 export const register = (mod: any, appApi: AppApi) => {
-  const ggb = augmentedGgbApi(appApi.ggb);
+  const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
   const fun = new Sk.builtin.func((...args) => {
     const badArgsError = new Sk.builtin.TypeError(
