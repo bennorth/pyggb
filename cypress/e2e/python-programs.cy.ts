@@ -560,6 +560,16 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
         ZoomIn(-1, 1, a, b)
       `,
     },
+    {
+      label: "Slider.caption",
+      code: `
+        s = Slider(1, 5, increment=0.1)
+        s.caption = "Hello world"
+        print(f"s label {s.label_visible} {s.label_style}")
+        print(f"s caption {s.caption!r}")
+      `,
+      expOutputs: ["s label True 3", "s caption 'Hello world'"],
+    },
   ];
 
   runsWithoutErrorSpecs.forEach((spec) => {

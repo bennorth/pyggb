@@ -353,6 +353,9 @@ type SharedGetSets = {
   color_floats: ReadOnlyProperty;
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
+  label_visible: ReadWriteProperty;
+  label_style: ReadWriteProperty;
+  caption: ReadWriteProperty;
   _ggb_type: ReadOnlyProperty;
 };
 
@@ -431,6 +434,41 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
       throwIfNotNumber(pyThickness, "line_thickness must be a number");
       // TODO: Verify integer and in range [1, 13]
       ggbApi.setLineThickness(this.$ggbLabel, pyThickness.v);
+    },
+  },
+  label_visible: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.bool(ggbApi.getLabelVisible(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyVisible: SkObject) {
+      const visible = Sk.misceval.isTrue(pyVisible);
+      ggbApi.setLabelVisible(this.$ggbLabel, visible);
+    },
+  },
+  label_style: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.int_(ggbApi.getLabelStyle(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyStyle: SkObject) {
+      throwIfNotNumber(pyStyle, "label_style must be a number");
+      const style = pyStyle.v;
+      if (style !== 0 && style !== 1 && style !== 2 && style !== 3)
+        throw new Sk.builtin.ValueError(
+          "label_style must be one of:" +
+            " 0 (name), 1 (name and value)," +
+            " 2 (value), or 3 (caption)"
+        );
+      ggbApi.setLabelStyle(this.$ggbLabel, pyStyle.v);
+    },
+  },
+  caption: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.str(ggbApi.getCaption(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyCaption: SkObject) {
+      throwIfNotString(pyCaption, "caption must be a string");
+      ggbApi.setCaption(this.$ggbLabel, pyCaption.v);
+      ggbApi.setLabelStyle(this.$ggbLabel, 3);
     },
   },
   _ggb_type: {

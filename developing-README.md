@@ -121,3 +121,10 @@ object, which is not currently wrapped.
 ### Export project to GeoGebra
 
 A "download as GGB file" feature should not be too difficult to write.
+
+### Investigate inheritance
+
+Is it worth providing common functionality (like setting the colour of
+an object, or the label-style and -visibility properties) via a Python
+and/or JavaScript base class?  Currently, every object type explicitly
+declares the methods it supports.

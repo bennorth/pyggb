@@ -134,6 +134,9 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     getsets: {
       value: ggb.sharedGetSets.value,
+      label_visible: ggb.sharedGetSets.label_visible,
+      label_style: ggb.sharedGetSets.label_style,
+      caption: ggb.sharedGetSets.caption,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });
