@@ -7,7 +7,11 @@ import {
   AugmentedGgbApi,
   assembledCommand,
 } from "../shared";
-import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
+import {
+  KeywordArgsArray,
+  SkObject,
+  SkulptApi,
+} from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi;
@@ -17,6 +21,7 @@ declare var Sk: SkulptApi;
 // far this goes.  What are the consequences for, e.g., wrap-existing?
 
 interface SkGgbPolygon extends SkGgbObject {
+  ctorPointLabels: Array<string> | null;
   segments: Array<SkObject>;
 }
 
@@ -41,12 +46,11 @@ export const register = (mod: any, appApi: AppApi) => {
       this: SkGgbPolygon,
       spec: SkGgbPolygonCtorSpec
     ) {
+      this.ctorPointLabels = null;
       switch (spec.kind) {
         case "points-array": {
-          const ggbCmd = assembledCommand(
-            "Polygon",
-            spec.points.map((p) => p.$ggbLabel)
-          );
+          this.ctorPointLabels = spec.points.map((p) => p.$ggbLabel);
+          const ggbCmd = assembledCommand("Polygon", this.ctorPointLabels);
           const lbls = ggb.evalCmd(ggbCmd).split(",");
           // TODO: Should have n.args + 1 labels here; check this.
           this.$ggbLabel = lbls[0];
@@ -116,6 +120,38 @@ export const register = (mod: any, appApi: AppApi) => {
       },
     },
     methods: {
+      // Custom implementation (i.e., do not use deleteMethodsSlice), to
+      // take care of allowing the constituent points to be deleted at
+      // the same time.
+      delete_$rw$: {
+        $flags: { FastCall: true },
+        $meth(
+          this: SkGgbPolygon,
+          args: Array<SkObject>,
+          kwargs: KeywordArgsArray
+        ) {
+          const [deletePoints] = Sk.abstr.copyKeywordsToNamedArgs(
+            "Polygon.delete",
+            ["delete_points"],
+            args,
+            kwargs,
+            [Sk.builtin.bool.true$]
+          );
+          if (!Sk.builtin.checkBool(deletePoints))
+            throw new Sk.builtin.ValueError("delete_points must be bool");
+          ggb.deleteObject(this.$ggbLabel);
+          if (deletePoints.v) {
+            if (this.ctorPointLabels == null)
+              throw new Sk.builtin.RuntimeError(
+                "delete_points=True was given but Polygon" +
+                  " was not constructed from a list of points"
+              );
+            this.ctorPointLabels.forEach((pointLabel) =>
+              ggb.deleteObject(pointLabel)
+            );
+          }
+        },
+      },
       // TODO: Any insight into why CopyFreeObject(poly) gives a number?
       // Until then, leave this disabled:
       //

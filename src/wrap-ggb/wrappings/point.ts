@@ -189,6 +189,7 @@ export const register = (
       },
       ...ggb.withPropertiesMethodsSlice,
       ...ggb.freeCopyMethodsSlice,
+      ...ggb.deleteMethodsSlice,
     },
     getsets: {
       is_visible: ggb.sharedGetSets.is_visible,

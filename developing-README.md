@@ -128,3 +128,13 @@ Is it worth providing common functionality (like setting the colour of
 an object, or the label-style and -visibility properties) via a Python
 and/or JavaScript base class?  Currently, every object type explicitly
 declares the methods it supports.
+
+### Investigate GeoGebra object deletion
+
+Some programs generate large numbers of temporary GeoGebra objects.
+There is currently no way to delete them.  Although you can hide them
+(by setting `is_visible` to `False`), they do continue to exist, which
+slows GeoGebra down.  Skulpt does not support `__del__()` but we could
+support an explicit `.delete()` method on wrapped Ggb objects.  Some
+care will be needed as to how to handle a Python object wrapping a
+deleted Ggb object.
