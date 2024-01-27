@@ -14,6 +14,21 @@ export const register = (mod: any, appApi: AppApi) => {
         " or (object, angle, rotation_center_point)"
     );
 
+    const ggbRotate = (extraArgs: Array<string>) => {
+      if (!ggb.isGgbObject(args[0])) {
+        throw badArgsError;
+      }
+
+      const pyAngle = args[1];
+      ggb.throwIfNotPyOrGgbNumber(pyAngle, "rotation angle");
+      const angleArg = ggb.numberValueOrLabel(pyAngle);
+
+      const ggbArgs = [args[0].$ggbLabel, angleArg, ...extraArgs];
+      const ggbCmd = assembledCommand("Rotate", ggbArgs);
+      const label = ggb.evalCmd(ggbCmd);
+      return ggb.wrapExistingGgbObject(label);
+    };
+
     switch (args.length) {
       case 2: {
         if (!ggb.isGgbObject(args[0])) {
