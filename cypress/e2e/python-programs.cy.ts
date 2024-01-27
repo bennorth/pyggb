@@ -386,6 +386,19 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       `,
     },
     {
+      label: "Slider.when_changed",
+      code: `
+        s = Slider(1.0, 5.0)
+
+        @s.when_changed
+        def print_s_value():
+            print(f"slider is {s.value:.4f}")
+
+        s.value = 2.5
+      `,
+      expOutputs: ["slider is 2.5000"],
+    },
+    {
       label: "ClearConsole",
       code: `
         print("hello world")

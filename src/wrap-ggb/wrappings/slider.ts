@@ -76,6 +76,8 @@ const kwBoolean = (
 
 export const register = (mod: any, appApi: AppApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
+  const skApi = appApi.sk;
+
   const cls = Sk.abstr.buildNativeClass("Slider", {
     constructor: function Slider(this: SkGgbSlider, spec: SkGgbSliderCtorSpec) {
       // TODO: This is messy; tidy up:
@@ -99,6 +101,11 @@ export const register = (mod: any, appApi: AppApi) => {
       const ggbCmd = `Slider(${ggbArgs})`;
       const lbl = ggb.evalCmd(ggbCmd);
       this.$ggbLabel = lbl;
+
+      this.$updateHandlers = [];
+      ggb.registerObjectUpdateListener(this.$ggbLabel, () =>
+        this.$fireUpdateEvents()
+      );
     },
     slots: {
       tp$new(args, kwargs) {
@@ -130,6 +137,26 @@ export const register = (mod: any, appApi: AppApi) => {
           default:
             throw badArgsError;
         }
+      },
+    },
+    proto: {
+      $fireUpdateEvents(this: SkGgbSlider) {
+        this.$updateHandlers.forEach((fun) => {
+          try {
+            Sk.misceval.callsimOrSuspend(fun);
+          } catch (e) {
+            skApi.onError(e as any);
+          }
+        });
+      },
+    },
+    methods: {
+      when_changed: {
+        $meth(this: SkGgbSlider, pyFun: any) {
+          this.$updateHandlers.push(pyFun);
+          return pyFun;
+        },
+        $flags: { OneArg: true },
       },
     },
     getsets: {
