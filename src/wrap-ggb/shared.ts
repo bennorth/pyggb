@@ -338,6 +338,16 @@ const freeCopyMethodsSlice = (ggbApi: GgbApi): MethodDescriptorsSlice => ({
   },
 });
 
+/** EXPERIMENTAL: Using this is very likely to lead to (at best)
+ * unhelpful error messages if the code tries to use a deleted Ggb
+ * object.  Future work on this is likely to involve:
+ *
+ * Set `obj.$ggbLabel` to `null` after deletion.
+ *
+ * Wrap (on the TypeScript side) all uses of the bare property
+ * `$ggbLabel` with an actual property (with getter) or method.  That
+ * getter/method will throw a descriptive error if `$ggbLabel` is null.
+ * */
 const deleteMethodsSlice = (ggbApi: GgbApi): MethodDescriptorsSlice => ({
   // "delete" is reserved word for Skulpt; use mangled name:
   delete_$rw$: {
