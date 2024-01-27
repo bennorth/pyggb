@@ -37,6 +37,7 @@ export type GgbApi = {
   setCaption(label: string, caption: string): number;
 
   deleteObject(label: string): void;
+  exists(label: string): boolean;
   getObjectNumber(): number;
 
   evalCommandGetLabels(cmd: string): string;
