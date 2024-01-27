@@ -27,6 +27,9 @@ export type GgbApi = {
   getLineThickness(label: string): number;
   setLineThickness(label: string, thickness: number): number;
 
+  getLabelVisible(label: string): boolean;
+  setLabelVisible(label: string, visible: boolean): void;
+
   getLabelStyle(label: string): number;
   setLabelStyle(label: string, style: number): void;
 
