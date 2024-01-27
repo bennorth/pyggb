@@ -7,7 +7,11 @@ import {
   AugmentedGgbApi,
   assembledCommand,
 } from "../shared";
-import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
+import {
+  KeywordArgsArray,
+  SkObject,
+  SkulptApi,
+} from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi;
@@ -116,6 +120,38 @@ export const register = (mod: any, appApi: AppApi) => {
       },
     },
     methods: {
+      // Custom implementation (i.e., do not use deleteMethodsSlice), to
+      // take care of allowing the constituent points to be deleted at
+      // the same time.
+      delete_$rw$: {
+        $flags: { FastCall: true },
+        $meth(
+          this: SkGgbPolygon,
+          args: Array<SkObject>,
+          kwargs: KeywordArgsArray
+        ) {
+          const [deletePoints] = Sk.abstr.copyKeywordsToNamedArgs(
+            "Polygon.delete",
+            ["delete_points"],
+            args,
+            kwargs,
+            [Sk.builtin.bool.true$]
+          );
+          if (!Sk.builtin.checkBool(deletePoints))
+            throw new Sk.builtin.ValueError("delete_points must be bool");
+          ggb.deleteObject(this.$ggbLabel);
+          if (deletePoints.v) {
+            if (this.ctorPointLabels == null)
+              throw new Sk.builtin.RuntimeError(
+                "delete_points=True was given but Polygon" +
+                  " was not constructed from a list of points"
+              );
+            this.ctorPointLabels.forEach((pointLabel) =>
+              ggb.deleteObject(pointLabel)
+            );
+          }
+        },
+      },
       // TODO: Any insight into why CopyFreeObject(poly) gives a number?
       // Until then, leave this disabled:
       //
