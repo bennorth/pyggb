@@ -68,6 +68,13 @@ interface SkAbstrT {
     minargs: number,
     maxargs: number
   ) => void;
+  copyKeywordsToNamedArgs: (
+    funcName: string,
+    argNames: Array<string | null>,
+    args: Array<SkObject>,
+    kwargs: KeywordArgsArray,
+    defaults: Array<SkObject>
+  ) => Array<SkObject>;
 }
 
 type SkSuspension = {
