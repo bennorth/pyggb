@@ -1,27 +1,47 @@
 import { AppApi } from "../../shared/appApi";
-import { augmentedGgbApi, assembledCommand } from "../shared";
+import { augmentedGgbApi, assembledCommand, AugmentedGgbApi } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi;
 
 export const register = (mod: any, appApi: AppApi) => {
-  const ggb = augmentedGgbApi(appApi.ggb);
+  const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
   const fun = new Sk.builtin.func((...args) => {
-    if (args.length !== 2 || !ggb.isGgbObject(args[0]))
-      throw new Sk.builtin.TypeError("need 2 args to Rotate()");
+    const badArgsError = new Sk.builtin.TypeError(
+      "Rotate() arguments must be" +
+        " (object, angle)" +
+        " or (object, angle, rotation_center_point)"
+    );
 
-    const angleArg = (() => {
-      const pyAngle = args[1];
-      if (ggb.isPythonOrGgbNumber(pyAngle)) {
-        return ggb.numberValueOrLabel(pyAngle);
+    const ggbRotate = (extraArgs: Array<string>) => {
+      if (!ggb.isGgbObject(args[0])) {
+        throw badArgsError;
       }
-      throw new Sk.builtin.TypeError("angle arg must be ggb Numeric or number");
-    })();
 
-    const ggbCmd = assembledCommand("Rotate", [args[0].$ggbLabel, angleArg]);
-    const label = ggb.evalCmd(ggbCmd);
-    return ggb.wrapExistingGgbObject(label);
+      const pyAngle = args[1];
+      ggb.throwIfNotPyOrGgbNumber(pyAngle, "rotation angle");
+      const angleArg = ggb.numberValueOrLabel(pyAngle);
+
+      const ggbArgs = [args[0].$ggbLabel, angleArg, ...extraArgs];
+      const ggbCmd = assembledCommand("Rotate", ggbArgs);
+      const label = ggb.evalCmd(ggbCmd);
+      return ggb.wrapExistingGgbObject(label);
+    };
+
+    switch (args.length) {
+      case 2: {
+        return ggbRotate([]);
+      }
+      case 3: {
+        if (!ggb.isGgbObjectOfType(args[2], "point")) {
+          throw badArgsError;
+        }
+        return ggbRotate([args[2].$ggbLabel]);
+      }
+      default:
+        throw badArgsError;
+    }
   });
 
   mod.Rotate = fun;
