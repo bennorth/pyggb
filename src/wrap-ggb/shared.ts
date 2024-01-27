@@ -357,6 +357,7 @@ type SharedGetSets = {
   label_visible: ReadWriteProperty;
   label_style: ReadWriteProperty;
   caption: ReadWriteProperty;
+  _ggb_exists: ReadOnlyProperty;
   _ggb_type: ReadOnlyProperty;
 };
 
@@ -475,6 +476,11 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
   _ggb_type: {
     $get(this: SkGgbObject) {
       return new Sk.builtin.str(ggbApi.getObjectType(this.$ggbLabel));
+    },
+  },
+  _ggb_exists: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.bool(ggbApi.exists(this.$ggbLabel));
     },
   },
 });
