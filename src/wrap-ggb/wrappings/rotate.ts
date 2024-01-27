@@ -31,35 +31,13 @@ export const register = (mod: any, appApi: AppApi) => {
 
     switch (args.length) {
       case 2: {
-        if (!ggb.isGgbObject(args[0])) {
-          throw badArgsError;
-        }
-
-        const pyAngle = args[1];
-        ggb.throwIfNotPyOrGgbNumber(pyAngle, "rotation angle");
-        const angleArg = ggb.numberValueOrLabel(pyAngle);
-
-        const ggbArgs = [args[0].$ggbLabel, angleArg];
-        const ggbCmd = assembledCommand("Rotate", ggbArgs);
-        const label = ggb.evalCmd(ggbCmd);
-        return ggb.wrapExistingGgbObject(label);
+        return ggbRotate([]);
       }
       case 3: {
-        if (
-          !ggb.isGgbObject(args[0]) ||
-          !ggb.isGgbObjectOfType(args[2], "point")
-        ) {
+        if (!ggb.isGgbObjectOfType(args[2], "point")) {
           throw badArgsError;
         }
-
-        const pyAngle = args[1];
-        ggb.throwIfNotPyOrGgbNumber(pyAngle, "rotation angle");
-        const angleArg = ggb.numberValueOrLabel(pyAngle);
-
-        const ggbArgs = [args[0].$ggbLabel, angleArg, args[2].$ggbLabel];
-        const ggbCmd = assembledCommand("Rotate", ggbArgs);
-        const label = ggb.evalCmd(ggbCmd);
-        return ggb.wrapExistingGgbObject(label);
+        return ggbRotate([args[2].$ggbLabel]);
       }
       default:
         throw badArgsError;
