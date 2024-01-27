@@ -17,6 +17,7 @@ declare var Sk: SkulptApi;
 // far this goes.  What are the consequences for, e.g., wrap-existing?
 
 interface SkGgbPolygon extends SkGgbObject {
+  ctorPointLabels: Array<string> | null;
   segments: Array<SkObject>;
 }
 
@@ -41,12 +42,11 @@ export const register = (mod: any, appApi: AppApi) => {
       this: SkGgbPolygon,
       spec: SkGgbPolygonCtorSpec
     ) {
+      this.ctorPointLabels = null;
       switch (spec.kind) {
         case "points-array": {
-          const ggbCmd = assembledCommand(
-            "Polygon",
-            spec.points.map((p) => p.$ggbLabel)
-          );
+          this.ctorPointLabels = spec.points.map((p) => p.$ggbLabel);
+          const ggbCmd = assembledCommand("Polygon", this.ctorPointLabels);
           const lbls = ggb.evalCmd(ggbCmd).split(",");
           // TODO: Should have n.args + 1 labels here; check this.
           this.$ggbLabel = lbls[0];
