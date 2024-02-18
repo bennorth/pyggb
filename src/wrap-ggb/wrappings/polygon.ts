@@ -163,6 +163,7 @@ export const register = (mod: any, appApi: AppApi) => {
           return new Sk.builtin.float_(ggb.getValue(this.$ggbLabel));
         },
       },
+      is_visible: ggb.sharedGetSets.is_visible,
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
       opacity: ggb.sharedGetSets.opacity,

@@ -144,6 +144,7 @@ export const register = (mod: any, appApi: AppApi) => {
       ...ggb.freeCopyMethodsSlice,
     },
     getsets: {
+      is_visible: ggb.sharedGetSets.is_visible,
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
       opacity: ggb.sharedGetSets.opacity,
