@@ -160,6 +160,7 @@ export const register = (mod: any, appApi: AppApi) => {
       },
     },
     getsets: {
+      is_visible: ggb.sharedGetSets.is_visible,
       value: ggb.sharedGetSets.value,
       label_visible: ggb.sharedGetSets.label_visible,
       label_style: ggb.sharedGetSets.label_style,
