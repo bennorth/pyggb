@@ -180,7 +180,8 @@ export const dependencies: Dependencies = {
       window.history.replaceState(null, "", indexUrl);
       const descriptor = { name: "New project", codeText: "" };
       const userFile = await db.getOrCreateNew(descriptor);
-      return { userFile, autoRun: false };
+      const uiLayout: UiLayout = "full";
+      return { userFile, autoRun: false, uiLayout };
     }
 
     const name = urlSearchParams.get("name");
@@ -191,7 +192,8 @@ export const dependencies: Dependencies = {
     if (name == null || b64Code == null) {
       // No/malformed sharing link.  Fetch most recent user program.
       const userFile = await a._mostRecentUserFilePreview();
-      return { userFile, autoRun: false };
+      const uiLayout: UiLayout = "full";
+      return { userFile, autoRun: false, uiLayout };
     }
 
     // Create program from URL data.
@@ -214,7 +216,8 @@ export const dependencies: Dependencies = {
 
       const userFile = await a._mostRecentUserFilePreview();
 
-      return { userFile, autoRun: false };
+      const uiLayout: UiLayout = "full";
+      return { userFile, autoRun: false, uiLayout };
     }
   }),
 };
