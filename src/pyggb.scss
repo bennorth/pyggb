@@ -206,6 +206,14 @@ App {
   }
 }
 
+.pyggb-construction-only {
+  .ggb {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+}
+
 @mixin hoverable-ul-of-cards {
   padding: 0px;
   li {
