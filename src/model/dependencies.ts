@@ -128,10 +128,10 @@ export const dependencies: Dependencies = {
     const loadInitialUserCode = async () => {
       const loadAction = await a._bootInitialCode(urlSearchParams);
       await allActions.editor.loadFromBacking(loadAction.userFile);
-      return loadAction.autoRun;
+      return loadAction;
     };
 
-    const [, , autoRun] = await Promise.all([
+    const [, , loadAction] = await Promise.all([
       fetchSkulptGgbCode(),
       helpers.getState().ggbApiReady.acquire(),
       loadInitialUserCode(),
@@ -139,7 +139,7 @@ export const dependencies: Dependencies = {
 
     a.setBootStatus("done");
 
-    if (autoRun) {
+    if (loadAction.autoRun) {
       allActions.controls.runProgram();
     }
   }),
