@@ -11,6 +11,8 @@ import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
 import { URLSearchParams } from "url";
 import { publicIndexUrl } from "./index-url";
 
+type CodeCompressionKind = "none" | "zlib";
+
 function zlibDecompress(
   data: Uint8Array,
   opts: AsyncInflateOptions
