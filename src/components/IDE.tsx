@@ -7,6 +7,7 @@ import { GeoGebraPane } from "./GeoGebraPane";
 import { MenuBar } from "./MenuBar";
 import { StdoutPane } from "./StdoutPane";
 import { Button } from "react-bootstrap";
+import { assertNever } from "../shared/utils";
 
 const CopyExampleButton: React.FC<{}> = () => {
   const newFileLaunch = useStoreActions((a) => a.modals.newFile.launch);
@@ -60,6 +61,10 @@ const EditorMaybeErrors: React.FC<{}> = () => {
 };
 
 export const IDE: React.FC<{}> = () => {
+  const uiStyle = useStoreState((s) => s.uiSettings.uiLayout);
+
+  switch (uiStyle) {
+    case "full":
   return (
     <div className="pyggb-IDE abs-0000">
       <MenuBar />
@@ -74,4 +79,9 @@ export const IDE: React.FC<{}> = () => {
       </div>
     </div>
   );
+    case "ggb-construction-only":
+      // TODO
+    default:
+      return assertNever(uiStyle);
+  }
 };
