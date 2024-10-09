@@ -207,7 +207,9 @@ export const dependencies: Dependencies = {
       // Default is to auto-run; specify autorun=false to inhibit.
       const autoRun = urlSearchParams.get("autorun") !== "false";
 
-      return { userFile, autoRun };
+      const justCanvas = urlSearchParams.get("justCanvas") === "true";
+      const uiLayout: UiLayout = justCanvas ? "ggb-construction-only" : "full";
+      return { userFile, autoRun, uiLayout };
     } catch {
       allActions.modals.failedFileFromQuery.launch(
         "Sorry, something went wrong trying to use that link." +
