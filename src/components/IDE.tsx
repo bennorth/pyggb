@@ -80,7 +80,13 @@ export const IDE: React.FC<{}> = () => {
     </div>
   );
     case "ggb-construction-only":
-      // TODO
+      return (
+        <div className="pyggb-construction-only abs-0000">
+          <div className="ggb">
+            <GeoGebraPane />
+          </div>
+        </div>
+      );
     default:
       return assertNever(uiStyle);
   }
