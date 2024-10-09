@@ -44,6 +44,19 @@ async function decompressedPerKind(
   }
 }
 
+async function codeFromQuery(
+  b64Code: string,
+  compressionKind: CodeCompressionKind
+): Promise<string> {
+  // See comment in share-as-url.ts regarding the dancing back and
+  // forth with data types and representations here.
+  const bstrCompressedCode = binaryStringFromB64String(b64Code);
+  const u8sCompressedCode = strToU8(bstrCompressedCode, true);
+  const u8sCode = await decompressedPerKind(u8sCompressedCode, compressionKind);
+  const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
+  return codeText;
+}
+
 type ActionAfterChoosingProgram = {
   userFile: UserFilePreview;
   autoRun: boolean;
