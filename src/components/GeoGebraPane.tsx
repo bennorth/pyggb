@@ -35,6 +35,7 @@ export const GeoGebraPane: React.FC<{}> = () => {
   const containerId = `container-${divId}`;
 
   useEffect(() => {
+    // See comment in dependencies.ts re the sequencing here.
     if (bootStatus !== "awaiting-ggb-api") {
       return;
     }

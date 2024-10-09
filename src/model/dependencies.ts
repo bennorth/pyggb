@@ -136,6 +136,10 @@ export const dependencies: Dependencies = {
       loadInitialUserCode(),
     ]);
 
+    // Postpone injecting the Ggb applet until the layout is fixed, otherwise
+    // attempting to run the code doesn't work because (I think) it gets a stale
+    // Ggb API object.  See also useEffect() logic in <GeoGebraPane>.
+
     allActions.uiSettings.setUiLayout(loadAction.uiLayout);
     a.setBootStatus("awaiting-ggb-api");
     await helpers.getState().ggbApiReady.acquire();
