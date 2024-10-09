@@ -65,20 +65,20 @@ export const IDE: React.FC<{}> = () => {
 
   switch (uiStyle) {
     case "full":
-  return (
-    <div className="pyggb-IDE abs-0000">
-      <MenuBar />
-      <div className="main-content">
-        <EditorMaybeErrors />
-        <div className="results">
-          <div className="ggb">
-            <GeoGebraPane />
+      return (
+        <div className="pyggb-IDE abs-0000">
+          <MenuBar />
+          <div className="main-content">
+            <EditorMaybeErrors />
+            <div className="results">
+              <div className="ggb">
+                <GeoGebraPane />
+              </div>
+              <StdoutPane />
+            </div>
           </div>
-          <StdoutPane />
         </div>
-      </div>
-    </div>
-  );
+      );
     case "ggb-construction-only":
       return (
         <div className="pyggb-construction-only abs-0000">
