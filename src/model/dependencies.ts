@@ -196,12 +196,7 @@ export const dependencies: Dependencies = {
     try {
       window.history.replaceState(null, "", indexUrl);
 
-      // See comment in share-as-url.ts regarding the dancing back and
-      // forth with data types and representations here.
-      const bstrZlibCode = binaryStringFromB64String(b64Code);
-      const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
-      const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
-
+      const codeText = await codeFromQuery(b64Code, compressionKind);
       const descriptor = { name, codeText };
       const userFile = await db.getOrCreateNew(descriptor);
 
