@@ -10,6 +10,7 @@ import { decode as binaryStringFromB64String } from "base-64";
 import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
 import { URLSearchParams } from "url";
 import { publicIndexUrl } from "./index-url";
+import { UiLayout } from "./ui";
 
 type CodeCompressionKind = "none" | "zlib";
 
@@ -60,6 +61,7 @@ async function codeFromQuery(
 type ActionAfterChoosingProgram = {
   userFile: UserFilePreview;
   autoRun: boolean;
+  uiLayout: UiLayout;
 };
 
 export type Dependencies = {
