@@ -29,7 +29,7 @@ function zlibDecompress(
   });
 }
 
-type BootStatus = "idle" | "running" | "done";
+type BootStatus = "idle" | "running" | "awaiting-ggb-api" | "done";
 
 async function decompressedPerKind(
   data: Uint8Array,
