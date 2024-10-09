@@ -3,7 +3,7 @@ import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { kSkulptGgbModuleUrl } from "../shared/resources";
 import { db, UserFilePreview } from "../shared/db";
-import { fetchAsText, propSetterAction } from "../shared/utils";
+import { assertNever, fetchAsText, propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
 import { decode as stringFromUtf8BinaryString } from "utf8";
 import { decode as binaryStringFromB64String } from "base-64";
@@ -29,6 +29,20 @@ function zlibDecompress(
 }
 
 type BootStatus = "idle" | "running" | "done";
+
+async function decompressedPerKind(
+  data: Uint8Array,
+  compressionKind: CodeCompressionKind
+): Promise<Uint8Array> {
+  switch (compressionKind) {
+    case "none":
+      return data;
+    case "zlib":
+      return zlibDecompress(data, {});
+    default:
+      return assertNever(compressionKind);
+  }
+}
 
 type ActionAfterChoosingProgram = {
   userFile: UserFilePreview;
