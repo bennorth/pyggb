@@ -170,6 +170,9 @@ export const dependencies: Dependencies = {
 
     const name = urlSearchParams.get("name");
     const b64Code = urlSearchParams.get("code");
+    const compressionKind = (urlSearchParams.get("cck") ??
+      "zlib") as CodeCompressionKind;
+
     if (name == null || b64Code == null) {
       // No/malformed sharing link.  Fetch most recent user program.
       const userFile = await a._mostRecentUserFilePreview();
