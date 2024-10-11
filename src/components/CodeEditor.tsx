@@ -16,6 +16,7 @@ export const CodeEditor: React.FC<{}> = () => {
   const setCodeText = useStoreActions(
     (a) => a.editor.updateCodeTextAndScheduleSave
   );
+  const runProgram = useStoreActions((a) => a.controls.runProgram);
   const allDependenciesReady = useStoreState((s) => s.dependencies.allReady);
   const contentKind = useStoreState((s) => s.editor.contentKind);
 
@@ -47,6 +48,11 @@ export const CodeEditor: React.FC<{}> = () => {
 
   const setGlobalRef = (editor: any) => {
     PYGGB_CYPRESS().ACE_EDITOR = editor;
+    editor.commands.addCommand({
+      name: "runProgram",
+      bindKey: { mac: "Ctrl-Enter", win: "Ctrl-Enter" },
+      exec: () => runProgram(),
+    });
   };
 
   return (
