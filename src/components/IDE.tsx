@@ -61,7 +61,13 @@ const EditorMaybeErrors: React.FC<{}> = () => {
 };
 
 const GgbConstructionOnly: React.FC<{}> = () => {
-  const content = (
+  const anyErrors = useStoreState((s) => s.pyErrors.any);
+
+  const content = anyErrors ? (
+    <div className="errors-container">
+      <ErrorList />
+    </div>
+  ) : (
     <div className="ggb">
       <GeoGebraPane />
     </div>
