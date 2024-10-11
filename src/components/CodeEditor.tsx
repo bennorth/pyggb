@@ -46,7 +46,7 @@ export const CodeEditor: React.FC<{}> = () => {
     }
   });
 
-  const setGlobalRef = (editor: any) => {
+  const onEditorLoad = (editor: any) => {
     PYGGB_CYPRESS().ACE_EDITOR = editor;
     editor.commands.addCommand({
       name: "runProgram",
@@ -68,7 +68,7 @@ export const CodeEditor: React.FC<{}> = () => {
         onChange={setCodeText}
         readOnly={!isReadWrite}
         ref={aceRef}
-        onLoad={setGlobalRef}
+        onLoad={onEditorLoad}
       />
       <div className={classNames("abs-0000", "busy-overlay", backingStatus)}>
         <Spinner />
