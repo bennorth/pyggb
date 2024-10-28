@@ -102,7 +102,7 @@ To avoid the contents of this bundle showing up as untracked files in Git, add a
 line to your local `.git/info/exclude` file:
 
 ``` shell
-public/vendor/geogebra/GeoGebra
+/public/vendor/geogebra/GeoGebra/
 ```
 
 The above "Release process" instructions refer to this vendor bundle,
