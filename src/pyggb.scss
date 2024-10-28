@@ -143,6 +143,15 @@ App {
               opacity: 30%;
             }
           }
+
+          /* Override Ace's ordering of fonts to avoid Monaco-related
+             mis-rendering in Safari.
+             https://github.com/ajaxorg/ace/issues/3385
+          */
+          .ace_editor {
+            font-family: "Menlo", "Monaco", "Ubuntu Mono", "Consolas",
+              "source-code-pro", monospace;
+          }
         }
 
         .errors-container {
