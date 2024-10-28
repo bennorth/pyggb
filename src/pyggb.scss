@@ -143,6 +143,11 @@ App {
               opacity: 30%;
             }
           }
+
+          .ace_editor {
+            font-family: "Menlo", "Monaco", "Ubuntu Mono", "Consolas",
+              "source-code-pro", monospace;
+          }
         }
 
         .errors-container {
