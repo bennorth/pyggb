@@ -3,13 +3,15 @@ import { PyGgbModel } from ".";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { kSkulptGgbModuleUrl } from "../shared/resources";
 import { db, UserFilePreview } from "../shared/db";
-import { fetchAsText, propSetterAction } from "../shared/utils";
+import { assertNever, fetchAsText, propSetterAction } from "../shared/utils";
 import { SemaphoreItem } from "../shared/semaphore";
 import { decode as stringFromUtf8BinaryString } from "utf8";
 import { decode as binaryStringFromB64String } from "base-64";
 import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
 import { URLSearchParams } from "url";
 import { publicIndexUrl } from "./index-url";
+
+type CodeCompressionKind = "none" | "zlib";
 
 function zlibDecompress(
   data: Uint8Array,
@@ -27,6 +29,33 @@ function zlibDecompress(
 }
 
 type BootStatus = "idle" | "running" | "done";
+
+async function decompressedPerKind(
+  data: Uint8Array,
+  compressionKind: CodeCompressionKind
+): Promise<Uint8Array> {
+  switch (compressionKind) {
+    case "none":
+      return data;
+    case "zlib":
+      return zlibDecompress(data, {});
+    default:
+      return assertNever(compressionKind);
+  }
+}
+
+async function codeFromQuery(
+  b64Code: string,
+  compressionKind: CodeCompressionKind
+): Promise<string> {
+  // See comment in share-as-url.ts regarding the dancing back and
+  // forth with data types and representations here.
+  const bstrCompressedCode = binaryStringFromB64String(b64Code);
+  const u8sCompressedCode = strToU8(bstrCompressedCode, true);
+  const u8sCode = await decompressedPerKind(u8sCompressedCode, compressionKind);
+  const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
+  return codeText;
+}
 
 type ActionAfterChoosingProgram = {
   userFile: UserFilePreview;
@@ -154,6 +183,9 @@ export const dependencies: Dependencies = {
 
     const name = urlSearchParams.get("name");
     const b64Code = urlSearchParams.get("code");
+    const compressionKindParam = urlSearchParams.get("cck") ?? "zlib";
+    const compressionKind = compressionKindParam as CodeCompressionKind;
+
     if (name == null || b64Code == null) {
       // No/malformed sharing link.  Fetch most recent user program.
       const userFile = await a._mostRecentUserFilePreview();
@@ -164,12 +196,7 @@ export const dependencies: Dependencies = {
     try {
       window.history.replaceState(null, "", indexUrl);
 
-      // See comment in share-as-url.ts regarding the dancing back and
-      // forth with data types and representations here.
-      const bstrZlibCode = binaryStringFromB64String(b64Code);
-      const u8sCode = await zlibDecompress(strToU8(bstrZlibCode, true), {});
-      const codeText = stringFromUtf8BinaryString(strFromU8(u8sCode));
-
+      const codeText = await codeFromQuery(b64Code, compressionKind);
       const descriptor = { name, codeText };
       const userFile = await db.getOrCreateNew(descriptor);
 
