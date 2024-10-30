@@ -67,7 +67,7 @@ while True:
 
     # Update the tip.
     x0, y0 = x1, y1
-    
+
     # Now the next segment is the oldest one.
     segment_idx += 1
     segment_idx %= n_segments
@@ -76,7 +76,7 @@ while True:
     for idx_offset in range(n_segments):
         # Wrap round the indexing.
         idx = (segment_idx + idx_offset) % n_segments
-        
+
         # Compute the intensity based on the age.
         grey_01 = math.pow(idx_offset / n_segments, fade_gamma.value)
         grey = 255 - int(255 * grey_01)
