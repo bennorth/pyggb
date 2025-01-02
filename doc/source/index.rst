@@ -6,12 +6,12 @@
 PyGgb documentation
 ===================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+PyGgb is a system which allows users to create GeoGebra constructions
+using the Python programming language.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
 
+   webapp/index
+   concepts/index
+   reference/index
