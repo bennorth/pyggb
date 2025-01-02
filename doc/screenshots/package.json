@@ -2,5 +2,8 @@
   "name": "pyggb-doc-screenshots",
   "version": "1.0.0",
   "description": "Tools and scripts for PyGgb documentation screenshots",
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "puppeteer": "^23.11.1"
+  }
 }
