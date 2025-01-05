@@ -20,6 +20,10 @@ extensions = [
 templates_path = ['_templates']
 exclude_patterns = []
 
+rst_prolog = """
+.. |getOnlyProp| replace:: **(Get-only)**
+.. |getSetProp| replace:: **(Get/set)**
+"""
 
 
 # -- Options for HTML output -------------------------------------------------
