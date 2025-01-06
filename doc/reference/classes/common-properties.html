@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Common properties &mdash; PyGgb  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Operations between objects" href="object-operations.html" />
+    <link rel="prev" title="Miscellaneous functions" href="../functions/misc.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyGgb
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../webapp/index.html">The PyGgb webapp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#geometric-objects">Geometric objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#user-interface-objects">User interface objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#functions">Functions</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#working-with-geometric-objects">Working with geometric objects</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Common properties</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#is_visible"><code class="docutils literal notranslate"><span class="pre">is_visible</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is_independent"><code class="docutils literal notranslate"><span class="pre">is_independent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#size"><code class="docutils literal notranslate"><span class="pre">size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#color"><code class="docutils literal notranslate"><span class="pre">color</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#color_floats"><code class="docutils literal notranslate"><span class="pre">color_floats</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#line_thickness"><code class="docutils literal notranslate"><span class="pre">line_thickness</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#label_visible"><code class="docutils literal notranslate"><span class="pre">label_visible</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#label_style"><code class="docutils literal notranslate"><span class="pre">label_style</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#caption"><code class="docutils literal notranslate"><span class="pre">caption</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#opacity"><code class="docutils literal notranslate"><span class="pre">opacity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#properties-intended-for-internal-use">Properties intended for internal use</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="object-operations.html">Operations between objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#other-objects">Other objects</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyGgb</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Reference</a></li>
+      <li class="breadcrumb-item active">Common properties</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/reference/classes/common-properties.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="common-properties">
+<h1>Common properties<a class="headerlink" href="#common-properties" title="Link to this heading"></a></h1>
+<p>Various object-types have some subset of the below properties.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="is_visible">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#is_visible" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> Whether the object is visible in the construction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="is_independent">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_independent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#is_independent" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> Whether the object is independent — if the object
+depends on another GeoGebra object, then it is <em>not</em> independent.
+E.g., the code</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p1</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Number</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p1 indpt?&quot;</span><span class="p">,</span> <span class="n">p1</span><span class="o">.</span><span class="n">is_independent</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;p2 indpt?&quot;</span><span class="p">,</span> <span class="n">p2</span><span class="o">.</span><span class="n">is_independent</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>will print</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>p1 indpt? True
+p2 indpt? False
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#size" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> An integer from 1 (smallest) to 9 (biggest) giving the
+size of the object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="color">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">color</span></span><a class="headerlink" href="#color" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> A string describing the colour of the object.  Can be
+a named colour (from <a class="reference external" href="https://w3c.github.io/csswg-drafts/css-color/#named-colors">this list</a>),
+e.g., <code class="code docutils literal notranslate"><span class="pre">&quot;cornflowerblue&quot;</span></code>, or a three- or six-hex-digit RGB
+code, e.g., <code class="code docutils literal notranslate"><span class="pre">&quot;#8043a9&quot;</span></code>.  When read, gives a six-hex-digit
+RGB code using uppercase letters for digits <em>A</em>–<em>F</em>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="color_floats">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">color_floats</span></span><a class="headerlink" href="#color_floats" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> A three-element tuple of floats, each in the range
+<code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>, for the red, green, and blue components of the
+object’s colour.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="line_thickness">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">line_thickness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#line_thickness" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> How thick the line is, from 1 (thinnest) to 9
+(thickest).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="label_visible">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">label_visible</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#label_visible" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> Whether the object’s label is shown in the
+construction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="label_style">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">label_style</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#label_style" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> What style of label to show for the object:</p>
+<ul class="simple">
+<li><p>0 — Name only</p></li>
+<li><p>1 — Name and value</p></li>
+<li><p>2 — Value only</p></li>
+<li><p>3 — Caption</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="caption">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">caption</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">string</span></em><a class="headerlink" href="#caption" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> The object’s caption.  Note that setting the
+<a class="reference internal" href="#caption" title="caption"><code class="xref py py-attr docutils literal notranslate"><span class="pre">caption</span></code></a> property also sets the <a class="reference internal" href="#label_style" title="label_style"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label_style</span></code></a>
+property to <code class="code docutils literal notranslate"><span class="pre">3</span></code>, to ensure the caption is shown.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="opacity">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">opacity</span></span><a class="headerlink" href="#opacity" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> How opaque the object is, from 0 for totally
+transparent, to 1 for totally opaque.</p>
+</dd></dl>
+
+<section id="properties-intended-for-internal-use">
+<h2>Properties intended for internal use<a class="headerlink" href="#properties-intended-for-internal-use" title="Link to this heading"></a></h2>
+<dl class="py property">
+<dt class="sig sig-object py" id="ggb_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_ggb_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ggb_type" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> The GeoGebra “object type” for the object.  E.g.,
+<code class="code docutils literal notranslate"><span class="pre">point</span></code> for a Point.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ggb_exists">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_ggb_exists</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ggb_exists" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> Whether the underlying GeoGebra object referred to by
+this Python wrapper exists.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Currently, support for deleting GeoGebra objects is undocumented
+and experimental, so it is unlikely that your program will need
+to use the <a class="reference internal" href="#ggb_exists" title="_ggb_exists"><code class="xref py py-attr docutils literal notranslate"><span class="pre">_ggb_exists</span></code></a> property.</p>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../functions/misc.html" class="btn btn-neutral float-left" title="Miscellaneous functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="object-operations.html" class="btn btn-neutral float-right" title="Operations between objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Ben North.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
