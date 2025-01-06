@@ -11,6 +11,7 @@ Point
       *y*-coordinate is ``y``.
 
    .. py:method:: Point(obj, t)
+      :noindex:
 
       Construct the point which is a distance ``t`` along the object
       ``obj``.  What "along" means varies depending on what kind of

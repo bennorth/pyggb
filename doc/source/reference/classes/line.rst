@@ -11,6 +11,7 @@ Line
       Construct the line passing through the two points *p* and *q*.
 
    .. py:method:: Line(m, c)
+      :noindex:
 
       Construct the line with equation *y = mx + c*.
 

@@ -13,6 +13,7 @@ Parabola
       and the directrix.
 
    .. py:method:: Parabola(a, b, c)
+      :noindex:
 
       Construct the parabola with equation *y = ax² + bx + c*.
 

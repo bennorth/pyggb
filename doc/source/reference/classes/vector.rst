@@ -12,6 +12,7 @@ Vector
       point *p2*.
 
    .. py:method:: Vector(x, y)
+      :noindex:
 
       Construct the Vector with the given *x* and *y* components.
 

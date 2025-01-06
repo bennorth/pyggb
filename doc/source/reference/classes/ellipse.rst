@@ -12,12 +12,14 @@ Ellipse
       and whose semimajor axis length is *a*.
 
    .. py:method:: Ellipse(f1, f2, s)
+      :noindex:
 
       Construct the ellipse whose two foci are the points *f1* and
       *f2*, and whose semimajor axis length is the length of the
       Segment *s*.
 
    .. py:method:: Ellipse(f1, f2, p)
+      :noindex:
 
       Construct the ellipse whose two foci are the points *f1* and
       *f2*, and which passes through the point *p*.
