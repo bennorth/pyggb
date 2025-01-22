@@ -47,6 +47,10 @@ PUBLIC_URL=/pyggb npm run build
 rsync --exclude='*~' --exclude=.git --exclude=vendor/geogebra/GeoGebra --delete --checksum -rtvn build/ pages/
 # Then if that looks OK, same without "vn" options:
 rsync --exclude='*~' --exclude=.git --exclude=vendor/geogebra/GeoGebra --delete --checksum -rt build/ pages/
+
+( cd doc; poetry run make clean && poetry run make html )
+rsync --delete --checksum -rt doc/build/html/ pages/doc
+
 # Commit in pages/ worktree
 # Push to GitHub
 # Wait a few minutes
