@@ -8,6 +8,7 @@ import { RunButton, PauseButton, StopButton } from "./RunButton";
 import { AboutButton } from "./AboutButton";
 import {
   useCanDownloadPy,
+  useCanDownloadGgb,
 } from "../model/hooks/download-as-filetype";
 
 type FilenameProps = {
@@ -108,6 +109,11 @@ export const MenuBar: React.FC<{}> = () => {
     (a) => a.downloadAsFiletype.runDownloadPy
   );
 
+  const canDownloadGgb = useCanDownloadGgb();
+  const runDownloadGgb = useStoreActions(
+    (a) => a.downloadAsFiletype.runDownloadGgb
+  );
+
   const launchFileChooser = () =>
     fileChooserSetActivity({ kind: "choose-user-file" });
 
@@ -171,6 +177,12 @@ export const MenuBar: React.FC<{}> = () => {
             onClick={() => runDownloadPython()}
           >
             Download Python
+          </NavDropdown.Item>
+          <NavDropdown.Item
+            disabled={!canDownloadGgb}
+            onClick={() => runDownloadGgb()}
+          >
+            Download GGB
           </NavDropdown.Item>
           <NavDropdown.Item onClick={shareAsLink}>
             Share as link
