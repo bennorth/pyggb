@@ -20,6 +20,11 @@ describe("runs provided examples", optsNoIsolation, () => {
 
   const specs: Array<SampleCodeSpec> = [
     {
+      filename: "animated_square_string_art.py",
+      expDoneOutput: false,
+      expOutputs: ["1 cycle"],
+    },
+    {
       filename: "circles_and_points.py",
     },
     {
@@ -30,6 +35,11 @@ describe("runs provided examples", optsNoIsolation, () => {
     },
     {
       filename: "exponential_growth.py",
+    },
+    {
+      filename: "fading_lissajous.py",
+      expDoneOutput: false,
+      expOutputs: ["2 cycles"],
     },
     {
       filename: "get_set_properties.py",
