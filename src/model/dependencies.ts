@@ -10,6 +10,7 @@ import { decode as binaryStringFromB64String } from "base-64";
 import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
 import { URLSearchParams } from "url";
 import { publicIndexUrl } from "./index-url";
+import { UiLayout } from "./ui";
 
 type CodeCompressionKind = "none" | "zlib";
 
@@ -60,6 +61,7 @@ async function codeFromQuery(
 type ActionAfterChoosingProgram = {
   userFile: UserFilePreview;
   autoRun: boolean;
+  uiLayout: UiLayout;
 };
 
 export type Dependencies = {
@@ -126,18 +128,20 @@ export const dependencies: Dependencies = {
     const loadInitialUserCode = async () => {
       const loadAction = await a._bootInitialCode(urlSearchParams);
       await allActions.editor.loadFromBacking(loadAction.userFile);
-      return loadAction.autoRun;
+      return loadAction;
     };
 
-    const [, , autoRun] = await Promise.all([
+    const [, , loadAction] = await Promise.all([
       fetchSkulptGgbCode(),
       helpers.getState().ggbApiReady.acquire(),
       loadInitialUserCode(),
     ]);
 
+    allActions.uiSettings.setUiLayout(loadAction.uiLayout);
+
     a.setBootStatus("done");
 
-    if (autoRun) {
+    if (loadAction.autoRun) {
       allActions.controls.runProgram();
     }
   }),
@@ -178,7 +182,8 @@ export const dependencies: Dependencies = {
       window.history.replaceState(null, "", indexUrl);
       const descriptor = { name: "New project", codeText: "" };
       const userFile = await db.getOrCreateNew(descriptor);
-      return { userFile, autoRun: false };
+      const uiLayout: UiLayout = "full";
+      return { userFile, autoRun: false, uiLayout };
     }
 
     const name = urlSearchParams.get("name");
@@ -189,7 +194,8 @@ export const dependencies: Dependencies = {
     if (name == null || b64Code == null) {
       // No/malformed sharing link.  Fetch most recent user program.
       const userFile = await a._mostRecentUserFilePreview();
-      return { userFile, autoRun: false };
+      const uiLayout: UiLayout = "full";
+      return { userFile, autoRun: false, uiLayout };
     }
 
     // Create program from URL data.
@@ -203,7 +209,9 @@ export const dependencies: Dependencies = {
       // Default is to auto-run; specify autorun=false to inhibit.
       const autoRun = urlSearchParams.get("autorun") !== "false";
 
-      return { userFile, autoRun };
+      const justCanvas = urlSearchParams.get("justCanvas") === "true";
+      const uiLayout: UiLayout = justCanvas ? "ggb-construction-only" : "full";
+      return { userFile, autoRun, uiLayout };
     } catch {
       allActions.modals.failedFileFromQuery.launch(
         "Sorry, something went wrong trying to use that link." +
@@ -212,7 +220,8 @@ export const dependencies: Dependencies = {
 
       const userFile = await a._mostRecentUserFilePreview();
 
-      return { userFile, autoRun: false };
+      const uiLayout: UiLayout = "full";
+      return { userFile, autoRun: false, uiLayout };
     }
   }),
 };
