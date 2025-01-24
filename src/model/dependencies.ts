@@ -131,13 +131,15 @@ export const dependencies: Dependencies = {
       return loadAction;
     };
 
-    const [, , loadAction] = await Promise.all([
+    const [, loadAction] = await Promise.all([
       fetchSkulptGgbCode(),
-      helpers.getState().ggbApiReady.acquire(),
       loadInitialUserCode(),
     ]);
 
     allActions.uiSettings.setUiLayout(loadAction.uiLayout);
+
+    a.setBootStatus("awaiting-ggb-api");
+    await helpers.getState().ggbApiReady.acquire();
 
     a.setBootStatus("done");
 
