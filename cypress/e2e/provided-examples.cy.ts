@@ -1,4 +1,4 @@
-import { createNewPyGgbFile, optsNoIsolation } from "./shared";
+import { createNewPyGgbFile, optsNoIsolation, runCode } from "./shared";
 
 describe("runs provided examples", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
@@ -104,7 +104,7 @@ describe("runs provided examples", optsNoIsolation, () => {
           window["PYGGB_CYPRESS"]["ZERO_DELAY"] = true;
           const fullCode = code + '\n\nprint("done")';
           window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(fullCode);
-          cy.get("button").contains("RUN").click();
+          runCode();
           if (spec.expDoneOutput ?? true) {
             cy.get(".stdout-inner").contains("done");
           }
