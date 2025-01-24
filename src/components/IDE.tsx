@@ -60,6 +60,16 @@ const EditorMaybeErrors: React.FC<{}> = () => {
   );
 };
 
+const GgbConstructionOnly: React.FC<{}> = () => {
+  const content = (
+    <div className="ggb">
+      <GeoGebraPane />
+    </div>
+  );
+
+  return <div className="pyggb-construction-only abs-0000">{content}</div>;
+};
+
 export const IDE: React.FC<{}> = () => {
   const uiStyle = useStoreState((s) => s.uiSettings.uiLayout);
 
