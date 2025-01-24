@@ -29,7 +29,7 @@ function zlibDecompress(
   });
 }
 
-type BootStatus = "idle" | "running" | "done";
+type BootStatus = "idle" | "running" | "awaiting-ggb-api" | "done";
 
 async function decompressedPerKind(
   data: Uint8Array,
@@ -131,13 +131,19 @@ export const dependencies: Dependencies = {
       return loadAction;
     };
 
-    const [, , loadAction] = await Promise.all([
+    const [, loadAction] = await Promise.all([
       fetchSkulptGgbCode(),
-      helpers.getState().ggbApiReady.acquire(),
       loadInitialUserCode(),
     ]);
 
+    // Postpone injecting the Ggb applet until the layout is fixed, otherwise
+    // attempting to run the code doesn't work because (I think) it gets a stale
+    // Ggb API object.  See also useEffect() logic in <GeoGebraPane>.
+
     allActions.uiSettings.setUiLayout(loadAction.uiLayout);
+
+    a.setBootStatus("awaiting-ggb-api");
+    await helpers.getState().ggbApiReady.acquire();
 
     a.setBootStatus("done");
 

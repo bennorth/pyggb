@@ -27,6 +27,7 @@ const nextAppletDivId = (() => {
 })();
 
 export const GeoGebraPane: React.FC<{}> = () => {
+  const bootStatus = useStoreState((s) => s.dependencies.bootStatus);
   const ggbApi = useStoreState((s) => s.dependencies.ggbApi);
   const setGgbApi = useStoreActions((a) => a.dependencies.setGgbApi);
 
@@ -34,6 +35,11 @@ export const GeoGebraPane: React.FC<{}> = () => {
   const containerId = `container-${divId}`;
 
   useEffect(() => {
+    // See comment in dependencies.ts re the sequencing here.
+    if (bootStatus !== "awaiting-ggb-api") {
+      return;
+    }
+
     const containerDiv = document.getElementById(containerId)?.parentElement;
     if (containerDiv == null) {
       console.error(`no containerDiv (parent of id "${containerId}")`);
