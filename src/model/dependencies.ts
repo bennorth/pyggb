@@ -137,6 +137,8 @@ export const dependencies: Dependencies = {
       loadInitialUserCode(),
     ]);
 
+    allActions.uiSettings.setUiLayout(loadAction.uiLayout);
+
     a.setBootStatus("done");
 
     if (loadAction.autoRun) {
