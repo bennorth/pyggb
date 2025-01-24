@@ -90,7 +90,7 @@ export const IDE: React.FC<{}> = () => {
         </div>
       );
     case "ggb-construction-only":
-      // TODO
+      return <GgbConstructionOnly />;
     default:
       return assertNever(uiStyle);
   }
