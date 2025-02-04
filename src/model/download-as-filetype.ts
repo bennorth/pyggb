@@ -1,6 +1,8 @@
-import { Thunk } from "easy-peasy";
+import { State, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { DownloadFile } from "./modals/download-file";
+import { OperationalBackingFileStatus } from "./editor";
+import { GgbApi } from "../shared/vendor-types/ggbapi";
 
 export type DownloadAsFiletype = {
   runDownloadPy: Thunk<DownloadAsFiletype, void, void, PyGgbModel>;
@@ -18,3 +20,11 @@ function arrayBufferFromStr(str: string): ArrayBuffer {
   }
   return buffer;
 }
+
+type StateWithOperationalBackingFileStatus = State<PyGgbModel> & {
+  editor: { backingFileState: { status: OperationalBackingFileStatus } };
+};
+
+type StateWithNonNullGgbApi = State<PyGgbModel> & {
+  dependencies: { ggbApi: GgbApi };
+};
