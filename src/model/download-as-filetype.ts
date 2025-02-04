@@ -28,3 +28,9 @@ type StateWithOperationalBackingFileStatus = State<PyGgbModel> & {
 type StateWithNonNullGgbApi = State<PyGgbModel> & {
   dependencies: { ggbApi: GgbApi };
 };
+
+export function selectCanDownloadPy(
+  state: State<PyGgbModel>
+): state is StateWithOperationalBackingFileStatus {
+  return state.editor.backingFileState.status !== "booting";
+}
