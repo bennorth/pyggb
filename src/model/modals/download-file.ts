@@ -1,4 +1,5 @@
-import { Action, generic, Generic, Thunk } from "easy-peasy";
+import { Action, generic, Generic, thunk, Thunk } from "easy-peasy";
+import { saveAs } from "file-saver";
 import { propSetterAction } from "../../shared/utils";
 
 type DownloadFileLaunchArgs<ContentT> = {
@@ -43,5 +44,34 @@ export function downloadFile<ContentT extends BlobPart>(
 
     filename: "",
     setFilename: propSetterAction("filename"),
+
+    run: thunk(async (a, { suggestedFileName, content }, helpers) => {
+      a.setFilename(suggestedFileName);
+      a.setContent(content);
+
+      let userSettle = kIgnoreSettleResult;
+      const userSettlePromise = new Promise<UserSettleResult>((resolve) => {
+        userSettle = resolve;
+      });
+
+      a.setFsmState({ kind: "interacting", userSettle });
+
+      try {
+        const settleResult = await userSettlePromise;
+        if (settleResult === "cancel") return;
+
+        const { filename, content } = helpers.getState();
+
+        const effectiveFilename = filename.endsWith(fileExtension)
+          ? filename
+          : `${filename}${fileExtension}`;
+
+        const contentBlob = new Blob([content], blobCtorOptions);
+
+        saveAs(contentBlob, effectiveFilename);
+      } finally {
+        a.setFsmState(kFsmStateIdle);
+      }
+    }),
   };
 }
