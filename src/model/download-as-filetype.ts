@@ -34,3 +34,13 @@ export function selectCanDownloadPy(
 ): state is StateWithOperationalBackingFileStatus {
   return state.editor.backingFileState.status !== "booting";
 }
+
+export function selectCanDownloadGgb(
+  state: State<PyGgbModel>
+): state is StateWithOperationalBackingFileStatus & StateWithNonNullGgbApi {
+  return (
+    state.editor.backingFileState.status !== "booting" &&
+    state.dependencies.allReady &&
+    state.dependencies.ggbApi != null
+  );
+}
