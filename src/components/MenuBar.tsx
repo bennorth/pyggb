@@ -6,6 +6,9 @@ import { assertNever } from "../shared/utils";
 import { useStoreActions, useStoreState } from "../store";
 import { RunButton, PauseButton, StopButton } from "./RunButton";
 import { AboutButton } from "./AboutButton";
+import {
+  useCanDownloadPy,
+} from "../model/hooks/download-as-filetype";
 
 type FilenameProps = {
   backingFileState: OperationalBackingFileState;
@@ -97,11 +100,13 @@ export const MenuBar: React.FC<{}> = () => {
     (a) => a.modals.fileChooser.setActivity
   );
   const newFileLaunch = useStoreActions((a) => a.modals.newFile.launch);
-  const downloadPythonLaunch = useStoreActions(
-    (a) => a.modals.downloadPython.launch
-  );
   const shareAsLinkLaunch = useStoreActions((a) => a.modals.shareAsUrl.launch);
   const saveCodeTextAction = useStoreActions((a) => a.editor.saveCodeText);
+
+  const canDownloadPython = useCanDownloadPy();
+  const runDownloadPython = useStoreActions(
+    (a) => a.downloadAsFiletype.runDownloadPy
+  );
 
   const launchFileChooser = () =>
     fileChooserSetActivity({ kind: "choose-user-file" });
@@ -161,7 +166,10 @@ export const MenuBar: React.FC<{}> = () => {
           <NavDropdown.Item disabled>Upload</NavDropdown.Item>
           <NavDropdown.Item disabled>Make a copy</NavDropdown.Item>
           <NavDropdown.Item onClick={saveCodeText}>Save now</NavDropdown.Item>
-          <NavDropdown.Item onClick={downloadPython}>
+          <NavDropdown.Item
+            disabled={!canDownloadPython}
+            onClick={() => runDownloadPython()}
+          >
             Download Python
           </NavDropdown.Item>
           <NavDropdown.Item onClick={shareAsLink}>
