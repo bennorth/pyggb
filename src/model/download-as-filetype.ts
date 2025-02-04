@@ -44,3 +44,6 @@ export function selectCanDownloadGgb(
     state.dependencies.ggbApi != null
   );
 }
+
+export let downloadAsFiletype: DownloadAsFiletype = {
+};
