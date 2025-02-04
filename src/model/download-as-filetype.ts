@@ -1,6 +1,6 @@
 import { State, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
-import { DownloadFile } from "./modals/download-file";
+import { downloadFile, DownloadFile } from "./modals/download-file";
 import { OperationalBackingFileStatus } from "./editor";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
 
@@ -11,6 +11,8 @@ export type DownloadAsFiletype = {
   downloadPy: DownloadFile<string>;
   downloadGgb: DownloadFile<ArrayBuffer>;
 };
+
+const kEmptyU8ArrayBuffer = new Uint8Array(0).buffer;
 
 function arrayBufferFromStr(str: string): ArrayBuffer {
   var buffer = new ArrayBuffer(str.length);
@@ -46,4 +48,12 @@ export function selectCanDownloadGgb(
 }
 
 export let downloadAsFiletype: DownloadAsFiletype = {
+  downloadPy: downloadFile("", ".py", {
+    type: "text/x-python",
+    endings: "native",
+  }),
+
+  downloadGgb: downloadFile(kEmptyU8ArrayBuffer, ".ggb", {
+    type: "application/vnd.geogebra.file",
+  }),
 };
