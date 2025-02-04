@@ -111,14 +111,14 @@ export const MenuBar: React.FC<{}> = () => {
 
   const shareAsLink = (() => {
     switch (backingState.status) {
-      case "booting": {
+      case "booting":
         return doNothing;
-      }
+
       case "idle":
       case "loading":
-      case "saving": {
+      case "saving":
         return () => shareAsLinkLaunch({ name: backingState.name, codeText });
-      }
+
       default:
         return assertNever(backingState);
     }
