@@ -1,4 +1,5 @@
-import { Action, Generic, Thunk } from "easy-peasy";
+import { Action, generic, Generic, Thunk } from "easy-peasy";
+import { propSetterAction } from "../../shared/utils";
 
 type DownloadFileLaunchArgs<ContentT> = {
   suggestedFileName: string;
@@ -27,3 +28,20 @@ export type DownloadFile<ContentT> = {
 
   run: Thunk<DownloadFile<ContentT>, DownloadFileLaunchArgs<ContentT>>;
 };
+
+export function downloadFile<ContentT extends BlobPart>(
+  placeholderContent: ContentT,
+  fileExtension: string,
+  blobCtorOptions: BlobPropertyBag
+): DownloadFile<ContentT> {
+  return {
+    fsmState: kFsmStateIdle,
+    setFsmState: propSetterAction("fsmState"),
+
+    content: generic(placeholderContent),
+    setContent: propSetterAction("content"),
+
+    filename: "",
+    setFilename: propSetterAction("filename"),
+  };
+}
