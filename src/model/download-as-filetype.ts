@@ -1,4 +1,4 @@
-import { State, Thunk } from "easy-peasy";
+import { State, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { downloadFile, DownloadFile } from "./modals/download-file";
 import { OperationalBackingFileStatus } from "./editor";
@@ -48,6 +48,18 @@ export function selectCanDownloadGgb(
 }
 
 export let downloadAsFiletype: DownloadAsFiletype = {
+  runDownloadPy: thunk(async (a, _voidPayload, helpers) => {
+    const storeState = helpers.getStoreState();
+    if (!selectCanDownloadPy(storeState)) {
+      console.log("runDownloadPy(): cannot download");
+      return;
+    }
+
+    const suggestedFileName = storeState.editor.backingFileState.name;
+    const content = storeState.editor.codeText;
+    await a.downloadPy.run({ suggestedFileName, content });
+  }),
+
   downloadPy: downloadFile("", ".py", {
     type: "text/x-python",
     endings: "native",
