@@ -6,6 +6,7 @@ import { Modals, modals } from "./modals";
 import { PyErrors, pyErrors } from "./pyerrors";
 import { WebHid, webHid } from "./web-hid";
 import { uiSettings, UiSettings } from "./ui";
+import { downloadAsFiletype, DownloadAsFiletype } from "./download-as-filetype";
 
 export type PyGgbModel = {
   editor: Editor;
@@ -14,6 +15,7 @@ export type PyGgbModel = {
   pyErrors: PyErrors;
   webHid: WebHid;
   dependencies: Dependencies;
+  downloadAsFiletype: DownloadAsFiletype;
   modals: Modals;
   uiSettings: UiSettings;
 };
@@ -25,6 +27,7 @@ export const pyGgbModel: PyGgbModel = {
   pyErrors,
   webHid,
   dependencies,
+  downloadAsFiletype,
   modals,
   uiSettings,
 };
