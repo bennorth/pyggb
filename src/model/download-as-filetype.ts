@@ -1,6 +1,7 @@
 import { State, thunk, Thunk } from "easy-peasy";
 import { PyGgbModel } from ".";
 import { downloadFile, DownloadFile } from "./modals/download-file";
+import { decode as binaryStringFromBase64 } from "base-64";
 import { OperationalBackingFileStatus } from "./editor";
 import { GgbApi } from "../shared/vendor-types/ggbapi";
 
@@ -58,6 +59,23 @@ export let downloadAsFiletype: DownloadAsFiletype = {
     const suggestedFileName = storeState.editor.backingFileState.name;
     const content = storeState.editor.codeText;
     await a.downloadPy.run({ suggestedFileName, content });
+  }),
+
+  runDownloadGgb: thunk(async (a, _voidPayload, helpers) => {
+    const storeState = helpers.getStoreState();
+    if (!selectCanDownloadGgb(storeState)) {
+      console.log("runDownloadGgb(): cannot download");
+      return;
+    }
+
+    const suggestedFileName = storeState.editor.backingFileState.name;
+
+    const ggbApi = storeState.dependencies.ggbApi;
+    const contentB64 = ggbApi.getBase64();
+    const contentStr = binaryStringFromBase64(contentB64);
+    const content = arrayBufferFromStr(contentStr);
+
+    await a.downloadGgb.run({ suggestedFileName, content });
   }),
 
   downloadPy: downloadFile("", ".py", {
