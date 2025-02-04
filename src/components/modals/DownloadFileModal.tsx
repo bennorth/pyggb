@@ -3,6 +3,7 @@ import { PyGgbModel } from "../../model";
 import { DownloadFsmState } from "../../model/modals/download-file";
 import { Actions, State } from "easy-peasy";
 import { useStoreActions, useStoreState } from "../../store";
+import { Button, Form, Modal } from "react-bootstrap";
 
 type DownloadFileModalProps = {
   fileTypeDisplayName: string;
@@ -37,4 +38,36 @@ export const DownloadFileModal: React.FC<DownloadFileModalProps> = ({
       e.preventDefault();
     }
   };
+
+  return (
+    <Modal show={true} onEscapeKeyDown={() => settle("cancel")}>
+      <Modal.Header>
+        <Modal.Title>Download as {fileTypeDisplayName} file</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Control
+            type="text"
+            value={filename}
+            onChange={(e) => {
+              setFilename(e.target.value);
+            }}
+            onKeyDown={onKeyDown}
+          ></Form.Control>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => settle("cancel")}>
+          Cancel
+        </Button>
+        <Button
+          disabled={!downloadEnabled}
+          variant="primary"
+          onClick={() => settle("submit")}
+        >
+          Download
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
 };
