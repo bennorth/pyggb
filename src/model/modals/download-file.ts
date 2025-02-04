@@ -1,3 +1,5 @@
+import { Action, Generic, Thunk } from "easy-peasy";
+
 type DownloadFileLaunchArgs<ContentT> = {
   suggestedFileName: string;
   content: ContentT;
@@ -12,3 +14,16 @@ export type DownloadFsmState =
   | { kind: "interacting"; userSettle: UserSettleFun };
 
 const kFsmStateIdle: DownloadFsmState = { kind: "idle" };
+
+export type DownloadFile<ContentT> = {
+  fsmState: DownloadFsmState;
+  setFsmState: Action<DownloadFile<ContentT>, DownloadFsmState>;
+
+  filename: string;
+  setFilename: Action<DownloadFile<ContentT>, string>;
+
+  content: Generic<ContentT>;
+  setContent: Action<DownloadFile<ContentT>, ContentT>;
+
+  run: Thunk<DownloadFile<ContentT>, DownloadFileLaunchArgs<ContentT>>;
+};
