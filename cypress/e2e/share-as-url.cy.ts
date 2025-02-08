@@ -2,6 +2,16 @@ import { v4 as uuidv4 } from "uuid";
 import { chooseFileMenuEntry, createNewPyGgbFile, deIndent } from "./shared";
 
 describe("Share as URL", () => {
+  const codeWithMarker = (marker: string) => {
+    return deIndent(`
+      # Some non-ASCII: Ⅱ—Ⅳ
+      A = Point(3, 4)
+      B = Point(5, 2)
+      k = Line(A, B)
+      print("hello world ${marker}")
+    `);
+  };
+
   it("can create and use URL for project", () => {
     cy.visit("/");
 
