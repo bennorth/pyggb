@@ -73,6 +73,18 @@ describe("Share as URL", () => {
     });
   });
 
+  const b64Pass = b64StringFromBinaryString("pass\n");
+  const badUrlSpecs = [
+    {
+      label: "bad b64",
+      url: "/?name=laksdjflkasjdflkajsdf&code=asdfjhkasdfkjlhasdkjlhasldjkh",
+    },
+    {
+      label: "bad cck",
+      url: `/?name=badcompressionkind&code=${b64Pass}&cck=banana`,
+    },
+  ];
+
   it("handles corrupt URLs", () => {
     const badShareUrl =
       "/" +
