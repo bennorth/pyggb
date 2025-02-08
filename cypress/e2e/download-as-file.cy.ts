@@ -1,5 +1,6 @@
 import path = require("path");
 import {
+  chooseFileMenuEntry,
   createNewPyGgbFile,
   deIndent,
   optsNoIsolation,
@@ -28,4 +29,18 @@ describe("download as file", optsNoIsolation, () => {
     cy.get("button").contains("Download").click();
     return cy.readFile(path.join(downloadsFolder, basename));
   };
+
+  it("can download as Python", () => {
+    chooseFileMenuEntry("Download Python");
+    downloadWithName("test.py").should("eq", code);
+  });
+
+  it("can download as Ggb", () => {
+    chooseFileMenuEntry("Download GGB");
+    downloadWithName("test.ggb").then((fileData: string) => {
+      // Test that we have a zipfile at least.
+      const magic = fileData.substring(0, 4);
+      cy.wrap(magic).should("eq", "PK\u0003\u0004");
+    });
+  });
 });
