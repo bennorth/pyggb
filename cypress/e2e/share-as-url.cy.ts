@@ -14,7 +14,7 @@ describe("Share as URL", () => {
     `);
   };
 
-  it("can use URL with uncompressed code", () => {
+  const uncompressedShareSpec = () => {
     const uniqueMarker = uuidv4();
     const pythonOutput = `hello world ${uniqueMarker}`;
     const code = codeWithMarker(uniqueMarker);
@@ -23,7 +23,11 @@ describe("Share as URL", () => {
     const pCode = b64StringFromBinaryString(bstrCode);
 
     const shareUrl = `/?name=Testing123&code=${pCode}&cck=none`;
+    return { pythonOutput, shareUrl };
+  };
 
+  it("can use URL with uncompressed code", () => {
+    const { pythonOutput, shareUrl } = uncompressedShareSpec();
     cy.visit(shareUrl);
     cy.get(".stdout-inner").contains(pythonOutput);
   });
