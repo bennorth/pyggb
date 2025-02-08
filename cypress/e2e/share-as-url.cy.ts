@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { chooseFileMenuEntry, createNewPyGgbFile, deIndent } from "./shared";
+import { encode as utf8BinaryStringFromString } from "utf8";
+import { encode as b64StringFromBinaryString } from "base-64";
 
 describe("Share as URL", () => {
   const codeWithMarker = (marker: string) => {
@@ -11,6 +13,20 @@ describe("Share as URL", () => {
       print("hello world ${marker}")
     `);
   };
+
+  it("can use URL with uncompressed code", () => {
+    const uniqueMarker = uuidv4();
+    const pythonOutput = `hello world ${uniqueMarker}`;
+    const code = codeWithMarker(uniqueMarker);
+
+    const bstrCode = utf8BinaryStringFromString(code);
+    const pCode = b64StringFromBinaryString(bstrCode);
+
+    const shareUrl = `/?name=Testing123&code=${pCode}&cck=none`;
+
+    cy.visit(shareUrl);
+    cy.get(".stdout-inner").contains(pythonOutput);
+  });
 
   it("can create and use URL for project", () => {
     cy.visit("/");
