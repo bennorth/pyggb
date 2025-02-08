@@ -6,6 +6,10 @@ import { assertNever } from "../shared/utils";
 import { useStoreActions, useStoreState } from "../store";
 import { RunButton, PauseButton, StopButton } from "./RunButton";
 import { AboutButton } from "./AboutButton";
+import {
+  useCanDownloadPy,
+  useCanDownloadGgb,
+} from "../model/hooks/download-as-filetype";
 
 type FilenameProps = {
   backingFileState: OperationalBackingFileState;
@@ -97,11 +101,18 @@ export const MenuBar: React.FC<{}> = () => {
     (a) => a.modals.fileChooser.setActivity
   );
   const newFileLaunch = useStoreActions((a) => a.modals.newFile.launch);
-  const downloadPythonLaunch = useStoreActions(
-    (a) => a.modals.downloadPython.launch
-  );
   const shareAsLinkLaunch = useStoreActions((a) => a.modals.shareAsUrl.launch);
   const saveCodeTextAction = useStoreActions((a) => a.editor.saveCodeText);
+
+  const canDownloadPython = useCanDownloadPy();
+  const runDownloadPython = useStoreActions(
+    (a) => a.downloadAsFiletype.runDownloadPy
+  );
+
+  const canDownloadGgb = useCanDownloadGgb();
+  const runDownloadGgb = useStoreActions(
+    (a) => a.downloadAsFiletype.runDownloadGgb
+  );
 
   const launchFileChooser = () =>
     fileChooserSetActivity({ kind: "choose-user-file" });
@@ -109,23 +120,16 @@ export const MenuBar: React.FC<{}> = () => {
   const launchNewFile = () => newFileLaunch(undefined);
   const saveCodeText = () => saveCodeTextAction();
 
-  const { downloadPython, shareAsLink } = (() => {
+  const shareAsLink = (() => {
     switch (backingState.status) {
-      case "booting": {
-        return { downloadPython: doNothing, shareAsLink: doNothing };
-      }
+      case "booting":
+        return doNothing;
+
       case "idle":
       case "loading":
-      case "saving": {
-        const downloadPython = () =>
-          downloadPythonLaunch({
-            storedName: backingState.name,
-            content: codeText,
-          });
-        const shareAsLink = () =>
-          shareAsLinkLaunch({ name: backingState.name, codeText });
-        return { downloadPython, shareAsLink };
-      }
+      case "saving":
+        return () => shareAsLinkLaunch({ name: backingState.name, codeText });
+
       default:
         return assertNever(backingState);
     }
@@ -168,7 +172,18 @@ export const MenuBar: React.FC<{}> = () => {
           <NavDropdown.Item disabled>Upload</NavDropdown.Item>
           <NavDropdown.Item disabled>Make a copy</NavDropdown.Item>
           <NavDropdown.Item onClick={saveCodeText}>Save now</NavDropdown.Item>
-          <NavDropdown.Item onClick={downloadPython}>Download</NavDropdown.Item>
+          <NavDropdown.Item
+            disabled={!canDownloadPython}
+            onClick={() => runDownloadPython()}
+          >
+            Download Python
+          </NavDropdown.Item>
+          <NavDropdown.Item
+            disabled={!canDownloadGgb}
+            onClick={() => runDownloadGgb()}
+          >
+            Download GGB
+          </NavDropdown.Item>
           <NavDropdown.Item onClick={shareAsLink}>
             Share as link
           </NavDropdown.Item>
