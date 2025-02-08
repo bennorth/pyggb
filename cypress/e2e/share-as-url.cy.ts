@@ -17,21 +17,14 @@ describe("Share as URL", () => {
 
     const uniqueMarker = uuidv4();
     const pythonOutput = `hello world ${uniqueMarker}`;
+    const code = codeWithMarker(uniqueMarker);
 
     // Include some non-ASCII characters:
     const filename = `😀😀😀 ${uniqueMarker}`;
     createNewPyGgbFile(filename);
 
-    const code = `
-      # Some non-ASCII: Ⅱ—Ⅳ
-      A = Point(3, 4)
-      B = Point(5, 2)
-      k = Line(A, B)
-      print("${pythonOutput}")
-    `;
-
     cy.window().then((window) => {
-      window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(deIndent(code));
+      window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(code);
       chooseFileMenuEntry("Share as link");
 
       // Can't test the COPY button actually copies because we don't
