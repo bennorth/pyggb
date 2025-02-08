@@ -628,12 +628,16 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
     },
   ];
 
-  runsWithoutErrorSpecs.forEach((spec) => {
+  runsWithoutErrorSpecs.forEach((spec, specIdx) => {
     it(`runs ${spec.label} ok`, () => {
       cy.window().then((window) => {
         const fullCode = deIndent(spec.code) + '\nprint("done")';
         window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(fullCode);
-        runCode();
+        if (specIdx % 2 === 0) {
+          runCode();
+        } else {
+          cy.get("#pyggb-ace-editor").type("{ctrl}{enter}");
+        }
         cy.get(".stdout-inner").contains("done");
         (spec.expOutputs ?? []).forEach((expOutput) =>
           cy.get(".stdout-inner").contains(`${expOutput}\n`)
