@@ -32,6 +32,14 @@ describe("Share as URL", () => {
     cy.get(".stdout-inner").contains(pythonOutput);
   });
 
+  it("can choose startup IDE layout", () => {
+    const { shareUrl } = uncompressedShareSpec();
+    const fullUrl = `${shareUrl}&justCanvas=true`;
+    cy.visit(fullUrl);
+    cy.get(".App .pyggb-construction-only .ggb");
+    cy.get(".MenuBar").should("not.exist");
+  });
+
   it("can create and use URL for project", () => {
     cy.visit("/");
 
