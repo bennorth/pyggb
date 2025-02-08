@@ -85,16 +85,12 @@ describe("Share as URL", () => {
     },
   ];
 
-  it("handles corrupt URLs", () => {
-    const badShareUrl =
-      "/" +
-      "?name=laksdjflkasjdflkajsdf" +
-      "&code=asdfjhkasdfkjlhasdkjlhasldjkh";
-
-    cy.visit(badShareUrl);
+  badUrlSpecs.forEach((spec) =>
+    it(`handles corrupt URL (${spec.label})`, () => {
+    cy.visit(spec.url);
     cy.get(".modal-body").contains("wrong trying to use that link");
     cy.get("button").contains("OK").click();
     cy.get("div.modal").should("not.exist");
     cy.get(".editor .busy-overlay").should("not.be.visible");
-  });
+  }));
 });
