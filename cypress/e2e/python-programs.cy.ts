@@ -1,4 +1,9 @@
-import { createNewPyGgbFile, deIndent, optsNoIsolation } from "./shared";
+import {
+  createNewPyGgbFile,
+  deIndent,
+  optsNoIsolation,
+  runCode,
+} from "./shared";
 
 // TODO (see also note at end):
 class ConstructionVerificationState {
@@ -628,7 +633,7 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       cy.window().then((window) => {
         const fullCode = deIndent(spec.code) + '\nprint("done")';
         window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(fullCode);
-        cy.get("button").contains("RUN").click();
+        runCode();
         cy.get(".stdout-inner").contains("done");
         (spec.expOutputs ?? []).forEach((expOutput) =>
           cy.get(".stdout-inner").contains(`${expOutput}\n`)
@@ -651,7 +656,7 @@ const runBadCode = (spec: CodeWithErrorSpec) => () => {
   cy.window().then((window) => {
     const code = deIndent(spec.code);
     window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(code);
-    cy.get("button").contains("RUN").click();
+    runCode();
     spec.assertions.forEach((assertion) => assertion());
   });
 };
