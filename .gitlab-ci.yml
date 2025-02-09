@@ -21,8 +21,6 @@ build-examples:
   artifacts:
     paths:
       - public/examples/index.json
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 build:
   stage: build
@@ -36,8 +34,6 @@ build:
   artifacts:
     paths:
       - build
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 publish:
   stage: release
