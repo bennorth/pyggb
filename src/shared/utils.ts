@@ -14,6 +14,12 @@ export const fullUrlWithinApp = (urlWithinApp: string) => {
   return fullUrl;
 };
 
+// Currently this is not used in any meaningful way.  The idea was to be
+// able to have the docs at a location whose path included some kind of
+// version identifier (e.g., the git commit SHA).  But that would mean
+// links to pages of the docs were not stable as we release new
+// versions.  For now, the env.var is always just "doc", but leaving
+// this code here in case we want to revisit in future.
 export const fullUrlWithinDocs = (relativeUrl: string) => {
   const mUrl = process.env.REACT_APP_DOCS_BASE_URL_WITHIN_APP;
   if (mUrl == null) {
