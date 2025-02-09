@@ -30,7 +30,8 @@ build:
   before_script:
     - npm clean-install
   script:
-    - PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH} npm run build
+    - export PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH}
+    - npm run build
   artifacts:
     paths:
       - build/
