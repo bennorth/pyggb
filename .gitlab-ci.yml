@@ -33,7 +33,7 @@ build:
     - PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH} npm run build
   artifacts:
     paths:
-      - build
+      - build/
 
 publish:
   stage: release
