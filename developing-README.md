@@ -36,6 +36,20 @@ The front-end, written using React, with
 User's files are persisted using in-browser IndexedDB storage.
 
 
+## Running for development
+
+The script
+
+``` shell
+dev-server.sh
+```
+
+at the top level of this repo will build the docs, link to them from
+the `public` directory, and launch the development live-reload server.
+This requires `poetry`; the script will point you to installation docs
+if needed.
+
+
 ## Release process
 
 For deploying to `github.io`, assuming a git worktree `./pages/`
