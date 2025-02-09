@@ -7,22 +7,20 @@ variables:
   PYGGB_HOSTED_BASE_PATH: python
 
 stages:
-  - build-examples
+  - build-dependencies
   - build
   - release
 
 build-examples:
-  stage: build-examples
+  stage: build-dependencies
   tags:
     - docker
-  image: python:3.11.3-alpine3.17
+  image: python:3.13-alpine
   script:
     - python3 tools/build_examples_index.py ./public/examples > ./public/examples/index.json
   artifacts:
     paths:
       - public/examples/index.json
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 build:
   stage: build
@@ -32,12 +30,11 @@ build:
   before_script:
     - npm clean-install
   script:
-    - PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH} npm run build
+    - export PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH}
+    - npm run build
   artifacts:
     paths:
-      - build
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      - build/
 
 publish:
   stage: release
