@@ -14,6 +14,16 @@ export const fullUrlWithinApp = (urlWithinApp: string) => {
   return fullUrl;
 };
 
+export const fullUrlWithinDocs = (relativeUrl: string) => {
+  const mUrl = process.env.REACT_APP_DOCS_BASE_URL_WITHIN_APP;
+  if (mUrl == null) {
+    throw new Error("Env.var REACT_APP_DOCS_BASE_URL_WITHIN_APP not set");
+  }
+
+  const urlWithinApp = `${mUrl}/${relativeUrl}`;
+  return fullUrlWithinApp(urlWithinApp);
+};
+
 export const fetchAsText = async (urlWithinApp: string) => {
   const url = fullUrlWithinApp(urlWithinApp);
 
