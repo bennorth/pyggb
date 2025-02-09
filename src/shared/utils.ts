@@ -6,6 +6,14 @@ export function cssValue(property: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(property);
 }
 
+export const fullUrlWithinApp = (urlWithinApp: string) => {
+  const appPublicUrl = process.env.PUBLIC_URL;
+  const prefixIsNonEmpty = appPublicUrl !== "";
+  const maybeSeparator = prefixIsNonEmpty ? "/" : "";
+  const fullUrl = `${appPublicUrl}${maybeSeparator}${urlWithinApp}`;
+  return fullUrl;
+};
+
 export const fetchAsText = async (urlWithinApp: string) => {
   const prefixIsNonEmpty = process.env.PUBLIC_URL !== "";
   const maybeSeparator = prefixIsNonEmpty ? "/" : "";
