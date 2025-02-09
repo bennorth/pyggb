@@ -47,6 +47,7 @@ build:
     - npm clean-install
   script:
     - export PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH}
+    - export REACT_APP_DOCS_BASE_URL_WITHIN_APP=doc
     - npm run build
   artifacts:
     paths:
