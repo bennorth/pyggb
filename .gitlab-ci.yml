@@ -7,12 +7,12 @@ variables:
   PYGGB_HOSTED_BASE_PATH: python
 
 stages:
-  - build-examples
+  - build-dependencies
   - build
   - release
 
 build-examples:
-  stage: build-examples
+  stage: build-dependencies
   tags:
     - docker
   image: python:3.11.3-alpine3.17
