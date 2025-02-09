@@ -22,6 +22,22 @@ build-examples:
     paths:
       - public/examples/index.json
 
+build-docs:
+  stage: build-dependencies
+  tags:
+    - docker
+  image: python:3.13-alpine
+  before_script:
+    - apk --no-cache add curl make
+  script:
+    - curl -sSL https://install.python-poetry.org | python3 -
+    - POETRY=$HOME/.local/bin/poetry
+    - ( cd doc && $POETRY install && $POETRY run make html )
+    - mv doc/build/html public/doc
+  artifacts:
+    paths:
+      - public/doc/
+
 build:
   stage: build
   tags:
@@ -31,6 +47,7 @@ build:
     - npm clean-install
   script:
     - export PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH}
+    - export REACT_APP_DOCS_BASE_URL_WITHIN_APP=doc
     - npm run build
   artifacts:
     paths:
