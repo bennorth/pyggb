@@ -2,6 +2,7 @@
 
 # Build products
 /public/examples/index.json
+/public/doc
 
 # dependencies
 /node_modules
