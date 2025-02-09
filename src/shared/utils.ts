@@ -6,10 +6,32 @@ export function cssValue(property: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(property);
 }
 
-export const fetchAsText = async (urlWithinApp: string) => {
-  const prefixIsNonEmpty = process.env.PUBLIC_URL !== "";
+export const fullUrlWithinApp = (urlWithinApp: string) => {
+  const appPublicUrl = process.env.PUBLIC_URL;
+  const prefixIsNonEmpty = appPublicUrl !== "";
   const maybeSeparator = prefixIsNonEmpty ? "/" : "";
-  const url = process.env.PUBLIC_URL + maybeSeparator + urlWithinApp;
+  const fullUrl = `${appPublicUrl}${maybeSeparator}${urlWithinApp}`;
+  return fullUrl;
+};
+
+// Currently this is not used in any meaningful way.  The idea was to be
+// able to have the docs at a location whose path included some kind of
+// version identifier (e.g., the git commit SHA).  But that would mean
+// links to pages of the docs were not stable as we release new
+// versions.  For now, the env.var is always just "doc", but leaving
+// this code here in case we want to revisit in future.
+export const fullUrlWithinDocs = (relativeUrl: string) => {
+  const mUrl = process.env.REACT_APP_DOCS_BASE_URL_WITHIN_APP;
+  if (mUrl == null) {
+    throw new Error("Env.var REACT_APP_DOCS_BASE_URL_WITHIN_APP not set");
+  }
+
+  const urlWithinApp = `${mUrl}/${relativeUrl}`;
+  return fullUrlWithinApp(urlWithinApp);
+};
+
+export const fetchAsText = async (urlWithinApp: string) => {
+  const url = fullUrlWithinApp(urlWithinApp);
 
   try {
     const response = await fetch(url);
