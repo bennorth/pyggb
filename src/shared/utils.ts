@@ -15,9 +15,7 @@ export const fullUrlWithinApp = (urlWithinApp: string) => {
 };
 
 export const fetchAsText = async (urlWithinApp: string) => {
-  const prefixIsNonEmpty = process.env.PUBLIC_URL !== "";
-  const maybeSeparator = prefixIsNonEmpty ? "/" : "";
-  const url = process.env.PUBLIC_URL + maybeSeparator + urlWithinApp;
+  const url = fullUrlWithinApp(urlWithinApp);
 
   try {
     const response = await fetch(url);
