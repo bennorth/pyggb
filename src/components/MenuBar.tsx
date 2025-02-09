@@ -10,6 +10,7 @@ import {
   useCanDownloadPy,
   useCanDownloadGgb,
 } from "../model/hooks/download-as-filetype";
+import { fullUrlWithinDocs } from "../shared/utils";
 
 type FilenameProps = {
   backingFileState: OperationalBackingFileState;
@@ -154,6 +155,8 @@ export const MenuBar: React.FC<{}> = () => {
     );
   }
 
+  const docsIndexUrl = fullUrlWithinDocs("index.html");
+
   return (
     <Navbar>
       <Container fluid className="MenuBar">
@@ -194,6 +197,13 @@ export const MenuBar: React.FC<{}> = () => {
           </div>
           {maybeBackingName}
         </Navbar.Text>
+        <Navbar.Brand className="link-to-docs">
+          <p>
+            <a href={docsIndexUrl} target="pyggb-docs">
+              Docs
+            </a>
+          </p>
+        </Navbar.Brand>
         <Navbar.Brand>
           <AboutButton />
         </Navbar.Brand>
