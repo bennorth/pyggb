@@ -41,6 +41,7 @@ build:
 
 publish:
   stage: release
+  image: amazon/aws-cli:latest
   script:
     - aws s3 sync ./build s3://${S3_STATIC_BUCKET}/${PYGGB_HOSTED_BASE_PATH}
   rules:
