@@ -41,6 +41,8 @@ build:
 
 publish:
   stage: release
+  tags:
+    - amd
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   script:
     - aws s3 sync ./build s3://${S3_STATIC_BUCKET}/${PYGGB_HOSTED_BASE_PATH}
