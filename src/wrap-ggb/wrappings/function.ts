@@ -45,6 +45,10 @@ export const register: RegisterFun = (mod, appApi) => {
       classmethods: {
         sin: functionWrapper(ggb, "sin"),
         cos: functionWrapper(ggb, "cos"),
+        log: functionWrapper2(ggb, "log"),
+        ln: functionWrapper(ggb, "ln"),
+        log10: functionWrapper(ggb, "lg"),
+        log2: functionWrapper(ggb, "ld"),
         compare_LT: {
           $flags: { FastCall: true },
           $meth(args: Array<SkObject>, _kwargs: KeywordArgsArray) {
