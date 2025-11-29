@@ -11,6 +11,7 @@ The operations of
 * multiplication
 * division
 * remainder
+* exponentiation
 * unary negative
 
 are attempted within GeoGebra when at least one of the operands is a
