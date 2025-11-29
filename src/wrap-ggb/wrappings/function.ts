@@ -11,7 +11,8 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 const functionWrapper = (ggb: AugmentedGgbApi, ggbName: string) => {
   return {
-    $meth(x: SkGgbObject) {
+    $meth(x: SkObject) {
+      ggb.throwIfNotGgbObject(x, `${ggbName}_arg`);
       // TODO: If given a Python number, evaluate in Python; if a ggb
       // Number, evaluate as dependent Number.
       const ggbCmd = `${ggbName}(${x.$ggbLabel})`;
