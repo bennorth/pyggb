@@ -23,6 +23,18 @@ const functionWrapper = (ggb: AugmentedGgbApi, ggbName: string) => {
   };
 };
 
+const functionWrapper2 = (ggb: AugmentedGgbApi, ggbName: string) => {
+  return {
+    $meth(cls: SkObject, x: SkObject, y: SkObject) {
+      ggb.throwIfNotGgbObject(x, `${ggbName}_arg1`);
+      ggb.throwIfNotGgbObject(y, `${ggbName}_arg2`);
+      const ggbCmd = `${ggbName}(${x.$ggbLabel},${y.$ggbLabel})`;
+      const label = ggb.evalCmd(ggbCmd);
+      return ggb.wrapExistingGgbObject(label);
+    },
+  };
+};
+
 export const register: RegisterFun = (mod, appApi) => {
   const ggbApi = appApi.ggb;
   const ggb = augmentedGgbApi(ggbApi);
