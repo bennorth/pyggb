@@ -60,6 +60,7 @@ type BuildNativeClassOptions = Partial<{
   proto: { [key: string]: any };
   slots: {
     tp$new: (args: Array<SkObject>, kwargs: KeywordArgsArray) => SkObject;
+    tp$call?: (args: Array<SkObject>, kwargs: KeywordArgsArray) => SkObject;
     [key: string]: any;
   };
   methods: { [key: string]: any };
