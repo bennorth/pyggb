@@ -65,7 +65,7 @@ export const isInstance = (cls: SkObject) => (obj: SkObject) =>
   Sk.builtin.isinstance(obj, cls).v;
 
 function _isGgbObject(obj: SkObject): obj is SkGgbObject {
-  return "$ggbLabel" in obj;
+  return typeof obj === "object" && obj !== null && "$ggbLabel" in obj;
 }
 
 function _ggbType(ggbApi: GgbApi, objOrLabel: SkGgbObject | string): string {
