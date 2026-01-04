@@ -1,6 +1,6 @@
 import { RegisterFun } from "../../shared/appApi";
 import { ggbCompare } from "../operations";
-import { AugmentedGgbApi, augmentedGgbApi, SkGgbObject } from "../shared";
+import { AugmentedGgbApi, augmentedGgbApi } from "../shared";
 import {
   KeywordArgsArray,
   SkObject,
