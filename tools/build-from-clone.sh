@@ -42,8 +42,10 @@ git clone "${PYGGB_ORIGIN_REPO}" repo
     cd repo
     npm clean-install
 
+    # Dependency: Build example programs to within public/
     ./tools/build-examples.sh
 
+    # Dependency: Build docs and move to within public/
     (
         cd doc
         poetry install
@@ -51,6 +53,7 @@ git clone "${PYGGB_ORIGIN_REPO}" repo
     )
     mv doc/build/html public/doc
 
+    # Put everything together, picking up above dependencies.
     env VITE_DOCS_BASE_URL_WITHIN_APP=/doc \
         npx vite build --base=/"$PYGGB_HOSTED_BASE_PATH"/
 )
