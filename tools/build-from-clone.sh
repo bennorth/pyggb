@@ -36,7 +36,7 @@ workdir=$(mktemp -d)
 cd "$workdir"
 echo Working in "$workdir"
 
-git clone "${PYGGB_ORIGIN_REPO:?}" repo
+git clone "${PYGGB_ORIGIN_REPO}" repo
 
 (
     cd repo
