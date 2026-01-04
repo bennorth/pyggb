@@ -10,7 +10,7 @@ set -e
 : "${PYGGB_HOSTED_BASE_PATH:=python}"
 
 have_all_tools=yes
-for tool in grep mktemp rsync node npm git python3; do
+for tool in grep mktemp rsync node npm git python3 poetry; do
     if ! hash "$tool" 2> /dev/null; then
         echo Could not find "$tool"
         have_all_tools=no
