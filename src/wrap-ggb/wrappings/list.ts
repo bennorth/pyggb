@@ -79,6 +79,19 @@ export const register: RegisterFun = (mod, appApi) => {
       sq$length(this: SkGgbList) {
         return this.$length();
       },
+      mp$subscript(pyIndex) {
+        const nElts = this.$length();
+        const rawIdx0b = Sk.misceval.asIndexSized(pyIndex);
+        const idx0b = rawIdx0b >= 0 ? rawIdx0b : rawIdx0b + nElts;
+        if (idx0b < 0 || idx0b >= nElts) {
+          throw new Sk.builtin.IndexError("List object index out of range");
+        }
+
+        const idx1b = idx0b + 1;
+        const ggbCmd = `${this.$ggbLabel}(${idx1b})`;
+        const eltLabel = ggb.evalCmd(ggbCmd);
+        return ggb.wrapExistingGgbObject(eltLabel);
+      },
     },
   });
 
