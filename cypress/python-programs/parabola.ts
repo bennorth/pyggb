@@ -39,4 +39,12 @@ export const specs = [
       assert(p.line_style == 1)
     `,
   },
+  {
+    label: "Parabola.__call__()",
+    code: `
+      p = Parabola(2, 1, -2)
+      print("p at -1 =", p(-1.0).value)
+    `,
+    expOutputs: ["p at -1 = -1.0"],
+  },
 ];
