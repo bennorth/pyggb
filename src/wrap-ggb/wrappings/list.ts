@@ -7,7 +7,7 @@ import { throwBadSpecKind } from "../../shared/utils";
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 interface SkGgbList extends SkGgbObject {
-  // TODO
+  $length: (this: SkGgbList) => number;
 }
 
 type SkGgbListCtorSpec =
@@ -38,6 +38,15 @@ export const register: RegisterFun = (mod, appApi) => {
         default:
           throwBadSpecKind("List", spec);
       }
+    },
+    proto: {
+      $length(this: SkGgbList) {
+        const ggbCmd = `Length(${this.$ggbLabel})`;
+        const ggbLabel = ggb.evalCmd(ggbCmd);
+        const nElts = ggb.getValue(ggbLabel);
+        ggb.deleteObject(ggbLabel);
+        return nElts;
+      },
     },
     slots: {
     },
