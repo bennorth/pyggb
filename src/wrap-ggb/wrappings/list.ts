@@ -76,6 +76,9 @@ export const register: RegisterFun = (mod, appApi) => {
             throw badArgsError;
         }
       },
+      sq$length(this: SkGgbList) {
+        return this.$length();
+      },
     },
   });
 
