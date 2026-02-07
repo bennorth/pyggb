@@ -258,10 +258,7 @@ function throwIfNotPyOrGgbNumber(
   obj: SkObject,
   objName: string
 ): asserts obj is SkInt | SkFloat | SkGgbObject {
-  const isPyNumber = Sk.builtin.checkNumber(obj);
-  const isGgbNumber = isGgbObject(ggbApi, obj, "numeric");
-  const isSomeNumber = isPyNumber || isGgbNumber;
-  if (!isSomeNumber) {
+  if (!isPythonOrGgbNumber(ggbApi, obj)) {
     throw new Sk.builtin.TypeError(
       `${objName} must be a Python number or GeoGebra numeric`
     );
