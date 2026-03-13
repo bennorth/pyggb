@@ -71,16 +71,24 @@ function _ggbType(ggbApi: GgbApi, objOrLabel: SkGgbObject | string): string {
   }
 }
 
-/** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject` of
- * the given GeoGebra type `requiredType` (for example, `"circle"`).  If
- * `requiredType` is omitted, test only whether `obj` is an
- * `SkGgbObject`.  The given `ggbApi` is used to get the object's
- * GeoGebra type.
+/** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject`,
+ * possibly meeting a further requirement on the GeoGebra type of that
+ * object.
+ *
+ * * If `requiredType` is omitted, there is no further requirement.
+ *
+ * * If the given `requiredType` is a string, then `obj` must be of that
+ *   GeoGebra type (for example, `"circle"`).
+ *
+ * * If the given `requiredType` is an array of strings, then `obj`'s
+ *   GeoGebra type must be one of those strings.
+ *
+ * The given `ggbApi` is used to get the object's GeoGebra type.
  * */
 export const isGgbObject = (
   ggbApi: GgbApi,
   obj: SkObject,
-  requiredType?: string
+  requiredType?: string | Array<string>
 ): obj is SkGgbObject => {
   // Could collapse the following into one bool expression but it wouldn't
   // obviously be clearer.
@@ -92,7 +100,16 @@ export const isGgbObject = (
 
   // We are fussy about what type; compare.
   const gotType = ggbApi.getObjectType(obj.$ggbLabel);
-  return gotType === requiredType;
+
+  if (typeof requiredType === "string") {
+    return gotType === requiredType;
+  }
+
+  if (Array.isArray(requiredType)) {
+    return requiredType.some((type) => gotType === type);
+  }
+
+  throw new Error('unexpected type of "requiredType"');
 };
 
 /** Test whether every element of a (JavaScript) array is an
