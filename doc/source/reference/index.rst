@@ -37,6 +37,7 @@ Functions
    functions/perpendicular-bisector
    functions/perpendicular-line
    functions/distance
+   functions/circumference
    functions/intersect
    functions/number-of-objects
    functions/rotate

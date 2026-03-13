@@ -20,6 +20,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/boolean"),
     import("../python-programs/centroid"),
     import("../python-programs/circle"),
+    import("../python-programs/circumference"),
     import("../python-programs/clear-console"),
     import("../python-programs/distance"),
     import("../python-programs/ellipse"),
