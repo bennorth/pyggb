@@ -37,6 +37,7 @@ Functions
    functions/intersect
    functions/number-of-objects
    functions/rotate
+   functions/centroid
    functions/zoom-in
    functions/if
    functions/misc

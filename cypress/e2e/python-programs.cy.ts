@@ -18,6 +18,7 @@ const getPythonPrograms = async () => {
   const specModules = await Promise.all([
     import("../python-programs/angle-bisector"),
     import("../python-programs/boolean"),
+    import("../python-programs/centroid"),
     import("../python-programs/circle"),
     import("../python-programs/clear-console"),
     import("../python-programs/distance"),

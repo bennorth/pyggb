@@ -18,6 +18,7 @@ import { register as registerIntersect } from "./wrappings/intersect";
 import { register as registerZoom } from "./wrappings/zoom";
 import { register as registerNumberOfObjects } from "./wrappings/number-of-objects";
 import { register as registerAngleBisector } from "./wrappings/angle-bisector";
+import { register as registerCentroid } from "./wrappings/centroid";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
@@ -59,6 +60,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerZoom(mod, appApi);
   registerNumberOfObjects(mod, appApi);
   registerAngleBisector(mod, appApi);
+  registerCentroid(mod, appApi);
 
   registerClearConsole(mod, appApi);
 
