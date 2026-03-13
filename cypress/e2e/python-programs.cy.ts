@@ -50,14 +50,6 @@ getPythonPrograms().then((runsWithoutErrorSpecs) =>
 describe("Runs valid Python programs", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
 
-  type RunsWithoutErrorSpec = {
-    only?: boolean;
-    label: string;
-    code: string;
-    expOutputs?: Array<string>;
-    expNonOutputs?: Array<string>;
-  };
-
   runsWithoutErrorSpecs.forEach((spec, specIdx) => {
     const specFun = (spec.only ?? false) ? it.only : it;
     specFun(`runs ${spec.label} ok`, () => {
