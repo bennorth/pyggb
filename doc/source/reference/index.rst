@@ -38,6 +38,7 @@ Functions
    functions/number-of-objects
    functions/rotate
    functions/centroid
+   functions/incircle
    functions/zoom-in
    functions/if
    functions/misc
