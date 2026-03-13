@@ -22,6 +22,7 @@ import { register as registerCentroid } from "./wrappings/centroid";
 import { register as registerIncircle } from "./wrappings/incircle";
 import { register as registerMidpoint } from "./wrappings/midpoint";
 import { register as registerPerpendicularBisector } from "./wrappings/perpendicular-bisector";
+import { register as registerPerpendicularLine } from "./wrappings/perpendicular-line";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
@@ -67,6 +68,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerIncircle(mod, appApi);
   registerMidpoint(mod, appApi);
   registerPerpendicularBisector(mod, appApi);
+  registerPerpendicularLine(mod, appApi);
 
   registerClearConsole(mod, appApi);
 
