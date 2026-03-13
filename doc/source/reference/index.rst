@@ -34,6 +34,7 @@ Functions
 
    functions/angle-bisector
    functions/midpoint
+   functions/perpendicular-bisector
    functions/distance
    functions/intersect
    functions/number-of-objects

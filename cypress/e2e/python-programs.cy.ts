@@ -31,6 +31,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/number-of-objects"),
     import("../python-programs/number"),
     import("../python-programs/parabola"),
+    import("../python-programs/perpendicular-bisector"),
     import("../python-programs/point"),
     import("../python-programs/polygon"),
     import("../python-programs/properties"),
