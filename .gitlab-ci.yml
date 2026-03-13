@@ -36,7 +36,7 @@ build-docs:
 
 build:
   stage: build
-  image: node:18.16-alpine
+  image: node:24-alpine
   before_script:
     - npm clean-install
   script:
