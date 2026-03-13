@@ -113,7 +113,7 @@ Unzip this into `public/vendor/geogebra`, which will result in a directory
 development server with
 
 ``` shell
-REACT_APP_LOCAL_GEOGEBRA=yes npm start
+VITE_LOCAL_GEOGEBRA=yes npm start
 ```
 
 To avoid the contents of this bundle showing up as untracked files in Git, add a

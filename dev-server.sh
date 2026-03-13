@@ -37,6 +37,6 @@ REPO_ROOT=$(git rev-parse --show-toplevel)
     poetry run make html
 )
 
-export REACT_APP_DOCS_BASE_URL_WITHIN_APP=doc
+export VITE_DOCS_BASE_URL_WITHIN_APP=/doc
 
 exec npx vite dev

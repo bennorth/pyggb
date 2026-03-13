@@ -1,5 +1,5 @@
 export function publicIndexUrl(): URL {
-  const publicUrl = process.env.PUBLIC_URL;
+  const publicUrl = import.meta.env.BASE_URL;
   const rawDirname = publicUrl === "" ? "/" : publicUrl;
   const dirnameWithSeparator = rawDirname.endsWith("/")
     ? rawDirname
