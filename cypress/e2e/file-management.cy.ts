@@ -33,6 +33,8 @@ describe("File management", () => {
   });
 
   it("can rename a file", () => {
+    // This is flaky when run under the dev live-reload server.  It seems
+    // to be reliable when run under build+preview.
     const filename = uuidv4();
     const newFilename = uuidv4();
 
@@ -44,7 +46,9 @@ describe("File management", () => {
     cy.get(".MenuBar").contains(filename);
 
     cy.get("span.FilenameDisplayOrEdit").dblclick();
-    cy.get("input").clear().type(newFilename).type("{enter}");
+    cy.get("input").clear();
+    cy.get("input").type(newFilename);
+    cy.get("input").type("{enter}");
     cy.get("span.FilenameDisplayOrEdit").contains(newFilename);
   });
 

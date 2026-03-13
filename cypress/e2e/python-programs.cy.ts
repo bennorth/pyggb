@@ -636,7 +636,9 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
         if (specIdx % 2 === 0) {
           runCode();
         } else {
-          cy.get("#pyggb-ace-editor").type("{ctrl}{enter}");
+          cy.get("#pyggb-ace-editor > textarea").type("{ctrl}{enter}", {
+            force: true,
+          });
         }
         cy.get(".stdout-inner").contains("done");
         (spec.expOutputs ?? []).forEach((expOutput) =>
