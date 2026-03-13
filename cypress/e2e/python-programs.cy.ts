@@ -19,6 +19,7 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
 
   type RunsWithoutErrorSpec = {
+    only?: boolean;
     label: string;
     code: string;
     expOutputs?: Array<string>;
@@ -629,7 +630,8 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
   ];
 
   runsWithoutErrorSpecs.forEach((spec, specIdx) => {
-    it(`runs ${spec.label} ok`, () => {
+    const specFun = (spec.only ?? false) ? it.only : it;
+    specFun(`runs ${spec.label} ok`, () => {
       cy.window().then((window) => {
         const fullCode = deIndent(spec.code) + '\nprint("done")';
         window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(fullCode);
