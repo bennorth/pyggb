@@ -5,4 +5,4 @@ export type ExampleProgramPreview = {
   docMarkdown: string;
 };
 
-export const kSkulptGgbModuleUrl = "skulpt-ggb.js";
+export const kSkulptGgbModuleUrl = "/skulpt-ggb.js";

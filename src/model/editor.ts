@@ -153,7 +153,7 @@ export const editor: Editor = {
     };
     a.setBackingFileState(loadingState);
 
-    const urlWithinApp = `examples/${example.path}`;
+    const urlWithinApp = `/examples/${example.path}`;
     const maybeCodeText = await fetchAsText(urlWithinApp);
     if (maybeCodeText == null) {
       console.error(`could not get user-file at "${example.path}"`);
