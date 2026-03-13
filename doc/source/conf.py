@@ -8,7 +8,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'PyGgb'
-copyright = '2025, Ben North'
+copyright = '2025, 2026, GeoGebra'
 author = 'Ben North'
 
 
