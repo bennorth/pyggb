@@ -50,7 +50,7 @@ export const assertNever = (x: never): never => {
 
 export function propSetterAction<
   ModelT extends object,
-  PropNameT extends keyof State<ModelT>
+  PropNameT extends keyof State<ModelT>,
 >(propName: PropNameT): Action<ModelT, State<ModelT>[PropNameT]> {
   return action((s, val) => {
     s[propName] = val;
@@ -59,7 +59,7 @@ export function propSetterAction<
 
 export function propSetterNonNullAction<
   ModelT extends object,
-  PropNameT extends keyof State<ModelT>
+  PropNameT extends keyof State<ModelT>,
 >(propName: PropNameT): Action<ModelT, NonNullable<State<ModelT>[PropNameT]>> {
   return action((s, val) => {
     s[propName] = val;
