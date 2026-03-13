@@ -531,6 +531,10 @@ type EveryElementIsGgbObjectOfType = (
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
   isGgbObjectOfType(obj: SkObject, requiredType: string): obj is SkGgbObject;
+  isGgbObjectOfSomeType(
+    obj: SkObject,
+    permittedTypes: Array<string>
+  ): obj is SkGgbObject;
   ggbType(objOrLabel: SkGgbObject | string): string;
   throwIfNotGgbObject(
     obj: SkObject,
@@ -623,6 +627,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
   const api: AugmentedGgbApi = {
     isGgbObject: fixGgbArg_1(isGgbObject) as IsGgbObjectPredicate,
     isGgbObjectOfType: fixGgbArg_2(isGgbObject) as IsGgbObjectPredicate,
+    isGgbObjectOfSomeType: fixGgbArg_2(isGgbObject) as IsGgbObjectPredicate,
     ggbType: fixGgbArg_1(_ggbType),
     throwIfNotGgbObject,
     throwIfNotGgbObjectOfType: fixGgbArg_3(throwIfNotGgbObjectOfType),
