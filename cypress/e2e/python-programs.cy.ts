@@ -43,37 +43,37 @@ const getPythonPrograms = async () => {
 };
 
 getPythonPrograms().then((runsWithoutErrorSpecs) =>
-// We specify no test isolation here, to avoid the heavy start-up cost
-// per small program we run.  We just keep entering new programs into
-// the same pyggb "file".
-//
-describe("Runs valid Python programs", optsNoIsolation, () => {
-  before(() => createNewPyGgbFile());
+  // We specify no test isolation here, to avoid the heavy start-up cost
+  // per small program we run.  We just keep entering new programs into
+  // the same pyggb "file".
+  //
+  describe("Runs valid Python programs", optsNoIsolation, () => {
+    before(() => createNewPyGgbFile());
 
-  runsWithoutErrorSpecs.forEach((spec, specIdx) => {
-    const specFun = (spec.only ?? false) ? it.only : it;
-    specFun(`runs ${spec.label} ok`, () => {
-      cy.window().then((window) => {
-        const fullCode = deIndent(spec.code) + '\nprint("done")';
-        window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(fullCode);
-        if (specIdx % 2 === 0) {
-          runCode();
-        } else {
-          cy.get("#pyggb-ace-editor > textarea").type("{ctrl}{enter}", {
-            force: true,
-          });
-        }
-        cy.get(".stdout-inner").contains("done");
-        (spec.expOutputs ?? []).forEach((expOutput) =>
-          cy.get(".stdout-inner").contains(`${expOutput}\n`)
-        );
-        (spec.expNonOutputs ?? []).forEach((expNonOutput) =>
-          cy.get(".stdout-inner").contains(expNonOutput).should("not.exist")
-        );
+    runsWithoutErrorSpecs.forEach((spec, specIdx) => {
+      const specFun = (spec.only ?? false) ? it.only : it;
+      specFun(`runs ${spec.label} ok`, () => {
+        cy.window().then((window) => {
+          const fullCode = deIndent(spec.code) + '\nprint("done")';
+          window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(fullCode);
+          if (specIdx % 2 === 0) {
+            runCode();
+          } else {
+            cy.get("#pyggb-ace-editor > textarea").type("{ctrl}{enter}", {
+              force: true,
+            });
+          }
+          cy.get(".stdout-inner").contains("done");
+          (spec.expOutputs ?? []).forEach((expOutput) =>
+            cy.get(".stdout-inner").contains(`${expOutput}\n`)
+          );
+          (spec.expNonOutputs ?? []).forEach((expNonOutput) =>
+            cy.get(".stdout-inner").contains(expNonOutput).should("not.exist")
+          );
+        });
       });
     });
-  });
-})
+  })
 );
 
 type CodeWithErrorSpec = {
