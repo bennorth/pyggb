@@ -46,12 +46,11 @@ build:
   before_script:
     - npm clean-install
   script:
-    - export PUBLIC_URL=/${PYGGB_HOSTED_BASE_PATH}
-    - export REACT_APP_DOCS_BASE_URL_WITHIN_APP=doc
-    - npm run build
+    - export VITE_DOCS_BASE_URL_WITHIN_APP=/doc
+    - npx vite build --base=/${PYGGB_HOSTED_BASE_PATH}/
   artifacts:
     paths:
-      - build/
+      - dist/
 
 publish:
   stage: release
@@ -59,6 +58,6 @@ publish:
     - amd
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   script:
-    - aws s3 sync ./build s3://${S3_STATIC_BUCKET}/${PYGGB_HOSTED_BASE_PATH}
+    - aws s3 sync ./dist s3://${S3_STATIC_BUCKET}/${PYGGB_HOSTED_BASE_PATH}
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

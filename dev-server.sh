@@ -39,4 +39,4 @@ REPO_ROOT=$(git rev-parse --show-toplevel)
 
 export REACT_APP_DOCS_BASE_URL_WITHIN_APP=doc
 
-exec npm start
+exec npx vite dev

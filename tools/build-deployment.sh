@@ -8,10 +8,7 @@ if [ "$(echo "$node_version" | grep -c -E '^v24[.]')" -ne 1 ]; then
     exit 1
 fi
 
-PUBLIC_URL=/pyggb
-export PUBLIC_URL
-
 REPO_ROOT=$(cd_or_fail "$(dirname "$0")"; cd_or_fail ..; pwd -P)
 cd_or_fail "$REPO_ROOT"
 
-npm run build
+npx vite build --base=/pyggb/

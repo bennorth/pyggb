@@ -42,7 +42,7 @@ git clone "${PYGGB_ORIGIN_REPO:?}" repo
     cd repo
     npm clean-install
     ./tools/build-examples.sh
-    PUBLIC_URL=/"$PYGGB_HOSTED_BASE_PATH" npm run build
+    npx vite build --base=/"$PYGGB_HOSTED_BASE_PATH"/
 )
 
 mkdir www
