@@ -538,6 +538,7 @@ export type AugmentedGgbApi = {
   deleteMethodsSlice: MethodDescriptorsSlice;
   withPropertiesMethodsSlice: MethodDescriptorsSlice;
   evalCmd(cmd: string): string;
+  evalCmdWithGgbArgs(cmdName: string, args: Array<SkGgbObject>): string;
   getValue(label: string): number;
   setValue(label: string, value: number): void;
   getXcoord(label: string): number;
@@ -571,6 +572,12 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
   }
 
   const evalCmd = (cmd: string): string => ggbApi.evalCommandGetLabels(cmd);
+  const evalCmdWithGgbArgs = (cmdName: string, args: Array<SkGgbObject>) => {
+    const ggbArgs = args.map((a) => a.$ggbLabel);
+    const ggbArgStr = ggbArgs.join(",");
+    const ggbCmd = `${cmdName}(${ggbArgStr})`;
+    return evalCmd(ggbCmd);
+  };
   const getValue = (label: string): any => ggbApi.getValue(label);
   const setValue = (label: string, value: number): void =>
     ggbApi.setValue(label, value);
@@ -606,6 +613,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     deleteMethodsSlice: deleteMethodsSlice(ggbApi),
     withPropertiesMethodsSlice,
     evalCmd,
+    evalCmdWithGgbArgs,
     getValue,
     setValue,
     getXcoord,
