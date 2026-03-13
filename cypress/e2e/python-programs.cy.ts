@@ -16,6 +16,7 @@ const getPythonPrograms = async () => {
   // Limitation of TypeScript and/or bundler and/or other moving parts
   // mean we can't just list the basenames and map import() over them.
   const specModules = await Promise.all([
+    import("../python-programs/angle-bisector"),
     import("../python-programs/boolean"),
     import("../python-programs/circle"),
     import("../python-programs/clear-console"),

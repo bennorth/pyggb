@@ -32,6 +32,7 @@ Functions
 .. toctree::
    :maxdepth: 1
 
+   functions/angle-bisector
    functions/distance
    functions/intersect
    functions/number-of-objects
