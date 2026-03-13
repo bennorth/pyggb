@@ -24,6 +24,7 @@ import { register as registerMidpoint } from "./wrappings/midpoint";
 import { register as registerPerpendicularBisector } from "./wrappings/perpendicular-bisector";
 import { register as registerPerpendicularLine } from "./wrappings/perpendicular-line";
 import { register as registerCircumference } from "./wrappings/circumference";
+import { register as registerPerimeter } from "./wrappings/perimeter";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
@@ -71,6 +72,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerPerpendicularBisector(mod, appApi);
   registerPerpendicularLine(mod, appApi);
   registerCircumference(mod, appApi);
+  registerPerimeter(mod, appApi);
 
   registerClearConsole(mod, appApi);
 

@@ -38,6 +38,7 @@ Functions
    functions/perpendicular-line
    functions/distance
    functions/circumference
+   functions/perimeter
    functions/intersect
    functions/number-of-objects
    functions/rotate
