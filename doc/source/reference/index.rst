@@ -33,6 +33,7 @@ Functions
    :maxdepth: 1
 
    functions/angle-bisector
+   functions/midpoint
    functions/distance
    functions/intersect
    functions/number-of-objects
