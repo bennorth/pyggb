@@ -1,5 +1,5 @@
-If
-==
+If function
+===========
 
 .. py:function:: If(condition, then_value)
 
