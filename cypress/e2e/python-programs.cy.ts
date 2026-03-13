@@ -42,6 +42,7 @@ const getPythonPrograms = async () => {
   );
 };
 
+getPythonPrograms().then((runsWithoutErrorSpecs) =>
 // We specify no test isolation here, to avoid the heavy start-up cost
 // per small program we run.  We just keep entering new programs into
 // the same pyggb "file".
@@ -56,9 +57,6 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
     expOutputs?: Array<string>;
     expNonOutputs?: Array<string>;
   };
-
-  const runsWithoutErrorSpecs: Array<RunsWithoutErrorSpec> = [
-  ];
 
   runsWithoutErrorSpecs.forEach((spec, specIdx) => {
     const specFun = (spec.only ?? false) ? it.only : it;
@@ -83,7 +81,8 @@ describe("Runs valid Python programs", optsNoIsolation, () => {
       });
     });
   });
-});
+})
+);
 
 type CodeWithErrorSpec = {
   label: string;
