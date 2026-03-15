@@ -57,13 +57,15 @@ checked out on the branch `github-pages`:
 
 ``` shell
 ./tools/build-examples.sh
-PUBLIC_URL=/pyggb npm run build
-rsync --exclude='*~' --exclude=.git --exclude=vendor/geogebra/GeoGebra --delete --checksum -rtvn build/ pages/
+env VITE_DOCS_BASE_URL_WITHIN_APP=/doc npx vite build --base=/pyggb/
+rsync --exclude='*~' --exclude=.git --exclude=vendor/geogebra/GeoGebra --delete --checksum -rtvn dist/ pages/
 # Then if that looks OK, same without "vn" options:
-rsync --exclude='*~' --exclude=.git --exclude=vendor/geogebra/GeoGebra --delete --checksum -rt build/ pages/
+rsync --exclude='*~' --exclude=.git --exclude=vendor/geogebra/GeoGebra --delete --checksum -rt dist/ pages/
 
 ( cd doc; poetry run make clean && poetry run make html )
 rsync --delete --checksum -rt doc/build/html/ pages/doc
+
+touch pages/.nojekyll
 
 # Commit in pages/ worktree
 # Push to GitHub
@@ -76,8 +78,8 @@ rsync --delete --checksum -rt doc/build/html/ pages/doc
 For deploying to `https://some.site.com/python`:
 
 ``` shell
-# If default "node" is not v18, something like:
-nvm use v18
+# If default "node" is not v24, something like:
+nvm use v24
 
 # Adjust PYGGB_ORIGIN_REPO if required:
 PYGGB_ORIGIN_REPO=https://github.com/geogebra/pyggb.git ./tools/build-from-clone.sh
@@ -113,7 +115,7 @@ Unzip this into `public/vendor/geogebra`, which will result in a directory
 development server with
 
 ``` shell
-REACT_APP_LOCAL_GEOGEBRA=yes npm start
+VITE_LOCAL_GEOGEBRA=yes npm start
 ```
 
 To avoid the contents of this bundle showing up as untracked files in Git, add a

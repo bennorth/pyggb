@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 
 declare var GGBApplet: any;
 
-const useLocalGeoGebraBundle = process.env.REACT_APP_LOCAL_GEOGEBRA === "yes";
+const useLocalGeoGebraBundle = import.meta.env.VITE_LOCAL_GEOGEBRA === "yes";
 
 // Using a local copy of the GGB bundle was not initially successful.  One
 // symptom was that the browser attempted to fetch the main files

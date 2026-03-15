@@ -14,6 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "types": ["vite/client", "@types/w3c-web-hid"],
     "jsx": "react-jsx"
   },
   "include": ["src"]

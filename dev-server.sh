@@ -8,6 +8,12 @@ if ! hash poetry 2> /dev/null; then
     exit 1
 fi
 
+node_version=$(node --version)
+if [ "$(echo "$node_version" | grep -c -E '^v24[.]')" -ne 1 ]; then
+    >&2 echo Need node v24 but have "$node_version"
+    exit 1
+fi
+
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
 (
@@ -37,6 +43,10 @@ REPO_ROOT=$(git rev-parse --show-toplevel)
     poetry run make html
 )
 
-export REACT_APP_DOCS_BASE_URL_WITHIN_APP=doc
+export VITE_DOCS_BASE_URL_WITHIN_APP=/doc
 
-exec npm start
+if [ "$1" = prod ]; then
+    npx vite build && exec npx vite preview
+else
+    exec npx vite dev
+fi
