@@ -2,10 +2,7 @@ import React from "react";
 import { Alert } from "react-bootstrap";
 import { messageOfPyError } from "../shared/skulpt-interaction";
 import { useStoreState } from "../store";
-import {
-  SkBaseException,
-  SkTracebackEntry,
-} from "../shared/vendor-types/skulptapi";
+import { SkTracebackEntry } from "../shared/vendor-types/skulptapi";
 import { EmptyProps } from "../shared/utils";
 import { SkBaseExceptionWithIds } from "../model/pyerrors";
 
