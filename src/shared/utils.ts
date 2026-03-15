@@ -5,6 +5,8 @@ import { SkulptApi } from "./vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
+export type EmptyProps = Record<string, never>;
+
 export function cssValue(property: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(property);
 }
