@@ -528,6 +528,11 @@ type EveryElementIsGgbObjectOfType = (
   requiredType: string
 ) => objs is Array<SkGgbObject>;
 
+type EveryElementIsGgbObjectOfSomeType = (
+  objs: Array<SkObject>,
+  permittedTypes: Array<string>
+) => objs is Array<SkGgbObject>;
+
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
   isGgbObjectOfType(obj: SkObject, requiredType: string): obj is SkGgbObject;
