@@ -76,12 +76,12 @@ export type Dependencies = {
   setGgbApi: Action<Dependencies, GgbApi>;
   setGgbPythonModuleText: Action<Dependencies, string>;
 
-  boot: Thunk<Dependencies, URLSearchParams, {}, PyGgbModel>;
+  boot: Thunk<Dependencies, URLSearchParams, unknown, PyGgbModel>;
 
   _mostRecentUserFilePreview: Thunk<
     Dependencies,
     void,
-    {},
+    unknown,
     PyGgbModel,
     Promise<UserFilePreview>
   >;
@@ -89,7 +89,7 @@ export type Dependencies = {
   _bootInitialCode: Thunk<
     Dependencies,
     URLSearchParams,
-    {},
+    unknown,
     PyGgbModel,
     Promise<ActionAfterChoosingProgram>
   >;

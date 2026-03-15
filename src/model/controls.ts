@@ -18,9 +18,9 @@ type ExecutionState =
 export type Controls = {
   executionStatus: ExecutionState;
   setExecutionStatus: Action<Controls, ExecutionState>;
-  runProgram: Thunk<Controls, void, {}, PyGgbModel>;
-  pauseProgram: Thunk<Controls, void, {}, PyGgbModel>;
-  stopProgram: Thunk<Controls, void, {}, PyGgbModel>;
+  runProgram: Thunk<Controls, void, unknown, PyGgbModel>;
+  pauseProgram: Thunk<Controls, void, unknown, PyGgbModel>;
+  stopProgram: Thunk<Controls, void, unknown, PyGgbModel>;
 
   handleStartRun: Thunk<Controls, void>;
   handleEnterSleep: Thunk<Controls, SleepInterruptionActions>;
@@ -42,7 +42,7 @@ const logBadStateError = (
 };
 
 const stateIsValid = (
-  helpers: Helpers<Controls, object, {}>,
+  helpers: Helpers<Controls, object, unknown>,
   expectedState: ExecutionState["state"],
   callerName: string
 ): boolean => {
