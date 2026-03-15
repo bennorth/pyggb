@@ -3,6 +3,7 @@ import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
 import {
   SkBaseException,
+  SkBaseExceptionNub,
   SkulptApi,
   augmentedSkulptApi,
 } from "./vendor-types/skulptapi";
@@ -13,7 +14,7 @@ export type ModuleFilename = string;
 export type ModuleContents = string;
 export type LocalModules = Map<ModuleFilename, ModuleContents>;
 
-export const messageOfPyError = (err: SkBaseException) => {
+export const messageOfPyError = (err: SkBaseExceptionNub) => {
   if (err.tp$name == null) {
     return `[Internal error: ${err}]`;
   }
