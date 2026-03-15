@@ -87,6 +87,7 @@ export const runPythonProgram = (
   const appApi: AppApi = { ggb: ggbApi, sk: skApi, ui: uiApi, hid: hidApi };
   (globalThis as any).$appApiHandoverQueue.enqueue(appApi);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleError = (e: any) => errorActions.append(e);
 
   const codePreambleLines = [

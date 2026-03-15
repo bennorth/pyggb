@@ -1,6 +1,8 @@
 // This file doesn't know anything about PyGgb, the idea being that it
 // might be useful elsewhere.
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export interface SkObject {}
 
 export interface SkBool extends SkObject {

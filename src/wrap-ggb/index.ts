@@ -35,6 +35,8 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
   // This object gets built up in stages, and each register() function
   // expects a different type, so fudge it.  Perhaps there's a better
   // way to do this?
+  //
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mod = { __name__: new Sk.builtin.str("ggb") } as any;
 
   registerPoint(mod, appApi);

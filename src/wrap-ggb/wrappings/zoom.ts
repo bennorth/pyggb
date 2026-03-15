@@ -63,6 +63,7 @@ export const register: RegisterFun = (mod, appApi) => {
 
           // TypeScript is not quite clever enough to work out we
           // definitely have a list or tuple by this point.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const centreArray = (centre as any).v;
 
           const [xArg, yArg] = centreArray.map(ggb.numberValueOrLabel);

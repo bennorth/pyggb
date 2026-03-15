@@ -145,6 +145,7 @@ export const register: RegisterFun = (mod, appApi) => {
           try {
             Sk.misceval.callsimOrSuspend(fun);
           } catch (e) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             skApi.onError(e as any);
           }
         });

@@ -42,6 +42,7 @@ export function interruptibleSleep(
   throwIfNotNumber(pyDelayS, "delay");
   const delayMs = 1000 * pyDelayS.v;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const useZeroDelay = (window as any)["PYGGB_CYPRESS"]?.ZERO_DELAY ?? false;
   const effectiveDelayMs = useZeroDelay ? 0 : delayMs;
 
