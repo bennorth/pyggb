@@ -7,6 +7,7 @@ import { throwBadSpecKind } from "../../shared/utils";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbBoolean extends SkGgbObject {}
 
 type SkGgbBooleanCtorSpec =

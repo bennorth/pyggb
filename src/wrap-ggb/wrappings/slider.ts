@@ -15,6 +15,7 @@ import {
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbSlider extends SkGgbObject {}
 
 type SkGgbSliderCtorSpec =
