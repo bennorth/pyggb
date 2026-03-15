@@ -1,6 +1,9 @@
 // https://www.falldowngoboone.com/blog/share-variables-between-javascript-and-css/
 
 import { Action, action, State } from "easy-peasy";
+import { SkulptApi } from "./vendor-types/skulptapi";
+
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 export function cssValue(property: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(property);
@@ -63,6 +66,13 @@ export const fetchAsText = async (urlWithinApp: string) => {
 // For exhaustiveness checking, as per TypeScript Handbook.
 export const assertNever = (x: never): never => {
   throw Error(`should not be here; got ${x}`);
+};
+
+export const throwBadSpecKind = (typeName: string, spec: never): never => {
+  throw new Sk.builtin.TypeError(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    `bad ${typeName} spec kind "${(spec as any).kind}"`
+  );
 };
 
 export function propSetterAction<
