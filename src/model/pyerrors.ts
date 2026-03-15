@@ -52,7 +52,7 @@ const errorWithId = (error: SkBaseException): ExceptionWithId => {
 };
 
 export type PyErrors = {
-  errors: Array<SkBaseException>;
+  errors: Array<ExceptionWithId>;
   any: Computed<PyErrors, boolean>;
   appendError: Action<PyErrors, SkBaseException>;
   clearErrors: Action<PyErrors>;
@@ -66,7 +66,7 @@ export const pyErrors: PyErrors = {
       // This is what gets raised when the user hits the Stop button.
       return;
     }
-    s.errors.push(error);
+    s.errors.push(errorWithId(error));
   }),
   clearErrors: action((s) => {
     s.errors = [];
