@@ -76,8 +76,8 @@ rsync --delete --checksum -rt doc/build/html/ pages/doc
 For deploying to `https://some.site.com/python`:
 
 ``` shell
-# If default "node" is not v18, something like:
-nvm use v18
+# If default "node" is not v24, something like:
+nvm use v24
 
 # Adjust PYGGB_ORIGIN_REPO if required:
 PYGGB_ORIGIN_REPO=https://github.com/geogebra/pyggb.git ./tools/build-from-clone.sh

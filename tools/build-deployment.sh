@@ -3,8 +3,8 @@
 cd_or_fail() { cd "$1" || exit 1; }
 
 node_version=$(node --version)
-if [ "$(echo "$node_version" | grep -c -E '^v18[.]')" -ne 1 ]; then
-    echo Need node v18 but have "$node_version"
+if [ "$(echo "$node_version" | grep -c -E '^v24[.]')" -ne 1 ]; then
+    echo Need node v24 but have "$node_version"
     exit 1
 fi
 
