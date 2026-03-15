@@ -192,7 +192,7 @@ export const editor: Editor = {
       case "saving":
         // Another save already in progress.  Should we ever get here?
         return;
-      case "idle":
+      case "idle": {
         const backingSource = backingFileState.source;
         if (backingSource.kind === "example") {
           console.error("should not be saving if source is URL");
@@ -204,6 +204,7 @@ export const editor: Editor = {
         a.setBackingFileState({ ...backingFileState, status: "idle" });
         a.setBackedSeqNum(snapshot.seqNum);
         return;
+      }
     }
   }),
 
