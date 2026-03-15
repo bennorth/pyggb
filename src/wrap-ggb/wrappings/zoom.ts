@@ -5,7 +5,7 @@ import {
 } from "../../shared/vendor-types/skulptapi";
 import { assembledCommand, augmentedGgbApi } from "../shared";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 export const register = (mod: any, appApi: AppApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);

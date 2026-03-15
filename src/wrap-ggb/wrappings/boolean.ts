@@ -4,6 +4,8 @@ import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
 
+declare var Sk: SkulptApi; // eslint-disable-line no-var
+
 interface SkGgbBoolean extends SkGgbObject {}
 
 type SkGgbBooleanCtorSpec =
@@ -12,8 +14,6 @@ type SkGgbBooleanCtorSpec =
       kind: "literal";
       value: SkObject;
     };
-
-declare var Sk: SkulptApi;
 
 export const register = (mod: any, appApi: AppApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);

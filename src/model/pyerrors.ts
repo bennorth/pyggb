@@ -1,7 +1,7 @@
 import { action, Action, computed, Computed } from "easy-peasy";
 import { SkBaseException, SkulptApi } from "../shared/vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 export type PyErrors = {
   errors: Array<SkBaseException>;

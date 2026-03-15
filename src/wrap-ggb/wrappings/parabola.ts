@@ -11,7 +11,7 @@ import {
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 interface SkGgbParabola extends SkGgbObject {
   focus: SkGgbObject;

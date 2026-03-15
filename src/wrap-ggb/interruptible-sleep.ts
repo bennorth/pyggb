@@ -2,7 +2,7 @@ import { AppApi } from "../shared/appApi";
 import { throwIfNotNumber } from "./shared";
 import { SkObject, SkulptApi } from "../shared/vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 export interface SleepInterruptionActions {
   pause(): void;

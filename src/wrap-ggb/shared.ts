@@ -18,7 +18,7 @@ export interface SkGgbObject extends SkObject {
   $fireUpdateEvents(...args: Array<any>): any;
 }
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 /** Spec to indicate that we should construct a new Skulpt/Python
  * wrapper for an existing GeoGebra object. */

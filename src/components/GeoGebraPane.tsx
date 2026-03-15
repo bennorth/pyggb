@@ -1,7 +1,8 @@
 import { useStoreActions, useStoreState } from "../store";
 import React, { useEffect } from "react";
 
-declare var GGBApplet: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare var GGBApplet: any; // eslint-disable-line no-var
 
 const useLocalGeoGebraBundle = import.meta.env.VITE_LOCAL_GEOGEBRA === "yes";
 

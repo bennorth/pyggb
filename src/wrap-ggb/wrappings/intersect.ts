@@ -2,7 +2,7 @@ import { AppApi } from "../../shared/appApi";
 import { assembledCommand, augmentedGgbApi } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 // The right way to present Intersect() to Python is not obvious.  The
 // native Ggb return value is a list/array, which we could wrap in a

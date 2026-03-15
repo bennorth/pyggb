@@ -5,7 +5,8 @@ import {
   SkObject,
   SkulptApi,
 } from "../shared/vendor-types/skulptapi";
-declare var Sk: SkulptApi;
+
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 const tryParseHexColor = (color: string): [number, number, number] | null => {
   const mMatch6 = /^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/.exec(color);

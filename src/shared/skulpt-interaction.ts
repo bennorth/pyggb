@@ -7,7 +7,7 @@ import {
   augmentedSkulptApi,
 } from "./vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 export type ModuleFilename = string;
 export type ModuleContents = string;

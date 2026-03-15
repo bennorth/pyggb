@@ -148,7 +148,7 @@ export type SkulptApi = {
   builtinFiles?: { files: { [filename: string]: string } };
 };
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 type AugmentedSkulptApi = {
   checkString(x: SkObject): x is SkString;

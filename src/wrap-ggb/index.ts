@@ -25,7 +25,8 @@ import { register as registerOnTemperatureReport } from "./web-hid/on-temperatur
 import { register as registerInterruptibleSleep } from "./interruptible-sleep";
 
 import { SkulptApi } from "../shared/vendor-types/skulptapi";
-declare var Sk: SkulptApi;
+
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 (globalThis as any).$skulptGgbModule = (appApi: AppApi) => {
   // For ease of debugging:

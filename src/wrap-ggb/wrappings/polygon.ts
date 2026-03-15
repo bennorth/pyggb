@@ -14,7 +14,7 @@ import {
 } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 // TODO: If we pass an explicit list of points, we get a GGB object with
 // type like "quadrilateral" or "pentagon".  Haven't tested to see how

@@ -7,7 +7,7 @@ import {
   SkulptApi,
 } from "../../shared/vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 const functionWrapper = (ggb: AugmentedGgbApi, ggbName: string) => {
   return {
