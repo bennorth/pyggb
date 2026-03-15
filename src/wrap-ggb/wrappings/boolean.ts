@@ -3,6 +3,7 @@ import { augmentedGgbApi, WrapExistingCtorSpec, SkGgbObject } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -35,9 +36,7 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         default:
-          throw new Sk.builtin.TypeError(
-            `bad Boolean spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Boolean", spec);
       }
     },
     slots: {

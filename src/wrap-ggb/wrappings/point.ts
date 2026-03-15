@@ -13,6 +13,7 @@ import {
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -86,9 +87,7 @@ export const register = (
           break;
         }
         default:
-          throw new Sk.builtin.TypeError(
-            `bad Point spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Point", spec);
       }
 
       // TODO: Would be cleaner to avoid making a new dependent Number
