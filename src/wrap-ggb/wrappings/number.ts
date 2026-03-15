@@ -13,7 +13,7 @@ import { throwBadSpecKind } from "../../shared/utils";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-interface SkGgbNumber extends SkGgbObject {
+export interface SkGgbNumber extends SkGgbObject {
   $value(): number;
 }
 
