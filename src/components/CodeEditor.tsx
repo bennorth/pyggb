@@ -32,8 +32,6 @@ export const CodeEditor: React.FC<EmptyProps> = () => {
 
   // Force the Ace Editor to adapt itself to the new size whenever the
   // client dimensions change.
-  //
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const aceEditor = aceRef.current;
     const aceWidth = aceRef.current?.refEditor.clientWidth ?? -1;
