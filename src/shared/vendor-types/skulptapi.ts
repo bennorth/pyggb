@@ -33,9 +33,13 @@ export interface SkBaseExceptionNub extends SkObject {
   args: SkTuple;
 }
 
-export interface SkBaseException extends SkBaseExceptionNub {
-  traceback: Array<SkTracebackEntry>;
+export interface SkBaseExceptionGeneric<
+  TracebackEntryT,
+> extends SkBaseExceptionNub {
+  traceback: Array<TracebackEntryT>;
 }
+
+export type SkBaseException = SkBaseExceptionGeneric<SkTracebackEntry>;
 
 export interface SkObject {
   tp$name: string;
