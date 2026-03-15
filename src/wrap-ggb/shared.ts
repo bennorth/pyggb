@@ -44,6 +44,11 @@ export const strOfNumber = (x: number): string => {
   return `(${sig}*10^(${exp}))`;
 };
 
+/** Predicate which returns true or false according to whether the given
+ * `label` is *not* one of the strings `"null"` or `"undefined"`. */
+export const labelIsValid = (label: string) =>
+  label !== "null" && label !== "undefined";
+
 /** Given a JavaScript boolean `x`, return a string representation of
  * `x` which GeoGebra will interpret correctly.
  * */
@@ -71,16 +76,24 @@ function _ggbType(ggbApi: GgbApi, objOrLabel: SkGgbObject | string): string {
   }
 }
 
-/** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject` of
- * the given GeoGebra type `requiredType` (for example, `"circle"`).  If
- * `requiredType` is omitted, test only whether `obj` is an
- * `SkGgbObject`.  The given `ggbApi` is used to get the object's
- * GeoGebra type.
+/** Test whether the Skulpt/PyGgb object `obj` is an `SkGgbObject`,
+ * possibly meeting a further requirement on the GeoGebra type of that
+ * object.
+ *
+ * * If `requiredType` is omitted, there is no further requirement.
+ *
+ * * If the given `requiredType` is a string, then `obj` must be of that
+ *   GeoGebra type (for example, `"circle"`).
+ *
+ * * If the given `requiredType` is an array of strings, then `obj`'s
+ *   GeoGebra type must be one of those strings.
+ *
+ * The given `ggbApi` is used to get the object's GeoGebra type.
  * */
 export const isGgbObject = (
   ggbApi: GgbApi,
   obj: SkObject,
-  requiredType?: string
+  requiredType?: string | Array<string>
 ): obj is SkGgbObject => {
   // Could collapse the following into one bool expression but it wouldn't
   // obviously be clearer.
@@ -92,7 +105,16 @@ export const isGgbObject = (
 
   // We are fussy about what type; compare.
   const gotType = ggbApi.getObjectType(obj.$ggbLabel);
-  return gotType === requiredType;
+
+  if (typeof requiredType === "string") {
+    return gotType === requiredType;
+  }
+
+  if (Array.isArray(requiredType)) {
+    return requiredType.some((type) => gotType === type);
+  }
+
+  throw new Error('unexpected type of "requiredType"');
 };
 
 /** Test whether every element of a (JavaScript) array is an
@@ -106,9 +128,37 @@ const everyElementIsGgbObject = (
 const _everyElementIsGgbObjectOfType = (
   ggbApi: GgbApi,
   objs: Array<SkObject>,
-  requiredType: string
+  requiredType: string | Array<string>
 ): objs is Array<SkGgbObject> =>
   objs.every((obj) => isGgbObject(ggbApi, obj, requiredType));
+
+const _elementsAreGgbObjectsOfTypes = (
+  ggbApi: GgbApi,
+  objs: Array<SkObject>,
+  requiredTypes: Array<string>
+): objs is Array<SkGgbObject> => {
+  const nObjs = objs.length;
+  if (nObjs !== requiredTypes.length) {
+    return false;
+  }
+
+  for (let i = 0; i !== nObjs; ++i) {
+    if (!isGgbObject(ggbApi, objs[i], requiredTypes[i])) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+const _elementsAreGgbObjectsOfSomeTypes = (
+  ggbApi: GgbApi,
+  objs: Array<SkObject>,
+  permittedTypeLists: Array<Array<string>>
+): objs is Array<SkGgbObject> =>
+  permittedTypeLists.some((requiredTypes) =>
+    _elementsAreGgbObjectsOfTypes(ggbApi, objs, requiredTypes)
+  );
 
 /** Test whether the Skulpt/PyGgb object `obj` is either a Skulpt/Python
  * number or a GeoGebra `numeric` object. */
@@ -511,9 +561,28 @@ type EveryElementIsGgbObjectOfType = (
   requiredType: string
 ) => objs is Array<SkGgbObject>;
 
+type EveryElementIsGgbObjectOfSomeType = (
+  objs: Array<SkObject>,
+  permittedTypes: Array<string>
+) => objs is Array<SkGgbObject>;
+
+type ElementsAreGgbObjectsOfTypes = (
+  objs: Array<SkObject>,
+  requiredTypes: Array<string>
+) => objs is Array<SkGgbObject>;
+
+type ElementsAreGgbObjectsOfSomeTypes = (
+  objs: Array<SkObject>,
+  requiredTypes: Array<Array<string>>
+) => objs is Array<SkGgbObject>;
+
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
   isGgbObjectOfType(obj: SkObject, requiredType: string): obj is SkGgbObject;
+  isGgbObjectOfSomeType(
+    obj: SkObject,
+    permittedTypes: Array<string>
+  ): obj is SkGgbObject;
   ggbType(objOrLabel: SkGgbObject | string): string;
   throwIfNotGgbObject(
     obj: SkObject,
@@ -530,6 +599,9 @@ export type AugmentedGgbApi = {
   ): asserts obj is SkInt | SkFloat | SkGgbObject;
   everyElementIsGgbObject: typeof everyElementIsGgbObject;
   everyElementIsGgbObjectOfType: EveryElementIsGgbObjectOfType;
+  elementsAreGgbObjectsOfTypes: ElementsAreGgbObjectsOfTypes;
+  elementsAreGgbObjectsOfSomeTypes: ElementsAreGgbObjectsOfSomeTypes;
+  everyElementIsGgbObjectOfSomeType: EveryElementIsGgbObjectOfSomeType;
   isPythonOrGgbNumber(obj: SkObject): boolean;
   numberValueOrLabel(obj: SkObject): string;
   wrapExistingGgbObject(label: string): SkGgbObject;
@@ -538,6 +610,12 @@ export type AugmentedGgbApi = {
   deleteMethodsSlice: MethodDescriptorsSlice;
   withPropertiesMethodsSlice: MethodDescriptorsSlice;
   evalCmd(cmd: string): string;
+  asyncEvalCmd(cmd: string): Promise<string>;
+  evalCmdWithGgbArgs(cmdName: string, args: Array<SkGgbObject>): string;
+  existingFromCmdAndGgbArgs(
+    cmdName: string,
+    args: Array<SkGgbObject>
+  ): SkGgbObject;
   getValue(label: string): number;
   setValue(label: string, value: number): void;
   getXcoord(label: string): number;
@@ -571,6 +649,19 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
   }
 
   const evalCmd = (cmd: string): string => ggbApi.evalCommandGetLabels(cmd);
+  const asyncEvalCmd = (cmd: string): Promise<string> =>
+    ggbApi.asyncEvalCommandGetLabels(cmd);
+  const evalCmdWithGgbArgs = (cmdName: string, args: Array<SkGgbObject>) => {
+    const ggbArgs = args.map((a) => a.$ggbLabel);
+    const ggbArgStr = ggbArgs.join(",");
+    const ggbCmd = `${cmdName}(${ggbArgStr})`;
+    return evalCmd(ggbCmd);
+  };
+  const existingFromCmdAndGgbArgs = (
+    cmdName: string,
+    args: Array<SkGgbObject>
+  ) => wrapExistingGgbObject(ggbApi, evalCmdWithGgbArgs(cmdName, args));
+
   const getValue = (label: string): any => ggbApi.getValue(label);
   const setValue = (label: string, value: number): void =>
     ggbApi.setValue(label, value);
@@ -590,6 +681,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
   const api: AugmentedGgbApi = {
     isGgbObject: fixGgbArg_1(isGgbObject) as IsGgbObjectPredicate,
     isGgbObjectOfType: fixGgbArg_2(isGgbObject) as IsGgbObjectPredicate,
+    isGgbObjectOfSomeType: fixGgbArg_2(isGgbObject) as IsGgbObjectPredicate,
     ggbType: fixGgbArg_1(_ggbType),
     throwIfNotGgbObject,
     throwIfNotGgbObjectOfType: fixGgbArg_3(throwIfNotGgbObjectOfType),
@@ -598,6 +690,15 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     everyElementIsGgbObjectOfType: fixGgbArg_2(
       _everyElementIsGgbObjectOfType
     ) as EveryElementIsGgbObjectOfType,
+    everyElementIsGgbObjectOfSomeType: fixGgbArg_2(
+      _everyElementIsGgbObjectOfType
+    ) as EveryElementIsGgbObjectOfSomeType,
+    elementsAreGgbObjectsOfTypes: fixGgbArg_2(
+      _elementsAreGgbObjectsOfTypes
+    ) as ElementsAreGgbObjectsOfTypes,
+    elementsAreGgbObjectsOfSomeTypes: fixGgbArg_2(
+      _elementsAreGgbObjectsOfSomeTypes
+    ) as ElementsAreGgbObjectsOfSomeTypes,
     isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
     numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
     wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),
@@ -606,6 +707,9 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     deleteMethodsSlice: deleteMethodsSlice(ggbApi),
     withPropertiesMethodsSlice,
     evalCmd,
+    asyncEvalCmd,
+    evalCmdWithGgbArgs,
+    existingFromCmdAndGgbArgs,
     getValue,
     setValue,
     getXcoord,

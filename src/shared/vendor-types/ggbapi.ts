@@ -41,6 +41,7 @@ export type GgbApi = {
   getObjectNumber(): number;
 
   evalCommandGetLabels(cmd: string): string;
+  asyncEvalCommandGetLabels(cmd: string): Promise<string>;
 
   registerObjectUpdateListener(label: string, fun: AnyVoidFunction): void;
 
