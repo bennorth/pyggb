@@ -13,8 +13,6 @@ stages:
 
 build-examples:
   stage: build-dependencies
-  tags:
-    - docker
   image: python:3.13-alpine
   script:
     - python3 tools/build_examples_index.py ./public/examples > ./public/examples/index.json
@@ -24,8 +22,6 @@ build-examples:
 
 build-docs:
   stage: build-dependencies
-  tags:
-    - docker
   image: python:3.13-alpine
   before_script:
     - apk --no-cache add curl make
@@ -40,9 +36,7 @@ build-docs:
 
 build:
   stage: build
-  tags:
-    - docker
-  image: node:18.16-alpine
+  image: node:24-alpine
   before_script:
     - npm clean-install
   script:
@@ -54,8 +48,6 @@ build:
 
 publish:
   stage: release
-  tags:
-    - amd
   image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
   script:
     - aws s3 sync ./dist s3://${S3_STATIC_BUCKET}/${PYGGB_HOSTED_BASE_PATH}
