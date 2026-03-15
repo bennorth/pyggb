@@ -24,6 +24,9 @@ export type AppApi = {
   hid: HidApi;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type RegisterFun = (mod: any, appApi: AppApi) => void;
+
 (globalThis as any).$appApiHandoverQueue = (() => {
   let queue: Array<AppApi> = [];
 
