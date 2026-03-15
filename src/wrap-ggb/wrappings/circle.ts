@@ -8,13 +8,14 @@ import {
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
+import { SkGgbNumber } from "./number";
 import { throwBadSpecKind } from "../../shared/utils";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 interface SkGgbCircle extends SkGgbObject {
-  radiusNumber: any; // TODO: SkGgbNumber | null ??
-  $radiusNumber: (this: SkGgbCircle) => any;
+  radiusNumber: SkGgbNumber | null;
+  $radiusNumber: (this: SkGgbCircle) => SkGgbNumber;
 }
 
 type SkGgbCircleCtorSpec =

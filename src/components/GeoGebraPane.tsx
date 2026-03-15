@@ -1,4 +1,5 @@
 import { EmptyProps } from "../shared/utils";
+import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { useStoreActions, useStoreState } from "../store";
 import React, { useEffect } from "react";
 
@@ -64,7 +65,7 @@ export const GeoGebraPane: React.FC<EmptyProps> = () => {
       allowStyleBar: false,
       preventFocus: false,
       showZoomButtons: true,
-      appletOnLoad: (api: any) => {
+      appletOnLoad: (api: GgbApi) => {
         api.setPerspective("G");
         // Because we only do the inject once, the following does not
         // cause a state-update/render loop:

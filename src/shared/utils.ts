@@ -100,7 +100,9 @@ export const delaySeconds = (nSeconds: number) => {
   return new Promise((r) => setTimeout(r, timeoutMs));
 };
 
-export const nullaryEventHandler = (f: (...args: any) => any) => () => f();
+export const nullaryEventHandler =
+  (f: (() => unknown) | ((...args: Array<unknown>) => unknown)) => () =>
+    f();
 
 // To allow testing to hook into various aspects of behaviour:
 const PYGGB_CYPRESS_default = {};

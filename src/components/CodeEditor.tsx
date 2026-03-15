@@ -8,6 +8,7 @@ import ReactAce from "react-ace/lib/ace";
 import { EmptyProps, PYGGB_CYPRESS } from "../shared/utils";
 import classNames from "classnames";
 import { Spinner } from "react-bootstrap";
+import { IAceEditor } from "react-ace/lib/types";
 
 export const CodeEditor: React.FC<EmptyProps> = () => {
   const backingStatus = useStoreState((s) => s.editor.backingFileState.status);
@@ -44,7 +45,7 @@ export const CodeEditor: React.FC<EmptyProps> = () => {
     }
   });
 
-  const onEditorLoad = (editor: any) => {
+  const onEditorLoad = (editor: IAceEditor) => {
     PYGGB_CYPRESS().ACE_EDITOR = editor;
     editor.commands.addCommand({
       name: "runProgram",

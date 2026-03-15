@@ -181,7 +181,7 @@ export const register = (
     },
     methods: {
       when_moved: {
-        $meth(this: SkGgbPoint, pyFun: any) {
+        $meth(this: SkGgbPoint, pyFun: SkObject) {
           this.$updateHandlers.push(pyFun);
           return pyFun;
         },

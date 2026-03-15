@@ -41,7 +41,7 @@ const kwOrDefault = (
   rawKwargs: MaybeKeywordArgsArray,
   argName: string,
   isCorrectType: (obj: SkObject) => boolean,
-  jsDefault: any
+  jsDefault: number | boolean
 ) => {
   const kwargs = rawKwargs ?? [];
 
@@ -61,7 +61,7 @@ const kwOrDefault = (
 const kwNumber = (
   kwargs: MaybeKeywordArgsArray,
   argName: string,
-  jsDefault: any
+  jsDefault: number
 ) => {
   return kwOrDefault(kwargs, argName, Sk.builtin.checkNumber, jsDefault);
 };
@@ -69,7 +69,7 @@ const kwNumber = (
 const kwBoolean = (
   kwargs: MaybeKeywordArgsArray,
   argName: string,
-  jsDefault: any
+  jsDefault: boolean
 ) => {
   return kwOrDefault(kwargs, argName, Sk.builtin.checkBool, jsDefault);
 };
@@ -153,7 +153,7 @@ export const register: RegisterFun = (mod, appApi) => {
     },
     methods: {
       when_changed: {
-        $meth(this: SkGgbSlider, pyFun: any) {
+        $meth(this: SkGgbSlider, pyFun: SkObject) {
           this.$updateHandlers.push(pyFun);
           return pyFun;
         },

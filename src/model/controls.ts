@@ -42,7 +42,7 @@ const logBadStateError = (
 };
 
 const stateIsValid = (
-  helpers: Helpers<Controls, any, {}>,
+  helpers: Helpers<Controls, object, {}>,
   expectedState: ExecutionState["state"],
   callerName: string
 ): boolean => {

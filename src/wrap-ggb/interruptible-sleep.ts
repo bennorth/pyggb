@@ -25,14 +25,14 @@ export interface RunControlClient {
 
 type SleepState = {
   resolvePromise(value: SkObject): void;
-  rejectPromise(reason: any): void;
+  rejectPromise(reason: SkObject): void;
   timeoutId: ReturnType<typeof setTimeout>;
 };
 
 const nullSleepState = {
   resolvePromise(_value: SkObject) {},
-  rejectPromise(_reason: any) {},
-  timeoutId: null as any,
+  rejectPromise(_reason: SkObject) {},
+  timeoutId: -1,
 };
 
 export function interruptibleSleep(

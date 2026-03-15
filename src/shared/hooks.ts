@@ -1,11 +1,8 @@
 import React, { useEffect } from "react";
 
-// Json can accommodate other top-level types, but this will do for us:
-type JsonValue = object | Array<any>;
-
 type FetchResult =
   | { status: "failed" }
-  | { status: "succeeded"; data: JsonValue };
+  | { status: "succeeded"; data: unknown };
 
 type FetchState = { status: "idle" | "pending" } | FetchResult;
 
@@ -19,7 +16,7 @@ export const useJsonResource = (url: string): FetchState => {
   const data0 = mData == null || mData.status === "failed" ? null : mData.data;
 
   const [status, setStatus] = React.useState<FetchStatus>(status0);
-  const [data, setData] = React.useState<JsonValue | null>(data0);
+  const [data, setData] = React.useState<unknown | null>(data0);
 
   useEffect(() => {
     if (status !== "idle") return;
@@ -44,6 +41,6 @@ export const useJsonResource = (url: string): FetchState => {
     case "failed":
       return { status };
     case "succeeded":
-      return { status, data: data as JsonValue };
+      return { status, data };
   }
 };

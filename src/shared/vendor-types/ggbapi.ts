@@ -1,4 +1,4 @@
-type AnyVoidFunction = (...args: Array<any>) => void;
+type AnyVoidFunction = (...args: Array<unknown>) => void;
 
 export type GgbApi = {
   getObjectType(label: string): string;

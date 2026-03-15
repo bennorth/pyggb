@@ -14,8 +14,8 @@ import { OperationSlots, operationSlots } from "./operations";
 /** A Skulpt object which is also a wrapped GeoGebra object. */
 export interface SkGgbObject extends SkObject {
   $ggbLabel: string;
-  $updateHandlers: Array<any>;
-  $fireUpdateEvents(...args: Array<any>): any;
+  $updateHandlers: Array<SkObject>;
+  $fireUpdateEvents(...args: Array<SkObject>): unknown;
 }
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
@@ -662,7 +662,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     args: Array<SkGgbObject>
   ) => wrapExistingGgbObject(ggbApi, evalCmdWithGgbArgs(cmdName, args));
 
-  const getValue = (label: string): any => ggbApi.getValue(label);
+  const getValue = (label: string): number => ggbApi.getValue(label);
   const setValue = (label: string, value: number): void =>
     ggbApi.setValue(label, value);
   const setCoords = (label: string, x: number, y: number): void =>
