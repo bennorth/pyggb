@@ -29,8 +29,8 @@ const tryParseHexColor = (color: string): [number, number, number] | null => {
 };
 
 const tryParseColor = (rawColor: string): [number, number, number] | null => {
-  const hexRgbFromNamedColour: Map<string, string> = (globalThis as any)
-    .$hexRgbFromNamedColour;
+  const hexRgbFromNamedColour: Map<string, string> =
+    globalThis.$hexRgbFromNamedColour;
 
   const lcColor = rawColor.toLowerCase();
   const mHex = hexRgbFromNamedColour.get(lcColor);

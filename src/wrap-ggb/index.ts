@@ -28,9 +28,9 @@ import { SkulptApi } from "../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-(globalThis as any).$skulptGgbModule = (appApi: AppApi) => {
+globalThis.$skulptGgbModule = (appApi: AppApi) => {
   // For ease of debugging:
-  (window as any).ggbApplet = appApi.ggb;
+  globalThis.ggbApplet = appApi.ggb;
 
   // This object gets built up in stages, and each register() function
   // expects a different type, so fudge it.  Perhaps there's a better

@@ -32,7 +32,7 @@ export type AppApiHandoverQueue = {
   dequeue: () => AppApi;
 };
 
-(globalThis as any).$appApiHandoverQueue = (() => {
+globalThis.$appApiHandoverQueue = ((): AppApiHandoverQueue => {
   let queue: Array<AppApi> = [];
 
   const enqueue = (api: AppApi): void => {

@@ -3,7 +3,7 @@ export {};
 // Copied, pasted, and processed from
 // https://w3c.github.io/csswg-drafts/css-color/#named-colors
 //
-(globalThis as any).$hexRgbFromNamedColour = new Map<string, string>([
+globalThis.$hexRgbFromNamedColour = new Map<string, string>([
   ["aliceblue", "#f0f8ff"],
   ["antiquewhite", "#faebd7"],
   ["aqua", "#00ffff"],
