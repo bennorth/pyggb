@@ -556,6 +556,7 @@ export type AugmentedGgbApi = {
   ): asserts obj is SkInt | SkFloat | SkGgbObject;
   everyElementIsGgbObject: typeof everyElementIsGgbObject;
   everyElementIsGgbObjectOfType: EveryElementIsGgbObjectOfType;
+  everyElementIsGgbObjectOfSomeType: EveryElementIsGgbObjectOfSomeType;
   isPythonOrGgbNumber(obj: SkObject): boolean;
   numberValueOrLabel(obj: SkObject): string;
   wrapExistingGgbObject(label: string): SkGgbObject;
@@ -641,6 +642,9 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     everyElementIsGgbObjectOfType: fixGgbArg_2(
       _everyElementIsGgbObjectOfType
     ) as EveryElementIsGgbObjectOfType,
+    everyElementIsGgbObjectOfSomeType: fixGgbArg_2(
+      _everyElementIsGgbObjectOfType
+    ) as EveryElementIsGgbObjectOfSomeType,
     isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
     numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
     wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),
