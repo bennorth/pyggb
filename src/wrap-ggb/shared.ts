@@ -123,7 +123,7 @@ const everyElementIsGgbObject = (
 const _everyElementIsGgbObjectOfType = (
   ggbApi: GgbApi,
   objs: Array<SkObject>,
-  requiredType: string
+  requiredType: string | Array<string>
 ): objs is Array<SkGgbObject> =>
   objs.every((obj) => isGgbObject(ggbApi, obj, requiredType));
 
