@@ -166,7 +166,7 @@ export class PyGgbDexie extends Dexie {
     }
 
     let suffix = 0;
-    let candidateName = "";
+    let candidateName: string;
 
     do {
       candidateName = `${nameStem} (${++suffix})`;
