@@ -1,7 +1,8 @@
 import React, { createRef, useEffect } from "react";
 import { useStoreState } from "../store";
+import { EmptyProps } from "../shared/utils";
 
-export const StdoutPane: React.FC<{}> = () => {
+export const StdoutPane: React.FC<EmptyProps> = () => {
   const content = useStoreState((s) => s.pyStdout.content);
   const divRef = createRef<HTMLDivElement>();
 

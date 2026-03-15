@@ -2,7 +2,7 @@ import classnames from "classnames";
 import React, { useEffect, useState } from "react";
 import { Container, Navbar, NavDropdown, Spinner } from "react-bootstrap";
 import { OperationalBackingFileState } from "../model/editor";
-import { assertNever } from "../shared/utils";
+import { assertNever, EmptyProps } from "../shared/utils";
 import { useStoreActions, useStoreState } from "../store";
 import { RunButton, PauseButton, StopButton } from "./RunButton";
 import { AboutButton } from "./AboutButton";
@@ -94,7 +94,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
 
 const doNothing = () => {};
 
-export const MenuBar: React.FC<{}> = () => {
+export const MenuBar: React.FC<EmptyProps> = () => {
   const allDependenciesReady = useStoreState((s) => s.dependencies.allReady);
   const backingState = useStoreState((s) => s.editor.backingFileState);
   const codeText = useStoreState((s) => s.editor.codeText);

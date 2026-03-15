@@ -1,8 +1,9 @@
 import React, { useState, KeyboardEvent } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useStoreActions, useStoreState } from "../../store";
+import { EmptyProps } from "../../shared/utils";
 
-export const NewFileModal: React.FC<{}> = () => {
+export const NewFileModal: React.FC<EmptyProps> = () => {
   const active = useStoreState((s) => s.modals.newFile.active);
   const setActive = useStoreActions((a) => a.modals.newFile.setActive);
   const codeText = useStoreState((s) => s.modals.newFile.initialCodeText);

@@ -5,11 +5,11 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { useStoreActions, useStoreState } from "../store";
 import ReactAce from "react-ace/lib/ace";
-import { PYGGB_CYPRESS } from "../shared/utils";
+import { EmptyProps, PYGGB_CYPRESS } from "../shared/utils";
 import classNames from "classnames";
 import { Spinner } from "react-bootstrap";
 
-export const CodeEditor: React.FC<{}> = () => {
+export const CodeEditor: React.FC<EmptyProps> = () => {
   const backingStatus = useStoreState((s) => s.editor.backingFileState.status);
 
   const codeText = useStoreState((s) => s.editor.codeText);

@@ -1,3 +1,4 @@
+import { EmptyProps } from "../shared/utils";
 import { useStoreActions, useStoreState } from "../store";
 import React, { useEffect } from "react";
 
@@ -27,7 +28,7 @@ const nextAppletDivId = (() => {
   return () => `ggb-applet-content-${++nextId}`;
 })();
 
-export const GeoGebraPane: React.FC<{}> = () => {
+export const GeoGebraPane: React.FC<EmptyProps> = () => {
   const bootStatus = useStoreState((s) => s.dependencies.bootStatus);
   const ggbApi = useStoreState((s) => s.dependencies.ggbApi);
   const setGgbApi = useStoreActions((a) => a.dependencies.setGgbApi);

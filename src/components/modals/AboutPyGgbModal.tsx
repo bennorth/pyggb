@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useStoreActions, useStoreState } from "../../store";
+import { EmptyProps } from "../../shared/utils";
 
 type NewTabAProps = {
   href: string;
@@ -15,7 +16,7 @@ const NewTabA: React.FC<NewTabAProps> = ({ href, children }) => {
   );
 };
 
-export const AboutPyGgbModal: React.FC<{}> = () => {
+export const AboutPyGgbModal: React.FC<EmptyProps> = () => {
   const isActive = useStoreState((s) => s.modals.aboutPyGgb.active);
   const setActive = useStoreActions((a) => a.modals.aboutPyGgb.setActive);
   const dismiss = () => setActive(false);

@@ -6,6 +6,7 @@ import {
   SkBaseException,
   SkTracebackEntry,
 } from "../shared/vendor-types/skulptapi";
+import { EmptyProps } from "../shared/utils";
 
 type TracebackEntryItemProps = { entry: SkTracebackEntry };
 const TracebackEntryItem: React.FC<TracebackEntryItemProps> = ({ entry }) => {
@@ -43,7 +44,7 @@ const ErrorReport: React.FC<ErrorReportProps> = ({ error }) => {
   );
 };
 
-export const ErrorList: React.FC<{}> = () => {
+export const ErrorList: React.FC<EmptyProps> = () => {
   const errors = useStoreState((s) => s.pyErrors.errors);
 
   return (
