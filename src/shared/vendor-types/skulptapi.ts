@@ -3,8 +3,6 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export interface SkObject {}
-
 export interface SkBool extends SkObject {
   v: boolean;
 }
