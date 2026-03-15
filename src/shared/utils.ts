@@ -108,8 +108,11 @@ export const nullaryEventHandler =
 const PYGGB_CYPRESS_default = {};
 
 export const PYGGB_CYPRESS = () => {
-  if ((window as any).PYGGB_CYPRESS == null) {
-    (window as any).PYGGB_CYPRESS = PYGGB_CYPRESS_default;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const windowAny = window as any;
+
+  if (windowAny.PYGGB_CYPRESS == null) {
+    windowAny.PYGGB_CYPRESS = PYGGB_CYPRESS_default;
   }
-  return (window as any).PYGGB_CYPRESS;
+  return windowAny.PYGGB_CYPRESS;
 };
