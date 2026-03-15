@@ -27,6 +27,30 @@ type ExceptionWithId = {
   error: SkBaseExceptionWithIds;
 };
 
+const nextId = (() => {
+  let id = 12000;
+  return () => ++id;
+})();
+
+const tracebackWithIds = (
+  traceback: Array<SkTracebackEntry>
+): Array<SkTracebackEntryWithId> => {
+  return traceback.map((entry) => ({ id: nextId(), entry }));
+};
+
+const errorWithId = (error: SkBaseException): ExceptionWithId => {
+  const id = nextId();
+  const traceback = tracebackWithIds(error.traceback);
+
+  // We have to explicitly pull out the tp$name property because it
+  // comes from the class not a direct property of the object, so the
+  // spread notation doesn't capture it.
+  return {
+    id,
+    error: { ...error, tp$name: error.tp$name, traceback },
+  };
+};
+
 export type PyErrors = {
   errors: Array<SkBaseException>;
   any: Computed<PyErrors, boolean>;
