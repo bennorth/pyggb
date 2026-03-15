@@ -29,8 +29,11 @@ export interface SkTracebackEntry {
   filename: string;
 }
 
-export interface SkBaseException extends SkObject {
+export interface SkBaseExceptionNub extends SkObject {
   args: SkTuple;
+}
+
+export interface SkBaseException extends SkBaseExceptionNub {
   traceback: Array<SkTracebackEntry>;
 }
 
