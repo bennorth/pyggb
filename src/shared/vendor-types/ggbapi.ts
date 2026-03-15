@@ -48,6 +48,8 @@ export type GgbApi = {
   reset(): void;
   setSize(width: number, height: number): void;
 
+  setPerspective(perspectiveKind: string): void;
+
   getBase64(): string;
   getBase64(callback: (ggbBase64: string) => void): void;
 };
