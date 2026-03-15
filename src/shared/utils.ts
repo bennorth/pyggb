@@ -106,6 +106,7 @@ export const nullaryEventHandler =
 
 // To allow testing to hook into various aspects of behaviour:
 const PYGGB_CYPRESS_default = {};
+
 export const PYGGB_CYPRESS = () => {
   if ((window as any).PYGGB_CYPRESS == null) {
     (window as any).PYGGB_CYPRESS = PYGGB_CYPRESS_default;

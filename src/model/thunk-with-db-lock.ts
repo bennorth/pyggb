@@ -6,7 +6,7 @@ export function thunkWithDbLock<
   Payload,
   Injections,
   StoreModel extends object,
-  Result
+  Result,
 >(
   f: (
     actions: Actions<Model>,

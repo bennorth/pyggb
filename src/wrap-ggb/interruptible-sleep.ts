@@ -97,4 +97,4 @@ export const register: RegisterFun = (mod, appApi) => {
   mod.interruptible_sleep = new Sk.builtin.func((delay) =>
     interruptibleSleep(runControlClient, delay)
   );
-}
+};

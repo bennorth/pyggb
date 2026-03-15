@@ -8,7 +8,6 @@ import { SemaphoreItem } from "../shared/semaphore";
 import { decode as stringFromUtf8BinaryString } from "utf8";
 import { decode as binaryStringFromB64String } from "base-64";
 import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
-import { URLSearchParams } from "url";
 import { publicIndexUrl } from "./index-url";
 import { UiLayout } from "./ui";
 
