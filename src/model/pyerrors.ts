@@ -1,7 +1,31 @@
 import { action, Action, computed, Computed } from "easy-peasy";
-import { SkBaseException, SkulptApi } from "../shared/vendor-types/skulptapi";
+import {
+  SkBaseException,
+  SkBaseExceptionGeneric,
+  SkTracebackEntry,
+  SkulptApi,
+} from "../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
+
+export type SkTracebackEntryWithId = {
+  id: number;
+  entry: SkTracebackEntry;
+};
+
+/** Exception where each traceback entry has an ID, for use as a react
+ * key when rendering a list of traceback entries. */
+export type SkBaseExceptionWithIds =
+  SkBaseExceptionGeneric<SkTracebackEntryWithId>;
+
+/** Thin wrapper round an "exception whose traceback entries have IDs";
+ * the wrapper object itself has an ID.  The IDs are used as react keys
+ * when rendering a list of exceptions (=errors).
+ * */
+type ExceptionWithId = {
+  id: number;
+  error: SkBaseExceptionWithIds;
+};
 
 export type PyErrors = {
   errors: Array<SkBaseException>;
