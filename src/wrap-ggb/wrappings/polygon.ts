@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
@@ -39,7 +39,7 @@ type SkGgbPolygonCtorSpec =
       nSides: SkObject;
     };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Polygon", {

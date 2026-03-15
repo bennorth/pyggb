@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import { assembledCommand, augmentedGgbApi } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -13,7 +13,7 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 // tie to the native Ggb array of intersections.  For v1, we settled on
 // only supporting the Intersect(p, q, n) form of the Ggb function.
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const fun = new Sk.builtin.func((...args) => {

@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   WrapExistingCtorSpec,
@@ -74,7 +74,7 @@ const kwBoolean = (
   return kwOrDefault(kwargs, argName, Sk.builtin.checkBool, jsDefault);
 };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
   const skApi = appApi.sk;
 

@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
@@ -34,7 +34,7 @@ type SkGgbCircleCtorSpec =
       points: Array<SkGgbObject>;
     };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Circle", {

@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
@@ -26,7 +26,7 @@ function valueOfEvent(event: HIDInputReportEvent): number {
   }
 }
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const hidApi = appApi.hid;
   const uiApi = appApi.ui;
   const skApi = appApi.sk;

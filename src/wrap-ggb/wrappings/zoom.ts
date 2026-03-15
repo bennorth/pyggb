@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   SkulptApi,
   augmentedSkulptApi,
@@ -7,7 +7,7 @@ import { assembledCommand, augmentedGgbApi } from "../shared";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const zoomIn = new Sk.builtin.func((...args) => {

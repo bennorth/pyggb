@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   setGgbLabelFromArgs,
@@ -21,7 +21,7 @@ type SkGgbLineCtorSpec =
   | { kind: "point-point"; points: Array<SkGgbObject> }
   | { kind: "coefficients"; coeffs: [SkObject, SkObject] };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Line", {

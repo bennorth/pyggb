@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import { augmentedGgbApi, WrapExistingCtorSpec, SkGgbObject } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -16,7 +16,7 @@ type SkGgbBooleanCtorSpec =
       value: SkObject;
     };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Boolean", {

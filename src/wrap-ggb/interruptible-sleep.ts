@@ -1,4 +1,4 @@
-import { AppApi } from "../shared/appApi";
+import { RegisterFun } from "../shared/appApi";
 import { throwIfNotNumber } from "./shared";
 import { SkObject, SkulptApi } from "../shared/vendor-types/skulptapi";
 
@@ -90,7 +90,7 @@ export function interruptibleSleep(
   return Sk.misceval.promiseToSuspension(sleepPromise);
 }
 
-export function register(mod: any, appApi: AppApi) {
+export const register: RegisterFun = (mod, appApi) => {
   const runControlClient = appApi.ui.runControlClient;
 
   mod.interruptible_sleep = new Sk.builtin.func((delay) =>

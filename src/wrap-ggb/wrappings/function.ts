@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import { ggbCompare } from "../operations";
 import { AugmentedGgbApi, augmentedGgbApi, SkGgbObject } from "../shared";
 import {
@@ -22,7 +22,7 @@ const functionWrapper = (ggb: AugmentedGgbApi, ggbName: string) => {
   };
 };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggbApi = appApi.ggb;
   const ggb = augmentedGgbApi(ggbApi);
 
