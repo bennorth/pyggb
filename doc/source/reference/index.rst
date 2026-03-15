@@ -39,6 +39,7 @@ Functions
    functions/distance
    functions/circumference
    functions/perimeter
+   functions/area
    functions/intersect
    functions/number-of-objects
    functions/rotate

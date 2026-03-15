@@ -17,6 +17,7 @@ const getPythonPrograms = async () => {
   // mean we can't just list the basenames and map import() over them.
   const specModules = await Promise.all([
     import("../python-programs/angle-bisector"),
+    import("../python-programs/area"),
     import("../python-programs/boolean"),
     import("../python-programs/centroid"),
     import("../python-programs/circle"),
