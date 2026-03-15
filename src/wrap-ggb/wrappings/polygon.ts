@@ -49,6 +49,10 @@ export const register: RegisterFun = (mod, appApi) => {
     ) {
       this.ctorPointLabels = null;
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          return;
+        }
         case "points-array": {
           this.ctorPointLabels = spec.points.map((p) => p.$ggbLabel);
           const ggbCmd = assembledCommand("Polygon", this.ctorPointLabels);
