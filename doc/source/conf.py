@@ -8,7 +8,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'PyGgb'
-copyright = '2025, Ben North'
+copyright = '2025, 2026, GeoGebra'
 author = 'Ben North'
 
 
@@ -33,3 +33,5 @@ rst_prolog = """
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+html_css_files = ['css/pyggb.css']

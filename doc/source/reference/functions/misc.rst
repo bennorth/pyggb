@@ -5,22 +5,22 @@ Miscellaneous functions
 
    .. py:classmethod:: sin(x)
 
-         Return a dynamic :py:class:`Number` for the sine of the given
-         *x* value.
+      Return a dynamic :py:class:`Number` for the sine of the given
+      *x* value.
 
    .. py:classmethod:: cos(x)
 
-         Return a dynamic :py:class:`Number` for the sine of the given
-         *x* value.
+      Return a dynamic :py:class:`Number` for the cosine of the given
+      *x* value.
 
    .. py:classmethod:: compare_LT(v, w)
 
-         Return a dynamic :py:class:`Boolean` indicating whether the
-         given *v* is less than the given *w*.
+      Return a dynamic :py:class:`Boolean` indicating whether the
+      given *v* is less than the given *w*.
 
-         Example:
+      Example:
 
-         .. code-block:: python
+      .. code-block:: python
 
-            s = Slider(-4, 4)
-            p = Point(s, If(Function.compare_LT(s, 0), Number(1), Number(2)))
+         s = Slider(-4, 4)
+         p = Point(s, If(Function.compare_LT(s, 0), Number(1), Number(2)))

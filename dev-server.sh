@@ -20,7 +20,7 @@ REPO_ROOT=$(git rev-parse --show-toplevel)
     cd "$REPO_ROOT"/public
     doc_link_target=../doc/build/html
 
-    if ! [ -e doc ]; then
+    if ! [ -h doc ]; then
         >&2 echo "Creating symlink public/doc -> $doc_link_target"
         ln -s "$doc_link_target" doc
     else
