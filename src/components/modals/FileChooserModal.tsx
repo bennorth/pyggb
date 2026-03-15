@@ -136,9 +136,9 @@ const ExampleList: React.FC<EmptyProps> = () => {
         // TODO: Validate examples.data is Array<ExampleProgramPreview>.
         return (
           <ul className="ExampleList">
-            {(examples.data as Array<ExampleProgramPreview>).map((ex, idx) => {
+            {(examples.data as Array<ExampleProgramPreview>).map((ex) => {
               return (
-                <li key={idx} onClick={load(ex)}>
+                <li key={ex.path} onClick={load(ex)}>
                   <h1>{ex.name}</h1>
                   <ReactMarkdown
                     children={ex.docMarkdown}
