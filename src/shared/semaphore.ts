@@ -22,7 +22,7 @@
 // SOFTWARE.
 
 export class SemaphoreItem {
-  private queue: Array<Function>;
+  private queue: Array<() => void>;
   private maxConcurrent: number;
   private count: number;
 

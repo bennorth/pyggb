@@ -12,8 +12,8 @@ export function thunkWithDbLock<
     actions: Actions<Model>,
     payload: Payload,
     helpers: Helpers<Model, StoreModel, Injections>
-  ) => Result
-): Thunk<Model, Payload, Injections, StoreModel, Promise<Awaited<Result>>> {
+  ) => Promise<Result>
+): Thunk<Model, Payload, Injections, StoreModel, Promise<Result>> {
   return thunk((actions, payload, helpers) =>
     db.withLock(() => f(actions, payload, helpers))
   );
