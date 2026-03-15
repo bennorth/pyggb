@@ -1,3 +1,4 @@
+import { zRunsWithoutErrorSpecArr } from "./python-program-spec";
 import {
   createNewPyGgbFile,
   deIndent,
@@ -10,6 +11,36 @@ class ConstructionVerificationState {
   // List of things we expect to see, in an order which lets us refer back to
   // points when describing lines, say.
 }
+
+const getPythonPrograms = async () => {
+  // Limitation of TypeScript and/or bundler and/or other moving parts
+  // mean we can't just list the basenames and map import() over them.
+  const specModules = await Promise.all([
+    import("../python-programs/boolean"),
+    import("../python-programs/circle"),
+    import("../python-programs/clear-console"),
+    import("../python-programs/distance"),
+    import("../python-programs/ellipse"),
+    import("../python-programs/function"),
+    import("../python-programs/intersect"),
+    import("../python-programs/line"),
+    import("../python-programs/number-of-objects"),
+    import("../python-programs/number"),
+    import("../python-programs/parabola"),
+    import("../python-programs/point"),
+    import("../python-programs/polygon"),
+    import("../python-programs/properties"),
+    import("../python-programs/rotate"),
+    import("../python-programs/segment"),
+    import("../python-programs/slider"),
+    import("../python-programs/vector"),
+    import("../python-programs/zoom"),
+  ]);
+
+  return specModules.flatMap((module) =>
+    zRunsWithoutErrorSpecArr.parse(module.specs)
+  );
+};
 
 // We specify no test isolation here, to avoid the heavy start-up cost
 // per small program we run.  We just keep entering new programs into
