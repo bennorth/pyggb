@@ -1,7 +1,8 @@
 import React from "react";
 import { DownloadFileModal } from "./DownloadFileModal";
+import { EmptyProps } from "../../shared/utils";
 
-export const DownloadPythonModal: React.FC<{}> = () => {
+export const DownloadPythonModal: React.FC<EmptyProps> = () => {
   return (
     <DownloadFileModal
       fileTypeDisplayName="Python"

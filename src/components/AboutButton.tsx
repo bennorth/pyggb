@@ -1,8 +1,9 @@
 import React from "react";
 import { useStoreActions } from "../store";
 import { Button } from "react-bootstrap";
+import { EmptyProps } from "../shared/utils";
 
-export const AboutButton: React.FC<{}> = () => {
+export const AboutButton: React.FC<EmptyProps> = () => {
   const setActive = useStoreActions((a) => a.modals.aboutPyGgb.setActive);
   const launch = () => setActive(true);
 

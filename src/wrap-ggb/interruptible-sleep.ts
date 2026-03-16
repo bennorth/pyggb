@@ -1,8 +1,8 @@
-import { AppApi } from "../shared/appApi";
+import { RegisterFun } from "../shared/appApi";
 import { throwIfNotNumber } from "./shared";
 import { SkObject, SkulptApi } from "../shared/vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 export interface SleepInterruptionActions {
   pause(): void;
@@ -25,14 +25,14 @@ export interface RunControlClient {
 
 type SleepState = {
   resolvePromise(value: SkObject): void;
-  rejectPromise(reason: any): void;
+  rejectPromise(reason: SkObject): void;
   timeoutId: ReturnType<typeof setTimeout>;
 };
 
 const nullSleepState = {
   resolvePromise(_value: SkObject) {},
-  rejectPromise(_reason: any) {},
-  timeoutId: null as any,
+  rejectPromise(_reason: SkObject) {},
+  timeoutId: -1,
 };
 
 export function interruptibleSleep(
@@ -42,6 +42,7 @@ export function interruptibleSleep(
   throwIfNotNumber(pyDelayS, "delay");
   const delayMs = 1000 * pyDelayS.v;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const useZeroDelay = (window as any)["PYGGB_CYPRESS"]?.ZERO_DELAY ?? false;
   const effectiveDelayMs = useZeroDelay ? 0 : delayMs;
 
@@ -90,10 +91,10 @@ export function interruptibleSleep(
   return Sk.misceval.promiseToSuspension(sleepPromise);
 }
 
-export function register(mod: any, appApi: AppApi) {
+export const register: RegisterFun = (mod, appApi) => {
   const runControlClient = appApi.ui.runControlClient;
 
   mod.interruptible_sleep = new Sk.builtin.func((delay) =>
     interruptibleSleep(runControlClient, delay)
   );
-}
+};

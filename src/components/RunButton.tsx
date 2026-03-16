@@ -1,8 +1,9 @@
 import React from "react";
 import { useStoreActions, useStoreState } from "../store";
 import Button from "react-bootstrap/Button";
+import { EmptyProps } from "../shared/utils";
 
-export const RunButton: React.FC<{}> = () => {
+export const RunButton: React.FC<EmptyProps> = () => {
   const executionStatus = useStoreState((s) => s.controls.executionStatus);
   const runProgram = useStoreActions((a) => a.controls.runProgram);
 
@@ -22,7 +23,7 @@ export const RunButton: React.FC<{}> = () => {
   );
 };
 
-export const PauseButton: React.FC<{}> = () => {
+export const PauseButton: React.FC<EmptyProps> = () => {
   const executionStatus = useStoreState((s) => s.controls.executionStatus);
   const pauseProgram = useStoreActions((a) => a.controls.pauseProgram);
 
@@ -41,7 +42,7 @@ export const PauseButton: React.FC<{}> = () => {
   );
 };
 
-export const StopButton: React.FC<{}> = () => {
+export const StopButton: React.FC<EmptyProps> = () => {
   const executionStatus = useStoreState((s) => s.controls.executionStatus);
   const stopProgram = useStoreActions((a) => a.controls.stopProgram);
 

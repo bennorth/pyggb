@@ -13,8 +13,9 @@ import {
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 interface SkGgbPoint extends SkGgbObject {
   $xCoord(this: SkGgbPoint): number;
@@ -86,9 +87,7 @@ export const register = (
           break;
         }
         default:
-          throw new Sk.builtin.TypeError(
-            `bad Point spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Point", spec);
       }
 
       // TODO: Would be cleaner to avoid making a new dependent Number
@@ -174,6 +173,7 @@ export const register = (
           try {
             Sk.misceval.callsimOrSuspend(fun);
           } catch (e) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             skApi.onError(e as any);
           }
         });
@@ -181,7 +181,7 @@ export const register = (
     },
     methods: {
       when_moved: {
-        $meth(this: SkGgbPoint, pyFun: any) {
+        $meth(this: SkGgbPoint, pyFun: SkObject) {
           this.$updateHandlers.push(pyFun);
           return pyFun;
         },

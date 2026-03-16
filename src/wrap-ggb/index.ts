@@ -25,15 +25,18 @@ import { register as registerOnTemperatureReport } from "./web-hid/on-temperatur
 import { register as registerInterruptibleSleep } from "./interruptible-sleep";
 
 import { SkulptApi } from "../shared/vendor-types/skulptapi";
-declare var Sk: SkulptApi;
 
-(globalThis as any).$skulptGgbModule = (appApi: AppApi) => {
+declare var Sk: SkulptApi; // eslint-disable-line no-var
+
+globalThis.$skulptGgbModule = (appApi: AppApi) => {
   // For ease of debugging:
-  (window as any).ggbApplet = appApi.ggb;
+  globalThis.ggbApplet = appApi.ggb;
 
   // This object gets built up in stages, and each register() function
   // expects a different type, so fudge it.  Perhaps there's a better
   // way to do this?
+  //
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let mod = { __name__: new Sk.builtin.str("ggb") } as any;
 
   registerPoint(mod, appApi);

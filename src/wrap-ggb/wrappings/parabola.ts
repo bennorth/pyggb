@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   WrapExistingCtorSpec,
@@ -10,8 +10,9 @@ import {
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 interface SkGgbParabola extends SkGgbObject {
   focus: SkGgbObject;
@@ -30,7 +31,7 @@ type SkGgbParabolaCtorSpec =
       coeffs: [SkObject, SkObject, SkObject];
     };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Parabola", {
@@ -59,9 +60,7 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         default:
-          throw new Sk.builtin.RuntimeError(
-            `bad Parabola spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Parabola", spec);
       }
     },
     slots: {

@@ -1,4 +1,4 @@
-type AnyVoidFunction = (...args: Array<any>) => void;
+type AnyVoidFunction = (...args: Array<unknown>) => void;
 
 export type GgbApi = {
   getObjectType(label: string): string;
@@ -47,6 +47,8 @@ export type GgbApi = {
 
   reset(): void;
   setSize(width: number, height: number): void;
+
+  setPerspective(perspectiveKind: string): void;
 
   getBase64(): string;
   getBase64(callback: (ggbBase64: string) => void): void;

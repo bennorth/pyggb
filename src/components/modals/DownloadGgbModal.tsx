@@ -1,7 +1,8 @@
 import React from "react";
 import { DownloadFileModal } from "./DownloadFileModal";
+import { EmptyProps } from "../../shared/utils";
 
-export const DownloadGgbModal: React.FC<{}> = () => {
+export const DownloadGgbModal: React.FC<EmptyProps> = () => {
   return (
     <DownloadFileModal
       fileTypeDisplayName="Ggb"

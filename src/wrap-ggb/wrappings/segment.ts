@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
@@ -9,8 +9,9 @@ import {
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 interface SkGgbSegment extends SkGgbObject {
   point1?: SkGgbObject;
@@ -25,7 +26,7 @@ type SkGgbSegmentCtorSpec =
       point2: SkGgbObject;
     };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Segment", {
@@ -52,9 +53,7 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         default:
-          throw new Sk.builtin.TypeError(
-            `bad Segment spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Segment", spec);
       }
     },
     slots: {

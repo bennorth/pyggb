@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   setGgbLabelFromArgs,
@@ -10,9 +10,11 @@ import {
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbLine extends SkGgbObject {}
 
 type SkGgbLineCtorSpec =
@@ -20,7 +22,7 @@ type SkGgbLineCtorSpec =
   | { kind: "point-point"; points: Array<SkGgbObject> }
   | { kind: "coefficients"; coeffs: [SkObject, SkObject] };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Line", {
@@ -43,9 +45,7 @@ export const register = (mod: any, appApi: AppApi) => {
           return;
         }
         default:
-          throw new Sk.builtin.RuntimeError(
-            `bad Line spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Line", spec);
       }
     },
     slots: {

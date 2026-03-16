@@ -64,7 +64,7 @@ export class PyGgbDexie extends Dexie {
     this.semaphore = new SemaphoreItem(1);
   }
 
-  async withLock<T extends () => any>(fun: T): Promise<Awaited<ReturnType<T>>> {
+  async withLock<ReturnT>(fun: () => Promise<ReturnT>): Promise<ReturnT> {
     try {
       await this.semaphore.acquire();
       return await fun();
@@ -166,7 +166,7 @@ export class PyGgbDexie extends Dexie {
     }
 
     let suffix = 0;
-    let candidateName = "";
+    let candidateName: string;
 
     do {
       candidateName = `${nameStem} (${++suffix})`;

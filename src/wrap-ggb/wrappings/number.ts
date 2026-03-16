@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   setGgbLabelFromCmd,
@@ -9,10 +9,11 @@ import {
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-interface SkGgbNumber extends SkGgbObject {
+export interface SkGgbNumber extends SkGgbObject {
   $value(): number;
 }
 
@@ -20,7 +21,7 @@ type SkGgbNumberCtorSpec =
   | WrapExistingCtorSpec
   | { kind: "literal"; value: number };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Number", {
@@ -37,9 +38,7 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         default:
-          throw new Sk.builtin.TypeError(
-            `bad Number spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Number", spec);
       }
     },
     slots: {

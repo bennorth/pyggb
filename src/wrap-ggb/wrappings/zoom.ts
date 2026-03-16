@@ -1,13 +1,13 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   SkulptApi,
   augmentedSkulptApi,
 } from "../../shared/vendor-types/skulptapi";
 import { assembledCommand, augmentedGgbApi } from "../shared";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const zoomIn = new Sk.builtin.func((...args) => {
@@ -63,6 +63,7 @@ export const register = (mod: any, appApi: AppApi) => {
 
           // TypeScript is not quite clever enough to work out we
           // definitely have a list or tuple by this point.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const centreArray = (centre as any).v;
 
           const [xArg, yArg] = centreArray.map(ggb.numberValueOrLabel);

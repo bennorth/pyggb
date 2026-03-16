@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   WrapExistingCtorSpec,
@@ -13,8 +13,9 @@ import {
   KeywordArgsArray,
 } from "../../shared/vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbSlider extends SkGgbObject {}
 
 type SkGgbSliderCtorSpec =
@@ -41,7 +42,7 @@ const kwOrDefault = (
   rawKwargs: MaybeKeywordArgsArray,
   argName: string,
   isCorrectType: (obj: SkObject) => boolean,
-  jsDefault: any
+  jsDefault: number | boolean
 ) => {
   const kwargs = rawKwargs ?? [];
 
@@ -61,7 +62,7 @@ const kwOrDefault = (
 const kwNumber = (
   kwargs: MaybeKeywordArgsArray,
   argName: string,
-  jsDefault: any
+  jsDefault: number
 ) => {
   return kwOrDefault(kwargs, argName, Sk.builtin.checkNumber, jsDefault);
 };
@@ -69,12 +70,12 @@ const kwNumber = (
 const kwBoolean = (
   kwargs: MaybeKeywordArgsArray,
   argName: string,
-  jsDefault: any
+  jsDefault: boolean
 ) => {
   return kwOrDefault(kwargs, argName, Sk.builtin.checkBool, jsDefault);
 };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
   const skApi = appApi.sk;
 
@@ -145,6 +146,7 @@ export const register = (mod: any, appApi: AppApi) => {
           try {
             Sk.misceval.callsimOrSuspend(fun);
           } catch (e) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             skApi.onError(e as any);
           }
         });
@@ -152,7 +154,7 @@ export const register = (mod: any, appApi: AppApi) => {
     },
     methods: {
       when_changed: {
-        $meth(this: SkGgbSlider, pyFun: any) {
+        $meth(this: SkGgbSlider, pyFun: SkObject) {
           this.$updateHandlers.push(pyFun);
           return pyFun;
         },

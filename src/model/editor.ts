@@ -38,14 +38,14 @@ export type Editor = {
   setCodeText: Action<Editor, string>;
   updateCodeText: Action<Editor, string>;
   saveCodeText: Thunk<Editor>;
-  updateCodeTextAndScheduleSave: Thunk<Editor, string, {}, PyGgbModel>;
+  updateCodeTextAndScheduleSave: Thunk<Editor, string, unknown, PyGgbModel>;
   setBackingFileState: Action<Editor, BackingFileState>;
-  _loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
-  loadFromBacking: Thunk<Editor, UserFilePreview, {}, PyGgbModel>;
-  loadExample: Thunk<Editor, ExampleProgramPreview, {}, PyGgbModel>;
-  maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, {}, PyGgbModel>;
+  _loadFromBacking: Thunk<Editor, UserFilePreview, unknown, PyGgbModel>;
+  loadFromBacking: Thunk<Editor, UserFilePreview, unknown, PyGgbModel>;
+  loadExample: Thunk<Editor, ExampleProgramPreview, unknown, PyGgbModel>;
+  maybeUpdateBacking: Thunk<Editor, CodeTextSnapshot, unknown, PyGgbModel>;
   createNew: Thunk<Editor, NewFileDescriptor>;
-  renameCurrentAndRefresh: Thunk<Editor, string, {}, PyGgbModel>;
+  renameCurrentAndRefresh: Thunk<Editor, string, unknown, PyGgbModel>;
 };
 
 const InitialCodeTextSeqNum = 1001;
@@ -192,7 +192,7 @@ export const editor: Editor = {
       case "saving":
         // Another save already in progress.  Should we ever get here?
         return;
-      case "idle":
+      case "idle": {
         const backingSource = backingFileState.source;
         if (backingSource.kind === "example") {
           console.error("should not be saving if source is URL");
@@ -204,6 +204,7 @@ export const editor: Editor = {
         a.setBackingFileState({ ...backingFileState, status: "idle" });
         a.setBackedSeqNum(snapshot.seqNum);
         return;
+      }
     }
   }),
 

@@ -3,17 +3,18 @@ import { GgbApi } from "./vendor-types/ggbapi";
 import { RunControlClient } from "../wrap-ggb/interruptible-sleep";
 import {
   SkBaseException,
+  SkBaseExceptionNub,
   SkulptApi,
   augmentedSkulptApi,
 } from "./vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 export type ModuleFilename = string;
 export type ModuleContents = string;
 export type LocalModules = Map<ModuleFilename, ModuleContents>;
 
-export const messageOfPyError = (err: SkBaseException) => {
+export const messageOfPyError = (err: SkBaseExceptionNub) => {
   if (err.tp$name == null) {
     return `[Internal error: ${err}]`;
   }
@@ -85,8 +86,9 @@ export const runPythonProgram = (
     runControlClient: runControlClient,
   };
   const appApi: AppApi = { ggb: ggbApi, sk: skApi, ui: uiApi, hid: hidApi };
-  (globalThis as any).$appApiHandoverQueue.enqueue(appApi);
+  globalThis.$appApiHandoverQueue.enqueue(appApi);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleError = (e: any) => errorActions.append(e);
 
   const codePreambleLines = [

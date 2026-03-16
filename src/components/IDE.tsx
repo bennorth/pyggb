@@ -7,9 +7,9 @@ import { GeoGebraPane } from "./GeoGebraPane";
 import { MenuBar } from "./MenuBar";
 import { StdoutPane } from "./StdoutPane";
 import { Button } from "react-bootstrap";
-import { assertNever } from "../shared/utils";
+import { assertNever, EmptyProps } from "../shared/utils";
 
-const CopyExampleButton: React.FC<{}> = () => {
+const CopyExampleButton: React.FC<EmptyProps> = () => {
   const newFileLaunch = useStoreActions((a) => a.modals.newFile.launch);
   const exampleCodeText = useStoreState((s) => s.editor.codeText);
   const isLoaded = useStoreState(
@@ -32,7 +32,7 @@ const CopyExampleButton: React.FC<{}> = () => {
   );
 };
 
-const EditorMaybeErrors: React.FC<{}> = () => {
+const EditorMaybeErrors: React.FC<EmptyProps> = () => {
   const anyErrors = useStoreState((s) => s.pyErrors.any);
   const contentKind = useStoreState((s) => s.editor.contentKind);
 
@@ -60,7 +60,7 @@ const EditorMaybeErrors: React.FC<{}> = () => {
   );
 };
 
-const GgbConstructionOnly: React.FC<{}> = () => {
+const GgbConstructionOnly: React.FC<EmptyProps> = () => {
   const anyErrors = useStoreState((s) => s.pyErrors.any);
 
   const content = anyErrors ? (
@@ -76,7 +76,7 @@ const GgbConstructionOnly: React.FC<{}> = () => {
   return <div className="pyggb-construction-only abs-0000">{content}</div>;
 };
 
-export const IDE: React.FC<{}> = () => {
+export const IDE: React.FC<EmptyProps> = () => {
   const uiStyle = useStoreState((s) => s.uiSettings.uiLayout);
 
   switch (uiStyle) {

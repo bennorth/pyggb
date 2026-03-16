@@ -8,7 +8,7 @@ import { useJsonResource } from "../../shared/hooks";
 import { ExampleProgramPreview } from "../../shared/resources";
 import { useStoreActions, useStoreState } from "../../store";
 import { FileChoiceActivity } from "../../model/modals/file-chooser";
-import { assertNever } from "../../shared/utils";
+import { assertNever, EmptyProps } from "../../shared/utils";
 
 type FileChoiceProps = UserFilePreview & {
   isCurrent: boolean;
@@ -66,7 +66,7 @@ const useMaybeCurrentUserFileId = () => {
   return source.id;
 };
 
-const UserFileList: React.FC<{}> = () => {
+const UserFileList: React.FC<EmptyProps> = () => {
   const userFiles = useLiveQuery(() => db.withLock(() => db.allFiles()));
   const dismiss = useSetPlainActivity("none");
   const switchToExamples = useSetPlainActivity("choose-example");
@@ -114,7 +114,7 @@ const UserFileList: React.FC<{}> = () => {
   );
 };
 
-const ExampleList: React.FC<{}> = () => {
+const ExampleList: React.FC<EmptyProps> = () => {
   const loadExample = useStoreActions((a) => a.editor.loadExample);
   const examples = useJsonResource("examples/index.json");
   const switchToUserFiles = useSetPlainActivity("choose-user-file");
@@ -136,9 +136,9 @@ const ExampleList: React.FC<{}> = () => {
         // TODO: Validate examples.data is Array<ExampleProgramPreview>.
         return (
           <ul className="ExampleList">
-            {(examples.data as Array<ExampleProgramPreview>).map((ex, idx) => {
+            {(examples.data as Array<ExampleProgramPreview>).map((ex) => {
               return (
-                <li key={idx} onClick={load(ex)}>
+                <li key={ex.path} onClick={load(ex)}>
                   <h1>{ex.name}</h1>
                   <ReactMarkdown
                     children={ex.docMarkdown}
@@ -201,7 +201,7 @@ const ConfirmDeletion: React.FC<UserFilePreview> = ({ id, name }) => {
   );
 };
 
-export const FileChooserModal: React.FC<{}> = () => {
+export const FileChooserModal: React.FC<EmptyProps> = () => {
   const activity = useStoreState((s) => s.modals.fileChooser.activity);
   switch (activity.kind) {
     case "none":

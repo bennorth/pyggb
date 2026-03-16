@@ -1,6 +1,11 @@
 // https://www.falldowngoboone.com/blog/share-variables-between-javascript-and-css/
 
 import { Action, action, State } from "easy-peasy";
+import { SkulptApi } from "./vendor-types/skulptapi";
+
+declare var Sk: SkulptApi; // eslint-disable-line no-var
+
+export type EmptyProps = Record<string, never>;
 
 export function cssValue(property: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(property);
@@ -65,6 +70,13 @@ export const assertNever = (x: never): never => {
   throw Error(`should not be here; got ${x}`);
 };
 
+export const throwBadSpecKind = (typeName: string, spec: never): never => {
+  throw new Sk.builtin.TypeError(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    `bad ${typeName} spec kind "${(spec as any).kind}"`
+  );
+};
+
 export function propSetterAction<
   ModelT extends object,
   PropNameT extends keyof State<ModelT>,
@@ -88,13 +100,19 @@ export const delaySeconds = (nSeconds: number) => {
   return new Promise((r) => setTimeout(r, timeoutMs));
 };
 
-export const nullaryEventHandler = (f: (...args: any) => any) => () => f();
+export const nullaryEventHandler =
+  (f: (() => unknown) | ((...args: Array<unknown>) => unknown)) => () =>
+    f();
 
 // To allow testing to hook into various aspects of behaviour:
 const PYGGB_CYPRESS_default = {};
+
 export const PYGGB_CYPRESS = () => {
-  if ((window as any).PYGGB_CYPRESS == null) {
-    (window as any).PYGGB_CYPRESS = PYGGB_CYPRESS_default;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const windowAny = window as any;
+
+  if (windowAny.PYGGB_CYPRESS == null) {
+    windowAny.PYGGB_CYPRESS = PYGGB_CYPRESS_default;
   }
-  return (window as any).PYGGB_CYPRESS;
+  return windowAny.PYGGB_CYPRESS;
 };

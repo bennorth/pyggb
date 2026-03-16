@@ -2,7 +2,7 @@ import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { WrapExistingCtorSpec, SkGgbObject } from "./shared";
 import { SkulptApi } from "../shared/vendor-types/skulptapi";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 type ConstructibleFromWrapExistingSpec = {
   new (spec: WrapExistingCtorSpec): SkGgbObject;

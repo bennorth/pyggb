@@ -16,9 +16,9 @@ export type DownloadAsFiletype = {
 const kEmptyU8ArrayBuffer = new Uint8Array(0).buffer;
 
 function arrayBufferFromStr(str: string): ArrayBuffer {
-  var buffer = new ArrayBuffer(str.length);
-  var dataView = new DataView(buffer);
-  for (var i = 0; i < str.length; ++i) {
+  let buffer = new ArrayBuffer(str.length);
+  let dataView = new DataView(buffer);
+  for (let i = 0; i < str.length; ++i) {
     dataView.setUint8(i, str.charCodeAt(i));
   }
   return buffer;

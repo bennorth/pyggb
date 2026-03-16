@@ -1,7 +1,7 @@
 // This file doesn't know anything about PyGgb, the idea being that it
 // might be useful elsewhere.
 
-export interface SkObject {}
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 export interface SkBool extends SkObject {
   v: boolean;
@@ -29,10 +29,17 @@ export interface SkTracebackEntry {
   filename: string;
 }
 
-export interface SkBaseException extends SkObject {
+export interface SkBaseExceptionNub extends SkObject {
   args: SkTuple;
-  traceback: Array<SkTracebackEntry>;
 }
+
+export interface SkBaseExceptionGeneric<
+  TracebackEntryT,
+> extends SkBaseExceptionNub {
+  traceback: Array<TracebackEntryT>;
+}
+
+export type SkBaseException = SkBaseExceptionGeneric<SkTracebackEntry>;
 
 export interface SkObject {
   tp$name: string;
@@ -148,7 +155,7 @@ export type SkulptApi = {
   builtinFiles?: { files: { [filename: string]: string } };
 };
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 type AugmentedSkulptApi = {
   checkString(x: SkObject): x is SkString;

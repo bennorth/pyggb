@@ -1,4 +1,4 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
@@ -13,8 +13,9 @@ import {
   SkulptApi,
 } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
-declare var Sk: SkulptApi;
+declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 // TODO: If we pass an explicit list of points, we get a GGB object with
 // type like "quadrilateral" or "pentagon".  Haven't tested to see how
@@ -38,7 +39,7 @@ type SkGgbPolygonCtorSpec =
       nSides: SkObject;
     };
 
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Polygon", {
@@ -48,6 +49,10 @@ export const register = (mod: any, appApi: AppApi) => {
     ) {
       this.ctorPointLabels = null;
       switch (spec.kind) {
+        case "wrap-existing": {
+          this.$ggbLabel = spec.label;
+          return;
+        }
         case "points-array": {
           this.ctorPointLabels = spec.points.map((p) => p.$ggbLabel);
           const ggbCmd = assembledCommand("Polygon", this.ctorPointLabels);
@@ -70,9 +75,7 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         default:
-          throw new Sk.builtin.RuntimeError(
-            `bad Polygon spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Polygon", spec);
       }
     },
     slots: {

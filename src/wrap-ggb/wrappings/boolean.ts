@@ -1,9 +1,13 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import { augmentedGgbApi, WrapExistingCtorSpec, SkGgbObject } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
+import { throwBadSpecKind } from "../../shared/utils";
 
+declare var Sk: SkulptApi; // eslint-disable-line no-var
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbBoolean extends SkGgbObject {}
 
 type SkGgbBooleanCtorSpec =
@@ -13,9 +17,7 @@ type SkGgbBooleanCtorSpec =
       value: SkObject;
     };
 
-declare var Sk: SkulptApi;
-
-export const register = (mod: any, appApi: AppApi) => {
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Boolean", {
@@ -35,9 +37,7 @@ export const register = (mod: any, appApi: AppApi) => {
           break;
         }
         default:
-          throw new Sk.builtin.TypeError(
-            `bad Boolean spec kind "${(spec as any).kind}"`
-          );
+          throwBadSpecKind("Boolean", spec);
       }
     },
     slots: {

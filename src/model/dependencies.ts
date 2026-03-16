@@ -8,7 +8,6 @@ import { SemaphoreItem } from "../shared/semaphore";
 import { decode as stringFromUtf8BinaryString } from "utf8";
 import { decode as binaryStringFromB64String } from "base-64";
 import { AsyncInflateOptions, decompress, strFromU8, strToU8 } from "fflate";
-import { URLSearchParams } from "url";
 import { publicIndexUrl } from "./index-url";
 import { UiLayout } from "./ui";
 
@@ -76,12 +75,12 @@ export type Dependencies = {
   setGgbApi: Action<Dependencies, GgbApi>;
   setGgbPythonModuleText: Action<Dependencies, string>;
 
-  boot: Thunk<Dependencies, URLSearchParams, {}, PyGgbModel>;
+  boot: Thunk<Dependencies, URLSearchParams, unknown, PyGgbModel>;
 
   _mostRecentUserFilePreview: Thunk<
     Dependencies,
     void,
-    {},
+    unknown,
     PyGgbModel,
     Promise<UserFilePreview>
   >;
@@ -89,7 +88,7 @@ export type Dependencies = {
   _bootInitialCode: Thunk<
     Dependencies,
     URLSearchParams,
-    {},
+    unknown,
     PyGgbModel,
     Promise<ActionAfterChoosingProgram>
   >;

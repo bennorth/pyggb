@@ -2,10 +2,9 @@ import React from "react";
 import { Alert } from "react-bootstrap";
 import { messageOfPyError } from "../shared/skulpt-interaction";
 import { useStoreState } from "../store";
-import {
-  SkBaseException,
-  SkTracebackEntry,
-} from "../shared/vendor-types/skulptapi";
+import { SkTracebackEntry } from "../shared/vendor-types/skulptapi";
+import { EmptyProps } from "../shared/utils";
+import { SkBaseExceptionWithIds } from "../model/pyerrors";
 
 type TracebackEntryItemProps = { entry: SkTracebackEntry };
 const TracebackEntryItem: React.FC<TracebackEntryItemProps> = ({ entry }) => {
@@ -23,7 +22,7 @@ const TracebackEntryItem: React.FC<TracebackEntryItemProps> = ({ entry }) => {
   );
 };
 
-type ErrorReportProps = { error: SkBaseException };
+type ErrorReportProps = { error: SkBaseExceptionWithIds };
 const ErrorReport: React.FC<ErrorReportProps> = ({ error }) => {
   // Get traceback with deepest frame last.
   let traceback = error.traceback.slice();
@@ -33,9 +32,9 @@ const ErrorReport: React.FC<ErrorReportProps> = ({ error }) => {
     <Alert className="ErrorReport" variant="danger">
       <p className="message">{messageOfPyError(error)}</p>
       <ul>
-        {traceback.map((entry, i) => (
-          <li key={i}>
-            <TracebackEntryItem entry={entry} />
+        {traceback.map((entry) => (
+          <li key={entry.id}>
+            <TracebackEntryItem entry={entry.entry} />
           </li>
         ))}
       </ul>
@@ -43,7 +42,7 @@ const ErrorReport: React.FC<ErrorReportProps> = ({ error }) => {
   );
 };
 
-export const ErrorList: React.FC<{}> = () => {
+export const ErrorList: React.FC<EmptyProps> = () => {
   const errors = useStoreState((s) => s.pyErrors.errors);
 
   return (
@@ -51,9 +50,9 @@ export const ErrorList: React.FC<{}> = () => {
       <div className="error-list-inner">
         <h1>Your program has a problem:</h1>
         <ul>
-          {errors.map((e, i) => (
-            <li key={i}>
-              <ErrorReport error={e} />
+          {errors.map((error) => (
+            <li key={error.id}>
+              <ErrorReport error={error.error} />
             </li>
           ))}
         </ul>

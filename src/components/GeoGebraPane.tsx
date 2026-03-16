@@ -1,7 +1,10 @@
+import { EmptyProps } from "../shared/utils";
+import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { useStoreActions, useStoreState } from "../store";
 import React, { useEffect } from "react";
 
-declare var GGBApplet: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare var GGBApplet: any; // eslint-disable-line no-var
 
 const useLocalGeoGebraBundle = import.meta.env.VITE_LOCAL_GEOGEBRA === "yes";
 
@@ -26,7 +29,7 @@ const nextAppletDivId = (() => {
   return () => `ggb-applet-content-${++nextId}`;
 })();
 
-export const GeoGebraPane: React.FC<{}> = () => {
+export const GeoGebraPane: React.FC<EmptyProps> = () => {
   const bootStatus = useStoreState((s) => s.dependencies.bootStatus);
   const ggbApi = useStoreState((s) => s.dependencies.ggbApi);
   const setGgbApi = useStoreActions((a) => a.dependencies.setGgbApi);
@@ -62,7 +65,7 @@ export const GeoGebraPane: React.FC<{}> = () => {
       allowStyleBar: false,
       preventFocus: false,
       showZoomButtons: true,
-      appletOnLoad: (api: any) => {
+      appletOnLoad: (api: GgbApi) => {
         api.setPerspective("G");
         // Because we only do the inject once, the following does not
         // cause a state-update/render loop:
