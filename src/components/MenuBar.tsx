@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Container, Navbar, NavDropdown, Spinner } from "react-bootstrap";
 import { OperationalBackingFileState } from "../model/editor";
 import { assertNever, EmptyProps } from "../shared/utils";
@@ -28,7 +28,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   const [editState, setEditState] = useState<FilenameEditState>({
     status: "displaying",
   });
-  const inputRef = React.createRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const editStatus = editState.status;
 
