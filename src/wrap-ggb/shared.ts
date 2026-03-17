@@ -151,6 +151,15 @@ const _elementsAreGgbObjectsOfTypes = (
   return true;
 };
 
+const _elementsAreGgbObjectsOfSomeTypes = (
+  ggbApi: GgbApi,
+  objs: Array<SkObject>,
+  permittedTypeLists: Array<Array<string>>
+): objs is Array<SkGgbObject> =>
+  permittedTypeLists.some((requiredTypes) =>
+    _elementsAreGgbObjectsOfTypes(ggbApi, objs, requiredTypes)
+  );
+
 /** Test whether the Skulpt/PyGgb object `obj` is either a Skulpt/Python
  * number or a GeoGebra `numeric` object. */
 export const isPythonOrGgbNumber = (ggbApi: GgbApi, obj: SkObject) =>
