@@ -38,6 +38,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/perpendicular-line"),
     import("../python-programs/point"),
     import("../python-programs/polygon"),
+    import("../python-programs/predicates"),
     import("../python-programs/properties"),
     import("../python-programs/rotate"),
     import("../python-programs/segment"),

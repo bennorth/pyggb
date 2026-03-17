@@ -47,6 +47,13 @@ Functions
    functions/incircle
    functions/zoom-in
    functions/if
+   functions/are-collinear
+   functions/are-concurrent
+   functions/are-concyclic
+   functions/are-congruent
+   functions/are-equal
+   functions/are-parallel
+   functions/are-perpendicular
    functions/misc
 
 
