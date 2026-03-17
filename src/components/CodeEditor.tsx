@@ -1,10 +1,9 @@
-import React, { createRef, useEffect, useState } from "react";
+import React from "react";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { useStoreActions, useStoreState } from "../store";
-import ReactAce from "react-ace/lib/ace";
 import { EmptyProps, PYGGB_CYPRESS } from "../shared/utils";
 import classNames from "classnames";
 import { Spinner } from "react-bootstrap";
@@ -21,29 +20,10 @@ export const CodeEditor: React.FC<EmptyProps> = () => {
   const allDependenciesReady = useStoreState((s) => s.dependencies.allReady);
   const contentKind = useStoreState((s) => s.editor.contentKind);
 
-  const [lastWd, setLastWd] = useState<number>(-1);
-  const [lastHt, setLastHt] = useState<number>(-1);
-
-  const aceRef = createRef<ReactAce>();
-
   const isReadWrite =
     allDependenciesReady &&
     (backingStatus === "idle" || backingStatus === "saving") &&
     contentKind === "user-program";
-
-  // Force the Ace Editor to adapt itself to the new size whenever the
-  // client dimensions change.
-  useEffect(() => {
-    const aceEditor = aceRef.current;
-    const aceWidth = aceRef.current?.refEditor.clientWidth ?? -1;
-    const aceHeight = aceRef.current?.refEditor.clientHeight ?? -1;
-
-    if (aceEditor != null && (lastWd !== aceWidth || lastHt !== aceHeight)) {
-      setLastWd(aceWidth);
-      setLastHt(aceHeight);
-      aceEditor.editor.resize();
-    }
-  });
 
   const onEditorLoad = (editor: IAceEditor) => {
     PYGGB_CYPRESS().ACE_EDITOR = editor;
@@ -66,7 +46,6 @@ export const CodeEditor: React.FC<EmptyProps> = () => {
         value={codeText}
         onChange={setCodeText}
         readOnly={!isReadWrite}
-        ref={aceRef}
         onLoad={onEditorLoad}
       />
       <div className={classNames("abs-0000", "busy-overlay", backingStatus)}>
