@@ -54,6 +54,7 @@ Functions
    functions/are-equal
    functions/are-parallel
    functions/are-perpendicular
+   functions/triangle-center
    functions/misc
 
 

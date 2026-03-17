@@ -43,6 +43,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/rotate"),
     import("../python-programs/segment"),
     import("../python-programs/slider"),
+    import("../python-programs/triangle-center"),
     import("../python-programs/vector"),
     import("../python-programs/zoom"),
   ]);
@@ -194,6 +195,16 @@ describe("Handles bad function calls", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
 
   const specs: Array<CodeWithErrorSpec> = [
+    {
+      label: "TriangleCenter(): bad kind",
+      code: `
+        A = Point(1, 1)
+        B = Point(1, 2)
+        C = Point(2, 1)
+        TriangleCenter(A, B, C, "no-such-center")
+      `,
+      assertions: [assertTypeError("center-kind is one of")],
+    },
   ];
 
   specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));

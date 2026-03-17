@@ -27,6 +27,7 @@ import { register as registerCircumference } from "./wrappings/circumference";
 import { register as registerPerimeter } from "./wrappings/perimeter";
 import { register as registerArea } from "./wrappings/area";
 import { register as registerPredicates } from "./wrappings/predicates";
+import { register as registerTriangleCenter } from "./wrappings/triangle-center";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
@@ -77,6 +78,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerPerimeter(mod, appApi);
   registerArea(mod, appApi);
   registerPredicates(mod, appApi);
+  registerTriangleCenter(mod, appApi);
 
   registerClearConsole(mod, appApi);
 
