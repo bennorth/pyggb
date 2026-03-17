@@ -3,18 +3,17 @@ import {
   chooseFileMenuEntry,
   createNewPyGgbFile,
   deIndent,
-  optsNoIsolation,
   runCode,
 } from "./shared";
 
-describe("download as file", optsNoIsolation, () => {
+describe("download as file", () => {
   const code = deIndent(`
     p1 = Point(2, 1)
     p2 = Point(7, 3)
     s = Segment(p1, p2)
   `);
 
-  before(() => {
+  beforeEach(() => {
     createNewPyGgbFile();
     cy.window().then((window) => {
       window["PYGGB_CYPRESS"].ACE_EDITOR.setValue(code);
