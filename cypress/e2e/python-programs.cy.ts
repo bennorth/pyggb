@@ -43,6 +43,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/rotate"),
     import("../python-programs/segment"),
     import("../python-programs/slider"),
+    import("../python-programs/tangent"),
     import("../python-programs/triangle-center"),
     import("../python-programs/vector"),
     import("../python-programs/zoom"),

@@ -36,6 +36,7 @@ Functions
    functions/midpoint
    functions/perpendicular-bisector
    functions/perpendicular-line
+   functions/tangent
    functions/distance
    functions/circumference
    functions/perimeter
