@@ -600,6 +600,7 @@ export type AugmentedGgbApi = {
   everyElementIsGgbObject: typeof everyElementIsGgbObject;
   everyElementIsGgbObjectOfType: EveryElementIsGgbObjectOfType;
   elementsAreGgbObjectsOfTypes: ElementsAreGgbObjectsOfTypes;
+  elementsAreGgbObjectsOfSomeTypes: ElementsAreGgbObjectsOfSomeTypes;
   everyElementIsGgbObjectOfSomeType: EveryElementIsGgbObjectOfSomeType;
   isPythonOrGgbNumber(obj: SkObject): boolean;
   numberValueOrLabel(obj: SkObject): string;
@@ -692,6 +693,9 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     elementsAreGgbObjectsOfTypes: fixGgbArg_2(
       _elementsAreGgbObjectsOfTypes
     ) as ElementsAreGgbObjectsOfTypes,
+    elementsAreGgbObjectsOfSomeTypes: fixGgbArg_2(
+      _elementsAreGgbObjectsOfSomeTypes
+    ) as ElementsAreGgbObjectsOfSomeTypes,
     isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
     numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
     wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),
