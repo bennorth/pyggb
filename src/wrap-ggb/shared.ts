@@ -44,6 +44,11 @@ export const strOfNumber = (x: number): string => {
   return `(${sig}*10^(${exp}))`;
 };
 
+/** Predicate which returns true or false according to whether the given
+ * `label` is *not* one of the strings `"null"` or `"undefined"`. */
+export const labelIsValid = (label: string) =>
+  label !== "null" && label !== "undefined";
+
 /** Given a JavaScript boolean `x`, return a string representation of
  * `x` which GeoGebra will interpret correctly.
  * */
