@@ -108,7 +108,7 @@ development, fetch the latest GeoGebra bundle from the GeoGebra site:
 - [GeoGebra Math Apps Bundle](https://download.geogebra.org/package/geogebra-math-apps-bundle)
 
 as per [GeoGebra's
-instructions](https://wiki.geogebra.org/en/Reference:GeoGebra_Apps_Embedding#Offline_and_Self-Hosted_Solution).
+instructions](https://geogebra.github.io/docs/reference/en/GeoGebra_Apps_Embedding/#_offline_and_self_hosted_solution).
 Unzip this into `public/vendor/geogebra`, which will result in a directory
 `public/vendor/geogebra/GeoGebra`. It will also result in a file
 `public/vendor/geogebra/README.txt`, which can be removed. Then run the
