@@ -26,25 +26,25 @@ export const register: RegisterFun = (mod, appApi) => {
         throw badArgsError;
       }
       case 3: {
-    if (
-      !ggb.isGgbObject(args[0]) ||
-      !ggb.isGgbObject(args[1]) ||
-      !ggb.isPythonOrGgbNumber(args[2])
-    ) {
-      throw badArgsError;
-    }
+        if (
+          !ggb.isGgbObject(args[0]) ||
+          !ggb.isGgbObject(args[1]) ||
+          !ggb.isPythonOrGgbNumber(args[2])
+        ) {
+          throw badArgsError;
+        }
 
-    const ggbCmd = assembledCommand("Intersect", [
-      args[0].$ggbLabel,
-      args[1].$ggbLabel,
-      ggb.numberValueOrLabel(args[2]),
-    ]);
+        const ggbCmd = assembledCommand("Intersect", [
+          args[0].$ggbLabel,
+          args[1].$ggbLabel,
+          ggb.numberValueOrLabel(args[2]),
+        ]);
 
-    // It seems that always get a Point.  If there is no Nth
-    // intersection, the Point has NaN coords.
-    const label = ggb.evalCmd(ggbCmd);
+        // It seems that we always get a Point.  If there is no Nth
+        // intersection, the Point has NaN coords.
+        const label = ggb.evalCmd(ggbCmd);
 
-    return ggb.wrapExistingGgbObject(label);
+        return ggb.wrapExistingGgbObject(label);
       }
       default:
         throw badArgsError;
