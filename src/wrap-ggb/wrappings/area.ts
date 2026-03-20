@@ -1,18 +1,14 @@
 import { RegisterFun } from "../../shared/appApi";
-import { AugmentedGgbApi, augmentedGgbApi } from "../shared";
+import {
+  AugmentedGgbApi,
+  augmentedGgbApi,
+  kPolygonTypeAndSubtypes,
+} from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-const kArgTypes = [
-  "circle",
-  "ellipse",
-  "polygon",
-  "triangle",
-  "quadrilateral",
-  "pentagon",
-  "hexagon",
-];
+const kArgTypes = ["circle", "ellipse", ...kPolygonTypeAndSubtypes];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
