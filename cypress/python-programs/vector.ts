@@ -30,4 +30,13 @@ export const specs = [
       assert(v1._ggb_type == "vector")
     `,
   },
+  {
+    label: "Vector.line_Style",
+    code: `
+      A = Point(3, 4)
+      B = Point(1, 1)
+      v = Vector(A, B, line_style=3)
+      assert(v.line_style == 3)
+    `,
+  },
 ];

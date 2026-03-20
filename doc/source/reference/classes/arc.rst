@@ -27,6 +27,7 @@ Arc
    * :py:attr:`color_floats`
    * :py:attr:`opacity`
    * :py:attr:`line_thickness`
+   * :py:attr:`line_style`
 
 
 .. seealso::

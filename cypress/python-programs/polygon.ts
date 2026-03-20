@@ -38,4 +38,14 @@ export const specs = [
           assert(abs(th.value - 3 * math.pi / 4) < 1.0e-10)
     `,
   },
+  {
+    label: "Polygon.line_style",
+    code: `
+      A = Point(-2, -2)
+      B = Point(0, -2)
+      p = Polygon(A, B, 8)
+      p.line_style = 2
+      assert(p.line_style == 2)
+    `,
+  },
 ];

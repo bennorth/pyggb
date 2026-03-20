@@ -56,6 +56,18 @@ Various object-types have some subset of the below properties.
    object's colour.
 
 
+.. py:property:: line_style
+   :type: int
+
+   |getSetProp| What style the line (or perimeter, in the case of,
+   e.g., a polygon or circle) is drawn, chosen from these options:
+
+   * 0 — solid
+   * 1 — long dashed
+   * 2 — short dashed
+   * 3 — dotted
+   * 4 — dash-dotted
+
 .. py:property:: line_thickness
    :type: int
 

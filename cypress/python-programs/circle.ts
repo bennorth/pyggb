@@ -51,4 +51,12 @@ export const specs = [
       assert(k1._ggb_type == "circle")
     `,
   },
+  {
+    label: "Circle.line_style",
+    code: `
+      k = Circle(3, 4, 5)
+      k.line_style = 2
+      assert(k.line_style == 2)
+    `,
+  },
 ];

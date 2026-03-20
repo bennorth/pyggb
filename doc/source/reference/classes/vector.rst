@@ -22,6 +22,7 @@ Vector
    * :py:attr:`is_independent`
    * :py:attr:`color`
    * :py:attr:`color_floats`
+   * :py:attr:`line_style`
    * :py:attr:`line_thickness`
 
 

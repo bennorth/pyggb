@@ -43,6 +43,7 @@ Circle
    * :py:attr:`color`
    * :py:attr:`color_floats`
    * :py:attr:`line_thickness`
+   * :py:attr:`line_style`
    * :py:attr:`opacity`
 
 
