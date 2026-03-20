@@ -425,6 +425,7 @@ type SharedGetSets = {
   color_floats: ReadOnlyProperty;
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
+  line_style: ReadWriteProperty;
   label_visible: ReadWriteProperty;
   label_style: ReadWriteProperty;
   caption: ReadWriteProperty;
@@ -508,6 +509,16 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
       throwIfNotNumber(pyThickness, "line_thickness must be a number");
       // TODO: Verify integer and in range [1, 13]
       ggbApi.setLineThickness(this.$ggbLabel, pyThickness.v);
+    },
+  },
+  line_style: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.int_(ggbApi.getLineStyle(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyStyle: SkObject) {
+      throwIfNotNumber(pyStyle, "line_style must be a number");
+      // TODO: Verify integer and in range [0, 4]
+      ggbApi.setLineStyle(this.$ggbLabel, pyStyle.v);
     },
   },
   label_visible: {
