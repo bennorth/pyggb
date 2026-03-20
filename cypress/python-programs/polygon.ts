@@ -25,4 +25,17 @@ export const specs = [
     `,
     expOutputs: ["opacity = 0.75"],
   },
+  {
+    label: "Polygon.angles()",
+    code: `
+      import math
+      A = Point(-2, -2)
+      B = Point(0, -2)
+      p = Polygon(A, B, 8)
+      ths = p.angles()
+      assert(len(ths) == 8)
+      for th in ths:
+          assert(abs(th.value - 3 * math.pi / 4) < 1.0e-10)
+    `,
+  },
 ];
