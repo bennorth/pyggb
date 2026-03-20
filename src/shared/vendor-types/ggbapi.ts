@@ -24,6 +24,9 @@ export type GgbApi = {
   getPointSize(label: string): number;
   setPointSize(label: string, size: number): number;
 
+  getLineStyle(label: string): number;
+  setLineStyle(label: string, style: number): number;
+
   getLineThickness(label: string): number;
   setLineThickness(label: string, thickness: number): number;
 
