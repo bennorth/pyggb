@@ -2,6 +2,7 @@ import { AppApi } from "../shared/appApi";
 import { register as registerPoint } from "./wrappings/point";
 import { register as registerCircle } from "./wrappings/circle";
 import { register as registerEllipse } from "./wrappings/ellipse";
+import { register as registerAngle } from "./wrappings/angle";
 import { register as registerArc } from "./wrappings/arc";
 import { register as registerLine } from "./wrappings/line";
 import { register as registerNumber } from "./wrappings/number";
@@ -55,6 +56,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerPoint(mod, appApi);
   registerCircle(mod, appApi);
   registerEllipse(mod, appApi);
+  registerAngle(mod, appApi);
   registerArc(mod, appApi);
   registerLine(mod, appApi);
   registerNumber(mod, appApi);

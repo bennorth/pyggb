@@ -1,0 +1,45 @@
+Angle
+=====
+
+.. py:class:: Angle
+
+   .. py:method:: Angle(obj)
+
+      Construct the angle formed between the given *obj* and the *x*
+      axis, depending on the type of *obj*:
+
+      * *line* or *vector* — the angle between the *x* axis and *obj*.
+      * *point* — the angle between the *x* axis and the line between
+        the origin and the given point.
+
+   .. py:method:: Angle(obj1, obj2)
+      :noindex:
+
+      Construct the angle between the two given objects, whose type
+      must be either *line* or *vector*.  Both objects must be of the
+      same type.
+
+   .. py:method:: Angle(point1, point2, point3)
+      :noindex:
+
+      Construct the angle formed by the three given points at
+      *point2*, in the sense that would sweep the ray
+      *point2*–*point1* anticlockwise until it coincides with the ray
+      *point2*–*point3*.
+
+   .. py:property:: value
+
+      |getOnlyProp| The current value as a Python :py:type:`float`, as
+      measured in radians.
+
+   An :py:class:`Angle` also has the following common properties:
+
+   * :py:attr:`is_visible`
+   * :py:attr:`color`
+   * :py:attr:`color_floats`
+   * :py:attr:`opacity`
+
+.. seealso::
+
+   `GeoGebra Angle() reference
+   <https://geogebra.github.io/docs/manual/en/commands/Angle/>`_
