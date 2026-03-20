@@ -68,6 +68,7 @@ Various object-types have some subset of the below properties.
    * 3 — dotted
    * 4 — dash-dotted
 
+
 .. py:property:: line_thickness
    :type: int
 
@@ -99,6 +100,7 @@ Various object-types have some subset of the below properties.
    |getSetProp| The object's caption.  Note that setting the
    :py:attr:`caption` property also sets the :py:attr:`label_style`
    property to :code:`3`, to ensure the caption is shown.
+
 
 .. py:property:: opacity
 
