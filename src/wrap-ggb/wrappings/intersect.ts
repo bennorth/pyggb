@@ -1,5 +1,5 @@
 import { RegisterFun } from "../../shared/appApi";
-import { assembledCommand, augmentedGgbApi } from "../shared";
+import { assembledCommand, augmentedGgbApi, labelIsValid } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
@@ -18,12 +18,20 @@ export const register: RegisterFun = (mod, appApi) => {
 
   const fun = new Sk.builtin.func((...args) => {
     const badArgsError = new Sk.builtin.TypeError(
-      "Intersect() arguments must be two GeoGebra objects and a number"
+      "Intersect() arguments must be (object, object)" +
+        " or (object, object, one-based-index)"
     );
 
     switch (args.length) {
       case 2: {
-        throw badArgsError;
+        if (!ggb.everyElementIsGgbObject(args)) {
+          throw badArgsError;
+        }
+
+        // TODO: Extract following as method on AugGgbApi?
+        const labelsStr = ggb.evalCmdWithGgbArgs("Intersect", args);
+        const validLabels = labelsStr.split(",").filter(labelIsValid);
+        return new Sk.builtin.list(validLabels.map(ggb.wrapExistingGgbObject));
       }
       case 3: {
         if (
