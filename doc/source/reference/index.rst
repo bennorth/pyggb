@@ -10,6 +10,7 @@ Geometric objects
    classes/point
    classes/circle
    classes/ellipse
+   classes/arc
    classes/line
    classes/parabola
    classes/polygon

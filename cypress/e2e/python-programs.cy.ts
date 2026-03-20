@@ -17,6 +17,7 @@ const getPythonPrograms = async () => {
   // mean we can't just list the basenames and map import() over them.
   const specModules = await Promise.all([
     import("../python-programs/angle-bisector"),
+    import("../python-programs/arc"),
     import("../python-programs/area"),
     import("../python-programs/boolean"),
     import("../python-programs/centroid"),
@@ -137,6 +138,8 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     badOneArgSpec("Circle"),
     badNoArgsSpec("Ellipse"),
     badOneArgSpec("Ellipse"),
+    badNoArgsSpec("Arc"),
+    badOneArgSpec("Arc"),
     badNoArgsSpec("Line"),
     badOneArgSpec("Line"),
     badNoArgsSpec("Number"),
@@ -158,6 +161,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     simpleBadArgsSpec("Circle(Point(1, 2), 2, 3)"),
     simpleBadArgsSpec('Circle("one", "two", "three")'),
     simpleBadArgsSpec('Ellipse("one", "two", "three")'),
+    simpleBadArgsSpec('Arc("one", "two", "three")'),
     simpleBadArgsSpec('Line("hello", 3)'),
     simpleBadArgsSpec("Line(Point(3, 4), 3)"),
     simpleBadArgsSpec("Parabola(Point(3, 4), 3)"),
