@@ -21,8 +21,12 @@ export const register: RegisterFun = (mod, appApi) => {
       "Intersect() arguments must be two GeoGebra objects and a number"
     );
 
+    switch (args.length) {
+      case 2: {
+        throw badArgsError;
+      }
+      case 3: {
     if (
-      args.length !== 3 ||
       !ggb.isGgbObject(args[0]) ||
       !ggb.isGgbObject(args[1]) ||
       !ggb.isPythonOrGgbNumber(args[2])
@@ -41,6 +45,10 @@ export const register: RegisterFun = (mod, appApi) => {
     const label = ggb.evalCmd(ggbCmd);
 
     return ggb.wrapExistingGgbObject(label);
+      }
+      default:
+        throw badArgsError;
+    }
 
     // TODO: Will we always get Points back?  Assert this?  Do we need to
     // distinguish between free and derived points?  What happens if when we
