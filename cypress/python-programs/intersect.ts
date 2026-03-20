@@ -1,6 +1,6 @@
 export const specs = [
   {
-    label: "Intersect(Line, Line)",
+    label: "Intersect(line, line, number)",
     code: `
       A = Point(0, 0)
       B = Point(2, 4)
@@ -14,7 +14,7 @@ export const specs = [
     expOutputs: ["E = (1.0, 2.0)"],
   },
   {
-    label: "Intersect(Circle, Circle)",
+    label: "Intersect(circle, circle, number)",
     code: `
       from operator import attrgetter
       k1 = Circle(Point(3, 0), 5)
@@ -32,7 +32,7 @@ export const specs = [
     ],
   },
   {
-    label: "Intersect(Ellipse, Ellipse)",
+    label: "Intersect(ellipse, ellipse, number)",
     code: `
       import math
 
