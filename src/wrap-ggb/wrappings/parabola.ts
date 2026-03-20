@@ -114,6 +114,7 @@ export const register: RegisterFun = (mod, appApi) => {
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
       line_thickness: ggb.sharedGetSets.line_thickness,
+      _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });

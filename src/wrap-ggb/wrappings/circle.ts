@@ -159,6 +159,7 @@ export const register: RegisterFun = (mod, appApi) => {
           return this.$radiusNumber();
         },
       },
+      _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });

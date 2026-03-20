@@ -97,6 +97,13 @@ Various object-types have some subset of the below properties.
 Properties intended for internal use
 ------------------------------------
 
+.. py:property:: _ggb_label
+   :type: str
+
+   |getOnlyProp| The GeoGebra-assigned name (often a single letter,
+   sometimes Greek) for the object.
+
+
 .. py:property:: _ggb_type
    :type: str
 
