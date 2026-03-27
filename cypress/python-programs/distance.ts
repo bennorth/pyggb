@@ -4,7 +4,7 @@ export const specs = [
     code: `
       A = Point(-3, 0)
       B = Point(0, -4)
-      print("AB =", Distance(A, B))
+      print("AB =", Distance(A, B).value)
     `,
     expOutputs: ["AB = 5.0"],
   },
@@ -15,7 +15,7 @@ export const specs = [
       B = Point(-4, 0)
       C = Point(0, 4)
       k = Line(B, C)
-      d = Distance(A, k)
+      d = Distance(A, k).value
       print(f"Ak = {d:.4f}")
     `,
     expOutputs: ["Ak = 5.6569"], // 4√2
@@ -27,7 +27,7 @@ export const specs = [
       B = Point(-1, 2)
       C = Point(-0.5, 3)
       p = Polygon(B, C, 6)
-      d = Distance(A, p)
+      d = Distance(A, p).value
       print("Ap =", d)
     `,
     expOutputs: ["Ap = 5.0"], // Nearest point is vertex B

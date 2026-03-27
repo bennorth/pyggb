@@ -10,9 +10,9 @@ export const specs = [
 
       k = Incircle(p1, p2, p3)
 
-      d1 = Distance(p1, p2)
-      d2 = Distance(p2, p3)
-      d3 = Distance(p3, p1)
+      d1 = Distance(p1, p2).value
+      d2 = Distance(p2, p3).value
+      d3 = Distance(p3, p1).value
       s = (d1 + d2 + d3) / 2
 
       r = k.radius
