@@ -6,6 +6,7 @@ import {
   SkGgbObject,
   AugmentedGgbApi,
   assembledCommand,
+  labelGetSets,
 } from "../shared";
 import {
   KeywordArgsArray,
@@ -183,6 +184,7 @@ export const register: RegisterFun = (mod, appApi) => {
       opacity: ggb.sharedGetSets.opacity,
       line_thickness: ggb.sharedGetSets.line_thickness,
       line_style: ggb.sharedGetSets.line_style,
+      ...labelGetSets(ggb.sharedGetSets),
       _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
       // TODO: List of segments?

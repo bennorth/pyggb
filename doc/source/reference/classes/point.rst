@@ -46,6 +46,9 @@ Point
    * :py:attr:`color`
    * :py:attr:`color_floats`
    * :py:attr:`size`
+   * :py:attr:`label_visible`
+   * :py:attr:`label_style`
+   * :py:attr:`caption`
 
 
 .. seealso::
