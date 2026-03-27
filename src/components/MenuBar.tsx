@@ -11,6 +11,7 @@ import {
   useCanDownloadGgb,
 } from "../model/hooks/download-as-filetype";
 import { fullUrlWithinDocs } from "../shared/utils";
+import { useDismissOnEscape } from "./hooks";
 
 type FilenameProps = {
   backingFileState: OperationalBackingFileState;
@@ -31,6 +32,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   const setDisplaying = () => {
     setEditState({ status: "displaying" });
   };
+  useDismissOnEscape(setDisplaying);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
