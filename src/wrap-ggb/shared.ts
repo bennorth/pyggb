@@ -610,6 +610,7 @@ export type AugmentedGgbApi = {
   deleteMethodsSlice: MethodDescriptorsSlice;
   withPropertiesMethodsSlice: MethodDescriptorsSlice;
   evalCmd(cmd: string): string;
+  asyncEvalCmd(cmd: string): Promise<string>;
   evalCmdWithGgbArgs(cmdName: string, args: Array<SkGgbObject>): string;
   existingFromCmdAndGgbArgs(
     cmdName: string,
@@ -648,6 +649,8 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
   }
 
   const evalCmd = (cmd: string): string => ggbApi.evalCommandGetLabels(cmd);
+  const asyncEvalCmd = (cmd: string): Promise<string> =>
+    ggbApi.asyncEvalCommandGetLabels(cmd);
   const evalCmdWithGgbArgs = (cmdName: string, args: Array<SkGgbObject>) => {
     const ggbArgs = args.map((a) => a.$ggbLabel);
     const ggbArgStr = ggbArgs.join(",");
@@ -704,6 +707,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     deleteMethodsSlice: deleteMethodsSlice(ggbApi),
     withPropertiesMethodsSlice,
     evalCmd,
+    asyncEvalCmd,
     evalCmdWithGgbArgs,
     existingFromCmdAndGgbArgs,
     getValue,
