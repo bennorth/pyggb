@@ -416,7 +416,13 @@ type ReadWriteProperty = ReadOnlyProperty & {
   $set(this: SkGgbObject, val: SkObject): void;
 };
 
-type SharedGetSets = {
+type LabelGetSets = {
+  label_visible: ReadWriteProperty;
+  label_style: ReadWriteProperty;
+  caption: ReadWriteProperty;
+};
+
+type SharedGetSets = LabelGetSets & {
   is_visible: ReadWriteProperty;
   is_independent: ReadOnlyProperty;
   value: ReadWriteProperty;
@@ -426,9 +432,6 @@ type SharedGetSets = {
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
   line_style: ReadWriteProperty;
-  label_visible: ReadWriteProperty;
-  label_style: ReadWriteProperty;
-  caption: ReadWriteProperty;
   _ggb_label: ReadOnlyProperty;
   _ggb_exists: ReadOnlyProperty;
   _ggb_type: ReadOnlyProperty;
