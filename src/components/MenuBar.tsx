@@ -28,6 +28,10 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   const [editState, setEditState] = useState<FilenameEditState>({
     status: "displaying",
   });
+  const setDisplaying = () => {
+    setEditState({ status: "displaying" });
+  };
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const editStatus = editState.status;
@@ -54,7 +58,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
       return;
     }
     await renameAction(editState.newName);
-    setEditState({ status: "displaying" });
+    setDisplaying();
   };
   const handleMaybeSubmit = async (
     evt: React.KeyboardEvent<HTMLInputElement>
