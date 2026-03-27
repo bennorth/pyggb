@@ -437,6 +437,14 @@ type SharedGetSets = LabelGetSets & {
   _ggb_type: ReadOnlyProperty;
 };
 
+/** Extract an object containing just the three label-related
+ * properties. */
+export const labelGetSets = (sharedGetSets: SharedGetSets): LabelGetSets => ({
+  label_visible: sharedGetSets.label_visible,
+  label_style: sharedGetSets.label_style,
+  caption: sharedGetSets.caption,
+});
+
 /** Construct and return an object which contains various common
  * property definitions, which use the given `ggbApi` for interaction
  * with GeoGebra.  The returned object is suitable for inclusion in the
