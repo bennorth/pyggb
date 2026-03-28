@@ -180,6 +180,15 @@ const assertErrorOfKindFun =
 const assertValueError = assertErrorOfKindFun(/^ValueError:/);
 const assertTypeError = assertErrorOfKindFun(/^TypeError:/);
 
+describe("Handles bad function calls", optsNoIsolation, () => {
+  before(() => createNewPyGgbFile());
+
+  const specs: Array<CodeWithErrorSpec> = [
+  ];
+
+  specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
+});
+
 describe("handles attempt to set bad attribute value", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
 
