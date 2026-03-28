@@ -10,6 +10,13 @@ Various object-types have some subset of the below properties.
    |getSetProp| Whether the object is visible in the construction.
 
 
+.. py:property:: is_fixed
+   :type: bool
+
+   |getSetProp| Whether the object can be interactively dragged around
+   the construction.
+
+
 .. py:property:: is_independent
    :type: bool
 

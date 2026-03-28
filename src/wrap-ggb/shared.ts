@@ -424,6 +424,7 @@ type LabelGetSets = {
 
 type SharedGetSets = LabelGetSets & {
   is_visible: ReadWriteProperty;
+  is_fixed: ReadWriteProperty;
   is_independent: ReadOnlyProperty;
   value: ReadWriteProperty;
   opacity: ReadWriteProperty;
@@ -458,6 +459,15 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
     $set(this: SkGgbObject, pyIsVisible: SkObject) {
       const isVisible = Sk.misceval.isTrue(pyIsVisible);
       ggbApi.setVisible(this.$ggbLabel, isVisible);
+    },
+  },
+  is_fixed: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.bool(ggbApi.isFixed(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyIsFixed: SkObject) {
+      const isVisible = Sk.misceval.isTrue(pyIsFixed);
+      ggbApi.setFixed(this.$ggbLabel, isVisible);
     },
   },
   is_independent: {
