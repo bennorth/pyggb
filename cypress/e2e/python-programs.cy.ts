@@ -170,14 +170,14 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
   specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
 });
 
+const assertValueError = (messageFragment: string) => () => {
+  cy.get(".ErrorReport .message")
+    .contains(/^ValueError:/)
+    .contains(messageFragment);
+};
+
 describe("handles attempt to set bad attribute value", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
-
-  const assertValueError = (messageFragment: string) => () => {
-    cy.get(".ErrorReport .message")
-      .contains(/^ValueError:/)
-      .contains(messageFragment);
-  };
 
   const specs: Array<CodeWithErrorSpec> = [
     {
