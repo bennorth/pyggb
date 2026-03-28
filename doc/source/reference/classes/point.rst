@@ -19,6 +19,13 @@ Point
       varies from 0 at the first point of the segment to 1 at the
       second point.
 
+   .. py:property:: is_fixed
+      :type: bool
+
+      |getSetProp| Whether the ``Point`` is fixed at the given
+      location, as opposed to it being possible for the user to drag
+      it around the plane interactively.
+
    .. py:property:: x
 
       The current value of the Point's *x*-coordinate as a Python

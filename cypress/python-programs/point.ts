@@ -41,4 +41,13 @@ export const specs = [
       A1.x = 2
     `,
   },
+  {
+    label: "Point.is_fixed",
+    code: `
+      A = Point(3, 4)
+      B = Point(1, 2, is_fixed=True)
+      assert(not A.is_fixed)
+      assert(B.is_fixed)
+    `,
+  },
 ];
