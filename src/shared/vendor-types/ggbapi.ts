@@ -6,6 +6,9 @@ export type GgbApi = {
   getVisible(label: string): boolean;
   setVisible(label: string, isVisible: boolean): void;
 
+  isFixed(label: string): boolean;
+  setFixed(label: string, isFixed: boolean, selectionAllowed?: boolean): void;
+
   isIndependent(label: string): boolean;
 
   getValue(label: string): number;
