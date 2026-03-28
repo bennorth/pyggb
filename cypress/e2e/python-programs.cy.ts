@@ -176,6 +176,12 @@ const assertValueError = (messageFragment: string) => () => {
     .contains(messageFragment);
 };
 
+const assertTypeError = (messageFragment: string) => () => {
+  cy.get(".ErrorReport .message")
+    .contains(/^TypeError:/)
+    .contains(messageFragment);
+};
+
 describe("handles attempt to set bad attribute value", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
 
