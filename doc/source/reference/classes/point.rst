@@ -27,24 +27,28 @@ Point
       it around the plane interactively.
 
    .. py:property:: x
+      :type: float
 
-      The current value of the Point's *x*-coordinate as a Python
-      :py:type:`float`.
+      |getSetProp| The current value of the Point's *x*-coordinate as
+      a Python :py:type:`float`.
 
    .. py:property:: x_number
+      :type: Number
 
-      The current value of the Point's *x*-coordinate as a dynamic
-      :py:class:`Number`.
+      |getOnlyProp| The current value of the Point's *x*-coordinate as
+      a dynamic :py:class:`Number`.
 
    .. py:property:: y
+      :type: float
 
-      The current value of the Point's *y*-coordinate as a Python
-      :py:type:`float`.
+      |getSetProp| The current value of the Point's *y*-coordinate as
+      a Python :py:type:`float`.
 
    .. py:property:: y_number
+      :type: Number
 
-      The current value of the Point's *y*-coordinate as a dynamic
-      :py:class:`Number`.
+      |getOnlyProp| The current value of the Point's *y*-coordinate as
+      a dynamic :py:class:`Number`.
 
    A :py:class:`Point` also has the following common properties:
 
