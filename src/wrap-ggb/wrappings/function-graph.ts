@@ -1,7 +1,12 @@
 import { RegisterFun } from "../../shared/appApi";
 import { throwBadSpecKind } from "../../shared/utils";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
-import { augmentedGgbApi, SkGgbObject, WrapExistingCtorSpec } from "../shared";
+import {
+  augmentedGgbApi,
+  SkGgbObject,
+  tpCallFun,
+  WrapExistingCtorSpec,
+} from "../shared";
 import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
@@ -88,6 +93,9 @@ export const register: RegisterFun = (mod, appApi) => {
         default:
           throwBadSpecKind("FunctionGraph", spec);
       }
+    },
+    slots: {
+      tp$call: tpCallFun(ggb, "FunctionGraph"),
     },
   });
 
