@@ -65,7 +65,7 @@ export const isInstance = (cls: SkObject) => (obj: SkObject) =>
   Sk.builtin.isinstance(obj, cls).v;
 
 function _isGgbObject(obj: SkObject): obj is SkGgbObject {
-  return "$ggbLabel" in obj;
+  return typeof obj === "object" && obj !== null && "$ggbLabel" in obj;
 }
 
 function _ggbType(ggbApi: GgbApi, objOrLabel: SkGgbObject | string): string {
@@ -258,10 +258,7 @@ function throwIfNotPyOrGgbNumber(
   obj: SkObject,
   objName: string
 ): asserts obj is SkInt | SkFloat | SkGgbObject {
-  const isPyNumber = Sk.builtin.checkNumber(obj);
-  const isGgbNumber = isGgbObject(ggbApi, obj, "numeric");
-  const isSomeNumber = isPyNumber || isGgbNumber;
-  if (!isSomeNumber) {
+  if (!isPythonOrGgbNumber(ggbApi, obj)) {
     throw new Sk.builtin.TypeError(
       `${objName} must be a Python number or GeoGebra numeric`
     );
