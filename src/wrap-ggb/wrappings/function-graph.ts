@@ -58,4 +58,10 @@ export const register: RegisterFun = (mod, appApi) => {
     },
     $flags: { MinArgs: 3, MaxArgs: 3 },
   };
+
+  const cls = Sk.abstr.buildNativeClass("FunctionGraph", {
+  });
+
+  mod.FunctionGraph = cls;
+  registerObjectType("function", cls);
 };
