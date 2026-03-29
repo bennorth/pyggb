@@ -17,4 +17,9 @@ export const register: RegisterFun = (mod, appApi) => {
     }
     return args.map(ggb.numberValueOrLabel);
   }
+
+  function createFunctionObject(cmd: string) {
+    const lbl = ggb.evalCmd(cmd);
+    return ggb.wrapExistingGgbObject(lbl);
+  }
 };
