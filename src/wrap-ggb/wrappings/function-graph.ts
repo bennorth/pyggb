@@ -1,4 +1,5 @@
 import { RegisterFun } from "../../shared/appApi";
+import { throwBadSpecKind } from "../../shared/utils";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { augmentedGgbApi, SkGgbObject, WrapExistingCtorSpec } from "../shared";
 import { registerObjectType } from "../type-registry";
@@ -68,6 +69,26 @@ export const register: RegisterFun = (mod, appApi) => {
   };
 
   const cls = Sk.abstr.buildNativeClass("FunctionGraph", {
+    constructor: function GeoGebraFunction(
+      this: SkGgbFunctionGraph,
+      spec: SkGgbFunctionGraphCtorSpec
+    ) {
+      switch (spec.kind) {
+        case "wrap-existing":
+          this.$ggbLabel = spec.label;
+          return;
+        case "expression": {
+          // TODO
+          return;
+        }
+        case "expression-range": {
+          // TODO
+          return;
+        }
+        default:
+          throwBadSpecKind("FunctionGraph", spec);
+      }
+    },
   });
 
   mod.FunctionGraph = cls;
