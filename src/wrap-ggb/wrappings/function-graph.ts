@@ -5,6 +5,14 @@ import { registerObjectType } from "../type-registry";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface SkGgbFunctionGraph extends SkGgbObject {}
+
+type SkGgbFunctionGraphCtorSpec =
+  | WrapExistingCtorSpec
+  | { kind: "expression"; expr: string }
+  | { kind: "expression-range"; expr: string; range: Array<SkObject> };
+
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
