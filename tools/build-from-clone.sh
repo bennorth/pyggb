@@ -42,6 +42,14 @@ git clone "${PYGGB_ORIGIN_REPO}" repo
     cd repo
     npm clean-install
     ./tools/build-examples.sh
+
+    (
+        cd doc
+        poetry install
+        poetry run make html
+    )
+    mv doc/build/html public/doc
+
     npx vite build --base=/"$PYGGB_HOSTED_BASE_PATH"/
 )
 
