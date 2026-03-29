@@ -3,6 +3,7 @@ import { throwBadSpecKind } from "../../shared/utils";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import {
   augmentedGgbApi,
+  setGgbLabelFromCmd,
   SkGgbObject,
   tpCallFun,
   WrapExistingCtorSpec,
@@ -78,16 +79,19 @@ export const register: RegisterFun = (mod, appApi) => {
       this: SkGgbFunctionGraph,
       spec: SkGgbFunctionGraphCtorSpec
     ) {
+      const setLabelFromCmd = setGgbLabelFromCmd(ggb, this);
       switch (spec.kind) {
         case "wrap-existing":
           this.$ggbLabel = spec.label;
           return;
         case "expression": {
-          // TODO
+          setLabelFromCmd(`y=${spec.expr}`);
           return;
         }
         case "expression-range": {
-          // TODO
+          const lbNumber = ggb.numberValueOrLabel(spec.range[0]);
+          const ubNumber = ggb.numberValueOrLabel(spec.range[1]);
+          setLabelFromCmd(`Function(${spec.expr},${lbNumber},${ubNumber})`);
           return;
         }
         default:
