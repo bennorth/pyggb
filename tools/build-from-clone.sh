@@ -41,6 +41,7 @@ git clone "${PYGGB_ORIGIN_REPO}" repo
 (
     cd repo
     npm clean-install
+
     ./tools/build-examples.sh
 
     (
