@@ -46,4 +46,16 @@ export const register: RegisterFun = (mod, appApi) => {
     },
     $flags: { MinArgs: 2, MaxArgs: 2 },
   };
+
+  const logarithm = {
+    $meth(a: SkObject, b: SkObject, c: SkObject) {
+      const [aArg, bArg, cArg] = numberArgStrings(
+        [a, b, c],
+        "logarithm() arguments must be (a, b, c) for y = a log_b(c x)"
+      );
+
+      return createFunctionObject(`y=(${aArg})(log((${bArg}),(${cArg})(x)))`);
+    },
+    $flags: { MinArgs: 3, MaxArgs: 3 },
+  };
 };
