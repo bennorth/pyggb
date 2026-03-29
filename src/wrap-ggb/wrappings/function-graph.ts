@@ -97,6 +97,11 @@ export const register: RegisterFun = (mod, appApi) => {
     slots: {
       tp$call: tpCallFun(ggb, "FunctionGraph"),
     },
+    classmethods: {
+      power,
+      exponential,
+      logarithm,
+    },
   });
 
   mod.FunctionGraph = cls;
