@@ -22,4 +22,16 @@ export const register: RegisterFun = (mod, appApi) => {
     const lbl = ggb.evalCmd(cmd);
     return ggb.wrapExistingGgbObject(lbl);
   }
+
+  const exponential = {
+    $meth(a: SkObject, b: SkObject) {
+      const [aArg, bArg] = numberArgStrings(
+        [a, b],
+        "exponential() arguments must be (a, b) for y = a b^x"
+      );
+
+      return createFunctionObject(`y=(${aArg})((${bArg})^x)`);
+    },
+    $flags: { MinArgs: 2, MaxArgs: 2 },
+  };
 };
