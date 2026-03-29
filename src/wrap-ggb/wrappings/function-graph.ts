@@ -99,6 +99,43 @@ export const register: RegisterFun = (mod, appApi) => {
       }
     },
     slots: {
+      tp$new(args) {
+        const badArgsError = new Sk.builtin.TypeError(
+          "FunctionGraph() arguments must be" +
+            " (expression_string)" +
+            " or (expression_string, lower_bound, upper_bound)"
+        );
+
+        const make = (spec: SkGgbFunctionGraphCtorSpec) =>
+          new mod.FunctionGraph(spec);
+
+        switch (args.length) {
+          case 1: {
+            const arg = args[0];
+            if (!Sk.builtin.checkString(arg)) {
+              throw badArgsError;
+            }
+            return make({ kind: "expression", expr: arg.v });
+          }
+          case 3: {
+            const exprArg = args[0];
+            const rangeArgs = args.slice(1);
+            if (
+              !Sk.builtin.checkString(exprArg) ||
+              !rangeArgs.every(ggb.isPythonOrGgbNumber)
+            ) {
+              throw badArgsError;
+            }
+            return make({
+              kind: "expression-range",
+              expr: exprArg.v,
+              range: rangeArgs,
+            });
+          }
+          default:
+            throw badArgsError;
+        }
+      },
       tp$call: tpCallFun(ggb, "FunctionGraph"),
     },
     classmethods: {
