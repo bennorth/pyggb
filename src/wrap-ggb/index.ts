@@ -15,6 +15,7 @@ import { register as registerPolygon } from "./wrappings/polygon";
 import { register as registerSlider } from "./wrappings/slider";
 import { register as registerRotate } from "./wrappings/rotate";
 import { register as registerFunction } from "./wrappings/function";
+import { register as registerFunctionGraph } from "./wrappings/function-graph";
 import { register as registerIf } from "./wrappings/if";
 import { register as registerDistance } from "./wrappings/distance";
 import { register as registerIntersect } from "./wrappings/intersect";
@@ -70,6 +71,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerSlider(mod, appApi);
   registerRotate(mod, appApi);
   registerFunction(mod, appApi);
+  registerFunctionGraph(mod, appApi);
   registerIf(mod, appApi);
   registerDistance(mod, appApi);
   registerIntersect(mod, appApi);
