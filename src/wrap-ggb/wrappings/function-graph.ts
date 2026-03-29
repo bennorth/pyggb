@@ -34,4 +34,16 @@ export const register: RegisterFun = (mod, appApi) => {
     },
     $flags: { MinArgs: 2, MaxArgs: 2 },
   };
+
+  const power = {
+    $meth(a: SkObject, b: SkObject) {
+      const [aArg, bArg] = numberArgStrings(
+        [a, b],
+        "power() arguments must be (a, b) for y = a x^b"
+      );
+
+      return createFunctionObject(`y=(${aArg})(x^(${bArg}))`);
+    },
+    $flags: { MinArgs: 2, MaxArgs: 2 },
+  };
 };
