@@ -50,7 +50,8 @@ git clone "${PYGGB_ORIGIN_REPO}" repo
     )
     mv doc/build/html public/doc
 
-    npx vite build --base=/"$PYGGB_HOSTED_BASE_PATH"/
+    env VITE_DOCS_BASE_URL_WITHIN_APP=/doc \
+        npx vite build --base=/"$PYGGB_HOSTED_BASE_PATH"/
 )
 
 mkdir www
