@@ -10,7 +10,7 @@ Miscellaneous functions
 
    .. py:classmethod:: cos(x)
 
-         Return a dynamic :py:class:`Number` for the sine of the given
+         Return a dynamic :py:class:`Number` for the cosine of the given
          *x* value.
 
    .. py:classmethod:: compare_LT(v, w)
