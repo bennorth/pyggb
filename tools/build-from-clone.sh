@@ -59,7 +59,7 @@ git clone "${PYGGB_ORIGIN_REPO}" repo
 )
 
 mkdir www
-rsync -r repo/build/ www/"$PYGGB_HOSTED_BASE_PATH"
+rsync -r repo/dist/ www/"$PYGGB_HOSTED_BASE_PATH"
 
 
 ########################################################################
