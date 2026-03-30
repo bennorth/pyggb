@@ -4,21 +4,28 @@ import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
+const badArgsError = new Sk.builtin.TypeError(
+  "Distance() arguments must be (object, object)"
+);
+
 export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
   const fun = new Sk.builtin.func((...args) => {
-    if (args.length !== 2)
-      throw new Sk.builtin.TypeError("bad Distance() args; need 2 args");
-    ggb.throwIfNotGgbObjectOfType(args[0], "point", "Distance() ctor arg[0]");
-    ggb.throwIfNotGgbObject(args[1], "Distance() ctor arg[1]");
+    if (args.length !== 2 || !ggb.everyElementIsGgbObject(args)) {
+      throw badArgsError;
+    }
 
-    const ggbArgs = `${args[0].$ggbLabel},${args[1].$ggbLabel}`;
-    const ggbCmd = `Distance(${ggbArgs})`;
-    const lbl = ggb.evalCmd(ggbCmd);
-    const distanceValue = ggb.getValue(lbl);
-    ggb.deleteObject(lbl);
-    return new Sk.builtin.float_(distanceValue);
+    const mNumber = ggb.evalCmdWithGgbArgs("Distance", args);
+    if (mNumber == null) {
+      const ggbTypes = args.map(ggb.ggbType);
+      throw new Sk.builtin.RuntimeError(
+        "Distance(): unable to compute distance between" +
+          ` the given ${ggbTypes[0]} and ${ggbTypes[1]}`
+      );
+    }
+
+    return ggb.wrapExistingGgbObject(mNumber);
   });
 
   mod.Distance = fun;
