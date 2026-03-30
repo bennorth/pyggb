@@ -8,6 +8,7 @@ import {
   setGgbLabelFromArgs,
   setGgbLabelFromCmd,
   labelGetSets,
+  tpCallFun,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -106,6 +107,7 @@ export const register: RegisterFun = (mod, appApi) => {
             throw badArgsError;
         }
       },
+      tp$call: tpCallFun(ggb, "Parabola"),
     },
     methods: {
       ...ggb.freeCopyMethodsSlice,

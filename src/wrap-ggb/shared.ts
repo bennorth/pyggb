@@ -591,6 +591,33 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
   },
 });
 
+/** Create a function, suitable for use as the `tp$call()` slot of a
+ * type, which makes instances of that type callable with a single
+ * numeric (Python or GeoGebra) argument.
+ * */
+export function tpCallFun(ggb: AugmentedGgbApi, typeName: string) {
+  return function (
+    this: SkGgbObject,
+    args: Array<SkObject>,
+    kwargs: KeywordArgsArray
+  ) {
+    if (
+      args.length !== 1 ||
+      !ggb.isPythonOrGgbNumber(args[0]) ||
+      (kwargs != null && kwargs.length !== 0)
+    ) {
+      throw new Sk.builtin.TypeError(
+        `${typeName} instance must be called` +
+          " with exactly one positional numeric argument"
+      );
+    }
+
+    const ggbArg = ggb.numberValueOrLabel(args[0]);
+    const cmd = `${this.$ggbLabel}(${ggbArg})`;
+    return ggb.wrapExistingGgbObject(ggb.evalCmd(cmd));
+  };
+}
+
 type EveryElementIsGgbObjectOfType = (
   objs: Array<SkObject>,
   requiredType: string
