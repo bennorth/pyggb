@@ -30,4 +30,15 @@ export const specs = [
       assert(k1._ggb_type == "ellipse")
     `,
   },
+  {
+    label: "Ellipse.line_style",
+    code: `
+      A = Point(2, 0)
+      B = Point(-2, 0)
+      C = Point(4, 1)
+      k = Ellipse(A, B, C)
+      k.line_style = 2
+      assert(k.line_style == 2)
+    `,
+  },
 ];

@@ -27,4 +27,14 @@ export const specs = [
     `,
     expOutputs: ["free_copy() gave arc"],
   },
+  {
+    label: "Arc.line_style",
+    code: `
+      k1 = Circle(0, 0, 3)
+      n1 = Number(0.5)
+      a1 = Arc(k1, n1, 1.0)
+      a1.line_style = 2
+      assert(a1.line_style == 2)
+    `,
+  },
 ];

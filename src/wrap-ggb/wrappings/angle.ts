@@ -2,6 +2,7 @@ import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   kPolygonTypeAndSubtypes,
+  labelGetSets,
   setGgbLabelFromArgs,
   SkGgbObject,
   WrapExistingCtorSpec,
@@ -129,6 +130,8 @@ export const register: RegisterFun = (mod, appApi) => {
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
       opacity: ggb.sharedGetSets.opacity,
+      ...labelGetSets(ggb.sharedGetSets),
+      _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });

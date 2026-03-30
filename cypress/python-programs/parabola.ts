@@ -31,4 +31,12 @@ export const specs = [
       assert(c1._ggb_type == "parabola")
     `,
   },
+  {
+    label: "Parabola.line_style",
+    code: `
+      p = Parabola(2, 1, -2)
+      p.line_style = 1
+      assert(p.line_style == 1)
+    `,
+  },
 ];

@@ -6,6 +6,9 @@ export type GgbApi = {
   getVisible(label: string): boolean;
   setVisible(label: string, isVisible: boolean): void;
 
+  isFixed(label: string): boolean;
+  setFixed(label: string, isFixed: boolean, selectionAllowed?: boolean): void;
+
   isIndependent(label: string): boolean;
 
   getValue(label: string): number;
@@ -23,6 +26,9 @@ export type GgbApi = {
 
   getPointSize(label: string): number;
   setPointSize(label: string, size: number): number;
+
+  getLineStyle(label: string): number;
+  setLineStyle(label: string, style: number): number;
 
   getLineThickness(label: string): number;
   setLineThickness(label: string, thickness: number): number;

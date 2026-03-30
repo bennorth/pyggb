@@ -416,8 +416,15 @@ type ReadWriteProperty = ReadOnlyProperty & {
   $set(this: SkGgbObject, val: SkObject): void;
 };
 
-type SharedGetSets = {
+type LabelGetSets = {
+  label_visible: ReadWriteProperty;
+  label_style: ReadWriteProperty;
+  caption: ReadWriteProperty;
+};
+
+type SharedGetSets = LabelGetSets & {
   is_visible: ReadWriteProperty;
+  is_fixed: ReadWriteProperty;
   is_independent: ReadOnlyProperty;
   value: ReadWriteProperty;
   opacity: ReadWriteProperty;
@@ -425,12 +432,19 @@ type SharedGetSets = {
   color_floats: ReadOnlyProperty;
   size: ReadWriteProperty;
   line_thickness: ReadWriteProperty;
-  label_visible: ReadWriteProperty;
-  label_style: ReadWriteProperty;
-  caption: ReadWriteProperty;
+  line_style: ReadWriteProperty;
+  _ggb_label: ReadOnlyProperty;
   _ggb_exists: ReadOnlyProperty;
   _ggb_type: ReadOnlyProperty;
 };
+
+/** Extract an object containing just the three label-related
+ * properties. */
+export const labelGetSets = (sharedGetSets: SharedGetSets): LabelGetSets => ({
+  label_visible: sharedGetSets.label_visible,
+  label_style: sharedGetSets.label_style,
+  caption: sharedGetSets.caption,
+});
 
 /** Construct and return an object which contains various common
  * property definitions, which use the given `ggbApi` for interaction
@@ -445,6 +459,15 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
     $set(this: SkGgbObject, pyIsVisible: SkObject) {
       const isVisible = Sk.misceval.isTrue(pyIsVisible);
       ggbApi.setVisible(this.$ggbLabel, isVisible);
+    },
+  },
+  is_fixed: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.bool(ggbApi.isFixed(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyIsFixed: SkObject) {
+      const isVisible = Sk.misceval.isTrue(pyIsFixed);
+      ggbApi.setFixed(this.$ggbLabel, isVisible);
     },
   },
   is_independent: {
@@ -509,6 +532,16 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
       ggbApi.setLineThickness(this.$ggbLabel, pyThickness.v);
     },
   },
+  line_style: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.int_(ggbApi.getLineStyle(this.$ggbLabel));
+    },
+    $set(this: SkGgbObject, pyStyle: SkObject) {
+      throwIfNotNumber(pyStyle, "line_style must be a number");
+      // TODO: Verify integer and in range [0, 4]
+      ggbApi.setLineStyle(this.$ggbLabel, pyStyle.v);
+    },
+  },
   label_visible: {
     $get(this: SkGgbObject) {
       return new Sk.builtin.bool(ggbApi.getLabelVisible(this.$ggbLabel));
@@ -542,6 +575,11 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
       throwIfNotString(pyCaption, "caption must be a string");
       ggbApi.setCaption(this.$ggbLabel, pyCaption.v);
       ggbApi.setLabelStyle(this.$ggbLabel, 3);
+    },
+  },
+  _ggb_label: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.str(this.$ggbLabel);
     },
   },
   _ggb_type: {

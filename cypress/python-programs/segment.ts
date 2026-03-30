@@ -21,4 +21,14 @@ export const specs = [
       assert(s1._ggb_type == "segment")
     `,
   },
+  {
+    label: "Segment.line_style",
+    code: `
+      A = Point(3, 4)
+      B = Point(1, 1)
+      s = Segment(A, B)
+      s.line_style = 2
+      assert(s.line_style == 2)
+    `,
+  },
 ];

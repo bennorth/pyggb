@@ -5,6 +5,7 @@ import {
   WrapExistingCtorSpec,
   SkGgbObject,
   setGgbLabelFromArgs,
+  labelGetSets,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -149,6 +150,7 @@ export const register: RegisterFun = (mod, appApi) => {
       color_floats: ggb.sharedGetSets.color_floats,
       opacity: ggb.sharedGetSets.opacity,
       line_thickness: ggb.sharedGetSets.line_thickness,
+      line_style: ggb.sharedGetSets.line_style,
       radius: {
         $get(this: SkGgbCircle) {
           return new Sk.builtin.float_(this.$radiusNumber().$value());
@@ -159,6 +161,8 @@ export const register: RegisterFun = (mod, appApi) => {
           return this.$radiusNumber();
         },
       },
+      ...labelGetSets(ggb.sharedGetSets),
+      _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });

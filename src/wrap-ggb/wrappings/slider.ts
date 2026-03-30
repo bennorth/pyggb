@@ -6,6 +6,7 @@ import {
   AugmentedGgbApi,
   strOfNumber,
   strOfBool,
+  labelGetSets,
 } from "../shared";
 import {
   SkObject,
@@ -164,9 +165,7 @@ export const register: RegisterFun = (mod, appApi) => {
     getsets: {
       is_visible: ggb.sharedGetSets.is_visible,
       value: ggb.sharedGetSets.value,
-      label_visible: ggb.sharedGetSets.label_visible,
-      label_style: ggb.sharedGetSets.label_style,
-      caption: ggb.sharedGetSets.caption,
+      ...labelGetSets(ggb.sharedGetSets),
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });

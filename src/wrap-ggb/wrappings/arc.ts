@@ -1,6 +1,7 @@
 import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
+  labelGetSets,
   setGgbLabelFromArgs,
   SkGgbObject,
   withPropertiesFromNameValuePairs,
@@ -116,6 +117,9 @@ export const register: RegisterFun = (mod, appApi) => {
       color_floats: ggb.sharedGetSets.color_floats,
       opacity: ggb.sharedGetSets.opacity,
       line_thickness: ggb.sharedGetSets.line_thickness,
+      line_style: ggb.sharedGetSets.line_style,
+      ...labelGetSets(ggb.sharedGetSets),
+      _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });

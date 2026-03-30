@@ -19,25 +19,36 @@ Point
       varies from 0 at the first point of the segment to 1 at the
       second point.
 
-   .. py:property:: x
+   .. py:property:: is_fixed
+      :type: bool
 
-      The current value of the Point's *x*-coordinate as a Python
-      :py:type:`float`.
+      |getSetProp| Whether the ``Point`` is fixed at the given
+      location, as opposed to it being possible for the user to drag
+      it around the plane interactively.
+
+   .. py:property:: x
+      :type: float
+
+      |getSetProp| The current value of the Point's *x*-coordinate as
+      a Python :py:type:`float`.
 
    .. py:property:: x_number
+      :type: Number
 
-      The current value of the Point's *x*-coordinate as a dynamic
-      :py:class:`Number`.
+      |getOnlyProp| The current value of the Point's *x*-coordinate as
+      a dynamic :py:class:`Number`.
 
    .. py:property:: y
+      :type: float
 
-      The current value of the Point's *y*-coordinate as a Python
-      :py:type:`float`.
+      |getSetProp| The current value of the Point's *y*-coordinate as
+      a Python :py:type:`float`.
 
    .. py:property:: y_number
+      :type: Number
 
-      The current value of the Point's *y*-coordinate as a dynamic
-      :py:class:`Number`.
+      |getOnlyProp| The current value of the Point's *y*-coordinate as
+      a dynamic :py:class:`Number`.
 
    A :py:class:`Point` also has the following common properties:
 
@@ -46,6 +57,9 @@ Point
    * :py:attr:`color`
    * :py:attr:`color_floats`
    * :py:attr:`size`
+   * :py:attr:`label_visible`
+   * :py:attr:`label_style`
+   * :py:attr:`caption`
 
 
 .. seealso::

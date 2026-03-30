@@ -27,4 +27,14 @@ export const specs = [
       assert(k1._ggb_type == "line")
     `,
   },
+  {
+    label: "Line.line_style",
+    code: `
+      A = Point(3, 4)
+      B = Point(2, 1)
+      k = Line(A, B)
+      k.line_style = 3
+      assert(k.line_style == 3)
+    `,
+  },
 ];

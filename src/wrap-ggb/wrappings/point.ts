@@ -9,6 +9,7 @@ import {
   SpecConstructible,
   setGgbLabelFromArgs,
   setGgbLabelFromCmd,
+  labelGetSets,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
@@ -193,6 +194,7 @@ export const register = (
     },
     getsets: {
       is_visible: ggb.sharedGetSets.is_visible,
+      is_fixed: ggb.sharedGetSets.is_fixed,
       is_independent: ggb.sharedGetSets.is_independent,
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
@@ -226,6 +228,8 @@ export const register = (
           return this.$ggbNumberY;
         },
       },
+      ...labelGetSets(ggb.sharedGetSets),
+      _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });
