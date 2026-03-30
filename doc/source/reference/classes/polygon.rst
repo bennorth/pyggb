@@ -20,6 +20,14 @@ Polygon
       such that the interior of the Polygon is on your left as you
       travel from *p1* to *p2*.
 
+   .. py:method:: angles()
+
+      Construct, and return a list of, all angles of the *self*
+      Polygon.  If the vertices of *self* were given in anticlockwise
+      order, the angles are the internal angles; otherwise, the
+      external angles.  (In GeoGebra, you would construct these angles
+      by means of ``Angle(polygon)``.)
+
    .. py:property:: area
 
       |getOnlyProp| The area, in square units, of the Polygon.

@@ -123,6 +123,17 @@ export const register: RegisterFun = (mod, appApi) => {
       },
     },
     methods: {
+      angles: {
+        $flags: { NoArgs: true },
+        $meth(this: SkGgbPolygon) {
+          const angleLabels = ggb
+            .evalCmdWithGgbArgs("Angle", [this])
+            .split(",");
+          return new Sk.builtin.list(
+            angleLabels.map(ggb.wrapExistingGgbObject)
+          );
+        },
+      },
       // Custom implementation (i.e., do not use deleteMethodsSlice), to
       // take care of allowing the constituent points to be deleted at
       // the same time.

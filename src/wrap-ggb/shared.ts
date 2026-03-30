@@ -722,3 +722,15 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
 
   return api;
 };
+
+/** List of GeoGebra-type strings which "Polygon" objects can have.
+ * There are special cases for Polygon instances constructed from lists
+ * of 3 (`"triangle"`) up to 6 (`"hexagon"`) points, as well as the
+ * general `"polygon"` Ggb-type. */
+export const kPolygonTypeAndSubtypes = [
+  "triangle",
+  "quadrilateral",
+  "pentagon",
+  "hexagon",
+  "polygon",
+];

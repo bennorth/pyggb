@@ -2,6 +2,8 @@ import { AppApi } from "../shared/appApi";
 import { register as registerPoint } from "./wrappings/point";
 import { register as registerCircle } from "./wrappings/circle";
 import { register as registerEllipse } from "./wrappings/ellipse";
+import { register as registerAngle } from "./wrappings/angle";
+import { register as registerArc } from "./wrappings/arc";
 import { register as registerLine } from "./wrappings/line";
 import { register as registerNumber } from "./wrappings/number";
 import { register as registerBoolean } from "./wrappings/boolean";
@@ -17,6 +19,18 @@ import { register as registerDistance } from "./wrappings/distance";
 import { register as registerIntersect } from "./wrappings/intersect";
 import { register as registerZoom } from "./wrappings/zoom";
 import { register as registerNumberOfObjects } from "./wrappings/number-of-objects";
+import { register as registerAngleBisector } from "./wrappings/angle-bisector";
+import { register as registerCentroid } from "./wrappings/centroid";
+import { register as registerIncircle } from "./wrappings/incircle";
+import { register as registerMidpoint } from "./wrappings/midpoint";
+import { register as registerPerpendicularBisector } from "./wrappings/perpendicular-bisector";
+import { register as registerPerpendicularLine } from "./wrappings/perpendicular-line";
+import { register as registerCircumference } from "./wrappings/circumference";
+import { register as registerPerimeter } from "./wrappings/perimeter";
+import { register as registerArea } from "./wrappings/area";
+import { register as registerPredicates } from "./wrappings/predicates";
+import { register as registerTangent } from "./wrappings/tangent";
+import { register as registerTriangleCenter } from "./wrappings/triangle-center";
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
@@ -42,6 +56,8 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerPoint(mod, appApi);
   registerCircle(mod, appApi);
   registerEllipse(mod, appApi);
+  registerAngle(mod, appApi);
+  registerArc(mod, appApi);
   registerLine(mod, appApi);
   registerNumber(mod, appApi);
   registerBoolean(mod, appApi);
@@ -57,6 +73,18 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerIntersect(mod, appApi);
   registerZoom(mod, appApi);
   registerNumberOfObjects(mod, appApi);
+  registerAngleBisector(mod, appApi);
+  registerCentroid(mod, appApi);
+  registerIncircle(mod, appApi);
+  registerMidpoint(mod, appApi);
+  registerPerpendicularBisector(mod, appApi);
+  registerPerpendicularLine(mod, appApi);
+  registerCircumference(mod, appApi);
+  registerPerimeter(mod, appApi);
+  registerArea(mod, appApi);
+  registerPredicates(mod, appApi);
+  registerTangent(mod, appApi);
+  registerTriangleCenter(mod, appApi);
 
   registerClearConsole(mod, appApi);
 

@@ -1,5 +1,5 @@
 import { RegisterFun } from "../../shared/appApi";
-import { assembledCommand, augmentedGgbApi } from "../shared";
+import { assembledCommand, augmentedGgbApi, labelIsValid } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
@@ -18,29 +18,45 @@ export const register: RegisterFun = (mod, appApi) => {
 
   const fun = new Sk.builtin.func((...args) => {
     const badArgsError = new Sk.builtin.TypeError(
-      "Intersect() arguments must be two GeoGebra objects and a number"
+      "Intersect() arguments must be (object, object)" +
+        " or (object, object, one-based-index)"
     );
 
-    if (
-      args.length !== 3 ||
-      !ggb.isGgbObject(args[0]) ||
-      !ggb.isGgbObject(args[1]) ||
-      !ggb.isPythonOrGgbNumber(args[2])
-    ) {
-      throw badArgsError;
+    switch (args.length) {
+      case 2: {
+        if (!ggb.everyElementIsGgbObject(args)) {
+          throw badArgsError;
+        }
+
+        // TODO: Extract following as method on AugGgbApi?
+        const labelsStr = ggb.evalCmdWithGgbArgs("Intersect", args);
+        const validLabels = labelsStr.split(",").filter(labelIsValid);
+        return new Sk.builtin.list(validLabels.map(ggb.wrapExistingGgbObject));
+      }
+      case 3: {
+        if (
+          !ggb.isGgbObject(args[0]) ||
+          !ggb.isGgbObject(args[1]) ||
+          !ggb.isPythonOrGgbNumber(args[2])
+        ) {
+          throw badArgsError;
+        }
+
+        const ggbCmd = assembledCommand("Intersect", [
+          args[0].$ggbLabel,
+          args[1].$ggbLabel,
+          ggb.numberValueOrLabel(args[2]),
+        ]);
+
+        // It seems that we always get a Point.  If there is no Nth
+        // intersection, the Point has NaN coords.
+        const label = ggb.evalCmd(ggbCmd);
+
+        return ggb.wrapExistingGgbObject(label);
+      }
+      default:
+        throw badArgsError;
     }
-
-    const ggbCmd = assembledCommand("Intersect", [
-      args[0].$ggbLabel,
-      args[1].$ggbLabel,
-      ggb.numberValueOrLabel(args[2]),
-    ]);
-
-    // It seems that always get a Point.  If there is no Nth
-    // intersection, the Point has NaN coords.
-    const label = ggb.evalCmd(ggbCmd);
-
-    return ggb.wrapExistingGgbObject(label);
 
     // TODO: Will we always get Points back?  Assert this?  Do we need to
     // distinguish between free and derived points?  What happens if when we

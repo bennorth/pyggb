@@ -1,6 +1,6 @@
 export const specs = [
   {
-    label: "Intersect(Line, Line)",
+    label: "Intersect(line, line, number)",
     code: `
       A = Point(0, 0)
       B = Point(2, 4)
@@ -14,7 +14,7 @@ export const specs = [
     expOutputs: ["E = (1.0, 2.0)"],
   },
   {
-    label: "Intersect(Circle, Circle)",
+    label: "Intersect(circle, circle, number)",
     code: `
       from operator import attrgetter
       k1 = Circle(Point(3, 0), 5)
@@ -32,7 +32,25 @@ export const specs = [
     ],
   },
   {
-    label: "Intersect(Ellipse, Ellipse)",
+    label: "Intersect(circle, circle)",
+    code: `
+      from operator import attrgetter
+      k1 = Circle(Point(3, 0), 5)
+      k2 = Circle(Point(-3, 0), 5)
+      rawEs = Intersect(k1, k2)
+      Es = sorted(rawEs, key=attrgetter("y"))
+      print(len(Es), "intersection/s")
+      print(f"Es[0] = ({Es[0].x}, {Es[0].y})")
+      print(f"Es[1] = ({Es[1].x}, {Es[1].y})")
+    `,
+    expOutputs: [
+      "2 intersection/s",
+      "Es[0] = (0.0, -4.0)",
+      "Es[1] = (0.0, 4.0)",
+    ],
+  },
+  {
+    label: "Intersect(ellipse, ellipse, number)",
     code: `
       import math
 

@@ -16,23 +16,37 @@ const getPythonPrograms = async () => {
   // Limitation of TypeScript and/or bundler and/or other moving parts
   // mean we can't just list the basenames and map import() over them.
   const specModules = await Promise.all([
+    import("../python-programs/angle-bisector"),
+    import("../python-programs/angle"),
+    import("../python-programs/arc"),
+    import("../python-programs/area"),
     import("../python-programs/boolean"),
+    import("../python-programs/centroid"),
     import("../python-programs/circle"),
+    import("../python-programs/circumference"),
     import("../python-programs/clear-console"),
     import("../python-programs/distance"),
     import("../python-programs/ellipse"),
     import("../python-programs/function"),
+    import("../python-programs/incircle"),
     import("../python-programs/intersect"),
     import("../python-programs/line"),
+    import("../python-programs/midpoint"),
     import("../python-programs/number-of-objects"),
     import("../python-programs/number"),
     import("../python-programs/parabola"),
+    import("../python-programs/perimeter"),
+    import("../python-programs/perpendicular-bisector"),
+    import("../python-programs/perpendicular-line"),
     import("../python-programs/point"),
     import("../python-programs/polygon"),
+    import("../python-programs/predicates"),
     import("../python-programs/properties"),
     import("../python-programs/rotate"),
     import("../python-programs/segment"),
     import("../python-programs/slider"),
+    import("../python-programs/tangent"),
+    import("../python-programs/triangle-center"),
     import("../python-programs/vector"),
     import("../python-programs/zoom"),
   ]);
@@ -125,6 +139,9 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     badOneArgSpec("Circle"),
     badNoArgsSpec("Ellipse"),
     badOneArgSpec("Ellipse"),
+    badNoArgsSpec("Angle"),
+    badNoArgsSpec("Arc"),
+    badOneArgSpec("Arc"),
     badNoArgsSpec("Line"),
     badOneArgSpec("Line"),
     badNoArgsSpec("Number"),
@@ -146,6 +163,8 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     simpleBadArgsSpec("Circle(Point(1, 2), 2, 3)"),
     simpleBadArgsSpec('Circle("one", "two", "three")'),
     simpleBadArgsSpec('Ellipse("one", "two", "three")'),
+    simpleBadArgsSpec('Angle("one")'),
+    simpleBadArgsSpec('Arc("one", "two", "three")'),
     simpleBadArgsSpec('Line("hello", 3)'),
     simpleBadArgsSpec("Line(Point(3, 4), 3)"),
     simpleBadArgsSpec("Parabola(Point(3, 4), 3)"),
@@ -164,6 +183,15 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
       assertions: [
         assertValueError("Point", 'could not find point along "point"'),
       ],
+    },
+    {
+      label: "Angle(line, vector)",
+      code: `
+        k1 = Line(Point(-2, 0), Point(0, 2))
+        v1 = Vector(1, 0)
+        Angle(k1, v1)
+      `,
+      assertions: [assertTypeError("Angle")],
     },
   ];
 
@@ -184,6 +212,16 @@ describe("Handles bad function calls", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
 
   const specs: Array<CodeWithErrorSpec> = [
+    {
+      label: "TriangleCenter(): bad kind",
+      code: `
+        A = Point(1, 1)
+        B = Point(1, 2)
+        C = Point(2, 1)
+        TriangleCenter(A, B, C, "no-such-center")
+      `,
+      assertions: [assertTypeError("center-kind is one of")],
+    },
   ];
 
   specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
