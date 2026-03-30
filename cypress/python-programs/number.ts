@@ -23,6 +23,8 @@ export const specs = [
       print((y * x).value == 8.0)
       print((y / x).value == 2.0)
       print((x / y).value == 0.5)
+      print((x ** y).value == 16.0)
+      print((y ** x).value == 16.0)
     `,
     expNonOutputs: ["False"],
   },

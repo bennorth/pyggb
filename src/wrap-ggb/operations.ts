@@ -58,6 +58,7 @@ const ggbAdd = ggbBinaryOpFun(ggbInfix("+"));
 const ggbSubtract = ggbBinaryOpFun(ggbInfix("-"));
 const ggbMultiply = ggbBinaryOpFun(ggbInfix("*"));
 const ggbDivide = ggbBinaryOpFun(ggbInfix("/"));
+const ggbPower = ggbBinaryOpFun(ggbInfix("^"));
 const ggbRemainder = ggbBinaryOpFun(ggbFunctionCall("Mod"));
 
 const ggbNegative = (ggbApi: GgbApi, v: SkGgbObject) => {
@@ -97,6 +98,8 @@ export type OperationSlots = {
   nb$reflected_divide(this: SkGgbObject, other: SkObject): SkObject;
   nb$remainder(this: SkGgbObject, other: SkObject): SkObject;
   nb$reflected_remainder(this: SkGgbObject, other: SkObject): SkObject;
+  nb$power(this: SkGgbObject, other: SkObject): SkObject;
+  nb$reflected_power(this: SkGgbObject, other: SkObject): SkObject;
   nb$negative(this: SkGgbObject): SkObject;
 
   ob$eq(this: SkGgbObject, other: SkObject): SkBool;
@@ -143,6 +146,12 @@ export function operationSlots(ggbApi: GgbApi): OperationSlots {
   function nb$reflected_remainder(this: SkGgbObject, other: SkObject) {
     return ggbRemainder(ggbApi, other, this);
   }
+  function nb$power(this: SkGgbObject, other: SkObject) {
+    return ggbPower(ggbApi, this, other);
+  }
+  function nb$reflected_power(this: SkGgbObject, other: SkObject) {
+    return ggbPower(ggbApi, other, this);
+  }
   function nb$negative(this: SkGgbObject) {
     return ggbNegative(ggbApi, this);
   }
@@ -177,6 +186,8 @@ export function operationSlots(ggbApi: GgbApi): OperationSlots {
     nb$reflected_divide,
     nb$remainder,
     nb$reflected_remainder,
+    nb$power,
+    nb$reflected_power,
     nb$negative,
     ob$eq,
     ob$ne,
