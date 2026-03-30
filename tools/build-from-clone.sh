@@ -10,7 +10,7 @@ set -e
 : "${PYGGB_HOSTED_BASE_PATH:=python}"
 
 have_all_tools=yes
-for tool in grep mktemp rsync node npm git python3; do
+for tool in grep mktemp rsync node npm git python3 poetry; do
     if ! hash "$tool" 2> /dev/null; then
         echo Could not find "$tool"
         have_all_tools=no
@@ -36,17 +36,30 @@ workdir=$(mktemp -d)
 cd "$workdir"
 echo Working in "$workdir"
 
-git clone "${PYGGB_ORIGIN_REPO:?}" repo
+git clone "${PYGGB_ORIGIN_REPO}" repo
 
 (
     cd repo
     npm clean-install
+
+    # Dependency: Build example programs to within public/
     ./tools/build-examples.sh
-    npx vite build --base=/"$PYGGB_HOSTED_BASE_PATH"/
+
+    # Dependency: Build docs and move to within public/
+    (
+        cd doc
+        poetry install
+        poetry run make html
+    )
+    mv doc/build/html public/doc
+
+    # Put everything together, picking up above dependencies.
+    env VITE_DOCS_BASE_URL_WITHIN_APP=/doc \
+        npx vite build --base=/"$PYGGB_HOSTED_BASE_PATH"/
 )
 
 mkdir www
-rsync -r repo/build/ www/"$PYGGB_HOSTED_BASE_PATH"
+rsync -r repo/dist/ www/"$PYGGB_HOSTED_BASE_PATH"
 
 
 ########################################################################
