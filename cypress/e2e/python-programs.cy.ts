@@ -214,6 +214,7 @@ const assertErrorOfKindFun =
 
 const assertValueError = assertErrorOfKindFun(/^ValueError:/);
 const assertTypeError = assertErrorOfKindFun(/^TypeError:/);
+const assertIndexError = assertErrorOfKindFun(/^IndexError:/);
 
 describe("Handles bad function calls", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
@@ -228,6 +229,14 @@ describe("Handles bad function calls", optsNoIsolation, () => {
         TriangleCenter(A, B, C, "no-such-center")
       `,
       assertions: [assertTypeError("center-kind is one of")],
+    },
+    {
+      label: "List: bad indexing",
+      code: `
+        pts = List(Point(x, x) for x in range(4))
+        pts[4]
+      `,
+      assertions: [assertIndexError("List object index")],
     },
   ];
 
