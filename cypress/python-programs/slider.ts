@@ -59,4 +59,22 @@ export const specs = [
         assert u.value == exp_value
     `,
   },
+  {
+    label: "Slider/slider operations",
+    code: `
+      s = Slider(2, 5)
+      t = Slider(8, 10)
+      transformed_sliders = [
+          s + t,
+          s - t,
+          s * t,
+          s / t,
+          s % t,
+          s ** t,
+      ]
+      exp_values = [10, -6, 16, 0.25, 2, 256]
+      for u, exp_value in zip(transformed_sliders, exp_values):
+        assert u.value == exp_value
+    `,
+  },
 ];
