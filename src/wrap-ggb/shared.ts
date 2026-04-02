@@ -676,7 +676,8 @@ export type AugmentedGgbApi = {
   evalCmdWithGgbArgs(cmdName: string, args: Array<SkGgbObject>): string;
   existingFromCmdAndGgbArgs(
     cmdName: string,
-    args: Array<SkGgbObject>
+    args: Array<SkGgbObject>,
+    customRuntimeErrorMessage?: string
   ): SkGgbObject;
   getValue(label: string): number;
   setValue(label: string, value: number): void;
@@ -721,8 +722,18 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
   };
   const existingFromCmdAndGgbArgs = (
     cmdName: string,
-    args: Array<SkGgbObject>
-  ) => wrapExistingGgbObject(ggbApi, evalCmdWithGgbArgs(cmdName, args));
+    args: Array<SkGgbObject>,
+    customRuntimeErrorMessage?: string
+  ) => {
+    const mLabel = evalCmdWithGgbArgs(cmdName, args);
+    if (mLabel == null) {
+      const message =
+        customRuntimeErrorMessage ??
+        "GeoGebra command failed to return an object";
+      throw new Sk.builtin.RuntimeError(message);
+    }
+    return wrapExistingGgbObject(ggbApi, mLabel);
+  };
 
   const getValue = (label: string): number => ggbApi.getValue(label);
   const setValue = (label: string, value: number): void =>

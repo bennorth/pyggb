@@ -34,25 +34,39 @@ export const register: RegisterFun = (mod, appApi) => {
         return new Sk.builtin.list(validLabels.map(ggb.wrapExistingGgbObject));
       }
       case 3: {
-        if (
-          !ggb.isGgbObject(args[0]) ||
-          !ggb.isGgbObject(args[1]) ||
-          !ggb.isPythonOrGgbNumber(args[2])
-        ) {
+        // Destructure to help TypeScript infer types
+        const [obj1, obj2, indexOrPoint] = args;
+        if (!ggb.isGgbObject(obj1) || !ggb.isGgbObject(obj2)) {
           throw badArgsError;
         }
 
-        const ggbCmd = assembledCommand("Intersect", [
-          args[0].$ggbLabel,
-          args[1].$ggbLabel,
-          ggb.numberValueOrLabel(args[2]),
-        ]);
+        // (object, object, intersection-index)
+        if (ggb.isPythonOrGgbNumber(indexOrPoint)) {
+          const ggbCmd = assembledCommand("Intersect", [
+            obj1.$ggbLabel,
+            obj2.$ggbLabel,
+            ggb.numberValueOrLabel(indexOrPoint),
+          ]);
 
-        // It seems that we always get a Point.  If there is no Nth
-        // intersection, the Point has NaN coords.
-        const label = ggb.evalCmd(ggbCmd);
+          // It seems that we always get a Point.  If there is no Nth
+          // intersection, the Point has NaN coords.
+          const label = ggb.evalCmd(ggbCmd);
 
-        return ggb.wrapExistingGgbObject(label);
+          return ggb.wrapExistingGgbObject(label);
+        }
+
+        // (object, object, initial-point)
+        if (ggb.isGgbObjectOfType(indexOrPoint, "point")) {
+          const type1 = ggb.ggbType(obj1);
+          const type2 = ggb.ggbType(obj2);
+          return ggb.existingFromCmdAndGgbArgs(
+            "Intersect",
+            [obj1, obj2, indexOrPoint],
+            `could not intersect "${type1}" and "${type2}"`
+          );
+        }
+
+        throw badArgsError;
       }
       default:
         throw badArgsError;

@@ -36,6 +36,15 @@ Intersect function
       :py:class:`Point` both of whose coordinates are *NaN*.
 
 
+.. py:function:: Intersect(obj1, obj2, point)
+   :noindex:
+
+   Using an iterative numerical approach, find and return a point of
+   intersection between *obj1* and *obj2*, using the given *point* as
+   an initial guess.  Not all object-types can be intersected in this
+   way.
+
+
 .. seealso::
 
    `GeoGebra Intersect() reference

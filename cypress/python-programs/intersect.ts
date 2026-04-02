@@ -79,4 +79,15 @@ export const specs = [
       "(-2.0000, -2.0000)",
     ],
   },
+  {
+    label: "Intersect(circle, function, initial-point)",
+    code: `
+      a = FunctionGraph("x^3 + x^2 - x")
+      b = Line(3/5, 4/5)
+      c = Point(0.0, 0.8)
+      p = Intersect(a, b, c)
+      print(f"({p.x:.02f}, {p.y:.02f})")
+    `,
+    expOutputs: ["(-0.43, 0.54)"],
+  },
 ];
