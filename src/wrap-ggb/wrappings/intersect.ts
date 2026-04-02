@@ -55,6 +55,15 @@ export const register: RegisterFun = (mod, appApi) => {
           return ggb.wrapExistingGgbObject(label);
         }
 
+        // (object, object, initial-point)
+        if (ggb.isGgbObjectOfType(indexOrPoint, "point")) {
+          return ggb.existingFromCmdAndGgbArgs("Intersect", [
+            obj1,
+            obj2,
+            indexOrPoint,
+          ]);
+        }
+
         throw badArgsError;
       }
       default:
