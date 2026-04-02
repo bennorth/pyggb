@@ -15,3 +15,8 @@ Number
 .. seealso::
 
    :ref:`Python and GeoGebra numbers <python-and-geogebra-numbers>`
+
+
+.. seealso::
+
+   :ref:`Operations between objects <operations-between-objects>`
