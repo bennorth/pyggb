@@ -28,6 +28,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/distance"),
     import("../python-programs/ellipse"),
     import("../python-programs/function"),
+    import("../python-programs/function-graph"),
     import("../python-programs/incircle"),
     import("../python-programs/intersect"),
     import("../python-programs/line"),
@@ -237,6 +238,13 @@ describe("Handles bad function calls", optsNoIsolation, () => {
         pts[4]
       `,
       assertions: [assertIndexError("List object index")],
+    },
+    {
+      label: "FunctionGraph(): bad expr",
+      code: `
+        f = FunctionGraph("x+*")
+      `,
+      assertions: [assertValueError("bad syntax of expr")],
     },
   ];
 
