@@ -173,6 +173,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     simpleBadArgsSpec('Arc("one", "two", "three")'),
     simpleBadArgsSpec('Line("hello", 3)'),
     simpleBadArgsSpec("Line(Point(3, 4), 3)"),
+    simpleBadArgsSpec("List([3, 4, 5])"),
     simpleBadArgsSpec("Parabola(Point(3, 4), 3)"),
     simpleBadArgsSpec('Parabola("hello", 3, 4)'),
     simpleBadArgsSpec('Point("hello", 33)'),
