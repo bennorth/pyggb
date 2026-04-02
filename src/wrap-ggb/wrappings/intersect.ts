@@ -57,11 +57,13 @@ export const register: RegisterFun = (mod, appApi) => {
 
         // (object, object, initial-point)
         if (ggb.isGgbObjectOfType(indexOrPoint, "point")) {
-          return ggb.existingFromCmdAndGgbArgs("Intersect", [
-            obj1,
-            obj2,
-            indexOrPoint,
-          ]);
+          const type1 = ggb.ggbType(obj1);
+          const type2 = ggb.ggbType(obj2);
+          return ggb.existingFromCmdAndGgbArgs(
+            "Intersect",
+            [obj1, obj2, indexOrPoint],
+            `could not intersect "${type1}" and "${type2}"`
+          );
         }
 
         throw badArgsError;
