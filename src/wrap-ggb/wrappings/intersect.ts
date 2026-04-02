@@ -34,15 +34,18 @@ export const register: RegisterFun = (mod, appApi) => {
         return new Sk.builtin.list(validLabels.map(ggb.wrapExistingGgbObject));
       }
       case 3: {
-        if (!ggb.isGgbObject(args[0]) || !ggb.isGgbObject(args[1])) {
+        // Destructure to help TypeScript infer types
+        const [obj1, obj2, indexOrPoint] = args;
+        if (!ggb.isGgbObject(obj1) || !ggb.isGgbObject(obj2)) {
           throw badArgsError;
         }
 
-        if (ggb.isPythonOrGgbNumber(args[2])) {
+        // (object, object, intersection-index)
+        if (ggb.isPythonOrGgbNumber(indexOrPoint)) {
           const ggbCmd = assembledCommand("Intersect", [
-            args[0].$ggbLabel,
-            args[1].$ggbLabel,
-            ggb.numberValueOrLabel(args[2]),
+            obj1.$ggbLabel,
+            obj2.$ggbLabel,
+            ggb.numberValueOrLabel(indexOrPoint),
           ]);
 
           // It seems that we always get a Point.  If there is no Nth
