@@ -239,6 +239,13 @@ describe("Handles bad function calls", optsNoIsolation, () => {
       `,
       assertions: [assertIndexError("List object index")],
     },
+    {
+      label: "FunctionGraph(): bad expr",
+      code: `
+        f = FunctionGraph("x+*")
+      `,
+      assertions: [assertValueError("bad syntax of expr")],
+    },
   ];
 
   specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));

@@ -80,19 +80,32 @@ export const register: RegisterFun = (mod, appApi) => {
       this: SkGgbFunctionGraph,
       spec: SkGgbFunctionGraphCtorSpec
     ) {
-      const setLabelFromCmd = setGgbLabelFromCmd(ggb, this);
+      // Handle null return by ourselves, to try to give a more helpful
+      // error message.
+      const nubSetLabelFromCmd = setGgbLabelFromCmd(ggb, this);
+      const setLabelFromCmd = (expr: string, cmd: string) => {
+        nubSetLabelFromCmd(cmd, { allowNullLabel: true });
+        if (this.$ggbLabel == null) {
+          throw new Sk.builtin.ValueError(
+            `bad syntax of expression string "${expr}"`
+          );
+        }
+      };
       switch (spec.kind) {
         case "wrap-existing":
           this.$ggbLabel = spec.label;
           return;
         case "expression": {
-          setLabelFromCmd(`y=${spec.expr}`);
+          setLabelFromCmd(spec.expr, `y=${spec.expr}`);
           return;
         }
         case "expression-range": {
           const lbNumber = ggb.numberValueOrLabel(spec.range[0]);
           const ubNumber = ggb.numberValueOrLabel(spec.range[1]);
-          setLabelFromCmd(`Function(${spec.expr},${lbNumber},${ubNumber})`);
+          setLabelFromCmd(
+            spec.expr,
+            `Function(${spec.expr},${lbNumber},${ubNumber})`
+          );
           return;
         }
         default:
