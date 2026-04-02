@@ -28,6 +28,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/distance"),
     import("../python-programs/ellipse"),
     import("../python-programs/function"),
+    import("../python-programs/function-graph"),
     import("../python-programs/incircle"),
     import("../python-programs/intersect"),
     import("../python-programs/line"),
