@@ -31,6 +31,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/incircle"),
     import("../python-programs/intersect"),
     import("../python-programs/line"),
+    import("../python-programs/list"),
     import("../python-programs/midpoint"),
     import("../python-programs/number-of-objects"),
     import("../python-programs/number"),
@@ -109,7 +110,12 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
 
   const assertTypeError = (clsName: string) => () => {
-    const regexp = new RegExp(`^TypeError: ${clsName}\\(\\) arguments must be`);
+    // Allow both of the following:
+    //   "Thing() arguments must be ..."
+    //   "Thing() argument must be..."
+    const regexp = new RegExp(
+      `^TypeError: ${clsName}\\(\\) arguments? must be`
+    );
     cy.get(".ErrorReport .message").contains(regexp);
   };
 
@@ -167,6 +173,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     simpleBadArgsSpec('Arc("one", "two", "three")'),
     simpleBadArgsSpec('Line("hello", 3)'),
     simpleBadArgsSpec("Line(Point(3, 4), 3)"),
+    simpleBadArgsSpec("List([3, 4, 5])"),
     simpleBadArgsSpec("Parabola(Point(3, 4), 3)"),
     simpleBadArgsSpec('Parabola("hello", 3, 4)'),
     simpleBadArgsSpec('Point("hello", 33)'),
@@ -207,6 +214,7 @@ const assertErrorOfKindFun =
 
 const assertValueError = assertErrorOfKindFun(/^ValueError:/);
 const assertTypeError = assertErrorOfKindFun(/^TypeError:/);
+const assertIndexError = assertErrorOfKindFun(/^IndexError:/);
 
 describe("Handles bad function calls", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
@@ -221,6 +229,14 @@ describe("Handles bad function calls", optsNoIsolation, () => {
         TriangleCenter(A, B, C, "no-such-center")
       `,
       assertions: [assertTypeError("center-kind is one of")],
+    },
+    {
+      label: "List: bad indexing",
+      code: `
+        pts = List(Point(x, x) for x in range(4))
+        pts[4]
+      `,
+      assertions: [assertIndexError("List object index")],
     },
   ];
 

@@ -61,6 +61,8 @@ type BuildNativeClassOptions = Partial<{
   slots: {
     tp$new: (args: Array<SkObject>, kwargs: KeywordArgsArray) => SkObject;
     tp$call?: (args: Array<SkObject>, kwargs: KeywordArgsArray) => SkObject;
+    sq$length?: () => number;
+    mp$subscript?: (index: SkObject) => SkObject;
     [key: string]: any;
   };
   methods: { [key: string]: any };
@@ -113,6 +115,7 @@ type SkBuiltinT = {
   RuntimeError: SkObject & { new (message: string): SkObject };
   TypeError: SkObject & { new (message: string): SkObject };
   ValueError: SkObject & { new (message: string): SkObject };
+  IndexError: SkObject & { new (message: string): SkObject };
   SystemExit: SkObject & { new (): SkObject };
 
   isinstance(obj: SkObject, cls: SkObject): SkBool;
@@ -131,6 +134,7 @@ type SkMiscEvalT = {
   arrayFromIterable: (obj: SkObject) => Array<SkObject>;
   promiseToSuspension(p: Promise<SkObject>): SkSuspension;
   asyncToPromise<T>(f: () => T): Promise<T>;
+  asIndexSized: (obj: SkObject) => number;
 };
 
 type SkFfiT = {

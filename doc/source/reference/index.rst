@@ -79,3 +79,4 @@ Other objects
 
    classes/boolean
    classes/number
+   classes/list
