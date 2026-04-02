@@ -42,4 +42,21 @@ export const specs = [
     `,
     expOutputs: ["s label True 3", "s caption 'Hello world'"],
   },
+  {
+    label: "Slider/number operations",
+    code: `
+      s = Slider(2, 5, increment=0.1)
+      transformed_sliders = [
+          s + 8,
+          s - 8,
+          s * 8,
+          s / 8,
+          s % 8,
+          s ** 8,
+      ]
+      exp_values = [10, -6, 16, 0.25, 2, 256]
+      for u, exp_value in zip(transformed_sliders, exp_values):
+        assert u.value == exp_value
+    `,
+  },
 ];
