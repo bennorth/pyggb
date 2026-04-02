@@ -109,7 +109,12 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
 
   const assertTypeError = (clsName: string) => () => {
-    const regexp = new RegExp(`^TypeError: ${clsName}\\(\\) arguments must be`);
+    // Allow both of the following:
+    //   "Thing() arguments must be ..."
+    //   "Thing() argument must be..."
+    const regexp = new RegExp(
+      `^TypeError: ${clsName}\\(\\) arguments? must be`
+    );
     cy.get(".ErrorReport .message").contains(regexp);
   };
 
