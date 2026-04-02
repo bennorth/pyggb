@@ -8,6 +8,12 @@ if ! hash poetry 2> /dev/null; then
     exit 1
 fi
 
+node_version=$(node --version)
+if [ "$(echo "$node_version" | grep -c -E '^v24[.]')" -ne 1 ]; then
+    >&2 echo Need node v24 but have "$node_version"
+    exit 1
+fi
+
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
 (
