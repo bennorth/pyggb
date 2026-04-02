@@ -31,6 +31,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/incircle"),
     import("../python-programs/intersect"),
     import("../python-programs/line"),
+    import("../python-programs/list"),
     import("../python-programs/midpoint"),
     import("../python-programs/number-of-objects"),
     import("../python-programs/number"),
