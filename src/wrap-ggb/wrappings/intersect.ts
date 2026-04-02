@@ -34,14 +34,11 @@ export const register: RegisterFun = (mod, appApi) => {
         return new Sk.builtin.list(validLabels.map(ggb.wrapExistingGgbObject));
       }
       case 3: {
-        if (
-          !ggb.isGgbObject(args[0]) ||
-          !ggb.isGgbObject(args[1]) ||
-          !ggb.isPythonOrGgbNumber(args[2])
-        ) {
+        if (!ggb.isGgbObject(args[0]) || !ggb.isGgbObject(args[1])) {
           throw badArgsError;
         }
 
+        if (ggb.isPythonOrGgbNumber(args[2])) {
         const ggbCmd = assembledCommand("Intersect", [
           args[0].$ggbLabel,
           args[1].$ggbLabel,
@@ -53,6 +50,9 @@ export const register: RegisterFun = (mod, appApi) => {
         const label = ggb.evalCmd(ggbCmd);
 
         return ggb.wrapExistingGgbObject(label);
+      }
+
+        throw badArgsError;
       }
       default:
         throw badArgsError;
