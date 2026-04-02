@@ -6,13 +6,13 @@ Arithmetic-like operations
 
 The operations of
 
-* addition
-* subtraction
-* multiplication
-* division
-* remainder
-* exponentiation
-* unary negative
+* addition (``+``)
+* subtraction (``-``)
+* multiplication (``*``)
+* division (``/``)
+* remainder (``%``)
+* exponentiation (``**``)
+* unary negative (``-``)
 
 are attempted within GeoGebra when at least one of the operands is a
 :py:class:`Number` or :py:class:`Point` instance.  The operation might
