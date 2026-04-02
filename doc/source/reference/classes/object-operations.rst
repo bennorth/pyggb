@@ -1,3 +1,5 @@
+.. _operations-between-objects:
+
 Operations between objects
 ==========================
 
