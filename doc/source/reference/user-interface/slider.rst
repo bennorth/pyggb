@@ -5,7 +5,7 @@ Slider
 
    A :py:class:`Slider` can be used where a number is expected, for
    example as a coordinate for a :py:class:`Point`, or in a
-   calculation with a :py:class:`Number`.
+   calculation with a :py:class:`Number` or Python number.
 
    .. py:method:: Slider(min_value, max_value, **kwargs)
 
@@ -29,6 +29,9 @@ Slider
       :py:class:`Slider`, the value is clamped to the appropriate end
       of the range.
 
+   As noted above, :py:class:`Slider` instances support arithmetic
+   operations where that makes sense.
+
    A :py:class:`Slider` also has the following common properties:
 
    * :py:attr:`is_visible`
@@ -44,3 +47,7 @@ Slider
    `GeoGebra Slider() reference
    <https://geogebra.github.io/docs/manual/en/commands/Slider/>`_
 
+
+.. seealso::
+
+   :ref:`Operations between objects <operations-between-objects>`

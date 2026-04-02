@@ -140,6 +140,7 @@ export const register: RegisterFun = (mod, appApi) => {
             throw badArgsError;
         }
       },
+      ...ggb.sharedOpSlots,
     },
     proto: {
       $fireUpdateEvents(this: SkGgbSlider) {
