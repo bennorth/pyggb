@@ -217,6 +217,7 @@ const assertErrorOfKindFun =
 const assertValueError = assertErrorOfKindFun(/^ValueError:/);
 const assertTypeError = assertErrorOfKindFun(/^TypeError:/);
 const assertIndexError = assertErrorOfKindFun(/^IndexError:/);
+const assertRuntimeError = assertErrorOfKindFun(/^RuntimeError:/);
 
 describe("Handles bad function calls", optsNoIsolation, () => {
   before(() => createNewPyGgbFile());
