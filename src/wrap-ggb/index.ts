@@ -36,6 +36,8 @@ import { register as registerTriangleCenter } from "./wrappings/triangle-center"
 
 import { register as registerClearConsole } from "./app-ui/clear-console";
 
+import { register as registerEvalCommand } from "./wrappings/eval-cmd";
+
 import { register as registerOnTemperatureReport } from "./web-hid/on-temperature-report";
 
 import { register as registerInterruptibleSleep } from "./interruptible-sleep";
@@ -91,6 +93,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerTriangleCenter(mod, appApi);
 
   registerClearConsole(mod, appApi);
+  registerEvalCommand(mod, appApi);
 
   registerOnTemperatureReport(mod, appApi);
 
