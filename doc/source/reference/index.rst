@@ -59,6 +59,7 @@ Functions
    functions/are-perpendicular
    functions/triangle-center
    functions/misc
+   functions/eval-command
 
 
 Working with geometric objects
