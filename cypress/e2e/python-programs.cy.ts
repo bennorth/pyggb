@@ -248,6 +248,43 @@ describe("Handles bad function calls", optsNoIsolation, () => {
       `,
       assertions: [assertValueError("bad syntax of expr")],
     },
+    {
+      label: "EvalCommand(): arg bad type",
+      code: `
+        EvalCommand(42)
+      `,
+      assertions: [assertTypeError("arguments must be (string)")],
+    },
+    {
+      label: "EvalCommand(): arg invalid syntax",
+      code: `
+        EvalCommand("Line(aab")
+      `,
+      assertions: [assertRuntimeError("did not produce a result")],
+    },
+    {
+      label: "EvalCommand(): multiple results",
+      code: `
+        k1 = Circle(4, 2, 2)
+        k2 = Circle(-3, 1, 3)
+        ts = EvalCommand(f"Tangent({k1._ggb_label}, {k2._ggb_label})")
+      `,
+      assertions: [assertRuntimeError("produced multiple objects")],
+    },
+    {
+      label: "EvalCommandMultiple(): arg bad type",
+      code: `
+        EvalCommandMultiple(42)
+      `,
+      assertions: [assertTypeError("arguments must be (string)")],
+    },
+    {
+      label: "EvalCommandMultiple(): arg invalid syntax",
+      code: `
+        EvalCommandMultiple("Line(aab")
+      `,
+      assertions: [assertRuntimeError("did not produce a result")],
+    },
   ];
 
   specs.forEach((spec) => it(`handles ${spec.label} ok`, runBadCode(spec)));
