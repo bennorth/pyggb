@@ -81,8 +81,7 @@ export const register: RegisterFun = (mod, appApi) => {
             throw badArgsError;
         }
       },
-
-      // ...sharedOpSlots,
+      ...ggb.sharedOpSlots,
     },
     methods: {
       ...ggb.withPropertiesMethodsSlice,
