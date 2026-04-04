@@ -30,6 +30,28 @@ const lineEllipse = {
   expOutputs: ["got 2"],
 };
 
+const toFunctionCode = (codeNubLines: Array<string>) => `
+  f = FunctionGraph("(0.125)x^3 + x^2 + x + 1")
+  ${codeNubLines.join("\n  ")}
+  yax = Line(Point(0, -1), Point(0, 1))
+  icpt = Intersect(k, yax, 1).y
+  print("icpt =", icpt)
+`;
+
+const kToFunctionExpOutputs = ["icpt = -1.0"];
+
+const pointFunction = {
+  label: "Tangent(point, function)",
+  code: toFunctionCode(["Q = Point(-2, -3)", "k = Tangent(Q, f)"]),
+  expOutputs: kToFunctionExpOutputs,
+};
+
+const numberFunction = {
+  label: "Tangent(number, function)",
+  code: toFunctionCode(["k = Tangent(-2, f)"]),
+  expOutputs: kToFunctionExpOutputs,
+};
+
 export const specs = [
   pointEllipse(0, 0),
   pointEllipse(-2, 1),
@@ -39,4 +61,6 @@ export const specs = [
   ellipseEllipse(1, 1),
   ellipseEllipse(5, 3),
   ellipseEllipse(7, 4),
+  pointFunction,
+  numberFunction,
 ];
