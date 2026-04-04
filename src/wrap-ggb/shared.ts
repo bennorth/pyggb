@@ -429,10 +429,11 @@ const deleteMethodsSlice = (ggbApi: GgbApi): MethodDescriptorsSlice => ({
   },
 });
 
-type ReadOnlyProperty = {
+export type ReadOnlyProperty = {
   $get(this: SkGgbObject): SkObject;
 };
-type ReadWriteProperty = ReadOnlyProperty & {
+
+export type ReadWriteProperty = ReadOnlyProperty & {
   $set(this: SkGgbObject, val: SkObject): void;
 };
 
