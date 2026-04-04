@@ -32,10 +32,9 @@ export const register: RegisterFun = (mod, appApi) => {
 
     // One of the simple signatures, yielding a list of lines?
     if (ggb.elementsAreGgbObjectsOfSomeTypes(args, kGgbTypeSignatures)) {
-    const labelsStr = ggb.evalCmdWithGgbArgs("Tangent", args);
-    const validLabels = labelsStr.split(",").filter(labelIsValid);
-
-    return new Sk.builtin.list(validLabels.map(ggb.wrapExistingGgbObject));
+      const labelsStr = ggb.evalCmdWithGgbArgs("Tangent", args);
+      const validLabels = labelsStr.split(",").filter(labelIsValid);
+      return new Sk.builtin.list(validLabels.map(ggb.wrapExistingGgbObject));
     }
 
     throw badArgsError;
