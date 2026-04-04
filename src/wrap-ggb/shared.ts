@@ -697,6 +697,11 @@ export type AugmentedGgbApi = {
   everyElementIsGgbObjectOfSomeType: EveryElementIsGgbObjectOfSomeType;
   isPythonOrGgbNumber(obj: SkObject): boolean;
   numberValueOrLabel(obj: SkObject): string;
+  argumentString(
+    x: SkObject,
+    errorIfWrongType: SkObject,
+    requiredGgbType?: string
+  ): string;
   wrapExistingGgbObject(label: string): SkGgbObject;
   sharedGetSets: SharedGetSets;
   freeCopyMethodsSlice: MethodDescriptorsSlice;
@@ -805,6 +810,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     ) as ElementsAreGgbObjectsOfSomeTypes,
     isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
     numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
+    argumentString: fixGgbArg_3(argumentString),
     wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),
     sharedGetSets: sharedGetSets(ggbApi),
     freeCopyMethodsSlice: freeCopyMethodsSlice(ggbApi),
