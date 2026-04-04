@@ -120,6 +120,7 @@ export const register: RegisterFun = (mod, appApi) => {
             throw badArgsError;
         }
       },
+      ...ggb.sharedOpSlots,
     },
     methods: {
       ...ggb.withPropertiesMethodsSlice,

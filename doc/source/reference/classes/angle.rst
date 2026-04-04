@@ -32,6 +32,12 @@ Angle
       |getOnlyProp| The current value as a Python :py:type:`float`, as
       measured in radians.
 
+   :py:class:`Angle` instances support arithmetic operations where
+   that makes sense.  For example, adding two :py:class:`Angle`\ s
+   gives another :py:class:`Angle`; adding an :py:class:`Angle` to a
+   Python number gives a Python number by using the radian measure of
+   the :py:class:`Angle`.
+
    An :py:class:`Angle` also has the following common properties:
 
    * :py:attr:`is_visible`
@@ -47,3 +53,8 @@ Angle
 
    `GeoGebra Angle() reference
    <https://geogebra.github.io/docs/manual/en/commands/Angle/>`_
+
+
+.. seealso::
+
+   :ref:`Operations between objects <operations-between-objects>`
