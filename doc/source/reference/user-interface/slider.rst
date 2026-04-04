@@ -40,8 +40,6 @@ Slider
    * :py:attr:`caption`
 
 
-
-
 .. seealso::
 
    `GeoGebra Slider() reference

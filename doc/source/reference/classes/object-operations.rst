@@ -39,7 +39,6 @@ The following comparisons between :py:class:`Number` instances give a
 Python :py:type:`bool` result, based on the value of the
 :py:class:`Number`\ s at the moment the comparison is made.
 
-
 * :code:`==`
 * :code:`!=`
 * :code:`<`
