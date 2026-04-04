@@ -31,3 +31,8 @@ export function coordinateProtoSlice(ggb: GgbApi): CoordinateProtoSlice {
     },
   };
 }
+
+export type CoordinateGetSets = {
+  x: ReadWriteProperty;
+  y: ReadWriteProperty;
+};
