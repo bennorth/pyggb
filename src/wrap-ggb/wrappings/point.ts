@@ -15,16 +15,13 @@ import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
 import { throwBadSpecKind } from "../../shared/utils";
+import { SkGgbObjectWithCoords } from "../coords";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-interface SkGgbPoint extends SkGgbObject {
-  $xCoord(this: SkGgbPoint): number;
+interface SkGgbPoint extends SkGgbObjectWithCoords {
   $ggbNumberX: SkGgbObject;
-  $setXCoord(this: SkGgbPoint, x: number): void;
-  $yCoord(this: SkGgbPoint): number;
   $ggbNumberY: SkGgbObject;
-  $setYCoord(this: SkGgbPoint, y: number): void;
 }
 
 type SkGgbPointCtorSpec =
@@ -155,20 +152,7 @@ export const register = (
       ...ggb.sharedOpSlots,
     },
     proto: {
-      $xCoord(this: SkGgbPoint) {
-        return ggb.getXcoord(this.$ggbLabel);
-      },
-      $setXCoord(this: SkGgbPoint, x: number) {
-        // Hm; mildly annoying:
-        ggb.setCoords(this.$ggbLabel, x, this.$yCoord());
-      },
-      $yCoord(this: SkGgbPoint) {
-        return ggb.getYcoord(this.$ggbLabel);
-      },
-      $setYCoord(this: SkGgbPoint, y: number) {
-        // Hm; mildly annoying:
-        ggb.setCoords(this.$ggbLabel, this.$xCoord(), y);
-      },
+      ...ggb.sharedCoordinateProtoSlots,
       $fireUpdateEvents(this: SkGgbPoint) {
         this.$updateHandlers.forEach((fun) => {
           try {
@@ -199,30 +183,13 @@ export const register = (
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
       size: ggb.sharedGetSets.size,
-      x: {
-        $get(this: SkGgbPoint) {
-          return new Sk.builtin.float_(this.$xCoord());
-        },
-        $set(this: SkGgbPoint, pyX: SkObject) {
-          // Throw if not isIndependent(this)?
-          throwIfNotNumber(pyX, "x coord");
-          this.$setXCoord(pyX.v);
-        },
-      },
+      x: ggb.sharedGetSets.x,
       x_number: {
         $get(this: SkGgbPoint) {
           return this.$ggbNumberX;
         },
       },
-      y: {
-        $get(this: SkGgbPoint) {
-          return new Sk.builtin.float_(this.$yCoord());
-        },
-        $set(this: SkGgbPoint, pyY: SkObject) {
-          throwIfNotNumber(pyY, "y coord");
-          this.$setYCoord(Sk.ffi.remapToJs(pyY));
-        },
-      },
+      y: ggb.sharedGetSets.y,
       y_number: {
         $get(this: SkGgbPoint) {
           return this.$ggbNumberY;
