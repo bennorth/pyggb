@@ -35,7 +35,8 @@ export const register: RegisterFun = (mod, appApi) => {
   const fun = new Sk.builtin.func((...args) => {
     const badArgsError = new Sk.builtin.TypeError(
       "Tangent() arguments must be" +
-        " (point, conic), (line, conic), or (ellipse, ellipse)," +
+        " (point, conic), (line, conic), (ellipse, ellipse)," +
+        " (point, function), or (number, function)," +
         ' where "ellipse" includes "circle"'
     );
 
