@@ -1,7 +1,6 @@
 import { AppApi } from "../../shared/appApi";
 import {
   augmentedGgbApi,
-  throwIfNotNumber,
   withPropertiesFromNameValuePairs,
   SkGgbObject,
   WrapExistingCtorSpec,
