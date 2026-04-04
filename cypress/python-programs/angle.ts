@@ -65,4 +65,48 @@ const twoArgSpecs = [
   },
 ];
 
-export const specs = [...oneArgSpecs, ...twoArgSpecs];
+const arithmeticSpecs = [
+  {
+    label: "Angle arithmetic",
+    code: `
+      def assert_angle_value(th, x):
+        assert abs(th.value - x) < 1.0e-10
+
+      P = Point(1, 3)
+      Q1 = Point(4, 2)
+      Q2 = Point(3, 5)
+      R = Point(5, 0)
+
+      th = Angle(P, Q1, R)
+      thRad = th.value
+
+      ph = Angle(P, Q2, R)
+      phRad = ph.value
+
+      # In some cases, angles are treated as their radian measure.
+
+      assert_angle_value(th + 0.25, thRad + 0.25)
+      assert_angle_value(th - 0.25, thRad - 0.25)
+      assert_angle_value(th * 20, thRad * 20.0)
+      assert_angle_value(th / 20, thRad / 20.0)
+      assert_angle_value(th ** 1.5, thRad ** 1.5)
+
+      assert_angle_value(0.25 + th, 0.25 + thRad)
+      assert_angle_value(1.75 - th, 1.75 - thRad)
+      assert_angle_value(20 * th, 20.0 * thRad)
+      assert_angle_value(1.5 ** th, 1.5 ** thRad)
+
+      assert_angle_value(-th, -thRad)
+
+      assert_angle_value(th + ph, thRad + phRad)
+      assert_angle_value(th - ph, thRad - phRad)
+
+      assert_angle_value(th * ph, thRad * phRad)
+      assert_angle_value(th / ph, thRad / phRad)
+      assert_angle_value(th % ph, thRad % phRad)
+      assert_angle_value(th ** ph, thRad ** phRad)
+    `,
+  },
+];
+
+export const specs = [...oneArgSpecs, ...twoArgSpecs, ...arithmeticSpecs];

@@ -16,6 +16,9 @@ Vector
 
       Construct the Vector with the given *x* and *y* components.
 
+   :py:class:`Vector` instances support arithmetic operations where
+   that makes sense, for example adding two vectors.
+
    A :py:class:`Vector` has the following common properties:
 
    * :py:attr:`is_visible`
@@ -33,3 +36,8 @@ Vector
 
    `GeoGebra Vector() reference
    <https://geogebra.github.io/docs/manual/en/commands/Vector/>`_
+
+
+.. seealso::
+
+   :ref:`Operations between objects <operations-between-objects>`

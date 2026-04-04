@@ -39,4 +39,32 @@ export const specs = [
       assert(v.line_style == 3)
     `,
   },
+  {
+    label: "Vector arithmetic",
+    code: `
+      def assert_vector_components(v, x, y):
+        assert v.x == x
+        assert v.y == y
+
+      v = Vector(3, 4)
+      w = Vector(-1, -5)
+
+      assert_vector_components(v + 8, 11, 12)
+      assert_vector_components(v - 5, -2, -1)
+      assert_vector_components(v * 2, 6, 8)
+      assert_vector_components(v / 2, 1.5, 2)
+
+      assert_vector_components(8 + v, 11, 12)
+      assert_vector_components(5 - v, 2, 1)
+      assert_vector_components(2 * v, 6, 8)
+
+      assert_vector_components(-v, -3, -4)
+
+      assert_vector_components(v + w, 2, -1)
+      assert_vector_components(v - w, 4, 9)
+
+      # Division produces a complex number, which cannot
+      # be wrapped.  Modulus is unsupported.
+    `,
+  },
 ];
