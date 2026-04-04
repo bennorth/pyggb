@@ -170,13 +170,25 @@ export const isPythonOrGgbNumber = (ggbApi: GgbApi, obj: SkObject) =>
 export const isSingletonOfEmpty = (xs: Array<string>) =>
   xs.length === 1 && xs[0] === "";
 
-/** Given a Skulpt/PyGgb object `x`, which should be either a `numeric`
- * GeoGebra object or a Python number, return a string suitable for
- * inclusion in a GeoGebra command.  For a `numeric` object, return its
- * label.  For a Python number, return a literal string representation.
+/** Given a Skulpt/PyGgb object `x`, which should be either a GeoGebra
+ * object or a Python number, return a string suitable for inclusion in
+ * a GeoGebra command.  For a GeoGebra object, return its label.  For a
+ * Python number, return a literal string representation.  If `x` is not
+ * one of those types, throw the given `errorIfWrongType` Skulpt object
+ * (typically an `Sk.builtin.RuntimeError` or `Sk.builtin.TypeError`).
+ * Supply `requiredGgbType` as a string to specify that `x`, if a
+ * GeoGebra object, must be of a particular GeoGebra type, e.g.,
+ * `"numeric"`. Supply `requiredGgbType` as an array of strings to
+ * specify that `x`, if a GeoGebra object, must be of one of those
+ * particular GeoGebra types, e.g., `["point", "line"]`.
  * */
-export const numberValueOrLabel = (ggbApi: GgbApi, x: SkObject): string => {
-  if (isGgbObject(ggbApi, x, "numeric")) {
+export const argumentString = (
+  ggbApi: GgbApi,
+  x: SkObject,
+  errorIfWrongType: SkObject,
+  requiredGgbType?: string | Array<string>
+): string => {
+  if (isGgbObject(ggbApi, x, requiredGgbType)) {
     return x.$ggbLabel;
   }
 
@@ -186,9 +198,20 @@ export const numberValueOrLabel = (ggbApi: GgbApi, x: SkObject): string => {
     return `(${sig}*10^(${exp}))`;
   }
 
-  // TODO: Can we tighten types to avoid this runtime check?
-  throw new Sk.builtin.RuntimeError("internal error: not Number or number");
+  throw errorIfWrongType;
 };
+
+const kInternalNumberValueOrLabelError = new Sk.builtin.RuntimeError(
+  "internal error: not Number or number"
+);
+
+/** Given a Skulpt/PyGgb object `x`, which should be either a `numeric`
+ * GeoGebra object or a Python number, return a string suitable for
+ * inclusion in a GeoGebra command.  For a `numeric` object, return its
+ * label.  For a Python number, return a literal string representation.
+ * */
+export const numberValueOrLabel = (ggbApi: GgbApi, x: SkObject): string =>
+  argumentString(ggbApi, x, kInternalNumberValueOrLabelError, "numeric");
 
 /** Set the attributes in `propNamesValue` (typically Python properties)
  * on the given `obj`, and return `obj`.  The attribute/property names
@@ -666,6 +689,11 @@ export type AugmentedGgbApi = {
   everyElementIsGgbObjectOfSomeType: EveryElementIsGgbObjectOfSomeType;
   isPythonOrGgbNumber(obj: SkObject): boolean;
   numberValueOrLabel(obj: SkObject): string;
+  argumentString(
+    x: SkObject,
+    errorIfWrongType: SkObject,
+    requiredGgbType?: string
+  ): string;
   wrapExistingGgbObject(label: string): SkGgbObject;
   sharedGetSets: SharedGetSets;
   freeCopyMethodsSlice: MethodDescriptorsSlice;
@@ -774,6 +802,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     ) as ElementsAreGgbObjectsOfSomeTypes,
     isPythonOrGgbNumber: fixGgbArg_1(isPythonOrGgbNumber),
     numberValueOrLabel: fixGgbArg_1(numberValueOrLabel),
+    argumentString: fixGgbArg_3(argumentString),
     wrapExistingGgbObject: fixGgbArg_1(wrapExistingGgbObject),
     sharedGetSets: sharedGetSets(ggbApi),
     freeCopyMethodsSlice: freeCopyMethodsSlice(ggbApi),

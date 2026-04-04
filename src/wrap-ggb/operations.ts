@@ -1,10 +1,5 @@
 import { GgbApi } from "../shared/vendor-types/ggbapi";
-import {
-  isGgbObject,
-  isPythonOrGgbNumber,
-  numberValueOrLabel,
-  SkGgbObject,
-} from "./shared";
+import { argumentString, SkGgbObject } from "./shared";
 import { SkBool, SkObject, SkulptApi } from "../shared/vendor-types/skulptapi";
 import { wrapExistingGgbObject } from "./type-registry";
 
@@ -22,36 +17,23 @@ const ggbFunctionCall =
   (vArg, wArg) =>
     `${funName}(${vArg},${wArg})`;
 
+const kBinaryOpTypeError = new Sk.builtin.TypeError(
+  "operand arguments must be GeoGebra objects or numbers"
+);
+
 const ggbBinaryOpFun =
   (buildCommand: BuildCommand) =>
   (ggbApi: GgbApi, v: SkObject, w: SkObject) => {
-    if (isPythonOrGgbNumber(ggbApi, v) && isPythonOrGgbNumber(ggbApi, w)) {
-      const vArg = numberValueOrLabel(ggbApi, v);
-      const wArg = numberValueOrLabel(ggbApi, w);
-      const ggbCmd = buildCommand(vArg, wArg);
-      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-      if (lbl == null) {
-        throw new Sk.builtin.TypeError(
-          `ggbBinaryOpFun(num, num): Ggb command "${ggbCmd}" returned null`
-        );
-      }
-      return wrapExistingGgbObject(ggbApi, lbl);
+    const vArg = argumentString(ggbApi, v, kBinaryOpTypeError);
+    const wArg = argumentString(ggbApi, w, kBinaryOpTypeError);
+    const ggbCmd = buildCommand(vArg, wArg);
+
+    const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+    if (lbl == null) {
+      throw new Sk.builtin.RuntimeError("binary operation failed");
     }
 
-    if (isGgbObject(ggbApi, v) && isGgbObject(ggbApi, w)) {
-      const ggbCmd = buildCommand(v.$ggbLabel, w.$ggbLabel);
-      const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
-      if (lbl == null) {
-        throw new Sk.builtin.TypeError(
-          `ggbBinaryOpFun(obj, obj): Ggb command "${ggbCmd}" returned null`
-        );
-      }
-      // TODO: What if the operation doesn't make sense?
-      return wrapExistingGgbObject(ggbApi, lbl);
-    }
-
-    // TODO: More helpful message.
-    throw new Sk.builtin.TypeError("you can't do that");
+    return wrapExistingGgbObject(ggbApi, lbl);
   };
 
 const ggbAdd = ggbBinaryOpFun(ggbInfix("+"));
