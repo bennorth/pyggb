@@ -9,6 +9,7 @@ const kGgbTypeSignatures = [
   ["point", "circle"],
   ["point", "parabola"],
   ["point", "hyperbola"],
+  ["point", "conic"],
   ["line", "ellipse"],
   ["line", "circle"],
   ["line", "parabola"],
