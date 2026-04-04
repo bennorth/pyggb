@@ -23,7 +23,8 @@ not make sense and so might not succeed, for example in the code
 .. code-block:: python
 
    p = Point(3, 4)
-   q = p + 42
+   q = Point(7, 8)
+   s = Line(p, q) + 42
 
 .. note::
 
