@@ -10,3 +10,5 @@ export type CoordinateProtoSlice = {
   $yCoord(this: CoordinateProtoSlice): number;
   $setYCoord(this: CoordinateProtoSlice, y: number): void;
 };
+
+export type SkGgbObjectWithCoords = SkGgbObject & CoordinateProtoSlice;
