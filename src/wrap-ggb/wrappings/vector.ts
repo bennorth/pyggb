@@ -83,11 +83,16 @@ export const register: RegisterFun = (mod, appApi) => {
       },
       ...ggb.sharedOpSlots,
     },
+    proto: {
+      ...ggb.sharedCoordinateProtoSlots,
+    },
     methods: {
       ...ggb.withPropertiesMethodsSlice,
       ...ggb.freeCopyMethodsSlice,
     },
     getsets: {
+      x: ggb.sharedGetSets.x,
+      y: ggb.sharedGetSets.y,
       is_visible: ggb.sharedGetSets.is_visible,
       is_independent: ggb.sharedGetSets.is_independent,
       color: ggb.sharedGetSets.color,
