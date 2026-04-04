@@ -65,4 +65,7 @@ const twoArgSpecs = [
   },
 ];
 
-export const specs = [...oneArgSpecs, ...twoArgSpecs];
+const arithmeticSpecs = [
+];
+
+export const specs = [...oneArgSpecs, ...twoArgSpecs, ...arithmeticSpecs];
