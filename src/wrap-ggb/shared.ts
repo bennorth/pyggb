@@ -10,6 +10,12 @@ import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { colorIntsFromString, interpretColorOrFail } from "./color";
 import { wrapExistingGgbObject } from "./type-registry";
 import { OperationSlots, operationSlots } from "./operations";
+import {
+  coordinateGetSets,
+  CoordinateGetSets,
+  CoordinateProtoSlice,
+  coordinateProtoSlice,
+} from "./coords";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
 export interface SkGgbObject extends SkObject {
@@ -429,10 +435,11 @@ const deleteMethodsSlice = (ggbApi: GgbApi): MethodDescriptorsSlice => ({
   },
 });
 
-type ReadOnlyProperty = {
+export type ReadOnlyProperty = {
   $get(this: SkGgbObject): SkObject;
 };
-type ReadWriteProperty = ReadOnlyProperty & {
+
+export type ReadWriteProperty = ReadOnlyProperty & {
   $set(this: SkGgbObject, val: SkObject): void;
 };
 
@@ -442,21 +449,22 @@ type LabelGetSets = {
   caption: ReadWriteProperty;
 };
 
-type SharedGetSets = LabelGetSets & {
-  is_visible: ReadWriteProperty;
-  is_fixed: ReadWriteProperty;
-  is_independent: ReadOnlyProperty;
-  value: ReadWriteProperty;
-  opacity: ReadWriteProperty;
-  color: ReadWriteProperty;
-  color_floats: ReadOnlyProperty;
-  size: ReadWriteProperty;
-  line_thickness: ReadWriteProperty;
-  line_style: ReadWriteProperty;
-  _ggb_label: ReadOnlyProperty;
-  _ggb_exists: ReadOnlyProperty;
-  _ggb_type: ReadOnlyProperty;
-};
+type SharedGetSets = LabelGetSets &
+  CoordinateGetSets & {
+    is_visible: ReadWriteProperty;
+    is_fixed: ReadWriteProperty;
+    is_independent: ReadOnlyProperty;
+    value: ReadWriteProperty;
+    opacity: ReadWriteProperty;
+    color: ReadWriteProperty;
+    color_floats: ReadOnlyProperty;
+    size: ReadWriteProperty;
+    line_thickness: ReadWriteProperty;
+    line_style: ReadWriteProperty;
+    _ggb_label: ReadOnlyProperty;
+    _ggb_exists: ReadOnlyProperty;
+    _ggb_type: ReadOnlyProperty;
+  };
 
 /** Extract an object containing just the three label-related
  * properties. */
@@ -472,6 +480,7 @@ export const labelGetSets = (sharedGetSets: SharedGetSets): LabelGetSets => ({
  * `getsets` property of the options used in `buildNativeClass()`;
  * alternatively, a subset of its properties can be used like that. */
 const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
+  ...coordinateGetSets,
   is_visible: {
     $get(this: SkGgbObject) {
       return new Sk.builtin.bool(ggbApi.getVisible(this.$ggbLabel));
@@ -715,6 +724,7 @@ export type AugmentedGgbApi = {
   deleteObject(label: string): void;
   registerObjectUpdateListener(label: string, fun: () => void): void;
   sharedOpSlots: OperationSlots;
+  sharedCoordinateProtoSlots: CoordinateProtoSlice;
 };
 
 /** Construct and return an "augmented GeoGebra API" object, which adds
@@ -820,6 +830,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     deleteObject,
     registerObjectUpdateListener,
     sharedOpSlots: operationSlots(ggbApi),
+    sharedCoordinateProtoSlots: coordinateProtoSlice(ggbApi),
   };
 
   return api;
