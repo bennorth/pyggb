@@ -12,3 +12,22 @@ export type CoordinateProtoSlice = {
 };
 
 export type SkGgbObjectWithCoords = SkGgbObject & CoordinateProtoSlice;
+
+export function coordinateProtoSlice(ggb: GgbApi): CoordinateProtoSlice {
+  return {
+    $xCoord(this: SkGgbObjectWithCoords) {
+      return ggb.getXcoord(this.$ggbLabel);
+    },
+    $setXCoord(this: SkGgbObjectWithCoords, x: number) {
+      // Hm; mildly annoying:
+      ggb.setCoords(this.$ggbLabel, x, this.$yCoord());
+    },
+    $yCoord(this: SkGgbObjectWithCoords) {
+      return ggb.getYcoord(this.$ggbLabel);
+    },
+    $setYCoord(this: SkGgbObjectWithCoords, y: number) {
+      // Hm; mildly annoying:
+      ggb.setCoords(this.$ggbLabel, this.$xCoord(), y);
+    },
+  };
+}
