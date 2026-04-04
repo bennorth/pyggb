@@ -13,6 +13,8 @@ import { OperationSlots, operationSlots } from "./operations";
 import {
   coordinateGetSets,
   CoordinateGetSets,
+  CoordinateProtoSlice,
+  coordinateProtoSlice,
 } from "./coords";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
@@ -722,6 +724,7 @@ export type AugmentedGgbApi = {
   deleteObject(label: string): void;
   registerObjectUpdateListener(label: string, fun: () => void): void;
   sharedOpSlots: OperationSlots;
+  sharedCoordinateProtoSlots: CoordinateProtoSlice;
 };
 
 /** Construct and return an "augmented GeoGebra API" object, which adds
@@ -827,6 +830,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
     deleteObject,
     registerObjectUpdateListener,
     sharedOpSlots: operationSlots(ggbApi),
+    sharedCoordinateProtoSlots: coordinateProtoSlice(ggbApi),
   };
 
   return api;
