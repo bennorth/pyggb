@@ -10,6 +10,10 @@ import { GgbApi } from "../shared/vendor-types/ggbapi";
 import { colorIntsFromString, interpretColorOrFail } from "./color";
 import { wrapExistingGgbObject } from "./type-registry";
 import { OperationSlots, operationSlots } from "./operations";
+import {
+  coordinateGetSets,
+  CoordinateGetSets,
+} from "./coords";
 
 /** A Skulpt object which is also a wrapped GeoGebra object. */
 export interface SkGgbObject extends SkObject {
@@ -443,7 +447,8 @@ type LabelGetSets = {
   caption: ReadWriteProperty;
 };
 
-type SharedGetSets = LabelGetSets & {
+type SharedGetSets = LabelGetSets &
+  CoordinateGetSets & {
   is_visible: ReadWriteProperty;
   is_fixed: ReadWriteProperty;
   is_independent: ReadOnlyProperty;
@@ -473,6 +478,7 @@ export const labelGetSets = (sharedGetSets: SharedGetSets): LabelGetSets => ({
  * `getsets` property of the options used in `buildNativeClass()`;
  * alternatively, a subset of its properties can be used like that. */
 const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
+  ...coordinateGetSets,
   is_visible: {
     $get(this: SkGgbObject) {
       return new Sk.builtin.bool(ggbApi.getVisible(this.$ggbLabel));
