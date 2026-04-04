@@ -36,3 +36,25 @@ export type CoordinateGetSets = {
   x: ReadWriteProperty;
   y: ReadWriteProperty;
 };
+
+export const coordinateGetSets: CoordinateGetSets = {
+  x: {
+    $get(this: SkGgbObjectWithCoords) {
+      return new Sk.builtin.float_(this.$xCoord());
+    },
+    $set(this: SkGgbObjectWithCoords, pyX: SkObject) {
+      // Throw if not isIndependent(this)?
+      throwIfNotNumber(pyX, "x coord");
+      this.$setXCoord(pyX.v);
+    },
+  },
+  y: {
+    $get(this: SkGgbObjectWithCoords) {
+      return new Sk.builtin.float_(this.$yCoord());
+    },
+    $set(this: SkGgbObjectWithCoords, pyY: SkObject) {
+      throwIfNotNumber(pyY, "y coord");
+      this.$setYCoord(Sk.ffi.remapToJs(pyY));
+    },
+  },
+};
