@@ -170,6 +170,37 @@ export const isPythonOrGgbNumber = (ggbApi: GgbApi, obj: SkObject) =>
 export const isSingletonOfEmpty = (xs: Array<string>) =>
   xs.length === 1 && xs[0] === "";
 
+/** Given a Skulpt/PyGgb object `x`, which should be either a GeoGebra
+ * object or a Python number, return a string suitable for inclusion in
+ * a GeoGebra command.  For a GeoGebra object, return its label.  For a
+ * Python number, return a literal string representation.  If `x` is not
+ * one of those types, throw the given `errorIfWrongType` Skulpt object
+ * (typically an `Sk.builtin.RuntimeError` or `Sk.builtin.TypeError`).
+ * Supply `requiredGgbType` as a string to specify that `x`, if a
+ * GeoGebra object, must be of a particular GeoGebra type, e.g.,
+ * `"numeric"`. Supply `requiredGgbType` as an array of strings to
+ * specify that `x`, if a GeoGebra object, must be of one of those
+ * particular GeoGebra types, e.g., `["point", "line"]`.
+ * */
+export const argumentString = (
+  ggbApi: GgbApi,
+  x: SkObject,
+  errorIfWrongType: SkObject,
+  requiredGgbType?: string | Array<string>
+): string => {
+  if (isGgbObject(ggbApi, x, requiredGgbType)) {
+    return x.$ggbLabel;
+  }
+
+  if (Sk.builtin.checkNumber(x)) {
+    const jsStr = x.v.toExponential();
+    const [sig, exp] = jsStr.split("e");
+    return `(${sig}*10^(${exp}))`;
+  }
+
+  throw errorIfWrongType;
+};
+
 /** Given a Skulpt/PyGgb object `x`, which should be either a `numeric`
  * GeoGebra object or a Python number, return a string suitable for
  * inclusion in a GeoGebra command.  For a `numeric` object, return its
