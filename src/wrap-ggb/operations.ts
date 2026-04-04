@@ -1,11 +1,5 @@
 import { GgbApi } from "../shared/vendor-types/ggbapi";
-import {
-  argumentString,
-  isGgbObject,
-  isPythonOrGgbNumber,
-  numberValueOrLabel,
-  SkGgbObject,
-} from "./shared";
+import { argumentString, SkGgbObject } from "./shared";
 import { SkBool, SkObject, SkulptApi } from "../shared/vendor-types/skulptapi";
 import { wrapExistingGgbObject } from "./type-registry";
 
