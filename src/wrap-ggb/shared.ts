@@ -449,20 +449,20 @@ type LabelGetSets = {
 
 type SharedGetSets = LabelGetSets &
   CoordinateGetSets & {
-  is_visible: ReadWriteProperty;
-  is_fixed: ReadWriteProperty;
-  is_independent: ReadOnlyProperty;
-  value: ReadWriteProperty;
-  opacity: ReadWriteProperty;
-  color: ReadWriteProperty;
-  color_floats: ReadOnlyProperty;
-  size: ReadWriteProperty;
-  line_thickness: ReadWriteProperty;
-  line_style: ReadWriteProperty;
-  _ggb_label: ReadOnlyProperty;
-  _ggb_exists: ReadOnlyProperty;
-  _ggb_type: ReadOnlyProperty;
-};
+    is_visible: ReadWriteProperty;
+    is_fixed: ReadWriteProperty;
+    is_independent: ReadOnlyProperty;
+    value: ReadWriteProperty;
+    opacity: ReadWriteProperty;
+    color: ReadWriteProperty;
+    color_floats: ReadOnlyProperty;
+    size: ReadWriteProperty;
+    line_thickness: ReadWriteProperty;
+    line_style: ReadWriteProperty;
+    _ggb_label: ReadOnlyProperty;
+    _ggb_exists: ReadOnlyProperty;
+    _ggb_type: ReadOnlyProperty;
+  };
 
 /** Extract an object containing just the three label-related
  * properties. */
