@@ -9,6 +9,7 @@ import { ExampleProgramPreview } from "../../shared/resources";
 import { useStoreActions, useStoreState } from "../../store";
 import { FileChoiceActivity } from "../../model/modals/file-chooser";
 import { assertNever, EmptyProps } from "../../shared/utils";
+import { useDismissOnEscape } from "../hooks";
 
 type FileChoiceProps = UserFilePreview & {
   isCurrent: boolean;
@@ -72,6 +73,7 @@ const UserFileList: React.FC<EmptyProps> = () => {
   const switchToExamples = useSetPlainActivity("choose-example");
   const maybeCurrentUserFileId = useMaybeCurrentUserFileId();
   const launchDeletion = useLaunchDeletion();
+  useDismissOnEscape(dismiss);
 
   const content =
     userFiles == null ? (
@@ -96,7 +98,7 @@ const UserFileList: React.FC<EmptyProps> = () => {
 
   return (
     <Modal size="xl" show={true} animation={false}>
-      <Modal.Header>
+      <Modal.Header closeButton onHide={dismiss}>
         <Modal.Title>
           <Button variant="primary">My programs</Button>{" "}
           <Button onClick={switchToExamples} variant="outline-primary">
@@ -119,6 +121,7 @@ const ExampleList: React.FC<EmptyProps> = () => {
   const examples = useJsonResource("examples/index.json");
   const switchToUserFiles = useSetPlainActivity("choose-user-file");
   const dismiss = useSetPlainActivity("none");
+  useDismissOnEscape(dismiss);
 
   const load = (ex: ExampleProgramPreview) => () => {
     loadExample(ex);
@@ -154,7 +157,7 @@ const ExampleList: React.FC<EmptyProps> = () => {
 
   return (
     <Modal size="xl" show={true} animation={false}>
-      <Modal.Header>
+      <Modal.Header closeButton onHide={dismiss}>
         <Modal.Title>
           <Button onClick={switchToUserFiles} variant="outline-primary">
             My programs
@@ -174,6 +177,8 @@ const ExampleList: React.FC<EmptyProps> = () => {
 
 const ConfirmDeletion: React.FC<UserFilePreview> = ({ id, name }) => {
   const dismiss = useSetPlainActivity("choose-user-file");
+  useDismissOnEscape(dismiss);
+
   const doDelete = async () => {
     await db.withLock(async () => {
       await db.deleteFile(id);
@@ -183,7 +188,7 @@ const ConfirmDeletion: React.FC<UserFilePreview> = ({ id, name }) => {
 
   return (
     <Modal size="xl" show={true} animation={false}>
-      <Modal.Header>
+      <Modal.Header closeButton onHide={dismiss}>
         <Modal.Title>Really delete "{name}"?</Modal.Title>
       </Modal.Header>
       <Modal.Body>

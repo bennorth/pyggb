@@ -11,6 +11,7 @@ import {
   useCanDownloadGgb,
 } from "../model/hooks/download-as-filetype";
 import { fullUrlWithinDocs } from "../shared/utils";
+import { useDismissOnEscape } from "./hooks";
 
 type FilenameProps = {
   backingFileState: OperationalBackingFileState;
@@ -28,6 +29,11 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
   const [editState, setEditState] = useState<FilenameEditState>({
     status: "displaying",
   });
+  const setDisplaying = () => {
+    setEditState({ status: "displaying" });
+  };
+  useDismissOnEscape(setDisplaying);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const editStatus = editState.status;
@@ -54,7 +60,7 @@ const FilenameDisplayOrEdit: React.FC<FilenameProps> = ({
       return;
     }
     await renameAction(editState.newName);
-    setEditState({ status: "displaying" });
+    setDisplaying();
   };
   const handleMaybeSubmit = async (
     evt: React.KeyboardEvent<HTMLInputElement>
