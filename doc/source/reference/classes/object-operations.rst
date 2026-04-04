@@ -16,9 +16,10 @@ The operations of
 * exponentiation (``**``)
 * unary negative (``-``)
 
-are attempted within GeoGebra when at least one of the operands is a
-:py:class:`Number` or :py:class:`Point` instance.  The operation might
-not make sense and so might not succeed, for example in the code
+are attempted within GeoGebra when both operands are GeoGebra objects
+(of certain types) or Python numbers, including the case of one
+GeoGebra object and one Python number.  The operation might not make
+sense and so might not succeed, for example in the code
 
 .. code-block:: python
 
@@ -28,9 +29,7 @@ not make sense and so might not succeed, for example in the code
 
 .. note::
 
-   Future version might support operations between more classes.  For
-   example, it would make sense to operate on :py:class:`Vector`
-   instances.
+   Future version might support operations between more classes.
 
 
 Comparisons
