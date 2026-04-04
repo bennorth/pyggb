@@ -127,6 +127,7 @@ export const register: RegisterFun = (mod, appApi) => {
     },
     getsets: {
       value: ggb.sharedGetSets.value,
+      is_independent: ggb.sharedGetSets.is_independent,
       is_visible: ggb.sharedGetSets.is_visible,
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
