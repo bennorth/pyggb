@@ -461,6 +461,7 @@ type SharedGetSets = LabelGetSets &
     size: ReadWriteProperty;
     line_thickness: ReadWriteProperty;
     line_style: ReadWriteProperty;
+    latex: ReadOnlyProperty;
     _ggb_label: ReadOnlyProperty;
     _ggb_exists: ReadOnlyProperty;
     _ggb_type: ReadOnlyProperty;
@@ -604,6 +605,11 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
       throwIfNotString(pyCaption, "caption must be a string");
       ggbApi.setCaption(this.$ggbLabel, pyCaption.v);
       ggbApi.setLabelStyle(this.$ggbLabel, 3);
+    },
+  },
+  latex: {
+    $get(this: SkGgbObject) {
+      return new Sk.builtin.str(ggbApi.getLaTeXString(this.$ggbLabel));
     },
   },
   _ggb_label: {
