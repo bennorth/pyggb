@@ -24,6 +24,11 @@ Ellipse
       Construct the ellipse whose two foci are the points *f1* and
       *f2*, and which passes through the point *p*.
 
+   .. py:property:: center
+
+      |getOnlyProp| The ellipse's centre, as a wrapped GeoGebra
+      :py:class:`Point`.
+
    .. py:property:: latex
       :type: str
 

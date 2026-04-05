@@ -16,6 +16,7 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 interface SkGgbCircle extends SkGgbObject {
   radiusNumber: SkGgbNumber | null;
+  $_center: SkGgbObject | null;
   $radiusNumber: (this: SkGgbCircle) => SkGgbNumber;
 }
 
@@ -42,6 +43,7 @@ export const register: RegisterFun = (mod, appApi) => {
   const cls = Sk.abstr.buildNativeClass("Circle", {
     constructor: function Circle(this: SkGgbCircle, spec: SkGgbCircleCtorSpec) {
       this.radiusNumber = null;
+      this.$_center = null;
 
       const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Circle");
 
@@ -153,6 +155,7 @@ export const register: RegisterFun = (mod, appApi) => {
       opacity: ggb.sharedGetSets.opacity,
       line_thickness: ggb.sharedGetSets.line_thickness,
       line_style: ggb.sharedGetSets.line_style,
+      center: ggb.sharedGetSets.center,
       radius: {
         $get(this: SkGgbCircle) {
           return new Sk.builtin.float_(this.$radiusNumber().$value());

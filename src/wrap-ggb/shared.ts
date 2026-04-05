@@ -462,6 +462,7 @@ type SharedGetSets = LabelGetSets &
     line_thickness: ReadWriteProperty;
     line_style: ReadWriteProperty;
     latex: ReadOnlyProperty;
+    center: ReadOnlyProperty;
     _ggb_label: ReadOnlyProperty;
     _ggb_exists: ReadOnlyProperty;
     _ggb_type: ReadOnlyProperty;
@@ -610,6 +611,25 @@ const sharedGetSets = (ggbApi: GgbApi): SharedGetSets => ({
   latex: {
     $get(this: SkGgbObject) {
       return new Sk.builtin.str(ggbApi.getLaTeXString(this.$ggbLabel));
+    },
+  },
+  center: {
+    $get(this: SkGgbObject) {
+      // Could consider abstracting this pattern if we end up with more
+      // cached computed properties.
+
+      if (!("$_center" in this)) {
+        // Should not happen.
+        throw new Sk.builtin.TypeError("unable to find center of object");
+      }
+
+      if (this.$_center == null) {
+        const ggbCmd = `Center(${this.$ggbLabel})`;
+        const lbl = ggbApi.evalCommandGetLabels(ggbCmd);
+        this.$_center = wrapExistingGgbObject(ggbApi, lbl);
+      }
+
+      return this.$_center as SkGgbObject;
     },
   },
   _ggb_label: {

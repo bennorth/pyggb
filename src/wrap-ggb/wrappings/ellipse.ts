@@ -13,9 +13,8 @@ import { throwBadSpecKind } from "../../shared/utils";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbEllipse extends SkGgbObject {
-  // TODO: Anything here?
+  $_center: SkGgbObject | null;
 }
 
 type SkGgbEllipseCtorSpec =
@@ -47,6 +46,7 @@ export const register: RegisterFun = (mod, appApi) => {
       this: SkGgbEllipse,
       spec: SkGgbEllipseCtorSpec
     ) {
+      this.$_center = null;
       const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Ellipse");
 
       switch (spec.kind) {
@@ -141,6 +141,7 @@ export const register: RegisterFun = (mod, appApi) => {
       line_thickness: ggb.sharedGetSets.line_thickness,
       line_style: ggb.sharedGetSets.line_style,
       ...labelGetSets(ggb.sharedGetSets),
+      center: ggb.sharedGetSets.center,
       _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },

@@ -29,6 +29,11 @@ Circle
       Construct the circle which passes through the three points *p1*,
       *p2*, and *p3*.
 
+   .. py:property:: center
+
+      |getOnlyProp| The circle's centre, as a wrapped GeoGebra
+      :py:class:`Point`.
+
    .. py:property:: radius
 
       |getOnlyProp| The circle's radius, as a Python :py:type:`float`.
