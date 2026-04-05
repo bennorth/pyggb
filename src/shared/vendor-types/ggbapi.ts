@@ -2,6 +2,7 @@ type AnyVoidFunction = (...args: Array<unknown>) => void;
 
 export type GgbApi = {
   getObjectType(label: string): string;
+  getLaTeXString(label: string): string;
 
   getVisible(label: string): boolean;
   setVisible(label: string, isVisible: boolean): void;
