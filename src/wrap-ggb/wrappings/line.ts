@@ -84,6 +84,7 @@ export const register: RegisterFun = (mod, appApi) => {
       ...ggb.freeCopyMethodsSlice,
     },
     getsets: {
+      latex: ggb.sharedGetSets.latex,
       is_independent: ggb.sharedGetSets.is_independent,
       is_visible: ggb.sharedGetSets.is_visible,
       color: ggb.sharedGetSets.color,

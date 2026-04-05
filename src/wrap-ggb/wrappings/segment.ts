@@ -94,6 +94,7 @@ export const register: RegisterFun = (mod, appApi) => {
           return new Sk.builtin.float_(ggb.getValue(this.$ggbLabel));
         },
       },
+      latex: ggb.sharedGetSets.latex,
       is_independent: ggb.sharedGetSets.is_independent,
       is_visible: ggb.sharedGetSets.is_visible,
       color: ggb.sharedGetSets.color,
