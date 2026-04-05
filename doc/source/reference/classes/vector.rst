@@ -16,6 +16,12 @@ Vector
 
       Construct the Vector with the given *x* and *y* components.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current
+      components of the vector, giving, e.g., :math:`(3, 4)`.
+
    :py:class:`Vector` instances support arithmetic operations where
    that makes sense, for example adding two vectors.
 

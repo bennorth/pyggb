@@ -29,6 +29,12 @@ Slider
       :py:class:`Slider`, the value is clamped to the appropriate end
       of the range.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current value
+      of the slider, giving, e.g., :math:`91`.
+
    As noted above, :py:class:`Slider` instances support arithmetic
    operations where that makes sense.
 

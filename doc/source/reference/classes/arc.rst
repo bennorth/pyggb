@@ -20,6 +20,12 @@ Arc
       be a circle), and whose starting point is given by the angle
       *th1* and whose ending point is given by the angle *th2*.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current length
+      of the arc, giving, e.g., :math:`1.5`.
+
    An :py:class:`Arc` has the following common properties:
 
    * :py:attr:`is_visible`

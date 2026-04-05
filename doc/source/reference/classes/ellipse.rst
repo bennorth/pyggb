@@ -24,6 +24,17 @@ Ellipse
       Construct the ellipse whose two foci are the points *f1* and
       *f2*, and which passes through the point *p*.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current
+      equation of the ellipse, giving, e.g., :math:`5x^{2} + 9y^{2} -
+      10x\, = \,40`.
+
+      Note that when the ellipse happens to be a circle, the spacing
+      specified by the LaTeX is slightly different to that specified
+      by the LaTeX of the same circle as a :py:class:`Circle`.
+
    An :py:class:`Ellipse` has the following common properties:
 
    * :py:attr:`is_visible`

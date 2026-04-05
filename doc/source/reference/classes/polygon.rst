@@ -32,6 +32,12 @@ Polygon
 
       |getOnlyProp| The area, in square units, of the Polygon.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current area of
+      the polygon, giving, e.g., :math:`4`.
+
    A :py:class:`Polygon` also has the following common properties:
 
    * :py:attr:`is_visible`

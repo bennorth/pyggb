@@ -32,6 +32,12 @@ Angle
       |getOnlyProp| The current value as a Python :py:type:`float`, as
       measured in radians.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current measure
+      of the angle, expressed in degrees, giving, e.g., :math:`45°`.
+
    :py:class:`Angle` instances support arithmetic operations where
    that makes sense.  For example, adding two :py:class:`Angle`\ s
    gives another :py:class:`Angle`; adding an :py:class:`Angle` to a

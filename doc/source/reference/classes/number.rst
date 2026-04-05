@@ -11,6 +11,12 @@ Number
 
       |getSetProp| The current value as a Python :py:type:`float`.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current value
+      of the number, giving, e.g., :math:`42`.
+
 
 .. seealso::
 

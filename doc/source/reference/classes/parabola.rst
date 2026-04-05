@@ -29,6 +29,13 @@ Parabola
          print(p(-1.0).value)
          # 3.0
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current
+      equation of the parabola, giving, e.g., :math:`y\, = \,3 \;
+      x^{2} + 4 \; x + 7`.
+
    A :py:class:`Parabola` has the following common properties:
 
    * :py:attr:`is_visible`

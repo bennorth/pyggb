@@ -31,6 +31,17 @@ FunctionGraph
       number, or a wrapped GeoGebra :py:class:`Number`.  Return a
       wrapped GeoGebra :py:class:`Number`.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the expression in
+      *x* for the function, giving, e.g., :math:`x +
+      \operatorname{sin} \left( x \right)`.
+
+      Depending on whether the function is recognised as "special",
+      for example a parabola, the LaTeX may or may not include an
+      initial ":math:`y=`".
+
    .. py:classmethod:: power(a, b)
 
       Construct and return a :py:class:`FunctionGraph` representing
