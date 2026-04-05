@@ -67,4 +67,13 @@ export const specs = [
       # be wrapped.  Modulus is unsupported.
     `,
   },
+  {
+    label: "Vector.latex",
+    code: `
+      A = Point(3, 1)
+      B = Point(1, 4)
+      print(Vector(A, B).latex)
+    `,
+    expOutputs: ["(-2, 3)"],
+  },
 ];

@@ -37,4 +37,11 @@ export const specs = [
       assert(k.line_style == 3)
     `,
   },
+  {
+    label: "Line.latex",
+    code: `
+      print(Line(3, 7).latex)
+    `,
+    expOutputs: ["y\\, = \\,3 \\cdot 10^{0} \\; x + 7 \\cdot 10^{0}"],
+  },
 ];

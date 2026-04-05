@@ -48,4 +48,15 @@ export const specs = [
       assert(p.line_style == 2)
     `,
   },
+  {
+    label: "Polygon.latex",
+    code: `
+      A = Point(-2, -2)
+      B = Point(0, -2)
+      p = Polygon(A, B, 4)
+      p.line_style = 2
+      print(p.latex)
+    `,
+    expOutputs: ["4"], // Area
+  },
 ];

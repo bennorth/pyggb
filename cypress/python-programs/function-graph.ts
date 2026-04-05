@@ -25,4 +25,11 @@ export const specs = [
     `,
     expOutputs: ["val(3) = 20.0", "val(8) = nan"],
   },
+  {
+    label: "FunctionGraph.latex",
+    code: `
+      print(FunctionGraph("x + sin(x)").latex)
+    `,
+    expOutputs: ["x + \\operatorname{sin} \\left( x \\right)"],
+  },
 ];

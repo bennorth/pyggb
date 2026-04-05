@@ -19,4 +19,12 @@ export const specs = [
       assert(p1._ggb_type == "boolean")
     `,
   },
+  {
+    label: "Boolean.latex",
+    code: `
+      print("False", Boolean(False).latex)
+      print("True", Boolean(True).latex)
+    `,
+    expOutputs: ["False false", "True true"],
+  },
 ];

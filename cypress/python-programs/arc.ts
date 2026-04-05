@@ -37,4 +37,13 @@ export const specs = [
       assert(a1.line_style == 2)
     `,
   },
+  {
+    label: "Arc.latex",
+    code: `
+      k1 = Circle(0, 0, 3)
+      n1 = Number(0.5)
+      print(Arc(k1, n1, 1.0).latex)
+    `,
+    expOutputs: ["1.5"], // Arc-length
+  },
 ];

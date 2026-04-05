@@ -31,4 +31,13 @@ export const specs = [
       assert(s.line_style == 2)
     `,
   },
+  {
+    label: "Segment.latex",
+    code: `
+      A = Point(3, 4)
+      B = Point(4, 5)
+      print(Segment(A, B).latex)
+    `,
+    expOutputs: ["1.41"], // Length
+  },
 ];
