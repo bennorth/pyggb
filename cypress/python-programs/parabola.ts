@@ -47,4 +47,14 @@ export const specs = [
     `,
     expOutputs: ["p at -1 = -1.0"],
   },
+  {
+    label: "Parabola.latex",
+    code: `
+      print(Parabola(2, 1, -2).latex)
+    `,
+    expOutputs: [
+      "y\\, = \\,2 \\cdot 10^{0} \\; x^{2}" +
+        " + 1 \\cdot 10^{0} \\; x - 2 \\cdot 10^{0}",
+    ],
+  },
 ];

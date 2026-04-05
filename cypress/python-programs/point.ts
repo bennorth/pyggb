@@ -50,4 +50,11 @@ export const specs = [
       assert(B.is_fixed)
     `,
   },
+  {
+    label: "Point.latex",
+    code: `
+      print(Point(3, 4).latex)
+    `,
+    expOutputs: ["\\left(3,\\;4 \\right)"],
+  },
 ];

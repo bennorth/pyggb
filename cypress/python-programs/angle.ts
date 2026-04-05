@@ -109,4 +109,20 @@ const arithmeticSpecs = [
   },
 ];
 
-export const specs = [...oneArgSpecs, ...twoArgSpecs, ...arithmeticSpecs];
+const latexSpec = {
+  label: "Angle.latex",
+  code: `
+    P = Point(3, 0)
+    Q = Point(0, 0)
+    R = Point(0, 3)
+    print(Angle(P, Q, R).latex)
+  `,
+  expOutputs: ["90°"],
+};
+
+export const specs = [
+  ...oneArgSpecs,
+  ...twoArgSpecs,
+  ...arithmeticSpecs,
+  latexSpec,
+];

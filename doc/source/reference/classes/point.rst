@@ -50,6 +50,13 @@ Point
       |getOnlyProp| The current value of the Point's *y*-coordinate as
       a dynamic :py:class:`Number`.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current
+      coordinates of the point, giving, e.g., :math:`\left(2,
+      1\right)`.
+
    A :py:class:`Point` also has the following common properties:
 
    * :py:attr:`is_visible`

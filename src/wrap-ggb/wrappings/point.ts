@@ -176,6 +176,7 @@ export const register = (
       ...ggb.deleteMethodsSlice,
     },
     getsets: {
+      latex: ggb.sharedGetSets.latex,
       is_visible: ggb.sharedGetSets.is_visible,
       is_fixed: ggb.sharedGetSets.is_fixed,
       is_independent: ggb.sharedGetSets.is_independent,

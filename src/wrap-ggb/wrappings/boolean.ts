@@ -60,6 +60,7 @@ export const register: RegisterFun = (mod, appApi) => {
       ...ggb.freeCopyMethodsSlice,
     },
     getsets: {
+      latex: ggb.sharedGetSets.latex,
       is_independent: ggb.sharedGetSets.is_independent,
       value: {
         $get(this: SkGgbBoolean) {

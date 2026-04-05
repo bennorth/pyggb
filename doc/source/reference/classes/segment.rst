@@ -16,6 +16,12 @@ Segment
       |getOnlyProp| The length of the Segment, i.e., the distance
       between the two points defining it.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current length
+      of the segment, giving, e.g., :math:`12`.
+
    A :py:class:`Segment` also has the following common properties:
 
    * :py:attr:`is_visible`

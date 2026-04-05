@@ -59,4 +59,11 @@ export const specs = [
       assert(k.line_style == 2)
     `,
   },
+  {
+    label: "Circle.latex",
+    code: `
+      print(Circle(1, 2, 3).latex)
+    `,
+    expOutputs: ["(x - 1)^{2} + (y - 2)^{2} = 9"],
+  },
 ];

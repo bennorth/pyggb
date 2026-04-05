@@ -38,4 +38,11 @@ export const specs = [
       assert(x2._ggb_type == "numeric")
     `,
   },
+  {
+    label: "Number.latex",
+    code: `
+      print(Number(3).latex)
+    `,
+    expOutputs: ["3"],
+  },
 ];

@@ -37,6 +37,13 @@ Circle
 
       |getOnlyProp| The circle's radius, as a dynamic :py:class:`Number`.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current
+      equation of the circle, giving, e.g., :math:`(x - 1)^{2} + (y -
+      2)^{2} = 9`.
+
    A :py:class:`Circle` also has the following common properties:
 
    * :py:attr:`is_visible`

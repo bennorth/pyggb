@@ -12,3 +12,9 @@ Boolean
    .. py:property:: value
 
       |getSetProp| The current value as a Python :py:type:`bool`.
+
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current value
+      of the Boolean (``"true"`` or ``"false"``).

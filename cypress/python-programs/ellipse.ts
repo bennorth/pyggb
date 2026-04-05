@@ -41,4 +41,13 @@ export const specs = [
       assert(k.line_style == 2)
     `,
   },
+  {
+    label: "Ellipse.latex",
+    code: `
+      A = Point(0, 0)
+      B = Point(0, 0)
+      print(Ellipse(A, B, 3).latex)
+    `,
+    expOutputs: ["x^{2} + y^{2}\\, = \\,9"],
+  },
 ];

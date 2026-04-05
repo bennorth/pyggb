@@ -15,6 +15,12 @@ Line
 
       Construct the line with equation *y = mx + c*.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current
+      equation of the line, giving, e.g., :math:`y\, = \,3 \; x + 7`.
+
    A :py:class:`Line` has the following common properties:
 
    * :py:attr:`is_visible`

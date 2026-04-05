@@ -77,4 +77,11 @@ export const specs = [
         assert u.value == exp_value
     `,
   },
+  {
+    label: "Slider.latex",
+    code: `
+      print(Slider(1, 5).latex)
+    `,
+    expOutputs: ["1"], // Value
+  },
 ];
