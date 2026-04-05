@@ -50,4 +50,17 @@ export const specs = [
     `,
     expOutputs: ["x^{2} + y^{2}\\, = \\,9"],
   },
+  {
+    label: "Ellipse.center",
+    code: `
+      A = Point(3, 3)
+      B = Point(-1, 5)
+      k = Ellipse(A, B, 3)
+      c1 = k.center
+      c2 = k.center
+      assert c1._ggb_label == c2._ggb_label
+      assert c1.x == 1
+      assert c1.y == 4
+    `,
+  },
 ];
