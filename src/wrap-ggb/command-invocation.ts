@@ -263,33 +263,35 @@ function evalCmdIfMatching(
   ggbCommandName: string,
   pyArgs: Array<SkObject>
 ): EvaluationInfo | null {
-  for (const sigSpec of sigSpecs) {
-    if (argsMeetSpec(ggb, pyArgs, sigSpec.argTypes)) {
-      const fullCmd =
-        sigSpec.ggbCommand == null
-          ? cmdWithArgs(ggb, ggbCommandName, pyArgs)
-          : sigSpec.ggbCommand(ggb, pyArgs);
+  const mMatchInfo = firstMatchingCommand(
+    ggb,
+    sigSpecs,
+    ggbCommandName,
+    pyArgs
+  );
 
-      const maybeLabels = ggb.evalCommandGetLabels(fullCmd);
-
-      if (maybeLabels == null) {
-        const errorMessage =
-          sigSpec.errorMessage != null
-            ? sigSpec.errorMessage(ggb, pyArgs)
-            : `GeoGebra command "${fullCmd}" returned null`;
-
-        throw new Sk.builtin.RuntimeError(errorMessage);
-      }
-
-      return {
-        commandName: ggbCommandName,
-        matchedSpec: sigSpec,
-        maybeLabels,
-      };
-    }
+  if (mMatchInfo == null) {
+    return null;
   }
 
-  return null;
+  const { matchedSpec, command } = mMatchInfo;
+
+  const maybeLabels = ggb.evalCommandGetLabels(command);
+
+  if (maybeLabels == null) {
+    const errorMessage =
+      matchedSpec.errorMessage != null
+        ? matchedSpec.errorMessage(ggb, pyArgs)
+        : `GeoGebra command "${command}" returned null`;
+
+    throw new Sk.builtin.RuntimeError(errorMessage);
+  }
+
+  return {
+    commandName: ggbCommandName,
+    matchedSpec,
+    maybeLabels,
+  };
 }
 
 export function throwBadArgsError(
