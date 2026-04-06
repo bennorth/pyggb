@@ -1,5 +1,27 @@
 type AnyVoidFunction = (...args: Array<unknown>) => void;
 
+export type GgbObjectType =
+  | "angle"
+  | "arc"
+  | "boolean"
+  | "circle"
+  | "conic"
+  | "ellipse"
+  | "function"
+  | "hexagon"
+  | "hyperbola"
+  | "line"
+  | "list"
+  | "numeric"
+  | "parabola"
+  | "pentagon"
+  | "point"
+  | "polygon"
+  | "quadrilateral"
+  | "segment"
+  | "triangle"
+  | "vector";
+
 export type GgbApi = {
   getObjectType(label: string): string;
   getLaTeXString(label: string): string;
