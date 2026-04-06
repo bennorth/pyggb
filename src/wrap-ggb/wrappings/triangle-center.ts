@@ -28,7 +28,7 @@ const kCenterKindCodeFromString = new Map<string, number>(
 );
 
 const kCenterKindStringsList =
-  "[" + kCenterKindsStringsWithCodes.map((x) => x[0]).join(", ") + "]";
+  "[" + kCenterKindsStringsWithCodes.map((x) => `"${x[0]}"`).join(", ") + "]";
 
 function centerKindCodeFromString(pyStr: SkObject): number | undefined {
   if (!Sk.builtin.checkString(pyStr)) return undefined;
