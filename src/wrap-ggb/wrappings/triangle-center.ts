@@ -1,6 +1,13 @@
 import { RegisterFun } from "../../shared/appApi";
-import { augmentedGgbApi, AugmentedGgbApi } from "../shared";
+import { assembledCommand, augmentedGgbApi } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
+import {
+  firstMatchingCommand,
+  ggbArgumentStr,
+  SignatureSpec,
+  throwBadArgsError,
+} from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -29,42 +36,48 @@ function centerKindCodeFromString(pyStr: SkObject): number | undefined {
   return kCenterKindCodeFromString.get(pyStr.v);
 }
 
-export const register: RegisterFun = (mod, appApi) => {
-  const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
+const makeCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const pointArgStrs = args.slice(0, 3).map((arg) => ggbArgumentStr(ggb, arg));
 
-  const fun = new Sk.builtin.func((...args) => {
-    const badArgsError = new Sk.builtin.TypeError(
-      "TriangleCenter() arguments must be (point, point, point, center-kind)," +
-        ` where center-kind is one of ${kCenterKindStringsList}`
+  const mCode = centerKindCodeFromString(args[3]);
+  if (mCode == null) {
+    throw new Sk.builtin.ValueError(
+      "TriangleCenter(): fourth (center-kind) argument" +
+        ` must be one of ${kCenterKindStringsList}`
+    );
+  }
+
+  const cmdArgs = [...pointArgStrs, mCode.toString()];
+
+  return assembledCommand("TriangleCenter", cmdArgs);
+};
+
+const kCommandName = "TriangleCenter";
+const kSignatures: Array<SignatureSpec> = [
+  {
+    argTypes: ["point", "point", "point", "py-string"],
+    ggbCommand: makeCommand,
+  },
+];
+
+export const register: RegisterFun = (mod, appApi) => {
+  mod.TriangleCenter = new Sk.builtin.func((...args) => {
+    const ggb = appApi.ggb;
+    const augGgb = augmentedGgbApi(ggb);
+
+    const mMatchInfo = firstMatchingCommand(
+      ggb,
+      kSignatures,
+      kCommandName,
+      args
     );
 
-    switch (args.length) {
-      case 4: {
-        const pointArgs = args.slice(0, 3);
-        if (!ggb.everyElementIsGgbObjectOfType(pointArgs, "point")) {
-          throw badArgsError;
-        }
-
-        const mCode = centerKindCodeFromString(args[3]);
-        if (mCode == null) {
-          throw badArgsError;
-        }
-
-        const ggbArgs = [
-          ...pointArgs.map((a) => a.$ggbLabel),
-          mCode.toString(),
-        ];
-        const ggbArgStr = ggbArgs.join(",");
-        const ggbCmd = `TriangleCenter(${ggbArgStr})`;
-
-        return Sk.misceval.promiseToSuspension(
-          ggb.asyncEvalCmd(ggbCmd).then(ggb.wrapExistingGgbObject)
-        );
-      }
-      default:
-        throw badArgsError;
+    if (mMatchInfo == null) {
+      throwBadArgsError(kCommandName, kSignatures);
     }
-  });
 
-  mod.TriangleCenter = fun;
+    return Sk.misceval.promiseToSuspension(
+      augGgb.asyncEvalCmd(mMatchInfo.command).then(augGgb.wrapExistingGgbObject)
+    );
+  });
 };
