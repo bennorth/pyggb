@@ -2,82 +2,50 @@ import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   labelGetSets,
-  setGgbLabelFromArgs,
-  setGgbLabelFromCmd,
   SkGgbObject,
   withPropertiesFromNameValuePairs,
-  WrapExistingCtorSpec,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import {
+  constructIfMatching,
+  ggbArgumentStr,
+  SignatureSpec,
+} from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbLine extends SkGgbObject {}
 
-type SkGgbLineCtorSpec =
-  | WrapExistingCtorSpec
-  | { kind: "point-point"; points: Array<SkGgbObject> }
-  | { kind: "coefficients"; coeffs: [SkObject, SkObject] };
+const makeCoeffsCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const argStrs = args.map((arg) => ggbArgumentStr(ggb, arg));
+  return `y=(${argStrs[0]})x + (${argStrs[1]})`;
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["point", "point"] },
+  {
+    argTypes: ["either-number", "either-number"],
+    ggbCommand: makeCoeffsCommand,
+  },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Line", {
-    constructor: function Line(this: SkGgbLine, spec: SkGgbLineCtorSpec) {
-      const setLabelCmd = setGgbLabelFromCmd(ggb, this);
-      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Line");
-
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          return;
-        }
-        case "point-point": {
-          setLabelArgs(spec.points.map((p) => p.$ggbLabel));
-          return;
-        }
-        case "coefficients": {
-          const ggbCoeffs = spec.coeffs.map(ggb.numberValueOrLabel);
-          setLabelCmd(`y=(${ggbCoeffs[0]})x + (${ggbCoeffs[1]})`);
-          return;
-        }
-        default:
-          throwBadSpecKind("Line", spec);
-      }
+    constructor: function Line(this: SkGgbLine, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
     },
     slots: {
       tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Line() arguments must be (point, point) or (slope, intercept)"
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(appApi.ggb, kCtorSignatures, "Line", args, cls),
+          kwargs
         );
-
-        const make = (spec: SkGgbLineCtorSpec) =>
-          withPropertiesFromNameValuePairs(new mod.Line(spec), kwargs);
-
-        switch (args.length) {
-          case 2: {
-            if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
-              return make({ kind: "point-point", points: args });
-            }
-
-            if (args.every(ggb.isPythonOrGgbNumber)) {
-              // We know that args is a two-element array of SkObjects,
-              // but TypeScript can't yet work that out.
-              return make({
-                kind: "coefficients",
-                coeffs: args as [SkObject, SkObject],
-              });
-            }
-
-            throw badArgsError;
-          }
-          default:
-            throw badArgsError;
-        }
       },
     },
     methods: {
