@@ -252,6 +252,13 @@ describe("Handles bad function calls", optsNoIsolation, () => {
       assertions: [assertIndexError("List object index")],
     },
     {
+      label: "List: kwargs",
+      code: `
+        xs = List(foo=3, bar="hello")
+      `,
+      assertions: [assertTypeError("must not be given keyword")],
+    },
+    {
       label: "FunctionGraph(): bad expr",
       code: `
         f = FunctionGraph("x+*")
