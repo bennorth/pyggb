@@ -287,11 +287,7 @@ function evalCmdIfMatching(
     throw new Sk.builtin.RuntimeError(errorMessage);
   }
 
-  return {
-    commandName: ggbCommandName,
-    matchedSpec,
-    maybeLabels,
-  };
+  return { commandName: ggbCommandName, matchedSpec, maybeLabels };
 }
 
 export function throwBadArgsError(
