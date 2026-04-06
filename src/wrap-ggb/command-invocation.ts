@@ -161,3 +161,61 @@ function argsMeetSpec(
 
   return true;
 }
+
+////////////////////////////////////////////////////////////////////////
+// Utilities to turn an argument-list spec into a human-language
+// (English for now) summary.
+
+function displayArgType(argType: ArgType): string {
+  if (argTypeIsIterable(argType)) {
+    return `iterable-of-${displayArgType(argType.elementType)}`;
+  }
+
+  switch (argType) {
+    case "ggb-object":
+      return "any-ggb-object";
+    case "py-number":
+      return "python-number";
+    case "py-string":
+      return "python-string";
+    case "py-object":
+      return "python-object";
+    case "either-number":
+      return "py-or-ggb-number";
+    default:
+      return argType;
+  }
+}
+
+function displayArgTypeOrTypes(argSpec: ArgTypeOrTypes): string {
+  return Array.isArray(argSpec)
+    ? argSpec.map(displayArgType).join("|")
+    : displayArgType(argSpec);
+}
+
+function displaySignatureSpec(spec: SignatureSpec): string {
+  const argTypes = spec.argTypes;
+  if (Array.isArray(argTypes)) {
+    const argSpecList = argTypes.map(displayArgTypeOrTypes).join(", ");
+    return `(${argSpecList})`;
+  } else {
+    return `(${argTypes.ofType}{${argTypes.atLeast},})`;
+  }
+}
+
+function displaySignatureSpecOptions(
+  specOptions: SignatureSpecOptions
+): string {
+  const nOptions = specOptions.length;
+  const content = specOptions.map(displaySignatureSpec);
+  switch (nOptions) {
+    case 1:
+      return content[0];
+    default: {
+      const head = content.slice(0, nOptions - 1);
+      const headStr = head.join(", ");
+      const tail = content[nOptions - 1];
+      return `${headStr}, or ${tail}`;
+    }
+  }
+}
