@@ -4,9 +4,11 @@ import {
   assembledCommand,
   isGgbObject,
   isPythonOrGgbNumber,
+  labelIsValid,
   SkGgbObject,
   strOfNumber,
 } from "./shared";
+import { wrapExistingGgbObject } from "./type-registry";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -329,4 +331,36 @@ export function constructIfMatching(
 ): SkObject {
   const ctor = constructInstanceFun(nativeClass);
   return objectIfMatching(ggb, ctorSpecs, ggbCommandName, pyArgs, ctor);
+}
+
+////////////////////////////////////////////////////////////////////////
+// Function to invoke a Ggb function and wrap the return value; produce
+// a Python list if we expect multiple returned Ggb objects.
+
+function wrapInstanceOrListFun(ggb: GgbApi) {
+  return (evalInfo: EvaluationInfo) => {
+    const labelsStr = evalInfo.maybeLabels;
+    const returnsMultiple = evalInfo.matchedSpec.returnsMultiple;
+
+    if (returnsMultiple === undefined) {
+      return wrapExistingGgbObject(ggb, labelsStr);
+    }
+
+    return new Sk.builtin.list(
+      labelsStr
+        .split(",")
+        .filter(labelIsValid)
+        .map((label) => wrapExistingGgbObject(ggb, label))
+    );
+  };
+}
+
+export function wrapIfMatching(
+  ggb: GgbApi,
+  sigSpecs: Array<SignatureSpec>,
+  ggbCommandName: string,
+  pyArgs: Array<SkObject>
+): SkObject {
+  const wrap = wrapInstanceOrListFun(ggb);
+  return objectIfMatching(ggb, sigSpecs, ggbCommandName, pyArgs, wrap);
 }
