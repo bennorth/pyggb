@@ -21,6 +21,9 @@ AngleBisector function
       k2 = Line(Point(4, -1), Point(-4, 1))
       k3, k4 = AngleBisector(k2, k1)
 
+   (In the special case that both arguments are the same line, just
+   that same line is returned, in a one-element list.)
+
 
 .. seealso::
 
