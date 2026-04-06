@@ -1,6 +1,6 @@
 import { RegisterFun } from "../../shared/appApi";
-import { assembledCommand, augmentedGgbApi, labelIsValid } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { SignatureSpec, wrapIfMatching } from "../command-invocation";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -13,76 +13,24 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 // tie to the native Ggb array of intersections.  For v1, we settled on
 // only supporting the Intersect(p, q, n) form of the Ggb function.
 
+const kSignatures: Array<SignatureSpec> = [
+  { argTypes: ["ggb-object", "ggb-object"], returnsMultiple: "take-all" },
+  { argTypes: ["ggb-object", "ggb-object", ["either-number", "point"]] },
+];
+
 export const register: RegisterFun = (mod, appApi) => {
-  const ggb = augmentedGgbApi(appApi.ggb);
+  mod.Intersect = new Sk.builtin.func((...args) =>
+    wrapIfMatching(appApi.ggb, kSignatures, "Intersect", args)
+  );
 
-  const fun = new Sk.builtin.func((...args) => {
-    const badArgsError = new Sk.builtin.TypeError(
-      "Intersect() arguments must be (object, object)" +
-        " or (object, object, one-based-index)"
-    );
-
-    switch (args.length) {
-      case 2: {
-        if (!ggb.everyElementIsGgbObject(args)) {
-          throw badArgsError;
-        }
-
-        // TODO: Extract following as method on AugGgbApi?
-        const labelsStr = ggb.evalCmdWithGgbArgs("Intersect", args);
-        const validLabels = labelsStr.split(",").filter(labelIsValid);
-        return new Sk.builtin.list(validLabels.map(ggb.wrapExistingGgbObject));
-      }
-      case 3: {
-        // Destructure to help TypeScript infer types
-        const [obj1, obj2, indexOrPoint] = args;
-        if (!ggb.isGgbObject(obj1) || !ggb.isGgbObject(obj2)) {
-          throw badArgsError;
-        }
-
-        // (object, object, intersection-index)
-        if (ggb.isPythonOrGgbNumber(indexOrPoint)) {
-          const ggbCmd = assembledCommand("Intersect", [
-            obj1.$ggbLabel,
-            obj2.$ggbLabel,
-            ggb.numberValueOrLabel(indexOrPoint),
-          ]);
-
-          // It seems that we always get a Point.  If there is no Nth
-          // intersection, the Point has NaN coords.
-          const label = ggb.evalCmd(ggbCmd);
-
-          return ggb.wrapExistingGgbObject(label);
-        }
-
-        // (object, object, initial-point)
-        if (ggb.isGgbObjectOfType(indexOrPoint, "point")) {
-          const type1 = ggb.ggbType(obj1);
-          const type2 = ggb.ggbType(obj2);
-          return ggb.existingFromCmdAndGgbArgs(
-            "Intersect",
-            [obj1, obj2, indexOrPoint],
-            `could not intersect "${type1}" and "${type2}"`
-          );
-        }
-
-        throw badArgsError;
-      }
-      default:
-        throw badArgsError;
-    }
-
-    // TODO: Will we always get Points back?  Assert this?  Do we need to
-    // distinguish between free and derived points?  What happens if when we
-    // initially Intersect a Segment and a Polygon, they don't intersect, but
-    // then I drag one end of the Segment such that it intersects the Polygon
-    // twice.  The "Intersection" object does what?  Looks like it tracks one of
-    // the intersection points.  Both intersections are shown on the
-    // construction though.
-    //
-    // If you intersect two Segments which are collinear and overlap, you get
-    // back a NaN,Nan point.
-  });
-
-  mod.Intersect = fun;
+  // TODO: Will we always get Points back?  Assert this?  Do we need to
+  // distinguish between free and derived points?  What happens if when we
+  // initially Intersect a Segment and a Polygon, they don't intersect, but
+  // then I drag one end of the Segment such that it intersects the Polygon
+  // twice.  The "Intersection" object does what?  Looks like it tracks one of
+  // the intersection points.  Both intersections are shown on the
+  // construction though.
+  //
+  // If you intersect two Segments which are collinear and overlap, you get
+  // back a NaN,Nan point.
 };
