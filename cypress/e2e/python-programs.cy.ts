@@ -127,7 +127,12 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
   };
 
   const simpleBadArgsSpec = (codeFragment: string): CodeWithErrorSpec => {
-    const clsName = new RegExp("^([^()]*)\\(").exec(codeFragment)[1];
+    const mMatch = new RegExp("^([^()]*)\\(").exec(codeFragment);
+    if (mMatch == null) {
+      throw new Error("internal error: class name not found");
+    }
+
+    const clsName = mMatch[1];
     return {
       label: `${codeFragment}`,
       code: `\n${codeFragment}\n`,
