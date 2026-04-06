@@ -27,8 +27,8 @@ Vector
 
    A :py:class:`Vector` has the following common properties:
 
-   * :py:attr:`is_visible`
    * :py:attr:`is_independent`
+   * :py:attr:`is_visible`
    * :py:attr:`color`
    * :py:attr:`color_floats`
    * :py:attr:`line_style`
