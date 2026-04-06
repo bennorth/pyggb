@@ -59,14 +59,18 @@ Point
 
    A :py:class:`Point` also has the following common properties:
 
-   * :py:attr:`is_visible`
    * :py:attr:`is_independent`
+   * :py:attr:`is_visible`
+   * :py:attr:`is_fixed`
    * :py:attr:`color`
    * :py:attr:`color_floats`
    * :py:attr:`size`
    * :py:attr:`label_visible`
    * :py:attr:`label_style`
    * :py:attr:`caption`
+
+   Where these properties are read-write, they can be set on
+   construction by passing them as keyword arguments.
 
 
 .. seealso::

@@ -1,5 +1,10 @@
 import { RegisterFun } from "../../shared/appApi";
-import { augmentedGgbApi, labelGetSets, SkGgbObject } from "../shared";
+import {
+  augmentedGgbApi,
+  labelGetSets,
+  SkGgbObject,
+  withPropertiesFromNameValuePairs,
+} from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 import { constructIfMatching, SignatureSpec } from "../command-invocation";
@@ -22,13 +27,10 @@ export const register: RegisterFun = (mod, appApi) => {
       this.$ggbLabel = ggbLabel;
     },
     slots: {
-      tp$new(args) {
-        return constructIfMatching(
-          appApi.ggb,
-          kCtorSignatures,
-          "Arc",
-          args,
-          cls
+      tp$new(args, kwargs) {
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(appApi.ggb, kCtorSignatures, "Arc", args, cls),
+          kwargs
         );
       },
     },

@@ -12,6 +12,7 @@ import {
   SkGgbObject,
   throwIfNotString,
   tpCallFun,
+  withPropertiesFromNameValuePairs,
 } from "../shared";
 import { registerObjectType } from "../type-registry";
 
@@ -114,15 +115,18 @@ export const register: RegisterFun = (mod, appApi) => {
       this.$ggbLabel = ggbLabel;
     },
     slots: {
-      tp$new(args) {
+      tp$new(args, kwargs) {
         // In fact the ggbCommand arg ("Function") is unused, because
         // the specs have custom ggbCommand()s, but provide it anyway.
-        return constructIfMatching(
-          appApi.ggb,
-          kCtorSignatures,
-          "Function",
-          args,
-          cls
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(
+            appApi.ggb,
+            kCtorSignatures,
+            "Function",
+            args,
+            cls
+          ),
+          kwargs
         );
       },
       tp$call: tpCallFun(ggb, "FunctionGraph"),

@@ -1,3 +1,21 @@
+import { propSettingSpecsFromNames } from "./prop-setting-specs";
+
+const propSettingSpecs = propSettingSpecsFromNames([
+  "opacity",
+  "line_thickness",
+  "line_style",
+  "color",
+  "caption",
+]).map((protoSpec) => ({
+  label: `Arc setting ${protoSpec.attrName}`,
+  code: `
+    k1 = Circle(0, 0, 3)
+    a1 = Arc(k1, 0.5, 1.5, ${protoSpec.attrName}=${protoSpec.setValue})
+    print("attr", a1.${protoSpec.attrName})
+  `,
+  expOutputs: [`attr ${protoSpec.expValue}`],
+}));
+
 export const specs = [
   {
     label: "Arc(ellipse, point, point)",
@@ -46,4 +64,5 @@ export const specs = [
     `,
     expOutputs: ["1.5"], // Arc-length
   },
+  ...propSettingSpecs,
 ];
