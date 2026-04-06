@@ -1,13 +1,17 @@
 import { RegisterFun } from "../../shared/appApi";
-import { throwBadSpecKind } from "../../shared/utils";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
+import {
+  constructIfMatching,
+  ggbArgumentStr,
+  SignatureSpec,
+} from "../command-invocation";
 import {
   augmentedGgbApi,
   labelGetSets,
-  setGgbLabelFromCmd,
   SkGgbObject,
+  throwIfNotString,
   tpCallFun,
-  WrapExistingCtorSpec,
 } from "../shared";
 import { registerObjectType } from "../type-registry";
 
@@ -16,10 +20,37 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbFunctionGraph extends SkGgbObject {}
 
-type SkGgbFunctionGraphCtorSpec =
-  | WrapExistingCtorSpec
-  | { kind: "expression"; expr: string }
-  | { kind: "expression-range"; expr: string; range: Array<SkObject> };
+function exprArgStr(args: Array<SkObject>): string {
+  const expr = args[0];
+  throwIfNotString(expr, "FunctionGraph() expression");
+  return expr.v;
+}
+
+const makeExprCommand = (_ggb: GgbApi, args: Array<SkObject>) => {
+  const expr = exprArgStr(args);
+  return `y=${expr}`;
+};
+
+const makeExprRangeCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const expr = exprArgStr(args);
+  const lbNumber = ggbArgumentStr(ggb, args[1]);
+  const ubNumber = ggbArgumentStr(ggb, args[2]);
+  return `Function(${expr},${lbNumber},${ubNumber})`;
+};
+
+const errorMessage = (_ggb: GgbApi, args: Array<SkObject>) => {
+  const expr = exprArgStr(args);
+  return `bad syntax of expression string "${expr}"`;
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["py-string"], ggbCommand: makeExprCommand, errorMessage },
+  {
+    argTypes: ["py-string", "either-number", "either-number"],
+    ggbCommand: makeExprRangeCommand,
+    errorMessage,
+  },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
@@ -78,77 +109,21 @@ export const register: RegisterFun = (mod, appApi) => {
   const cls = Sk.abstr.buildNativeClass("FunctionGraph", {
     constructor: function GeoGebraFunction(
       this: SkGgbFunctionGraph,
-      spec: SkGgbFunctionGraphCtorSpec
+      ggbLabel: string
     ) {
-      // Handle null return by ourselves, to try to give a more helpful
-      // error message.
-      const nubSetLabelFromCmd = setGgbLabelFromCmd(ggb, this);
-      const setLabelFromCmd = (expr: string, cmd: string) => {
-        nubSetLabelFromCmd(cmd, { allowNullLabel: true });
-        if (this.$ggbLabel == null) {
-          throw new Sk.builtin.ValueError(
-            `bad syntax of expression string "${expr}"`
-          );
-        }
-      };
-      switch (spec.kind) {
-        case "wrap-existing":
-          this.$ggbLabel = spec.label;
-          return;
-        case "expression": {
-          setLabelFromCmd(spec.expr, `y=${spec.expr}`);
-          return;
-        }
-        case "expression-range": {
-          const lbNumber = ggb.numberValueOrLabel(spec.range[0]);
-          const ubNumber = ggb.numberValueOrLabel(spec.range[1]);
-          setLabelFromCmd(
-            spec.expr,
-            `Function(${spec.expr},${lbNumber},${ubNumber})`
-          );
-          return;
-        }
-        default:
-          throwBadSpecKind("FunctionGraph", spec);
-      }
+      this.$ggbLabel = ggbLabel;
     },
     slots: {
       tp$new(args) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "FunctionGraph() arguments must be" +
-            " (expression_string)" +
-            " or (expression_string, lower_bound, upper_bound)"
+        // In fact the ggbCommand arg ("Function") is unused, because
+        // the specs have custom ggbCommand()s, but provide it anyway.
+        return constructIfMatching(
+          appApi.ggb,
+          kCtorSignatures,
+          "Function",
+          args,
+          cls
         );
-
-        const make = (spec: SkGgbFunctionGraphCtorSpec) =>
-          new mod.FunctionGraph(spec);
-
-        switch (args.length) {
-          case 1: {
-            const arg = args[0];
-            if (!Sk.builtin.checkString(arg)) {
-              throw badArgsError;
-            }
-            return make({ kind: "expression", expr: arg.v });
-          }
-          case 3: {
-            const exprArg = args[0];
-            const rangeArgs = args.slice(1);
-            if (
-              !Sk.builtin.checkString(exprArg) ||
-              !rangeArgs.every(ggb.isPythonOrGgbNumber)
-            ) {
-              throw badArgsError;
-            }
-            return make({
-              kind: "expression-range",
-              expr: exprArg.v,
-              range: rangeArgs,
-            });
-          }
-          default:
-            throw badArgsError;
-        }
       },
       tp$call: tpCallFun(ggb, "FunctionGraph"),
     },
