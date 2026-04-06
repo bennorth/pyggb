@@ -9,6 +9,7 @@
   <title>Boolean &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -20,7 +21,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Number" href="number.html" />
-    <link rel="prev" title="Operations between objects" href="object-operations.html" /> 
+    <link rel="prev" title="FunctionGraph" href="function-graph.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,11 +52,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#functions">Functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#working-with-geometric-objects">Working with geometric objects</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#other-objects">Other objects</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="function-graph.html">FunctionGraph</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Boolean</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Boolean"><code class="docutils literal notranslate"><span class="pre">Boolean</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="number.html">Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">List</a></li>
 </ul>
 </li>
 </ul>
@@ -105,6 +108,13 @@
 <dd><p><strong>(Get/set)</strong> The current value as a Python <code class="xref py py-type docutils literal notranslate"><span class="pre">bool</span></code>.</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="Boolean.latex">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#Boolean.latex" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> A string of LaTeX representing the current value
+of the Boolean (<code class="docutils literal notranslate"><span class="pre">&quot;true&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;false&quot;</span></code>).</p>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -113,14 +123,14 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="object-operations.html" class="btn btn-neutral float-left" title="Operations between objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="function-graph.html" class="btn btn-neutral float-left" title="FunctionGraph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="number.html" class="btn btn-neutral float-right" title="Number" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

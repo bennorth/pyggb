@@ -20,17 +20,39 @@ Polygon
       such that the interior of the Polygon is on your left as you
       travel from *p1* to *p2*.
 
+   .. py:method:: angles()
+
+      Construct, and return a list of, all angles of the *self*
+      Polygon.  If the vertices of *self* were given in anticlockwise
+      order, the angles are the internal angles; otherwise, the
+      external angles.  (In GeoGebra, you would construct these angles
+      by means of ``Angle(polygon)``.)
+
    .. py:property:: area
 
       |getOnlyProp| The area, in square units, of the Polygon.
 
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current area of
+      the polygon, giving, e.g., :math:`4`.
+
    A :py:class:`Polygon` also has the following common properties:
 
+   * :py:attr:`is_independent`
    * :py:attr:`is_visible`
    * :py:attr:`color`
    * :py:attr:`color_floats`
    * :py:attr:`opacity`
+   * :py:attr:`line_style`
    * :py:attr:`line_thickness`
+   * :py:attr:`label_visible`
+   * :py:attr:`label_style`
+   * :py:attr:`caption`
+
+   Where these properties are read-write, they can be set on
+   construction by passing them as keyword arguments.
 
 
 .. seealso::

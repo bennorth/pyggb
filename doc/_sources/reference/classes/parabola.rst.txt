@@ -17,12 +17,39 @@ Parabola
 
       Construct the parabola with equation *y = ax² + bx + c*.
 
+   .. py:method:: __call__(x)
+
+      A parabola instance can be called like a function, either with a
+      Python number or a wrapped GeoGebra :py:class:`Number`.  The
+      result is a wrapped GeoGebra :py:class:`Number`.  For example:
+
+      .. code-block:: python
+
+         p = Parabola(2, 3, 4)
+         print(p(-1.0).value)
+         # 3.0
+
+   .. py:property:: latex
+      :type: str
+
+      |getOnlyProp| A string of LaTeX representing the current
+      equation of the parabola, giving, e.g., :math:`y\, = \,3 \;
+      x^{2} + 4 \; x + 7`.
+
    A :py:class:`Parabola` has the following common properties:
 
+   * :py:attr:`is_independent`
    * :py:attr:`is_visible`
    * :py:attr:`color`
    * :py:attr:`color_floats`
+   * :py:attr:`line_style`
    * :py:attr:`line_thickness`
+   * :py:attr:`label_visible`
+   * :py:attr:`label_style`
+   * :py:attr:`caption`
+
+   Where these properties are read-write, they can be set on
+   construction by passing them as keyword arguments.
 
 
 .. seealso::

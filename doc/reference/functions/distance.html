@@ -9,6 +9,7 @@
   <title>Distance function &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -19,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Intersect function" href="intersect.html" />
-    <link rel="prev" title="Slider" href="../user-interface/slider.html" /> 
+    <link rel="next" title="Circumference function" href="circumference.html" />
+    <link rel="prev" title="Tangent function" href="tangent.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,16 +50,35 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#geometric-objects">Geometric objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#user-interface-objects">User interface objects</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#functions">Functions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="angle-bisector.html">AngleBisector function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="midpoint.html">Midpoint function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perpendicular-bisector.html">PerpendicularBisector function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perpendicular-line.html">PerpendicularLine function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tangent.html">Tangent function</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Distance function</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Distance"><code class="docutils literal notranslate"><span class="pre">Distance()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="circumference.html">Circumference function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perimeter.html">Perimeter function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="area.html">Area function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="intersect.html">Intersect function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="number-of-objects.html">NumberOfObjects function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rotate.html">Rotate function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centroid.html">Centroid function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="incircle.html">Incircle function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="zoom-in.html">ZoomIn function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="if.html">If</a></li>
+<li class="toctree-l3"><a class="reference internal" href="if.html">If function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-collinear.html">AreCollinear function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-concurrent.html">AreConcurrent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-concyclic.html">AreConcyclic function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-congruent.html">AreCongruent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-equal.html">AreEqual function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-parallel.html">AreParallel function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-perpendicular.html">ArePerpendicular function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="triangle-center.html">TriangleCenter function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eval-command.html">Functions to evaluate arbitrary GeoGebra commands</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#working-with-geometric-objects">Working with geometric objects</a></li>
@@ -98,9 +118,16 @@
 <dt class="sig sig-object py" id="Distance">
 <span class="sig-name descname"><span class="pre">Distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Distance" title="Link to this definition"></a></dt>
 <dd><p>Compute the distance between the given <em>obj1</em> and the given <em>obj2</em>,
-returning the value as a Python <code class="xref py py-type docutils literal notranslate"><span class="pre">float</span></code>.</p>
+returning the value as a (wrapped) GeoGebra <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a>.
+Not all pairs of object types are supported.</p>
 </dd></dl>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In previous versions of PyGgb, this function returned a
+Python <code class="docutils literal notranslate"><span class="pre">float</span></code>.  Use the <a class="reference internal" href="../classes/number.html#Number.value" title="Number.value"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Number.value</span></code></a> property if you
+need a snapshot of the distance as a Python <code class="docutils literal notranslate"><span class="pre">float</span></code>.</p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference external" href="https://geogebra.github.io/docs/manual/en/commands/Distance/">GeoGebra Distance() reference</a></p>
@@ -111,14 +138,14 @@ returning the value as a Python <code class="xref py py-type docutils literal no
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../user-interface/slider.html" class="btn btn-neutral float-left" title="Slider" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="intersect.html" class="btn btn-neutral float-right" title="Intersect function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tangent.html" class="btn btn-neutral float-left" title="Tangent function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="circumference.html" class="btn btn-neutral float-right" title="Circumference function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

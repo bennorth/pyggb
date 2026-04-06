@@ -9,6 +9,7 @@
   <title>Slider &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -16,10 +17,11 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Distance function" href="../functions/distance.html" />
+    <link rel="next" title="AngleBisector function" href="../functions/angle-bisector.html" />
     <link rel="prev" title="Vector" href="../classes/vector.html" /> 
 </head>
 
@@ -93,7 +95,7 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Slider</span></span><a class="headerlink" href="#Slider" title="Link to this definition"></a></dt>
 <dd><p>A <a class="reference internal" href="#Slider" title="Slider"><code class="xref py py-class docutils literal notranslate"><span class="pre">Slider</span></code></a> can be used where a number is expected, for
 example as a coordinate for a <a class="reference internal" href="../classes/point.html#Point" title="Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>, or in a
-calculation with a <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a>.</p>
+calculation with a <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a> or Python number.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Slider.Slider">
 <span class="sig-name descname"><span class="pre">Slider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Slider.Slider" title="Link to this definition"></a></dt>
@@ -121,6 +123,15 @@ set <em>value</em> outside the range given when constructing the
 of the range.</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="Slider.latex">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#Slider.latex" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> A string of LaTeX representing the current value
+of the slider, giving, e.g., <span class="math notranslate nohighlight">\(91\)</span>.</p>
+</dd></dl>
+
+<p>As noted above, <a class="reference internal" href="#Slider" title="Slider"><code class="xref py py-class docutils literal notranslate"><span class="pre">Slider</span></code></a> instances support arithmetic
+operations where that makes sense.</p>
 <p>A <a class="reference internal" href="#Slider" title="Slider"><code class="xref py py-class docutils literal notranslate"><span class="pre">Slider</span></code></a> also has the following common properties:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../classes/common-properties.html#is_visible" title="is_visible"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_visible</span></code></a></p></li>
@@ -128,11 +139,17 @@ of the range.</p>
 <li><p><a class="reference internal" href="../classes/common-properties.html#label_style" title="label_style"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label_style</span></code></a></p></li>
 <li><p><a class="reference internal" href="../classes/common-properties.html#caption" title="caption"><code class="xref py py-attr docutils literal notranslate"><span class="pre">caption</span></code></a></p></li>
 </ul>
+<p>Where these properties are read-write, they can be set on
+construction by passing them as keyword arguments.</p>
 </dd></dl>
 
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference external" href="https://geogebra.github.io/docs/manual/en/commands/Slider/">GeoGebra Slider() reference</a></p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../classes/object-operations.html#operations-between-objects"><span class="std std-ref">Operations between objects</span></a></p>
 </div>
 </section>
 
@@ -141,13 +158,13 @@ of the range.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../classes/vector.html" class="btn btn-neutral float-left" title="Vector" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../functions/distance.html" class="btn btn-neutral float-right" title="Distance function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../functions/angle-bisector.html" class="btn btn-neutral float-right" title="AngleBisector function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

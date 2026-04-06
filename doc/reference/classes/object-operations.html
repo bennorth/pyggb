@@ -9,6 +9,7 @@
   <title>Operations between objects &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -19,7 +20,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Boolean" href="boolean.html" />
+    <link rel="next" title="FunctionGraph" href="function-graph.html" />
     <link rel="prev" title="Common properties" href="common-properties.html" /> 
 </head>
 
@@ -89,30 +90,31 @@
            <div itemprop="articleBody">
              
   <section id="operations-between-objects">
-<h1>Operations between objects<a class="headerlink" href="#operations-between-objects" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1>Operations between objects<a class="headerlink" href="#operations-between-objects" title="Link to this heading"></a></h1>
 <section id="arithmetic-like-operations">
 <h2>Arithmetic-like operations<a class="headerlink" href="#arithmetic-like-operations" title="Link to this heading"></a></h2>
 <p>The operations of</p>
 <ul class="simple">
-<li><p>addition</p></li>
-<li><p>subtraction</p></li>
-<li><p>multiplication</p></li>
-<li><p>division</p></li>
-<li><p>remainder</p></li>
-<li><p>unary negative</p></li>
+<li><p>addition (<code class="docutils literal notranslate"><span class="pre">+</span></code>)</p></li>
+<li><p>subtraction (<code class="docutils literal notranslate"><span class="pre">-</span></code>)</p></li>
+<li><p>multiplication (<code class="docutils literal notranslate"><span class="pre">*</span></code>)</p></li>
+<li><p>division (<code class="docutils literal notranslate"><span class="pre">/</span></code>)</p></li>
+<li><p>remainder (<code class="docutils literal notranslate"><span class="pre">%</span></code>)</p></li>
+<li><p>exponentiation (<code class="docutils literal notranslate"><span class="pre">**</span></code>)</p></li>
+<li><p>unary negative (<code class="docutils literal notranslate"><span class="pre">-</span></code>)</p></li>
 </ul>
-<p>are attempted within GeoGebra when at least one of the operands is a
-<a class="reference internal" href="number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a> or <a class="reference internal" href="point.html#Point" title="Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a> instance.  The operation might
-not make sense and so might not succeed, for example in the code</p>
+<p>are attempted within GeoGebra when both operands are GeoGebra objects
+(of certain types) or Python numbers, including the case of one
+GeoGebra object and one Python number.  The operation might not make
+sense and so might not succeed, for example in the code</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">q</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="mi">42</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">Line</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">+</span> <span class="mi">42</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Future version might support operations between more classes.  For
-example, it would make sense to operate on <a class="reference internal" href="vector.html#Vector" title="Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vector</span></code></a>
-instances.</p>
+<p>Future version might support operations between more classes.</p>
 </div>
 </section>
 <section id="comparisons">
@@ -139,13 +141,13 @@ some operations are supported).</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="common-properties.html" class="btn btn-neutral float-left" title="Common properties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="boolean.html" class="btn btn-neutral float-right" title="Boolean" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="function-graph.html" class="btn btn-neutral float-right" title="FunctionGraph" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

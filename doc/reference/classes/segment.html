@@ -9,6 +9,7 @@
   <title>Segment &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -16,6 +17,7 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -50,6 +52,8 @@
 <li class="toctree-l3"><a class="reference internal" href="point.html">Point</a></li>
 <li class="toctree-l3"><a class="reference internal" href="circle.html">Circle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ellipse.html">Ellipse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="arc.html">Arc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html">Angle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="line.html">Line</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parabola.html">Parabola</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polygon.html">Polygon</a></li>
@@ -114,13 +118,27 @@ provided to set properties of the new <a class="reference internal" href="#Segme
 between the two points defining it.</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="Segment.latex">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#Segment.latex" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> A string of LaTeX representing the current length
+of the segment, giving, e.g., <span class="math notranslate nohighlight">\(12\)</span>.</p>
+</dd></dl>
+
 <p>A <a class="reference internal" href="#Segment" title="Segment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Segment</span></code></a> also has the following common properties:</p>
 <ul class="simple">
+<li><p><a class="reference internal" href="common-properties.html#is_independent" title="is_independent"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_independent</span></code></a></p></li>
 <li><p><a class="reference internal" href="common-properties.html#is_visible" title="is_visible"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_visible</span></code></a></p></li>
 <li><p><a class="reference internal" href="common-properties.html#color" title="color"><code class="xref py py-attr docutils literal notranslate"><span class="pre">color</span></code></a></p></li>
 <li><p><a class="reference internal" href="common-properties.html#color_floats" title="color_floats"><code class="xref py py-attr docutils literal notranslate"><span class="pre">color_floats</span></code></a></p></li>
+<li><p><a class="reference internal" href="common-properties.html#line_style" title="line_style"><code class="xref py py-attr docutils literal notranslate"><span class="pre">line_style</span></code></a></p></li>
 <li><p><a class="reference internal" href="common-properties.html#line_thickness" title="line_thickness"><code class="xref py py-attr docutils literal notranslate"><span class="pre">line_thickness</span></code></a></p></li>
+<li><p><a class="reference internal" href="common-properties.html#label_visible" title="label_visible"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label_visible</span></code></a></p></li>
+<li><p><a class="reference internal" href="common-properties.html#label_style" title="label_style"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label_style</span></code></a></p></li>
+<li><p><a class="reference internal" href="common-properties.html#caption" title="caption"><code class="xref py py-attr docutils literal notranslate"><span class="pre">caption</span></code></a></p></li>
 </ul>
+<p>Where these properties are read-write, they can be set on
+construction by passing them as keyword arguments.</p>
 </dd></dl>
 
 <div class="admonition seealso">
@@ -140,7 +158,7 @@ between the two points defining it.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

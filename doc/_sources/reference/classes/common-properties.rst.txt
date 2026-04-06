@@ -10,6 +10,13 @@ Various object-types have some subset of the below properties.
    |getSetProp| Whether the object is visible in the construction.
 
 
+.. py:property:: is_fixed
+   :type: bool
+
+   |getSetProp| Whether the object can be interactively dragged around
+   the construction.
+
+
 .. py:property:: is_independent
    :type: bool
 
@@ -56,6 +63,19 @@ Various object-types have some subset of the below properties.
    object's colour.
 
 
+.. py:property:: line_style
+   :type: int
+
+   |getSetProp| What style the line (or perimeter, in the case of,
+   e.g., a polygon or circle) is drawn, chosen from these options:
+
+   * 0 — solid
+   * 1 — long dashed
+   * 2 — short dashed
+   * 3 — dotted
+   * 4 — dash-dotted
+
+
 .. py:property:: line_thickness
    :type: int
 
@@ -88,6 +108,7 @@ Various object-types have some subset of the below properties.
    :py:attr:`caption` property also sets the :py:attr:`label_style`
    property to :code:`3`, to ensure the caption is shown.
 
+
 .. py:property:: opacity
 
    |getSetProp| How opaque the object is, from 0 for totally
@@ -96,6 +117,13 @@ Various object-types have some subset of the below properties.
 
 Properties intended for internal use
 ------------------------------------
+
+.. py:property:: _ggb_label
+   :type: str
+
+   |getOnlyProp| The GeoGebra-assigned name (often a single letter,
+   sometimes Greek) for the object.
+
 
 .. py:property:: _ggb_type
    :type: str

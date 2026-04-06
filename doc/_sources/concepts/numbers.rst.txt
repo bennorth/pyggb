@@ -67,3 +67,8 @@ Example
    for _ in range(600):
        x.value += 0.01
        time.sleep(0)
+
+
+.. seealso::
+
+   :ref:`Operations between objects <operations-between-objects>`

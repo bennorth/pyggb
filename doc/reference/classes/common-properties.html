@@ -9,6 +9,7 @@
   <title>Common properties &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -20,7 +21,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Operations between objects" href="object-operations.html" />
-    <link rel="prev" title="Miscellaneous functions" href="../functions/misc.html" /> 
+    <link rel="prev" title="Functions to evaluate arbitrary GeoGebra commands" href="../functions/eval-command.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,10 +53,12 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#working-with-geometric-objects">Working with geometric objects</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Common properties</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#is_visible"><code class="docutils literal notranslate"><span class="pre">is_visible</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is_fixed"><code class="docutils literal notranslate"><span class="pre">is_fixed</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#is_independent"><code class="docutils literal notranslate"><span class="pre">is_independent</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#size"><code class="docutils literal notranslate"><span class="pre">size</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#color"><code class="docutils literal notranslate"><span class="pre">color</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#color_floats"><code class="docutils literal notranslate"><span class="pre">color_floats</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#line_style"><code class="docutils literal notranslate"><span class="pre">line_style</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#line_thickness"><code class="docutils literal notranslate"><span class="pre">line_thickness</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#label_visible"><code class="docutils literal notranslate"><span class="pre">label_visible</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#label_style"><code class="docutils literal notranslate"><span class="pre">label_style</span></code></a></li>
@@ -107,6 +110,13 @@
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="is_fixed">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_fixed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#is_fixed" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> Whether the object can be interactively dragged around
+the construction.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="is_independent">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_independent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#is_independent" title="Link to this definition"></a></dt>
 <dd><p><strong>(Get-only)</strong> Whether the object is independent — if the object
@@ -149,6 +159,20 @@ RGB code using uppercase letters for digits <em>A</em>–<em>F</em>.</p>
 <dd><p><strong>(Get-only)</strong> A three-element tuple of floats, each in the range
 <code class="docutils literal notranslate"><span class="pre">[0.0,</span> <span class="pre">1.0]</span></code>, for the red, green, and blue components of the
 object’s colour.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="line_style">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">line_style</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#line_style" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get/set)</strong> What style the line (or perimeter, in the case of,
+e.g., a polygon or circle) is drawn, chosen from these options:</p>
+<ul class="simple">
+<li><p>0 — solid</p></li>
+<li><p>1 — long dashed</p></li>
+<li><p>2 — short dashed</p></li>
+<li><p>3 — dotted</p></li>
+<li><p>4 — dash-dotted</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py property">
@@ -195,6 +219,13 @@ transparent, to 1 for totally opaque.</p>
 <section id="properties-intended-for-internal-use">
 <h2>Properties intended for internal use<a class="headerlink" href="#properties-intended-for-internal-use" title="Link to this heading"></a></h2>
 <dl class="py property">
+<dt class="sig sig-object py" id="ggb_label">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_ggb_label</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ggb_label" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> The GeoGebra-assigned name (often a single letter,
+sometimes Greek) for the object.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="ggb_type">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_ggb_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#ggb_type" title="Link to this definition"></a></dt>
 <dd><p><strong>(Get-only)</strong> The GeoGebra “object type” for the object.  E.g.,
@@ -221,14 +252,14 @@ to use the <a class="reference internal" href="#ggb_exists" title="_ggb_exists">
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../functions/misc.html" class="btn btn-neutral float-left" title="Miscellaneous functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../functions/eval-command.html" class="btn btn-neutral float-left" title="Functions to evaluate arbitrary GeoGebra commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="object-operations.html" class="btn btn-neutral float-right" title="Operations between objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -9,6 +9,7 @@
   <title>Miscellaneous functions &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -19,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Common properties" href="../classes/common-properties.html" />
-    <link rel="prev" title="If" href="if.html" /> 
+    <link rel="next" title="Functions to evaluate arbitrary GeoGebra commands" href="eval-command.html" />
+    <link rel="prev" title="TriangleCenter function" href="triangle-center.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,16 +50,35 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#geometric-objects">Geometric objects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#user-interface-objects">User interface objects</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#functions">Functions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="angle-bisector.html">AngleBisector function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="midpoint.html">Midpoint function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perpendicular-bisector.html">PerpendicularBisector function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perpendicular-line.html">PerpendicularLine function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tangent.html">Tangent function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="distance.html">Distance function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="circumference.html">Circumference function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perimeter.html">Perimeter function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="area.html">Area function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="intersect.html">Intersect function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="number-of-objects.html">NumberOfObjects function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="rotate.html">Rotate function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centroid.html">Centroid function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="incircle.html">Incircle function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="zoom-in.html">ZoomIn function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="if.html">If</a></li>
+<li class="toctree-l3"><a class="reference internal" href="if.html">If function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-collinear.html">AreCollinear function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-concurrent.html">AreConcurrent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-concyclic.html">AreConcyclic function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-congruent.html">AreCongruent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-equal.html">AreEqual function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-parallel.html">AreParallel function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-perpendicular.html">ArePerpendicular function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="triangle-center.html">TriangleCenter function</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Miscellaneous functions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Function"><code class="docutils literal notranslate"><span class="pre">Function</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="eval-command.html">Functions to evaluate arbitrary GeoGebra commands</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#working-with-geometric-objects">Working with geometric objects</a></li>
@@ -107,8 +127,36 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="Function.cos">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Function.cos" title="Link to this definition"></a></dt>
-<dd><p>Return a dynamic <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a> for the sine of the given
+<dd><p>Return a dynamic <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a> for the cosine of the given
 <em>x</em> value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Function.log">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Function.log" title="Link to this definition"></a></dt>
+<dd><p>Return a dynamic <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a> for the logarithm of the
+given <em>x</em> value to the base <em>b</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Function.ln">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ln</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Function.ln" title="Link to this definition"></a></dt>
+<dd><p>Return a dynamic <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a> for the natural logarithm of
+the given <em>x</em> value, i.e., the logarithm to the base <em>e</em>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Function.log10">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Function.log10" title="Link to this definition"></a></dt>
+<dd><p>Return a dynamic <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a> for the logarithm of the
+given <em>x</em> value to the base 10.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Function.log2">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">log2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Function.log2" title="Link to this definition"></a></dt>
+<dd><p>Return a dynamic <a class="reference internal" href="../classes/number.html#Number" title="Number"><code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></a> for the logarithm of the
+given <em>x</em> value to the base 2.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -131,14 +179,14 @@ given <em>v</em> is less than the given <em>w</em>.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="if.html" class="btn btn-neutral float-left" title="If" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../classes/common-properties.html" class="btn btn-neutral float-right" title="Common properties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="triangle-center.html" class="btn btn-neutral float-left" title="TriangleCenter function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="eval-command.html" class="btn btn-neutral float-right" title="Functions to evaluate arbitrary GeoGebra commands" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

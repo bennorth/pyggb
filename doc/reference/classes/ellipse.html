@@ -9,6 +9,7 @@
   <title>Ellipse &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
@@ -16,10 +17,11 @@
       <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Line" href="line.html" />
+    <link rel="next" title="Arc" href="arc.html" />
     <link rel="prev" title="Circle" href="circle.html" /> 
 </head>
 
@@ -53,6 +55,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#Ellipse"><code class="docutils literal notranslate"><span class="pre">Ellipse</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="arc.html">Arc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="angle.html">Angle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="line.html">Line</a></li>
 <li class="toctree-l3"><a class="reference internal" href="parabola.html">Parabola</a></li>
 <li class="toctree-l3"><a class="reference internal" href="polygon.html">Polygon</a></li>
@@ -122,14 +126,38 @@ Segment <em>s</em>.</p>
 <em>f2</em>, and which passes through the point <em>p</em>.</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="Ellipse.center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">center</span></span><a class="headerlink" href="#Ellipse.center" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> The ellipse’s centre, as a wrapped GeoGebra
+<a class="reference internal" href="point.html#Point" title="Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">Point</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Ellipse.latex">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#Ellipse.latex" title="Link to this definition"></a></dt>
+<dd><p><strong>(Get-only)</strong> A string of LaTeX representing the current
+equation of the ellipse, giving, e.g., <span class="math notranslate nohighlight">\(5x^{2} + 9y^{2} -
+10x\, = \,40\)</span>.</p>
+<p>Note that when the ellipse happens to be a circle, the spacing
+specified by the LaTeX is slightly different to that specified
+by the LaTeX of the same circle as a <a class="reference internal" href="circle.html#Circle" title="Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circle</span></code></a>.</p>
+</dd></dl>
+
 <p>An <a class="reference internal" href="#Ellipse" title="Ellipse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ellipse</span></code></a> has the following common properties:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="common-properties.html#is_visible" title="is_visible"><code class="xref py py-attr docutils literal notranslate"><span class="pre">is_visible</span></code></a></p></li>
 <li><p><a class="reference internal" href="common-properties.html#color" title="color"><code class="xref py py-attr docutils literal notranslate"><span class="pre">color</span></code></a></p></li>
 <li><p><a class="reference internal" href="common-properties.html#color_floats" title="color_floats"><code class="xref py py-attr docutils literal notranslate"><span class="pre">color_floats</span></code></a></p></li>
 <li><p><a class="reference internal" href="common-properties.html#opacity" title="opacity"><code class="xref py py-attr docutils literal notranslate"><span class="pre">opacity</span></code></a></p></li>
+<li><p><a class="reference internal" href="common-properties.html#line_style" title="line_style"><code class="xref py py-attr docutils literal notranslate"><span class="pre">line_style</span></code></a></p></li>
 <li><p><a class="reference internal" href="common-properties.html#line_thickness" title="line_thickness"><code class="xref py py-attr docutils literal notranslate"><span class="pre">line_thickness</span></code></a></p></li>
+<li><p><a class="reference internal" href="common-properties.html#label_visible" title="label_visible"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label_visible</span></code></a></p></li>
+<li><p><a class="reference internal" href="common-properties.html#label_style" title="label_style"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label_style</span></code></a></p></li>
+<li><p><a class="reference internal" href="common-properties.html#caption" title="caption"><code class="xref py py-attr docutils literal notranslate"><span class="pre">caption</span></code></a></p></li>
 </ul>
+<p>Where these properties are read-write, they can be set on
+construction by passing them as keyword arguments.</p>
 </dd></dl>
 
 <div class="admonition seealso">
@@ -143,13 +171,13 @@ Segment <em>s</em>.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="circle.html" class="btn btn-neutral float-left" title="Circle" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="line.html" class="btn btn-neutral float-right" title="Line" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="arc.html" class="btn btn-neutral float-right" title="Arc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

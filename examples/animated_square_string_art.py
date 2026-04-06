@@ -7,6 +7,9 @@ Draw a square of string art, which rotates and changes in size.
 import time
 import math
 
+# Rotation per corner.
+HALF_PI = 0.5 * math.pi
+
 # Create GeoGebra "Number" for the half-side of the square.  We
 # can use this as if it were a Python number in things like
 # Point().  But creating a Point using a Number makes a dynamic
@@ -49,6 +52,9 @@ for i in range(20):
         line_thickness=2
     )
 
+# Report every quarter-turn.
+last_reported_cycle = 0;
+
 # Now when we change the "value" of the two Numbers (`size` and
 # `theta`), the whole construction will update.
 size_oscillation_theta = 0
@@ -56,6 +62,13 @@ while True:
     size.value = math.sin(size_oscillation_theta) + 2
     size_oscillation_theta += 0.005
     theta.value += 0.0025
+
+    # If we've completed a new quarter-turn, report it.
+    cycle = int(theta.value / HALF_PI)
+    if cycle > last_reported_cycle:
+        print(f"{cycle} cycle{'s' if cycle > 1 else ''}")
+        last_reported_cycle = cycle
+
     # Very important to sleep() otherwise the program will
     # freeze!  Sleeping for 0.0 counts.
     time.sleep(0.0)

@@ -7,6 +7,8 @@ The parameters are controlled by sliders, including a fade effect.
 import math
 import time
 
+TWO_PI = 2.0 * math.pi
+
 # "Frequency" (up to a scale) of the horizontal
 # oscillation.
 omega_x = Slider(0.5, 2.0, increment=0.01)
@@ -52,6 +54,8 @@ y0 = 0
 
 # The driving parameter of the curve
 th = 0.0
+# Report every cycle of theta.
+last_reported_cycle = 0;
 while True:
     # Find the new tip:
     x1 = math.sin(omega_x.value * th)
@@ -67,7 +71,7 @@ while True:
 
     # Update the tip.
     x0, y0 = x1, y1
-    
+
     # Now the next segment is the oldest one.
     segment_idx += 1
     segment_idx %= n_segments
@@ -76,7 +80,7 @@ while True:
     for idx_offset in range(n_segments):
         # Wrap round the indexing.
         idx = (segment_idx + idx_offset) % n_segments
-        
+
         # Compute the intensity based on the age.
         grey_01 = math.pow(idx_offset / n_segments, fade_gamma.value)
         grey = 255 - int(255 * grey_01)
@@ -85,6 +89,12 @@ while True:
         grey_hex = f"{grey:02x}"
         rgb_hex = f"#{grey_hex}{grey_hex}{grey_hex}"
         segments[idx].color = rgb_hex
+
+    # If we've completed a new cycle, report it.
+    cycle = int(th / TWO_PI)
+    if cycle > last_reported_cycle:
+        print(f"{cycle} cycle{'s' if cycle > 1 else ''}")
+        last_reported_cycle = cycle
 
     # Ensure we don't freeze!
     time.sleep(0)

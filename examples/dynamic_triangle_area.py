@@ -17,14 +17,17 @@ k3 = Line(c, a)
 
 print("Drag the points to see the area change")
 
+d_ab = Distance(a, b)
+d_bc = Distance(b, c)
+d_ca = Distance(c, a)
 
 @a.when_moved
 @b.when_moved
 @c.when_moved
 def find_area():
-    ab = Distance(a, b)
-    bc = Distance(b, c)
-    ca = Distance(c, a)
+    ab = d_ab.value
+    bc = d_bc.value
+    ca = d_ca.value
     s = 0.5 * (ab + bc + ca)
     A = math.sqrt(s * (s - ab) * (s - bc) * (s - ca))
     print(f"Area = {A:.2f}")

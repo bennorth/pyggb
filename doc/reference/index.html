@@ -9,6 +9,7 @@
   <title>Reference &mdash; PyGgb  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/pyggb.css?v=27a15f71" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -16,6 +17,7 @@
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -50,6 +52,8 @@
 <li class="toctree-l3"><a class="reference internal" href="classes/point.html">Point</a></li>
 <li class="toctree-l3"><a class="reference internal" href="classes/circle.html">Circle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="classes/ellipse.html">Ellipse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes/arc.html">Arc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes/angle.html">Angle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="classes/line.html">Line</a></li>
 <li class="toctree-l3"><a class="reference internal" href="classes/parabola.html">Parabola</a></li>
 <li class="toctree-l3"><a class="reference internal" href="classes/polygon.html">Polygon</a></li>
@@ -62,13 +66,32 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="functions/angle-bisector.html">AngleBisector function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/midpoint.html">Midpoint function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/perpendicular-bisector.html">PerpendicularBisector function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/perpendicular-line.html">PerpendicularLine function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/tangent.html">Tangent function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions/distance.html">Distance function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/circumference.html">Circumference function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/perimeter.html">Perimeter function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/area.html">Area function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions/intersect.html">Intersect function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions/number-of-objects.html">NumberOfObjects function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions/rotate.html">Rotate function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/centroid.html">Centroid function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/incircle.html">Incircle function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions/zoom-in.html">ZoomIn function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="functions/if.html">If</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/if.html">If function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/are-collinear.html">AreCollinear function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/are-concurrent.html">AreConcurrent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/are-concyclic.html">AreConcyclic function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/are-congruent.html">AreCongruent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/are-equal.html">AreEqual function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/are-parallel.html">AreParallel function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/are-perpendicular.html">ArePerpendicular function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/triangle-center.html">TriangleCenter function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="functions/misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions/eval-command.html">Functions to evaluate arbitrary GeoGebra commands</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-geometric-objects">Working with geometric objects</a><ul>
@@ -77,8 +100,10 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#other-objects">Other objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="classes/function-graph.html">FunctionGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="classes/boolean.html">Boolean</a></li>
 <li class="toctree-l3"><a class="reference internal" href="classes/number.html">Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="classes/list.html">List</a></li>
 </ul>
 </li>
 </ul>
@@ -118,6 +143,8 @@
 <li class="toctree-l1"><a class="reference internal" href="classes/point.html">Point</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/circle.html">Circle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/ellipse.html">Ellipse</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/arc.html">Arc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/angle.html">Angle</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/line.html">Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/parabola.html">Parabola</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/polygon.html">Polygon</a></li>
@@ -138,13 +165,32 @@
 <h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="functions/angle-bisector.html">AngleBisector function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/midpoint.html">Midpoint function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/perpendicular-bisector.html">PerpendicularBisector function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/perpendicular-line.html">PerpendicularLine function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/tangent.html">Tangent function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functions/distance.html">Distance function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/circumference.html">Circumference function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/perimeter.html">Perimeter function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/area.html">Area function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functions/intersect.html">Intersect function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functions/number-of-objects.html">NumberOfObjects function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functions/rotate.html">Rotate function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/centroid.html">Centroid function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/incircle.html">Incircle function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functions/zoom-in.html">ZoomIn function</a></li>
-<li class="toctree-l1"><a class="reference internal" href="functions/if.html">If</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/if.html">If function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/are-collinear.html">AreCollinear function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/are-concurrent.html">AreConcurrent function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/are-concyclic.html">AreConcyclic function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/are-congruent.html">AreCongruent function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/are-equal.html">AreEqual function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/are-parallel.html">AreParallel function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/are-perpendicular.html">ArePerpendicular function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/triangle-center.html">TriangleCenter function</a></li>
 <li class="toctree-l1"><a class="reference internal" href="functions/misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions/eval-command.html">Functions to evaluate arbitrary GeoGebra commands</a></li>
 </ul>
 </div>
 </section>
@@ -161,8 +207,10 @@
 <h2>Other objects<a class="headerlink" href="#other-objects" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="classes/function-graph.html">FunctionGraph</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/boolean.html">Boolean</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classes/number.html">Number</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classes/list.html">List</a></li>
 </ul>
 </div>
 </section>
@@ -179,7 +227,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025, Ben North.</p>
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
