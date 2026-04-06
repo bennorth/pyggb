@@ -1,3 +1,23 @@
+import { propSettingSpecsFromNames } from "./prop-setting-specs";
+
+const propSettingSpecs = propSettingSpecsFromNames([
+  "line_thickness",
+  "line_style",
+  "color",
+  "caption",
+  "label_visible",
+]).map((protoSpec) => ({
+  label: `FunctionGraph setting ${protoSpec.attrName}`,
+  code: `
+    f = FunctionGraph(
+      "(x^2)/8 + 1/x - 3", 2, 6,
+      ${protoSpec.attrName}=${protoSpec.setValue}
+    )
+    print("attr", f.${protoSpec.attrName})
+  `,
+  expOutputs: [`attr ${protoSpec.expValue}`],
+}));
+
 export const specs = [
   {
     label: "FunctionGraph(expr)",
@@ -32,4 +52,5 @@ export const specs = [
     `,
     expOutputs: ["x + \\operatorname{sin} \\left( x \\right)"],
   },
+  ...propSettingSpecs,
 ];

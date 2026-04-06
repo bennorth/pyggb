@@ -1,3 +1,5 @@
+import { propSettingSpecsFromNames } from "./prop-setting-specs";
+
 const expOutputs = ["angle = 0.250000"];
 
 export const oneArgSpecs = [
@@ -65,6 +67,22 @@ const twoArgSpecs = [
   },
 ];
 
+const propSettingSpecs = propSettingSpecsFromNames([
+  "opacity",
+  "color",
+  "caption",
+]).map((protoSpec) => ({
+  label: `Angle setting ${protoSpec.attrName}`,
+  code: `
+    P = Point(1, 3)
+    Q = Point(4, 2)
+    R = Point(5, 0)
+    th1 = Angle(P, Q, R, ${protoSpec.attrName}=${protoSpec.setValue})
+    print("attr", th1.${protoSpec.attrName})
+  `,
+  expOutputs: [`attr ${protoSpec.expValue}`],
+}));
+
 const arithmeticSpecs = [
   {
     label: "Angle arithmetic",
@@ -123,6 +141,7 @@ const latexSpec = {
 export const specs = [
   ...oneArgSpecs,
   ...twoArgSpecs,
+  ...propSettingSpecs,
   ...arithmeticSpecs,
   latexSpec,
 ];
