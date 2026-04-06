@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Area function &mdash; PyGgb  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/pyggb.css?v=27a15f71" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Intersect function" href="intersect.html" />
+    <link rel="prev" title="Perimeter function" href="perimeter.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            PyGgb
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../webapp/index.html">The PyGgb webapp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#geometric-objects">Geometric objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#user-interface-objects">User interface objects</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#functions">Functions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="angle-bisector.html">AngleBisector function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="midpoint.html">Midpoint function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perpendicular-bisector.html">PerpendicularBisector function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perpendicular-line.html">PerpendicularLine function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tangent.html">Tangent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="distance.html">Distance function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="circumference.html">Circumference function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="perimeter.html">Perimeter function</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Area function</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Area"><code class="docutils literal notranslate"><span class="pre">Area()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="intersect.html">Intersect function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="number-of-objects.html">NumberOfObjects function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rotate.html">Rotate function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="centroid.html">Centroid function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="incircle.html">Incircle function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zoom-in.html">ZoomIn function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="if.html">If function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-collinear.html">AreCollinear function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-concurrent.html">AreConcurrent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-concyclic.html">AreConcyclic function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-congruent.html">AreCongruent function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-equal.html">AreEqual function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-parallel.html">AreParallel function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="are-perpendicular.html">ArePerpendicular function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="triangle-center.html">TriangleCenter function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="misc.html">Miscellaneous functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eval-command.html">Functions to evaluate arbitrary GeoGebra commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#working-with-geometric-objects">Working with geometric objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#other-objects">Other objects</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">PyGgb</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Reference</a></li>
+      <li class="breadcrumb-item active">Area function</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/reference/functions/area.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="area-function">
+<h1>Area function<a class="headerlink" href="#area-function" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="Area">
+<span class="sig-name descname"><span class="pre">Area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Area" title="Link to this definition"></a></dt>
+<dd><p>Construct a new (non-independent) dynamic GeoGebra number which is
+the area of the given <em>obj</em>, which must be an ellipse (which might
+be a circle), or a polygon.</p>
+<p>If you want a snapshot of the area as a Python <code class="docutils literal notranslate"><span class="pre">float</span></code>,
+you can use code like the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Area</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+<span class="c1"># 12.56⋯</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">Area</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">...</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointN</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Construct a new (non-independent) dynamic GeoGebra number which is
+the area of the polygon defined by the given sequence of points, of
+which there must be at least three.  See previous variant for an
+example of how to get a snapshot of this value as a Python
+<code class="docutils literal notranslate"><span class="pre">float</span></code>.</p>
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://geogebra.github.io/docs/manual/en/commands/Area/">GeoGebra Area() reference</a></p>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="perimeter.html" class="btn btn-neutral float-left" title="Perimeter function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="intersect.html" class="btn btn-neutral float-right" title="Intersect function" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, 2026, GeoGebra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
