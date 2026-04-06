@@ -23,6 +23,12 @@ Circle
       Construct the circle whose centre is the point *p1* and which
       passes through the point *p2*.
 
+   .. py:method:: Circle(p1, s)
+      :noindex:
+
+      Construct the circle whose centre is the point *p1* and whose
+      radius is equal to the length of the :py:class:`Segment` *s*.
+
    .. py:method:: Circle(p1, p2, p3)
       :noindex:
 

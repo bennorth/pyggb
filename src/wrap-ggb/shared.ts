@@ -26,19 +26,6 @@ export interface SkGgbObject extends SkObject {
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-/** Spec to indicate that we should construct a new Skulpt/Python
- * wrapper for an existing GeoGebra object. */
-export type WrapExistingCtorSpec = {
-  kind: "wrap-existing";
-  label: string;
-};
-
-/** Something which is constructible from a "spec" argument of the given
- * `SpecT` type, giving an object of the given `ObjectT` type.  */
-export interface SpecConstructible<SpecT, ObjectT> {
-  new (spec: SpecT): ObjectT;
-}
-
 /** Given a JavaScript number `x`, return a string representation of `x`
  * which GeoGebra will interpret correctly.  We don't want to feed
  * exponential notation in the form "4.1693084667370053e-38" directly to
@@ -176,11 +163,6 @@ const _elementsAreGgbObjectsOfSomeTypes = (
 export const isPythonOrGgbNumber = (ggbApi: GgbApi, obj: SkObject) =>
   Sk.builtin.checkNumber(obj) || isGgbObject(ggbApi, obj, "numeric");
 
-/** Test whether the given array of strings is `[""]`, i.e., a
- * one-element list whose only element is the empty string. */
-export const isSingletonOfEmpty = (xs: Array<string>) =>
-  xs.length === 1 && xs[0] === "";
-
 /** Given a Skulpt/PyGgb object `x`, which should be either a GeoGebra
  * object or a Python number, return a string suitable for inclusion in
  * a GeoGebra command.  For a GeoGebra object, return its label.  For a
@@ -205,9 +187,7 @@ export const argumentString = (
   }
 
   if (Sk.builtin.checkNumber(x)) {
-    const jsStr = x.v.toExponential();
-    const [sig, exp] = jsStr.split("e");
-    return `(${sig}*10^(${exp}))`;
+    return strOfNumber(x.v);
   }
 
   throw errorIfWrongType;
@@ -320,61 +300,10 @@ export function throwIfNotNumber(
     throw new Sk.builtin.TypeError(`${objName} must be a number`);
 }
 
-/** Assert that the given `label` is not `null`.  If it is, throw a
- * `ValueError` with the given `message`.  Intended to be used after
- * evaluating a GeoGebra command where we have no (easy) way of telling
- * whether it will succeed, and have to leave that decision to GeoGebra.
- * */
-export function throwIfLabelNull(
-  label: string | null,
-  message: string
-): asserts label is string {
-  if (label == null) {
-    throw new Sk.builtin.ValueError(message);
-  }
-}
-
 /** Assemble a full GeoGebra command from the base `command` and the
  * array of string `args`. */
 export const assembledCommand = (command: string, args: Array<string>) =>
   `${command}(${args.join(",")})`;
-
-export type GgbEvalCmdOptions = {
-  allowNullLabel: boolean;
-};
-
-const kGgbEvalCmdOptionsDefaults: GgbEvalCmdOptions = {
-  allowNullLabel: false,
-};
-
-/** Set the `$ggbLabel` property of the given `obj` from the result of
- * executing the given `fullCommand`.  Curried for more concise use
- * within a constructor. */
-export const setGgbLabelFromCmd =
-  (ggb: AugmentedGgbApi, obj: SkGgbObject) =>
-  (fullCommand: string, userOptions?: Partial<GgbEvalCmdOptions>) => {
-    const options: Required<GgbEvalCmdOptions> = Object.assign(
-      Object.assign({}, kGgbEvalCmdOptionsDefaults),
-      userOptions ?? {}
-    );
-    const lbl = ggb.evalCmd(fullCommand);
-    if (lbl == null && !options.allowNullLabel) {
-      throw new Sk.builtin.RuntimeError(
-        `Ggb command "${fullCommand}" returned null`
-      );
-    }
-    obj.$ggbLabel = lbl;
-  };
-
-/** Set the `$ggbLabel` property of the given `obj` from the result of
- * assembling a GeoGebra command from the given `command` and `args`.
- * Curried for more concise use within a constructor. */
-export const setGgbLabelFromArgs =
-  (ggb: AugmentedGgbApi, obj: SkGgbObject, command: string) =>
-  (args: Array<string>, userOptions?: Partial<GgbEvalCmdOptions>) => {
-    const fullCommand = assembledCommand(command, args);
-    setGgbLabelFromCmd(ggb, obj)(fullCommand, userOptions);
-  };
 
 // The only type we use:
 type FastCallMethod = (

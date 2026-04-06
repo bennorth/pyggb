@@ -1,15 +1,15 @@
 import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
-  setGgbLabelFromCmd,
   SkGgbObject,
   strOfNumber,
-  WrapExistingCtorSpec,
+  throwIfNotNumber,
 } from "../shared";
-import { SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import { constructIfMatching, SignatureSpec } from "../command-invocation";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -17,47 +17,35 @@ export interface SkGgbNumber extends SkGgbObject {
   $value(): number;
 }
 
-type SkGgbNumberCtorSpec =
-  | WrapExistingCtorSpec
-  | { kind: "literal"; value: number };
+const makeLiteralCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const arg = args[0];
+  throwIfNotNumber(arg, "number argument (internal error)");
+  return strOfNumber(arg.v);
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["py-number"], ggbCommand: makeLiteralCommand },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Number", {
-    constructor: function Number(this: SkGgbNumber, spec: SkGgbNumberCtorSpec) {
-      const setLabelCmd = setGgbLabelFromCmd(ggb, this);
-
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          break;
-        }
-        case "literal": {
-          setLabelCmd(strOfNumber(spec.value));
-          break;
-        }
-        default:
-          throwBadSpecKind("Number", spec);
-      }
+    constructor: function Number(this: SkGgbNumber, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
     },
     slots: {
-      tp$new(args, _kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Number() arguments must be (python_number)"
+      tp$new(args) {
+        // In fact the ggbCommand arg ("Number") is ignored, because
+        // the only spec has a custom ggbCommand(), but provide it
+        // anyway.
+        return constructIfMatching(
+          appApi.ggb,
+          kCtorSignatures,
+          "Number",
+          args,
+          cls
         );
-
-        switch (args.length) {
-          case 1: {
-            if (Sk.builtin.checkNumber(args[0])) {
-              return new mod.Number({ kind: "literal", value: args[0].v });
-            }
-
-            throw badArgsError;
-          }
-          default:
-            throw badArgsError;
-        }
       },
       ...ggb.sharedOpSlots,
     },

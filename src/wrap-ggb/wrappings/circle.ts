@@ -1,16 +1,19 @@
 import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
-  withPropertiesFromNameValuePairs,
-  WrapExistingCtorSpec,
   SkGgbObject,
-  setGgbLabelFromArgs,
   labelGetSets,
+  withPropertiesFromNameValuePairs,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 import { SkGgbNumber } from "./number";
-import { throwBadSpecKind } from "../../shared/utils";
+import {
+  constructIfMatching,
+  ggbArgumentStr,
+  SignatureSpec,
+} from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -20,126 +23,47 @@ interface SkGgbCircle extends SkGgbObject {
   $radiusNumber: (this: SkGgbCircle) => SkGgbNumber;
 }
 
-type SkGgbCircleCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "center-radius";
-      center: SkGgbObject;
-      radius: SkObject;
-    }
-  | {
-      kind: "center-point";
-      center: SkGgbObject;
-      point: SkGgbObject;
-    }
-  | {
-      kind: "three-points";
-      points: Array<SkGgbObject>;
-    };
+const makeThreeNumberCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const argStrs = args.map((arg) => ggbArgumentStr(ggb, arg));
+  return `Circle((${argStrs[0]},${argStrs[1]}),${argStrs[2]})`;
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["point", "either-number"] },
+  { argTypes: ["point", "point"] },
+  { argTypes: ["point", "segment"] },
+  { argTypes: ["point", "point", "point"] },
+  {
+    argTypes: ["either-number", "either-number", "either-number"],
+    ggbCommand: makeThreeNumberCommand,
+  },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Circle", {
-    constructor: function Circle(this: SkGgbCircle, spec: SkGgbCircleCtorSpec) {
+    constructor: function Circle(this: SkGgbCircle, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
       this.radiusNumber = null;
       this.$_center = null;
-
-      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Circle");
-
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          break;
-        }
-        case "center-radius": {
-          const radiusArg = ggb.numberValueOrLabel(spec.radius);
-          setLabelArgs([spec.center.$ggbLabel, radiusArg]);
-          break;
-        }
-        case "center-point": {
-          setLabelArgs([spec.center.$ggbLabel, spec.point.$ggbLabel]);
-          break;
-        }
-        case "three-points": {
-          setLabelArgs(spec.points.map((p) => p.$ggbLabel));
-          break;
-        }
-        default:
-          throwBadSpecKind("Circle", spec);
-      }
     },
     proto: {
       $radiusNumber(this: SkGgbCircle) {
         if (this.radiusNumber == null) {
           const ggbCmd = `Radius(${this.$ggbLabel})`;
           const label = ggb.evalCmd(ggbCmd);
-          this.radiusNumber = new mod.Number({ kind: "wrap-existing", label });
+          this.radiusNumber = new mod.Number(label);
         }
         return this.radiusNumber;
       },
     },
     slots: {
       tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Circle() arguments must be" +
-            " (center_point, number), (center_point, circumference_point)" +
-            ", (circumference_point, circumference_point, circumference_point)" +
-            ", or (center_x, center_y, radius)"
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(appApi.ggb, kCtorSignatures, "Circle", args, cls),
+          kwargs
         );
-
-        const make = (spec: SkGgbCircleCtorSpec) =>
-          withPropertiesFromNameValuePairs(new mod.Circle(spec), kwargs);
-
-        switch (args.length) {
-          case 2: {
-            if (ggb.isGgbObjectOfType(args[0], "point")) {
-              if (ggb.isPythonOrGgbNumber(args[1])) {
-                return make({
-                  kind: "center-radius",
-                  center: args[0],
-                  radius: args[1],
-                });
-              }
-
-              if (ggb.isGgbObjectOfType(args[1], "point")) {
-                return make({
-                  kind: "center-point",
-                  center: args[0],
-                  point: args[1],
-                });
-              }
-
-              // TODO: isinstance(args[1], mod.Segment)
-            }
-
-            throw badArgsError;
-          }
-          case 3: {
-            if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
-              return make({
-                kind: "three-points",
-                points: args,
-              });
-            }
-
-            if (args.every(ggb.isPythonOrGgbNumber)) {
-              return make({
-                kind: "center-radius",
-                center: new mod.Point({
-                  kind: "coordinates",
-                  x: ggb.numberValueOrLabel(args[0]),
-                  y: ggb.numberValueOrLabel(args[1]),
-                }),
-                radius: args[2],
-              });
-            }
-
-            throw badArgsError;
-          }
-          default:
-            throw badArgsError;
-        }
       },
     },
     methods: {

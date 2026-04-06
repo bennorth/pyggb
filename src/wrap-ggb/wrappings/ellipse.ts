@@ -2,14 +2,12 @@ import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
-  WrapExistingCtorSpec,
   SkGgbObject,
-  setGgbLabelFromArgs,
   labelGetSets,
 } from "../shared";
-import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import { constructIfMatching, SignatureSpec } from "../command-invocation";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -17,115 +15,30 @@ interface SkGgbEllipse extends SkGgbObject {
   $_center: SkGgbObject | null;
 }
 
-type SkGgbEllipseCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "foci-semimajor-axis-length";
-      focus1: SkGgbObject;
-      focus2: SkGgbObject;
-      semimajorAxis: SkObject;
-    }
-  | {
-      kind: "foci-semimajor-axis-segment";
-      focus1: SkGgbObject;
-      focus2: SkGgbObject;
-      semimajorAxis: SkGgbObject;
-    }
-  | {
-      kind: "foci-point";
-      focus1: SkGgbObject;
-      focus2: SkGgbObject;
-      point: SkGgbObject;
-    };
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["point", "point", ["either-number", "segment", "point"]] },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Ellipse", {
-    constructor: function Ellipse(
-      this: SkGgbEllipse,
-      spec: SkGgbEllipseCtorSpec
-    ) {
+    constructor: function Ellipse(this: SkGgbEllipse, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
       this.$_center = null;
-      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Ellipse");
-
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          break;
-        }
-        case "foci-semimajor-axis-length": {
-          const focus1 = spec.focus1.$ggbLabel;
-          const focus2 = spec.focus2.$ggbLabel;
-          const smAxis = ggb.numberValueOrLabel(spec.semimajorAxis);
-          setLabelArgs([focus1, focus2, smAxis]);
-          break;
-        }
-        case "foci-semimajor-axis-segment": {
-          const focus1 = spec.focus1.$ggbLabel;
-          const focus2 = spec.focus2.$ggbLabel;
-          const smAxis = spec.semimajorAxis.$ggbLabel;
-          setLabelArgs([focus1, focus2, smAxis]);
-          break;
-        }
-        case "foci-point": {
-          const focus1 = spec.focus1.$ggbLabel;
-          const focus2 = spec.focus2.$ggbLabel;
-          const point = spec.point.$ggbLabel;
-          setLabelArgs([focus1, focus2, point]);
-          break;
-        }
-        default:
-          throwBadSpecKind("Ellipse", spec);
-      }
     },
     slots: {
       tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Ellipse() arguments must be" +
-            " (focus, focus, semimajor_axis_length)," +
-            " (focus, focus, semimajor_axis_segment)," +
-            " or (focus, focus, point)"
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(
+            appApi.ggb,
+            kCtorSignatures,
+            "Ellipse",
+            args,
+            cls
+          ),
+          kwargs
         );
-
-        const make = (spec: SkGgbEllipseCtorSpec) =>
-          withPropertiesFromNameValuePairs(new mod.Ellipse(spec), kwargs);
-
-        switch (args.length) {
-          case 3:
-            if (
-              ggb.isGgbObjectOfType(args[0], "point") &&
-              ggb.isGgbObjectOfType(args[1], "point")
-            ) {
-              if (ggb.isPythonOrGgbNumber(args[2])) {
-                return make({
-                  kind: "foci-semimajor-axis-length",
-                  focus1: args[0],
-                  focus2: args[1],
-                  semimajorAxis: args[2],
-                });
-              }
-              if (ggb.isGgbObjectOfType(args[2], "segment")) {
-                return make({
-                  kind: "foci-semimajor-axis-segment",
-                  focus1: args[0],
-                  focus2: args[1],
-                  semimajorAxis: args[2],
-                });
-              }
-              if (ggb.isGgbObjectOfType(args[2], "point")) {
-                return make({
-                  kind: "foci-point",
-                  focus1: args[0],
-                  focus2: args[1],
-                  point: args[2],
-                });
-              }
-            }
-            throw badArgsError;
-          default:
-            throw badArgsError;
-        }
       },
     },
     methods: {

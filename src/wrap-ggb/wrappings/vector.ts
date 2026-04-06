@@ -2,84 +2,50 @@ import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
-  WrapExistingCtorSpec,
   SkGgbObject,
-  setGgbLabelFromArgs,
   labelGetSets,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import {
+  constructIfMatching,
+  ggbArgumentStr,
+  SignatureSpec,
+} from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbVector extends SkGgbObject {}
 
-type SkGgbVectorCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "points";
-      point1: SkGgbObject;
-      point2: SkGgbObject;
-    }
-  | {
-      kind: "components";
-      e1: SkObject;
-      e2: SkObject;
-    };
+const makeComponentCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const argStrs = args.map((arg) => ggbArgumentStr(ggb, arg));
+  return `Vector((${argStrs[0]},${argStrs[1]}))`;
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["point", "point"] },
+  {
+    argTypes: ["either-number", "either-number"],
+    ggbCommand: makeComponentCommand,
+  },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Vector", {
-    constructor: function Vector(this: SkGgbVector, spec: SkGgbVectorCtorSpec) {
-      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Vector");
-
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          break;
-        }
-        case "points": {
-          setLabelArgs([spec.point1.$ggbLabel, spec.point2.$ggbLabel]);
-          break;
-        }
-        case "components": {
-          const e1Arg = ggb.numberValueOrLabel(spec.e1);
-          const e2Arg = ggb.numberValueOrLabel(spec.e2);
-          setLabelArgs([`(${e1Arg},${e2Arg})`]);
-          break;
-        }
-        default:
-          throwBadSpecKind("Vector", spec);
-      }
+    constructor: function Vector(this: SkGgbVector, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
     },
     slots: {
       tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Vector() arguments must be" +
-            " (start_point, end_point) or (x_component, y_component)"
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(appApi.ggb, kCtorSignatures, "Vector", args, cls),
+          kwargs
         );
-
-        const make = (spec: SkGgbVectorCtorSpec) =>
-          withPropertiesFromNameValuePairs(new mod.Vector(spec), kwargs);
-
-        switch (args.length) {
-          case 2: {
-            if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
-              return make({ kind: "points", point1: args[0], point2: args[1] });
-            }
-            if (args.every(ggb.isPythonOrGgbNumber)) {
-              return make({ kind: "components", e1: args[0], e2: args[1] });
-            }
-
-            throw badArgsError;
-          }
-          default:
-            throw badArgsError;
-        }
       },
       ...ggb.sharedOpSlots,
     },

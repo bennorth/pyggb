@@ -1,111 +1,58 @@
 import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
-  WrapExistingCtorSpec,
   SkGgbObject,
   AugmentedGgbApi,
   withPropertiesFromNameValuePairs,
-  setGgbLabelFromArgs,
-  setGgbLabelFromCmd,
   labelGetSets,
   tpCallFun,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import {
+  constructIfMatching,
+  ggbArgumentStr,
+  SignatureSpec,
+} from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-interface SkGgbParabola extends SkGgbObject {
-  focus: SkGgbObject;
-  directrix: SkGgbObject;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface SkGgbParabola extends SkGgbObject {}
 
-type SkGgbParabolaCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "focus-directrix";
-      focus: SkGgbObject;
-      directrix: SkGgbObject;
-    }
-  | {
-      kind: "coefficients";
-      coeffs: [SkObject, SkObject, SkObject];
-    };
+const makeCoeffsCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const argStrs = args.map((arg) => ggbArgumentStr(ggb, arg));
+  return `y=(${argStrs[0]})x^2 + (${argStrs[1]})x + (${argStrs[2]})`;
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["point", "line"] },
+  {
+    argTypes: ["either-number", "either-number", "either-number"],
+    ggbCommand: makeCoeffsCommand,
+  },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Parabola", {
-    constructor: function Parabola(
-      this: SkGgbParabola,
-      spec: SkGgbParabolaCtorSpec
-    ) {
-      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Parabola");
-      const setLabelCmd = setGgbLabelFromCmd(ggb, this);
-
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          break;
-        }
-        case "focus-directrix": {
-          setLabelArgs([spec.focus.$ggbLabel, spec.directrix.$ggbLabel]);
-          this.focus = spec.focus;
-          this.directrix = spec.directrix;
-          break;
-        }
-        case "coefficients": {
-          const [a, b, c] = spec.coeffs.map(ggb.numberValueOrLabel);
-          setLabelCmd(`y=(${a})x^2 + (${b})x + (${c})`);
-          // TODO: Set focus and directrix?
-          break;
-        }
-        default:
-          throwBadSpecKind("Parabola", spec);
-      }
+    constructor: function Parabola(this: SkGgbParabola, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
     },
     slots: {
       tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Parabola() arguments must be" +
-            " (focus_point, directrix_line)" +
-            " or (x_squared_coefficient, x_coefficient, constant)"
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(
+            appApi.ggb,
+            kCtorSignatures,
+            "Parabola",
+            args,
+            cls
+          ),
+          kwargs
         );
-
-        const make = (spec: SkGgbParabolaCtorSpec) =>
-          withPropertiesFromNameValuePairs(new mod.Parabola(spec), kwargs);
-
-        switch (args.length) {
-          case 2: {
-            if (
-              ggb.isGgbObjectOfType(args[0], "point") &&
-              ggb.isGgbObjectOfType(args[1], "line")
-            ) {
-              return make({
-                kind: "focus-directrix",
-                focus: args[0],
-                directrix: args[1],
-              });
-            }
-
-            throw badArgsError;
-          }
-          case 3: {
-            if (args.every(ggb.isPythonOrGgbNumber)) {
-              // We know that args is a three-element array of
-              // SkObjects, but TypeScript can't yet work that out.
-              return make({
-                kind: "coefficients",
-                coeffs: args as [SkObject, SkObject, SkObject],
-              });
-            }
-
-            throw badArgsError;
-          }
-          default:
-            throw badArgsError;
-        }
       },
       tp$call: tpCallFun(ggb, "Parabola"),
     },
@@ -125,6 +72,7 @@ export const register: RegisterFun = (mod, appApi) => {
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },
   });
+
   mod.Parabola = cls;
   registerObjectType("parabola", cls);
 };

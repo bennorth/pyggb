@@ -121,13 +121,21 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     cy.get(".ErrorReport .message").contains(regexp);
   };
 
-  const assertValueError = (clsName: string, messageFragment: string) => () => {
-    const regexp = new RegExp(`^ValueError: ${clsName}\\([^)]*\\):`);
-    cy.get(".ErrorReport .message").contains(regexp).contains(messageFragment);
-  };
+  const assertRuntimeError =
+    (clsName: string, messageFragment: string) => () => {
+      const regexp = new RegExp(`^RuntimeError: ${clsName}\\([^)]*\\):`);
+      cy.get(".ErrorReport .message")
+        .contains(regexp)
+        .contains(messageFragment);
+    };
 
   const simpleBadArgsSpec = (codeFragment: string): CodeWithErrorSpec => {
-    const clsName = new RegExp("^([^()]*)\\(").exec(codeFragment)[1];
+    const mMatch = new RegExp("^([^()]*)\\(").exec(codeFragment);
+    if (mMatch == null) {
+      throw new Error("internal error: class name not found");
+    }
+
+    const clsName = mMatch[1];
     return {
       label: `${codeFragment}`,
       code: `\n${codeFragment}\n`,
@@ -190,7 +198,7 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
         Point(A, 0.5)
       `,
       assertions: [
-        assertValueError("Point", 'could not find point along "point"'),
+        assertRuntimeError("Point", 'could not find point along "point"'),
       ],
     },
     {
@@ -231,7 +239,9 @@ describe("Handles bad function calls", optsNoIsolation, () => {
         C = Point(2, 1)
         TriangleCenter(A, B, C, "no-such-center")
       `,
-      assertions: [assertTypeError("center-kind is one of")],
+      assertions: [
+        assertValueError("fourth (center-kind) argument must be one of"),
+      ],
     },
     {
       label: "List: bad indexing",
@@ -246,7 +256,7 @@ describe("Handles bad function calls", optsNoIsolation, () => {
       code: `
         f = FunctionGraph("x+*")
       `,
-      assertions: [assertValueError("bad syntax of expr")],
+      assertions: [assertRuntimeError("bad syntax of expr")],
     },
     {
       label: "EvalCommand(): arg bad type",

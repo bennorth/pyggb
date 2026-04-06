@@ -1,8 +1,13 @@
 import { RegisterFun } from "../../shared/appApi";
-import { augmentedGgbApi, SkGgbObject, WrapExistingCtorSpec } from "../shared";
-import { SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { augmentedGgbApi, SkGgbObject } from "../shared";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import {
+  constructIfMatching,
+  ggbArgumentStr,
+  SignatureSpec,
+} from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -10,34 +15,29 @@ interface SkGgbList extends SkGgbObject {
   $length: (this: SkGgbList) => number;
 }
 
-type SkGgbListCtorSpec =
-  | WrapExistingCtorSpec
-  | { kind: "empty" }
-  | { kind: "iterable"; elements: Array<SkGgbObject> };
+const makeEmptyCommand = (_ggb: GgbApi, _args: Array<SkObject>) => "{}";
+
+const makeIterableCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const elements = Sk.misceval.arrayFromIterable(args[0]);
+  const elementLabels = elements.map((elt) => ggbArgumentStr(ggb, elt));
+  const ggbCmd = `{${elementLabels.join(",")}}`;
+  return ggbCmd;
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: [], ggbCommand: makeEmptyCommand },
+  {
+    argTypes: [{ kind: "iterable", elementType: "ggb-object" }],
+    ggbCommand: makeIterableCommand,
+  },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("List", {
-    constructor: function List(this: SkGgbList, spec: SkGgbListCtorSpec) {
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          break;
-        }
-        case "empty": {
-          this.$ggbLabel = ggb.evalCmd("{}");
-          break;
-        }
-        case "iterable": {
-          const elementLabels = spec.elements.map((elt) => elt.$ggbLabel);
-          const ggbCmd = `{${elementLabels.join(",")}}`;
-          this.$ggbLabel = ggb.evalCmd(ggbCmd);
-          break;
-        }
-        default:
-          throwBadSpecKind("List", spec);
-      }
+    constructor: function List(this: SkGgbList, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
     },
     proto: {
       $length(this: SkGgbList) {
@@ -49,32 +49,16 @@ export const register: RegisterFun = (mod, appApi) => {
       },
     },
     slots: {
-      tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "List() must be called with no arguments," +
-            " or with a single iterable argument"
+      tp$new(args) {
+        // In fact the ggbCommand arg ("List") is unused, because
+        // the specs have custom ggbCommand()s, but provide it anyway.
+        return constructIfMatching(
+          appApi.ggb,
+          kCtorSignatures,
+          "List",
+          args,
+          cls
         );
-
-        const make = (spec: SkGgbListCtorSpec) => new mod.List(spec);
-
-        if (kwargs && kwargs.length !== 0) {
-          throw badArgsError;
-        }
-        switch (args.length) {
-          case 0:
-            return make({ kind: "empty" });
-          case 1: {
-            const elements = Sk.misceval.arrayFromIterable(args[0]);
-            if (!ggb.everyElementIsGgbObject(elements)) {
-              throw new Sk.builtin.TypeError(
-                "List() argument must be Python iterable of GeoGebra objects"
-              );
-            }
-            return make({ kind: "iterable", elements });
-          }
-          default:
-            throw badArgsError;
-        }
       },
       sq$length(this: SkGgbList) {
         return this.$length();
