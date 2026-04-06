@@ -268,6 +268,16 @@ function evalCmdIfMatching(
   return null;
 }
 
+export function throwBadArgsError(
+  ggbCommandName: string,
+  argSpecs: Array<SignatureSpec>
+): never {
+  const displayOptions = displaySignatureSpecOptions(argSpecs);
+  throw new Sk.builtin.TypeError(
+    `${ggbCommandName}() arguments must be ${displayOptions}`
+  );
+}
+
 function objectIfMatching(
   ggb: GgbApi,
   argSpecs: Array<SignatureSpec>,
@@ -278,10 +288,7 @@ function objectIfMatching(
   const evalInfo = evalCmdIfMatching(ggb, argSpecs, ggbCommandName, pyArgs);
 
   if (evalInfo == null) {
-    const displayOptions = displaySignatureSpecOptions(argSpecs);
-    throw new Sk.builtin.TypeError(
-      `${ggbCommandName}() arguments must be ${displayOptions}`
-    );
+    throwBadArgsError(ggbCommandName, argSpecs);
   }
 
   return objectFromEvalInfo(evalInfo);
