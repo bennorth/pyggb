@@ -2,19 +2,19 @@ import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
-  WrapExistingCtorSpec,
   SkGgbObject,
   AugmentedGgbApi,
   assembledCommand,
   labelGetSets,
 } from "../shared";
-import {
-  KeywordArgsArray,
-  SkObject,
-  SkulptApi,
-} from "../../shared/vendor-types/skulptapi";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import {
+  constructIfMatching,
+  ggbArgumentStr,
+  SignatureSpec,
+} from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -22,105 +22,46 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 // type like "quadrilateral" or "pentagon".  Haven't tested to see how
 // far this goes.  What are the consequences for, e.g., wrap-existing?
 
-interface SkGgbPolygon extends SkGgbObject {
-  ctorPointLabels: Array<string> | null;
-  segments: Array<SkObject>;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface SkGgbPolygon extends SkGgbObject {}
 
-type SkGgbPolygonCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "points-array";
-      points: Array<SkGgbObject>;
-    }
-  | {
-      kind: "two-points-n-sides";
-      point1: SkGgbObject;
-      point2: SkGgbObject;
-      nSides: SkObject;
-    };
+const makePointIterableCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const points = Sk.misceval.arrayFromIterable(args[0]);
+  const pointLbls = points.map((p) => ggbArgumentStr(ggb, p));
+  return assembledCommand("Polygon", pointLbls);
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  {
+    argTypes: ["point", "point", "either-number"],
+    returnsMultiple: "take-first",
+  },
+  {
+    argTypes: [{ kind: "iterable", elementType: "point" }],
+    ggbCommand: makePointIterableCommand,
+    returnsMultiple: "take-first",
+  },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Polygon", {
-    constructor: function Polygon(
-      this: SkGgbPolygon,
-      spec: SkGgbPolygonCtorSpec
-    ) {
-      this.ctorPointLabels = null;
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          return;
-        }
-        case "points-array": {
-          this.ctorPointLabels = spec.points.map((p) => p.$ggbLabel);
-          const ggbCmd = assembledCommand("Polygon", this.ctorPointLabels);
-          const lbls = ggb.evalCmd(ggbCmd).split(",");
-          // TODO: Should have n.args + 1 labels here; check this.
-          this.$ggbLabel = lbls[0];
-          this.segments = lbls.slice(1).map(ggb.wrapExistingGgbObject);
-          break;
-        }
-        case "two-points-n-sides": {
-          const ggbCmd = assembledCommand("Polygon", [
-            spec.point1.$ggbLabel,
-            spec.point2.$ggbLabel,
-            ggb.numberValueOrLabel(spec.nSides),
-          ]);
-          const lbls = ggb.evalCmd(ggbCmd).split(",");
-          // TODO: Should have n.args + 1 labels here; check this.
-          this.$ggbLabel = lbls[0];
-          this.segments = lbls.slice(1).map(ggb.wrapExistingGgbObject);
-          break;
-        }
-        default:
-          throwBadSpecKind("Polygon", spec);
-      }
+    constructor: function Polygon(this: SkGgbPolygon, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
     },
     slots: {
       tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Polygon() arguments must be" +
-            " (iterable_of_points)" +
-            " or (point, point, number_of_sides)"
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(
+            appApi.ggb,
+            kCtorSignatures,
+            "Polygon",
+            args,
+            cls
+          ),
+          kwargs
         );
-
-        const make = (spec: SkGgbPolygonCtorSpec) =>
-          withPropertiesFromNameValuePairs(new mod.Polygon(spec), kwargs);
-
-        switch (args.length) {
-          case 1: {
-            if (Sk.builtin.checkIterable(args[0])) {
-              const points = Sk.misceval.arrayFromIterable(args[0]);
-
-              if (ggb.everyElementIsGgbObject(points)) {
-                return make({ kind: "points-array", points });
-              }
-            }
-
-            throw badArgsError;
-          }
-          case 3: {
-            if (
-              ggb.isGgbObjectOfType(args[0], "point") &&
-              ggb.isGgbObjectOfType(args[1], "point") &&
-              ggb.isPythonOrGgbNumber(args[2])
-            ) {
-              return make({
-                kind: "two-points-n-sides",
-                point1: args[0],
-                point2: args[1],
-                nSides: args[2],
-              });
-            }
-
-            throw badArgsError;
-          }
-          default:
-            throw badArgsError;
-        }
       },
     },
     methods: {
@@ -133,38 +74,6 @@ export const register: RegisterFun = (mod, appApi) => {
           return new Sk.builtin.list(
             angleLabels.map(ggb.wrapExistingGgbObject)
           );
-        },
-      },
-      // Custom implementation (i.e., do not use deleteMethodsSlice), to
-      // take care of allowing the constituent points to be deleted at
-      // the same time.
-      delete_$rw$: {
-        $flags: { FastCall: true },
-        $meth(
-          this: SkGgbPolygon,
-          args: Array<SkObject>,
-          kwargs: KeywordArgsArray
-        ) {
-          const [deletePoints] = Sk.abstr.copyKeywordsToNamedArgs(
-            "Polygon.delete",
-            ["delete_points"],
-            args,
-            kwargs,
-            [Sk.builtin.bool.true$]
-          );
-          if (!Sk.builtin.checkBool(deletePoints))
-            throw new Sk.builtin.ValueError("delete_points must be bool");
-          ggb.deleteObject(this.$ggbLabel);
-          if (deletePoints.v) {
-            if (this.ctorPointLabels == null)
-              throw new Sk.builtin.RuntimeError(
-                "delete_points=True was given but Polygon" +
-                  " was not constructed from a list of points"
-              );
-            this.ctorPointLabels.forEach((pointLabel) =>
-              ggb.deleteObject(pointLabel)
-            );
-          }
         },
       },
       // TODO: Any insight into why CopyFreeObject(poly) gives a number?
