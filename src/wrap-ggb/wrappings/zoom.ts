@@ -10,7 +10,7 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
-  const zoomIn = new Sk.builtin.func((...args) => {
+  mod.ZoomIn = new Sk.builtin.func(function ZoomIn(...args) {
     const badArgsError = new Sk.builtin.TypeError(
       "ZoomIn() arguments must be: empty (to reset to default);" +
         " a single number (scale factor);" +
@@ -30,7 +30,6 @@ export const register: RegisterFun = (mod, appApi) => {
         break;
       case 1: {
         // ZoomIn(scale)
-
         const scale = args[0];
         throwBadArgsUnless(ggb.isPythonOrGgbNumber(scale));
 
@@ -41,7 +40,6 @@ export const register: RegisterFun = (mod, appApi) => {
       }
       case 2: {
         // ZoomIn(scale, centre)
-
         const scale = args[0];
         throwBadArgsUnless(ggb.isPythonOrGgbNumber(scale));
         const scaleArg = ggb.numberValueOrLabel(scale);
@@ -91,6 +89,4 @@ export const register: RegisterFun = (mod, appApi) => {
 
     return Sk.builtin.none.none$;
   });
-
-  mod.ZoomIn = zoomIn;
 };

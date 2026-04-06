@@ -1,5 +1,9 @@
 import { GgbApi, GgbObjectType } from "../shared/vendor-types/ggbapi";
-import { SkObject, SkulptApi } from "../shared/vendor-types/skulptapi";
+import {
+  KeywordArgsArray,
+  SkObject,
+  SkulptApi,
+} from "../shared/vendor-types/skulptapi";
 import {
   assembledCommand,
   isGgbObject,
@@ -400,4 +404,17 @@ export function wrapIfMatching(
 ): SkObject {
   const wrap = wrapInstanceOrListFun(ggb);
   return objectIfMatching(ggb, sigSpecs, ggbCommandName, pyArgs, wrap);
+}
+
+////////////////////////////////////////////////////////////////////////
+// Utility for making sure no keyword arguments.
+
+export function throwIfAnyKeywordArgs(
+  commandName: string,
+  kwargs: KeywordArgsArray
+) {
+  if (kwargs !== undefined && kwargs.length !== 0)
+    throw new Sk.builtin.TypeError(
+      `${commandName}() must not be given keyword arguments`
+    );
 }

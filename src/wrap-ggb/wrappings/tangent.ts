@@ -30,7 +30,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.Tangent = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "Tangent", args)
-  );
+  mod.Tangent = new Sk.builtin.func(function Tangent(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "Tangent", args);
+  });
 };

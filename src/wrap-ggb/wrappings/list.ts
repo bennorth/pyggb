@@ -6,6 +6,7 @@ import {
   constructIfMatching,
   ggbArgumentStr,
   SignatureSpec,
+  throwIfAnyKeywordArgs,
 } from "../command-invocation";
 import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
@@ -24,6 +25,7 @@ const makeIterableCommand = (ggb: GgbApi, args: Array<SkObject>) => {
   return ggbCmd;
 };
 
+const kCommandName = "List";
 const kCtorSignatures: Array<SignatureSpec> = [
   { argTypes: [], ggbCommand: makeEmptyCommand },
   {
@@ -35,7 +37,7 @@ const kCtorSignatures: Array<SignatureSpec> = [
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
-  const cls = Sk.abstr.buildNativeClass("List", {
+  const cls = Sk.abstr.buildNativeClass(kCommandName, {
     constructor: function List(this: SkGgbList, ggbLabel: string) {
       this.$ggbLabel = ggbLabel;
     },
@@ -49,13 +51,15 @@ export const register: RegisterFun = (mod, appApi) => {
       },
     },
     slots: {
-      tp$new(args) {
+      tp$new(args, kwargs) {
+        throwIfAnyKeywordArgs(kCommandName, kwargs);
+
         // In fact the ggbCommand arg ("List") is unused, because
         // the specs have custom ggbCommand()s, but provide it anyway.
         return constructIfMatching(
           appApi.ggb,
           kCtorSignatures,
-          "List",
+          kCommandName,
           args,
           cls
         );

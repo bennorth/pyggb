@@ -10,7 +10,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.Midpoint = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "Midpoint", args)
-  );
+  mod.Midpoint = new Sk.builtin.func(function Midpoint(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "Midpoint", args);
+  });
 };

@@ -9,7 +9,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.Incircle = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "Incircle", args)
-  );
+  mod.Incircle = new Sk.builtin.func(function Incircle(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "Incircle", args);
+  });
 };

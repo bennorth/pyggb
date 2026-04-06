@@ -10,7 +10,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.Centroid = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "Centroid", args)
-  );
+  mod.Centroid = new Sk.builtin.func(function Centroid(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "Centroid", args);
+  });
 };

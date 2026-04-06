@@ -77,7 +77,9 @@ export const register: RegisterFun = (mod, appApi) => {
     return pyFun;
   }
 
-  mod.on_temperature_report = new Sk.builtin.func((pyFun: SkObject) =>
-    Sk.misceval.promiseToSuspension(registerHandler(pyFun))
+  mod.on_temperature_report = new Sk.builtin.func(
+    function on_temperature_report(pyFun: SkObject) {
+      return Sk.misceval.promiseToSuspension(registerHandler(pyFun));
+    }
   );
 };
