@@ -227,6 +227,30 @@ function displaySignatureSpecOptions(
 // Functions to look for an arg-spec which matches a list of arguments,
 // and evaluate a command if one is found, producing a SkObject.
 
+type MatchedCommandInfo = {
+  matchedSpec: SignatureSpec;
+  command: string;
+};
+
+export function firstMatchingCommand(
+  ggb: GgbApi,
+  sigSpecs: SignatureSpecOptions,
+  ggbCommandName: string,
+  pyArgs: Array<SkObject>
+): MatchedCommandInfo | null {
+  for (const sigSpec of sigSpecs) {
+    if (argsMeetSpec(ggb, pyArgs, sigSpec.argTypes)) {
+      const command =
+        sigSpec.ggbCommand != null
+          ? sigSpec.ggbCommand(ggb, pyArgs)
+          : cmdWithArgs(ggb, ggbCommandName, pyArgs);
+      return { matchedSpec: sigSpec, command };
+    }
+  }
+
+  return null;
+}
+
 type EvaluationInfo = {
   commandName: string;
   matchedSpec: SignatureSpec;
