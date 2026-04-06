@@ -11,6 +11,16 @@ export const specs = [
     `,
   },
   {
+    label: "Circle(Point, segment)",
+    code: `
+      A = Point(3, 4)
+      s = Segment(Point(1, 1), Point(4, 5))
+      k = Circle(A, s)
+      assert(k._ggb_type == "circle")
+      assert(k.radius == 5.0)
+    `,
+  },
+  {
     label: "Circle(Point, Point)",
     code: `
       A = Point(3, 2)
