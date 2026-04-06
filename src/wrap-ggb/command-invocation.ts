@@ -4,6 +4,7 @@ import {
   assembledCommand,
   isGgbObject,
   isPythonOrGgbNumber,
+  SkGgbObject,
   strOfNumber,
 } from "./shared";
 
@@ -282,4 +283,50 @@ function objectIfMatching(
   }
 
   return objectFromEvalInfo(evalInfo);
+}
+
+////////////////////////////////////////////////////////////////////////
+// Function to deliberately construct a new SkGgbObject.
+
+function constructInstanceFun(nativeClass: {
+  new (label: string): SkGgbObject;
+}) {
+  return (evalInfo: EvaluationInfo) => {
+    const takeFirst = (() => {
+      const spec = evalInfo.matchedSpec;
+      if (spec.returnsMultiple === undefined) {
+        return false;
+      }
+      if (spec.returnsMultiple === "take-first") {
+        return true;
+      }
+      throw new Sk.builtin.RuntimeError(
+        "internal error: bad returnsMultiple value for construct-instance"
+      );
+    })();
+
+    const labelsStr = evalInfo.maybeLabels;
+    const labels = labelsStr.split(",");
+
+    const nLabels = labelsStr === "" ? 0 : labels.length;
+    if (nLabels !== 1 && !takeFirst)
+      throw new Sk.builtin.RuntimeError(
+        `expecting one result from ${evalInfo.commandName}()` +
+          ` but got ${nLabels}`
+      );
+
+    const label = takeFirst ? labels[0] : labelsStr;
+    return new nativeClass(label);
+  };
+}
+
+export function constructIfMatching(
+  ggb: GgbApi,
+  ctorSpecs: Array<SignatureSpec>,
+  ggbCommandName: string,
+  pyArgs: Array<SkObject>,
+  nativeClass: { new (label: string): SkGgbObject }
+): SkObject {
+  const ctor = constructInstanceFun(nativeClass);
+  return objectIfMatching(ggb, ctorSpecs, ggbCommandName, pyArgs, ctor);
 }
