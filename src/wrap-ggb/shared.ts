@@ -6,7 +6,7 @@ import {
   SkString,
   KeywordArgsArray,
 } from "../shared/vendor-types/skulptapi";
-import { GgbApi } from "../shared/vendor-types/ggbapi";
+import { GgbApi, GgbObjectType } from "../shared/vendor-types/ggbapi";
 import { colorIntsFromString, interpretColorOrFail } from "./color";
 import { wrapExistingGgbObject } from "./type-registry";
 import { OperationSlots, operationSlots } from "./operations";
@@ -74,7 +74,10 @@ function _isGgbObject(obj: SkObject): obj is SkGgbObject {
   return typeof obj === "object" && obj !== null && "$ggbLabel" in obj;
 }
 
-function _ggbType(ggbApi: GgbApi, objOrLabel: SkGgbObject | string): string {
+function _ggbType(
+  ggbApi: GgbApi,
+  objOrLabel: SkGgbObject | string
+): GgbObjectType {
   if (typeof objOrLabel === "string") {
     return ggbApi.getObjectType(objOrLabel);
   } else {
@@ -99,7 +102,7 @@ function _ggbType(ggbApi: GgbApi, objOrLabel: SkGgbObject | string): string {
 export const isGgbObject = (
   ggbApi: GgbApi,
   obj: SkObject,
-  requiredType?: string | Array<string>
+  requiredType?: GgbObjectType | Array<GgbObjectType>
 ): obj is SkGgbObject => {
   // Could collapse the following into one bool expression but it wouldn't
   // obviously be clearer.
@@ -134,14 +137,14 @@ const everyElementIsGgbObject = (
 const _everyElementIsGgbObjectOfType = (
   ggbApi: GgbApi,
   objs: Array<SkObject>,
-  requiredType: string | Array<string>
+  requiredType: GgbObjectType | Array<GgbObjectType>
 ): objs is Array<SkGgbObject> =>
   objs.every((obj) => isGgbObject(ggbApi, obj, requiredType));
 
 const _elementsAreGgbObjectsOfTypes = (
   ggbApi: GgbApi,
   objs: Array<SkObject>,
-  requiredTypes: Array<string>
+  requiredTypes: Array<GgbObjectType>
 ): objs is Array<SkGgbObject> => {
   const nObjs = objs.length;
   if (nObjs !== requiredTypes.length) {
@@ -160,7 +163,7 @@ const _elementsAreGgbObjectsOfTypes = (
 const _elementsAreGgbObjectsOfSomeTypes = (
   ggbApi: GgbApi,
   objs: Array<SkObject>,
-  permittedTypeLists: Array<Array<string>>
+  permittedTypeLists: Array<Array<GgbObjectType>>
 ): objs is Array<SkGgbObject> =>
   permittedTypeLists.some((requiredTypes) =>
     _elementsAreGgbObjectsOfTypes(ggbApi, objs, requiredTypes)
@@ -192,7 +195,7 @@ export const argumentString = (
   ggbApi: GgbApi,
   x: SkObject,
   errorIfWrongType: SkObject,
-  requiredGgbType?: string | Array<string>
+  requiredGgbType?: GgbObjectType | Array<GgbObjectType>
 ): string => {
   if (isGgbObject(ggbApi, x, requiredGgbType)) {
     return x.$ggbLabel;
@@ -267,7 +270,7 @@ function throwIfNotGgbObject(
 function throwIfNotGgbObjectOfType(
   ggbApi: GgbApi,
   obj: SkObject,
-  requiredType: string,
+  requiredType: GgbObjectType, //string
   objName: string
 ): asserts obj is SkGgbObject {
   if (!isGgbObject(ggbApi, obj, requiredType)) {
@@ -678,39 +681,42 @@ export function tpCallFun(ggb: AugmentedGgbApi, typeName: string) {
 
 type EveryElementIsGgbObjectOfType = (
   objs: Array<SkObject>,
-  requiredType: string
+  requiredType: GgbObjectType
 ) => objs is Array<SkGgbObject>;
 
 type EveryElementIsGgbObjectOfSomeType = (
   objs: Array<SkObject>,
-  permittedTypes: Array<string>
+  permittedTypes: Array<GgbObjectType>
 ) => objs is Array<SkGgbObject>;
 
 type ElementsAreGgbObjectsOfTypes = (
   objs: Array<SkObject>,
-  requiredTypes: Array<string>
+  requiredTypes: Array<GgbObjectType>
 ) => objs is Array<SkGgbObject>;
 
 type ElementsAreGgbObjectsOfSomeTypes = (
   objs: Array<SkObject>,
-  requiredTypes: Array<Array<string>>
+  requiredTypes: Array<Array<GgbObjectType>>
 ) => objs is Array<SkGgbObject>;
 
 export type AugmentedGgbApi = {
   isGgbObject(obj: SkObject): obj is SkGgbObject;
-  isGgbObjectOfType(obj: SkObject, requiredType: string): obj is SkGgbObject;
+  isGgbObjectOfType(
+    obj: SkObject,
+    requiredType: GgbObjectType
+  ): obj is SkGgbObject;
   isGgbObjectOfSomeType(
     obj: SkObject,
-    permittedTypes: Array<string>
+    permittedTypes: Array<GgbObjectType>
   ): obj is SkGgbObject;
-  ggbType(objOrLabel: SkGgbObject | string): string;
+  ggbType(objOrLabel: SkGgbObject | string): GgbObjectType;
   throwIfNotGgbObject(
     obj: SkObject,
     objName: string
   ): asserts obj is SkGgbObject;
   throwIfNotGgbObjectOfType(
     obj: SkObject,
-    requiredType: string,
+    requiredType: GgbObjectType,
     objName: string
   ): asserts obj is SkGgbObject;
   throwIfNotPyOrGgbNumber(
@@ -727,7 +733,7 @@ export type AugmentedGgbApi = {
   argumentString(
     x: SkObject,
     errorIfWrongType: SkObject,
-    requiredGgbType?: string
+    requiredGgbType?: GgbObjectType
   ): string;
   wrapExistingGgbObject(label: string): SkGgbObject;
   sharedGetSets: SharedGetSets;
@@ -866,7 +872,7 @@ export const augmentedGgbApi = (ggbApi: GgbApi): AugmentedGgbApi => {
  * There are special cases for Polygon instances constructed from lists
  * of 3 (`"triangle"`) up to 6 (`"hexagon"`) points, as well as the
  * general `"polygon"` Ggb-type. */
-export const kPolygonTypeAndSubtypes = [
+export const kPolygonTypeAndSubtypes: Array<GgbObjectType> = [
   "triangle",
   "quadrilateral",
   "pentagon",

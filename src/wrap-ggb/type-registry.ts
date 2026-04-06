@@ -1,4 +1,4 @@
-import { GgbApi } from "../shared/vendor-types/ggbapi";
+import { GgbApi, GgbObjectType } from "../shared/vendor-types/ggbapi";
 import { WrapExistingCtorSpec, SkGgbObject } from "./shared";
 import { SkulptApi } from "../shared/vendor-types/skulptapi";
 
@@ -8,12 +8,12 @@ type ConstructibleFromWrapExistingSpec = {
   new (spec: WrapExistingCtorSpec): SkGgbObject;
 };
 
-let registry = new Map<string, ConstructibleFromWrapExistingSpec>();
+let registry = new Map<GgbObjectType, ConstructibleFromWrapExistingSpec>();
 
 /** Register the given `cls` as being the Skulpt/Python wrapper class
  * for GeoGebra objects whose type has the given `typeName`. */
 export const registerObjectType = (
-  typeName: string,
+  typeName: GgbObjectType,
   cls: ConstructibleFromWrapExistingSpec
 ): void => {
   registry.set(typeName, cls);

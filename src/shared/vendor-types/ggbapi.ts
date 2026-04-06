@@ -23,7 +23,7 @@ export type GgbObjectType =
   | "vector";
 
 export type GgbApi = {
-  getObjectType(label: string): string;
+  getObjectType(label: string): GgbObjectType;
   getLaTeXString(label: string): string;
 
   getVisible(label: string): boolean;
