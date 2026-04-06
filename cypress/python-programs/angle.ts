@@ -2,7 +2,7 @@ import { propSettingSpecsFromNames } from "./prop-setting-specs";
 
 const expOutputs = ["angle = 0.250000"];
 
-export const oneArgSpecs = [
+const oneArgSpecs = [
   {
     label: "Angle(point)",
     objCode: "Point(4, 4)",

@@ -91,7 +91,7 @@ type SkSuspension = {
   $isSuspension: true;
 };
 
-type SkJavaScriptFunction = (
+export type SkJavaScriptFunction = (
   ...args: Array<SkObject>
 ) => SkObject | SkSuspension;
 
