@@ -219,3 +219,67 @@ function displaySignatureSpecOptions(
     }
   }
 }
+
+////////////////////////////////////////////////////////////////////////
+// Functions to look for an arg-spec which matches a list of arguments,
+// and evaluate a command if one is found, producing a SkObject.
+
+type EvaluationInfo = {
+  commandName: string;
+  matchedSpec: SignatureSpec;
+  maybeLabels: string;
+};
+
+function evalCmdIfMatching(
+  ggb: GgbApi,
+  sigSpecs: SignatureSpecOptions,
+  ggbCommandName: string,
+  pyArgs: Array<SkObject>
+): EvaluationInfo | null {
+  for (const sigSpec of sigSpecs) {
+    if (argsMeetSpec(ggb, pyArgs, sigSpec.argTypes)) {
+      const fullCmd =
+        sigSpec.ggbCommand == null
+          ? cmdWithArgs(ggb, ggbCommandName, pyArgs)
+          : sigSpec.ggbCommand(ggb, pyArgs);
+
+      const maybeLabels = ggb.evalCommandGetLabels(fullCmd);
+
+      if (maybeLabels == null) {
+        const errorMessage =
+          sigSpec.errorMessage != null
+            ? sigSpec.errorMessage(ggb, pyArgs)
+            : `GeoGebra command "${fullCmd}" returned null`;
+
+        throw new Sk.builtin.RuntimeError(errorMessage);
+      }
+
+      return {
+        commandName: ggbCommandName,
+        matchedSpec: sigSpec,
+        maybeLabels,
+      };
+    }
+  }
+
+  return null;
+}
+
+function objectIfMatching(
+  ggb: GgbApi,
+  argSpecs: Array<SignatureSpec>,
+  ggbCommandName: string,
+  pyArgs: Array<SkObject>,
+  objectFromEvalInfo: (evalInfo: EvaluationInfo) => SkObject
+): SkObject {
+  const evalInfo = evalCmdIfMatching(ggb, argSpecs, ggbCommandName, pyArgs);
+
+  if (evalInfo == null) {
+    const displayOptions = displaySignatureSpecOptions(argSpecs);
+    throw new Sk.builtin.TypeError(
+      `${ggbCommandName}() arguments must be ${displayOptions}`
+    );
+  }
+
+  return objectFromEvalInfo(evalInfo);
+}
