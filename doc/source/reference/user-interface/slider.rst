@@ -45,6 +45,9 @@ Slider
    * :py:attr:`label_style`
    * :py:attr:`caption`
 
+   Where these properties are read-write, they can be set on
+   construction by passing them as keyword arguments.
+
 
 .. seealso::
 
