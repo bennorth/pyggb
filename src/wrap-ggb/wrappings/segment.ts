@@ -2,85 +2,42 @@ import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
-  WrapExistingCtorSpec,
   SkGgbObject,
-  setGgbLabelFromArgs,
   labelGetSets,
 } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import { constructIfMatching, SignatureSpec } from "../command-invocation";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
-interface SkGgbSegment extends SkGgbObject {
-  point1?: SkGgbObject;
-  point2?: SkGgbObject;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface SkGgbSegment extends SkGgbObject {}
 
-type SkGgbSegmentCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "two-points";
-      point1: SkGgbObject;
-      point2: SkGgbObject;
-    };
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["point", "point"] },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Segment", {
-    constructor: function Segment(
-      this: SkGgbSegment,
-      spec: SkGgbSegmentCtorSpec
-    ) {
-      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Segment");
-
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          // TODO: Can we reliably parse ggbApi.getDefinitionString() output to
-          // recover the two points?  Do we need to keep a registry of which GGB
-          // objects we have already wrapped for Python use?
-          //
-          // Can get from GGB with Point(SEGMENT, 0) and Point(SEGMENT, 1).
-          break;
-        }
-        case "two-points": {
-          setLabelArgs([spec.point1.$ggbLabel, spec.point2.$ggbLabel]);
-          this.point1 = spec.point1;
-          this.point2 = spec.point2;
-          break;
-        }
-        default:
-          throwBadSpecKind("Segment", spec);
-      }
+    constructor: function Segment(this: SkGgbSegment, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
     },
     slots: {
       tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Segment() arguments must be (point, point)"
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(
+            appApi.ggb,
+            kCtorSignatures,
+            "Segment",
+            args,
+            cls
+          ),
+          kwargs
         );
-
-        const make = (spec: SkGgbSegmentCtorSpec) =>
-          withPropertiesFromNameValuePairs(new mod.Segment(spec), kwargs);
-
-        switch (args.length) {
-          case 2: {
-            if (ggb.everyElementIsGgbObjectOfType(args, "point")) {
-              return make({
-                kind: "two-points",
-                point1: args[0],
-                point2: args[1],
-              });
-            }
-
-            throw badArgsError;
-          }
-          default:
-            throw badArgsError;
-        }
       },
     },
     methods: {
