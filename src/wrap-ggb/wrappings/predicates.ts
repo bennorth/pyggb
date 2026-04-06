@@ -1,6 +1,7 @@
 import { RegisterFun } from "../../shared/appApi";
 import { augmentedGgbApi, AugmentedGgbApi } from "../shared";
 import { SkulptApi } from "../../shared/vendor-types/skulptapi";
+import { GgbObjectType } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -10,7 +11,7 @@ export const register: RegisterFun = (mod, appApi) => {
   const predicateFun = (
     ggbCommand: string,
     requiredNArgs: number,
-    requiredArgGgbType: string | undefined
+    requiredArgGgbType: GgbObjectType | undefined
   ) =>
     new Sk.builtin.func((...args) => {
       const requiredArgsHelp =
