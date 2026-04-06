@@ -316,6 +316,16 @@ function objectIfMatching(
   return objectFromEvalInfo(evalInfo);
 }
 
+function verifyExactlyOneLabel(labelsStr: string, commandName: string) {
+  const labels = labelsStr.split(",");
+  const nLabels = labelsStr === "" ? 0 : labels.length;
+
+  if (nLabels !== 1)
+    throw new Sk.builtin.RuntimeError(
+      `expecting one result from ${commandName}() but got ${nLabels}`
+    );
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Function to deliberately construct a new SkGgbObject.
 
