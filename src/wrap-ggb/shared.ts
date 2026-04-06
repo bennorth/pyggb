@@ -205,9 +205,7 @@ export const argumentString = (
   }
 
   if (Sk.builtin.checkNumber(x)) {
-    const jsStr = x.v.toExponential();
-    const [sig, exp] = jsStr.split("e");
-    return `(${sig}*10^(${exp}))`;
+    return strOfNumber(x.v);
   }
 
   throw errorIfWrongType;
