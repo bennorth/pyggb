@@ -1,59 +1,45 @@
 import { RegisterFun } from "../../shared/appApi";
-import { augmentedGgbApi, WrapExistingCtorSpec, SkGgbObject } from "../shared";
+import { augmentedGgbApi, SkGgbObject } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
+import { constructIfMatching, SignatureSpec } from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbBoolean extends SkGgbObject {}
 
-type SkGgbBooleanCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "literal";
-      value: SkObject;
-    };
+const ggbCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const arg = args[0];
+  const value = Sk.misceval.isTrue(arg);
+  return value ? "true" : "false";
+};
+
+const kCtorSignatures: Array<SignatureSpec> = [
+  { argTypes: ["py-object"], ggbCommand },
+];
 
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
   const cls = Sk.abstr.buildNativeClass("Boolean", {
-    constructor: function Boolean(
-      this: SkGgbBoolean,
-      spec: SkGgbBooleanCtorSpec
-    ) {
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          break;
-        }
-        case "literal": {
-          const ggbCmd = spec.value ? "true" : "false";
-          const label = ggb.evalCmd(ggbCmd);
-          this.$ggbLabel = label;
-          break;
-        }
-        default:
-          throwBadSpecKind("Boolean", spec);
-      }
+    constructor: function Boolean(this: SkGgbBoolean, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
     },
     slots: {
       tp$new(args, _kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Boolean() arguments must be (python_object)"
+        // In fact the ggbCommand arg ("Boolean") is ignored, because
+        // the only spec has a custom ggbCommand(), but provide it
+        // anyway.
+        return constructIfMatching(
+          appApi.ggb,
+          kCtorSignatures,
+          "Boolean",
+          args,
+          cls
         );
-
-        switch (args.length) {
-          case 1: {
-            const value = Sk.misceval.isTrue(args[0]);
-            return new mod.Boolean({ kind: "literal", value });
-          }
-          default:
-            throw badArgsError;
-        }
       },
     },
     methods: {
