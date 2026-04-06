@@ -1,20 +1,19 @@
-import { AppApi } from "../../shared/appApi";
+import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
   withPropertiesFromNameValuePairs,
   SkGgbObject,
-  WrapExistingCtorSpec,
-  throwIfLabelNull,
-  SpecConstructible,
-  setGgbLabelFromArgs,
-  setGgbLabelFromCmd,
   labelGetSets,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
-
 import { registerObjectType } from "../type-registry";
-import { throwBadSpecKind } from "../../shared/utils";
 import { SkGgbObjectWithCoords } from "../coords";
+import {
+  constructIfMatching,
+  ggbArgumentStr,
+  SignatureSpec,
+} from "../command-invocation";
+import { GgbApi } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -23,69 +22,45 @@ interface SkGgbPoint extends SkGgbObjectWithCoords {
   $ggbNumberY: SkGgbObject;
 }
 
-type SkGgbPointCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "coordinates";
-      x: string;
-      y: string;
-    }
-  | {
-      kind: "arbitrary-on-object";
-      obj: string;
-    }
-  | {
-      kind: "object-parameter";
-      p: string;
-      t: SkObject;
-    };
+const makeCoordinatesCommand = (ggb: GgbApi, args: Array<SkObject>) => {
+  const argStrs = args.map((arg) => ggbArgumentStr(ggb, arg));
+  return `(${argStrs[0]},${argStrs[1]})`;
+};
 
-export const register = (
-  mod: { Point: SpecConstructible<SkGgbPointCtorSpec, SkGgbPoint> },
-  appApi: AppApi
-) => {
+const kCtorSignatures: Array<SignatureSpec> = [
+  {
+    argTypes: ["either-number", "either-number"],
+    ggbCommand: makeCoordinatesCommand,
+  },
+  {
+    argTypes: ["ggb-object"],
+    errorMessage: (ggb, pyArgs) => {
+      const objArg = pyArgs[0] as SkGgbObject;
+      return (
+        "Point(object, parameter): could not find arbitrary point" +
+        ` along "${ggb.getObjectType(objArg.$ggbLabel)}" object`
+      );
+    },
+  },
+  {
+    argTypes: ["ggb-object", "either-number"],
+    errorMessage: (ggb, pyArgs) => {
+      const objArg = pyArgs[0] as SkGgbObject;
+      return (
+        "Point(object, parameter): could not find point" +
+        ` along "${ggb.getObjectType(objArg.$ggbLabel)}" object`
+      );
+    },
+  },
+];
+
+export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
   const skApi = appApi.sk;
 
   const cls = Sk.abstr.buildNativeClass("Point", {
-    constructor: function Point(this: SkGgbPoint, spec: SkGgbPointCtorSpec) {
-      const setLabelArgs = setGgbLabelFromArgs(ggb, this, "Point");
-      const setLabelCmd = setGgbLabelFromCmd(ggb, this);
-
-      switch (spec.kind) {
-        case "wrap-existing": {
-          this.$ggbLabel = spec.label;
-          break;
-        }
-        case "coordinates": {
-          setLabelCmd(`(${spec.x}, ${spec.y})`);
-          break;
-        }
-        case "arbitrary-on-object": {
-          setLabelArgs([spec.obj]);
-          throwIfLabelNull(
-            this.$ggbLabel,
-            "Point(object): could not find arbitrary point" +
-              ` along "${ggb.ggbType(spec.obj)}" object`
-          );
-          break;
-        }
-        case "object-parameter": {
-          // Handle a null return value from evalCmd() manually, to give
-          // a more helpful error message.
-          setLabelArgs([spec.p, ggb.numberValueOrLabel(spec.t)], {
-            allowNullLabel: true,
-          });
-          throwIfLabelNull(
-            this.$ggbLabel,
-            "Point(object, parameter): could not find point" +
-              ` along "${ggb.ggbType(spec.p)}" object`
-          );
-          break;
-        }
-        default:
-          throwBadSpecKind("Point", spec);
-      }
+    constructor: function Point(this: SkGgbPoint, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
 
       // TODO: Would be cleaner to avoid making a new dependent Number
       // if a passed-in coord was already a Number.
@@ -104,41 +79,10 @@ export const register = (
     },
     slots: {
       tp$new(args, kwargs) {
-        const badArgsError = new Sk.builtin.TypeError(
-          "Point() arguments must be" +
-            " (x_coord, y_coord) or (object, parameter)"
+        return withPropertiesFromNameValuePairs(
+          constructIfMatching(appApi.ggb, kCtorSignatures, "Point", args, cls),
+          kwargs
         );
-
-        const make = (spec: SkGgbPointCtorSpec) =>
-          withPropertiesFromNameValuePairs(new mod.Point(spec), kwargs);
-
-        switch (args.length) {
-          case 1: {
-            if (ggb.isGgbObject(args[0])) {
-              const obj = args[0].$ggbLabel;
-              return make({ kind: "arbitrary-on-object", obj });
-            }
-
-            throw badArgsError;
-          }
-          case 2: {
-            if (args.every(ggb.isPythonOrGgbNumber)) {
-              const x = ggb.numberValueOrLabel(args[0]);
-              const y = ggb.numberValueOrLabel(args[1]);
-              return make({ kind: "coordinates", x, y });
-            }
-
-            if (ggb.isGgbObject(args[0]) && ggb.isPythonOrGgbNumber(args[1])) {
-              const p = args[0].$ggbLabel;
-              const t = args[1];
-              return make({ kind: "object-parameter", p, t });
-            }
-
-            throw badArgsError;
-          }
-          default:
-            throw badArgsError;
-        }
       },
       tp$str(this: SkGgbPoint) {
         return new Sk.builtin.str(`(${this.$xCoord()}, ${this.$yCoord()})`);
