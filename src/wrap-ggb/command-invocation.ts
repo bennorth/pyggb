@@ -379,6 +379,7 @@ function wrapInstanceOrListFun(ggb: GgbApi) {
     const returnsMultiple = evalInfo.matchedSpec.returnsMultiple;
 
     if (returnsMultiple === undefined) {
+      verifyExactlyOneLabel(labelsStr, evalInfo.commandName);
       return wrapExistingGgbObject(ggb, labelsStr);
     }
 
