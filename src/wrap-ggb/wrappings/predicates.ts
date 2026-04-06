@@ -1,6 +1,9 @@
 import { RegisterFun } from "../../shared/appApi";
 import { augmentedGgbApi, AugmentedGgbApi } from "../shared";
-import { SkulptApi } from "../../shared/vendor-types/skulptapi";
+import {
+  SkJavaScriptFunction,
+  SkulptApi,
+} from "../../shared/vendor-types/skulptapi";
 import { GgbObjectType } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
@@ -12,8 +15,8 @@ export const register: RegisterFun = (mod, appApi) => {
     ggbCommand: string,
     requiredNArgs: number,
     requiredArgGgbType: GgbObjectType | undefined
-  ) =>
-    new Sk.builtin.func((...args) => {
+  ) => {
+    let func: SkJavaScriptFunction = (...args) => {
       const requiredArgsHelp =
         "(" +
         Array.from({ length: requiredNArgs })
@@ -40,7 +43,12 @@ export const register: RegisterFun = (mod, appApi) => {
       }
 
       return ggb.existingFromCmdAndGgbArgs(ggbCommand, args);
-    });
+    };
+
+    (func as any).co_name = new Sk.builtin.str(ggbCommand);
+
+    return new Sk.builtin.func(func);
+  };
 
   mod.AreCollinear = predicateFun("AreCollinear", 3, "point");
   mod.AreConcurrent = predicateFun("AreConcurrent", 3, "line");

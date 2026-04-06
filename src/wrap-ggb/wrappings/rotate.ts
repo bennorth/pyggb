@@ -10,7 +10,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.Rotate = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "Rotate", args)
-  );
+  mod.Rotate = new Sk.builtin.func(function Rotate(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "Rotate", args);
+  });
 };

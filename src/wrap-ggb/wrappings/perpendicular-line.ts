@@ -9,7 +9,9 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.PerpendicularLine = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "PerpendicularLine", args)
-  );
+  mod.PerpendicularLine = new Sk.builtin.func(function PerpendicularLine(
+    ...args
+  ) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "PerpendicularLine", args);
+  });
 };

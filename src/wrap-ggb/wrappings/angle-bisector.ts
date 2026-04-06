@@ -10,7 +10,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.AngleBisector = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "AngleBisector", args)
-  );
+  mod.AngleBisector = new Sk.builtin.func(function AngleBisector(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "AngleBisector", args);
+  });
 };

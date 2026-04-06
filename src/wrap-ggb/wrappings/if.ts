@@ -7,7 +7,7 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 export const register: RegisterFun = (mod, appApi) => {
   const ggb = augmentedGgbApi(appApi.ggb);
 
-  const fun = new Sk.builtin.func((...args) => {
+  mod.If = new Sk.builtin.func(function If(...args) {
     // TODO: Allow literals as well?
     if (!ggb.everyElementIsGgbObject(args)) {
       console.error(args);
@@ -19,6 +19,4 @@ export const register: RegisterFun = (mod, appApi) => {
     const label = ggb.evalCmd(ggbCmd);
     return ggb.wrapExistingGgbObject(label);
   });
-
-  mod.If = fun;
 };

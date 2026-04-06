@@ -61,7 +61,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.TriangleCenter = new Sk.builtin.func((...args) => {
+  mod.TriangleCenter = new Sk.builtin.func(function TriangleCenter(...args) {
     const ggb = appApi.ggb;
     const augGgb = augmentedGgbApi(ggb);
 

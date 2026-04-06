@@ -11,7 +11,7 @@ const badArgsError = new Sk.builtin.TypeError(
 export const register: RegisterFun = (mod, appApi) => {
   const ggb: AugmentedGgbApi = augmentedGgbApi(appApi.ggb);
 
-  const fun = new Sk.builtin.func((...args) => {
+  mod.Distance = new Sk.builtin.func(function Distance(...args) {
     if (args.length !== 2 || !ggb.everyElementIsGgbObject(args)) {
       throw badArgsError;
     }
@@ -27,6 +27,4 @@ export const register: RegisterFun = (mod, appApi) => {
 
     return ggb.wrapExistingGgbObject(mNumber);
   });
-
-  mod.Distance = fun;
 };

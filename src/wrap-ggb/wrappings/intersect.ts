@@ -19,9 +19,9 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.Intersect = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "Intersect", args)
-  );
+  mod.Intersect = new Sk.builtin.func(function Intersect(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "Intersect", args);
+  });
 
   // TODO: Will we always get Points back?  Assert this?  Do we need to
   // distinguish between free and derived points?  What happens if when we

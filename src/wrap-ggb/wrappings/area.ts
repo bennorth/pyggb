@@ -11,7 +11,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.Area = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "Area", args)
-  );
+  mod.Area = new Sk.builtin.func(function Area(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "Area", args);
+  });
 };

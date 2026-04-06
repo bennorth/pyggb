@@ -10,7 +10,7 @@ const kSignatures: Array<SignatureSpec> = [
 ];
 
 export const register: RegisterFun = (mod, appApi) => {
-  mod.Perimeter = new Sk.builtin.func((...args) =>
-    wrapIfMatching(appApi.ggb, kSignatures, "Perimeter", args)
-  );
+  mod.Perimeter = new Sk.builtin.func(function Perimeter(...args) {
+    return wrapIfMatching(appApi.ggb, kSignatures, "Perimeter", args);
+  });
 };
