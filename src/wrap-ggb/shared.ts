@@ -91,11 +91,13 @@ function _ggbType(
  *
  * * If `requiredType` is omitted, there is no further requirement.
  *
- * * If the given `requiredType` is a string, then `obj` must be of that
- *   GeoGebra type (for example, `"circle"`).
+ * * If the given `requiredType` is a string (one of the disjuncts of
+ *   GgbObjectType), then `obj` must be of that GeoGebra type (for
+ *   example, `"circle"`).
  *
- * * If the given `requiredType` is an array of strings, then `obj`'s
- *   GeoGebra type must be one of those strings.
+ * * If the given `requiredType` is an array of strings (each one a
+ *   disjunct of GgbObjectType), then `obj`'s GeoGebra type must be one
+ *   of those strings.
  *
  * The given `ggbApi` is used to get the object's GeoGebra type.
  * */
@@ -185,11 +187,12 @@ export const isSingletonOfEmpty = (xs: Array<string>) =>
  * Python number, return a literal string representation.  If `x` is not
  * one of those types, throw the given `errorIfWrongType` Skulpt object
  * (typically an `Sk.builtin.RuntimeError` or `Sk.builtin.TypeError`).
- * Supply `requiredGgbType` as a string to specify that `x`, if a
- * GeoGebra object, must be of a particular GeoGebra type, e.g.,
- * `"numeric"`. Supply `requiredGgbType` as an array of strings to
- * specify that `x`, if a GeoGebra object, must be of one of those
- * particular GeoGebra types, e.g., `["point", "line"]`.
+ * Supply `requiredGgbType` as a string (one of the disjuncts of
+ * GgbObjectType) to specify that `x`, if a GeoGebra object, must be of
+ * a particular GeoGebra type, e.g., `"numeric"`. Supply
+ * `requiredGgbType` as an array of strings to specify that `x`, if a
+ * GeoGebra object, must be of one of those particular GeoGebra types,
+ * e.g., `["point", "line"]`.
  * */
 export const argumentString = (
   ggbApi: GgbApi,
