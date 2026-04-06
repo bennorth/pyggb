@@ -197,6 +197,7 @@ export const register = (
       ...labelGetSets(ggb.sharedGetSets),
       _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
+      _ggb_exists: ggb.sharedGetSets._ggb_exists,
     },
   });
 

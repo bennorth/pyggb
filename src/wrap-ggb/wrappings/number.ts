@@ -70,6 +70,7 @@ export const register: RegisterFun = (mod, appApi) => {
       ...ggb.freeCopyMethodsSlice,
     },
     getsets: {
+      is_independent: ggb.sharedGetSets.is_independent,
       value: ggb.sharedGetSets.value,
       _ggb_type: ggb.sharedGetSets._ggb_type,
     },

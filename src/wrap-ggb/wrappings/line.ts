@@ -84,6 +84,7 @@ export const register: RegisterFun = (mod, appApi) => {
       ...ggb.freeCopyMethodsSlice,
     },
     getsets: {
+      is_independent: ggb.sharedGetSets.is_independent,
       is_visible: ggb.sharedGetSets.is_visible,
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
@@ -92,7 +93,6 @@ export const register: RegisterFun = (mod, appApi) => {
       ...labelGetSets(ggb.sharedGetSets),
       _ggb_label: ggb.sharedGetSets._ggb_label,
       _ggb_type: ggb.sharedGetSets._ggb_type,
-      _ggb_exists: ggb.sharedGetSets._ggb_exists,
     },
   });
 

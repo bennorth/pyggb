@@ -93,8 +93,8 @@ export const register: RegisterFun = (mod, appApi) => {
     getsets: {
       x: ggb.sharedGetSets.x,
       y: ggb.sharedGetSets.y,
-      is_visible: ggb.sharedGetSets.is_visible,
       is_independent: ggb.sharedGetSets.is_independent,
+      is_visible: ggb.sharedGetSets.is_visible,
       color: ggb.sharedGetSets.color,
       color_floats: ggb.sharedGetSets.color_floats,
       line_thickness: ggb.sharedGetSets.line_thickness,

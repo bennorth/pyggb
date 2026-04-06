@@ -60,6 +60,7 @@ export const register: RegisterFun = (mod, appApi) => {
       ...ggb.freeCopyMethodsSlice,
     },
     getsets: {
+      is_independent: ggb.sharedGetSets.is_independent,
       value: {
         $get(this: SkGgbBoolean) {
           return new Sk.builtin.bool(ggb.getValue(this.$ggbLabel));
