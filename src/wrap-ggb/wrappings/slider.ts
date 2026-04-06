@@ -1,7 +1,6 @@
 import { RegisterFun } from "../../shared/appApi";
 import {
   augmentedGgbApi,
-  WrapExistingCtorSpec,
   SkGgbObject,
   AugmentedGgbApi,
   strOfNumber,
@@ -18,21 +17,6 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface SkGgbSlider extends SkGgbObject {}
-
-type SkGgbSliderCtorSpec =
-  | WrapExistingCtorSpec
-  | {
-      kind: "new";
-      min: number;
-      max: number;
-      increment: number;
-      speed: number;
-      width: number;
-      isAngle: boolean;
-      isHorizontal: boolean;
-      isAnimating: boolean;
-      isRandom: boolean;
-    };
 
 // TODO: Tidy up these keyword-handling functions and move them to
 // shared.
@@ -81,29 +65,8 @@ export const register: RegisterFun = (mod, appApi) => {
   const skApi = appApi.sk;
 
   const cls = Sk.abstr.buildNativeClass("Slider", {
-    constructor: function Slider(this: SkGgbSlider, spec: SkGgbSliderCtorSpec) {
-      // TODO: This is messy; tidy up:
-      if (spec.kind === "wrap-existing") {
-        this.$ggbLabel = spec.label;
-        return;
-      }
-
-      const ggbArgs = [
-        strOfNumber(spec.min),
-        strOfNumber(spec.max),
-        strOfNumber(spec.increment),
-        strOfNumber(spec.speed),
-        strOfNumber(spec.width),
-        strOfBool(spec.isAngle),
-        strOfBool(spec.isHorizontal),
-        strOfBool(spec.isAnimating),
-        strOfBool(spec.isRandom),
-      ].join(",");
-
-      const ggbCmd = `Slider(${ggbArgs})`;
-      const lbl = ggb.evalCmd(ggbCmd);
-      this.$ggbLabel = lbl;
-
+    constructor: function Slider(this: SkGgbSlider, ggbLabel: string) {
+      this.$ggbLabel = ggbLabel;
       this.$updateHandlers = [];
       ggb.registerObjectUpdateListener(this.$ggbLabel, () =>
         this.$fireUpdateEvents()
@@ -119,19 +82,22 @@ export const register: RegisterFun = (mod, appApi) => {
         switch (args.length) {
           case 2: {
             if (args.every(Sk.builtin.checkNumber)) {
-              const spec = {
-                min: args[0].v,
-                max: args[1].v,
-                increment: kwNumber(kwargs, "increment", 0.1),
-                speed: kwNumber(kwargs, "speed", 1.0),
-                width: kwNumber(kwargs, "width", 100),
-                isAngle: kwBoolean(kwargs, "isAngle", false),
-                isHorizontal: kwBoolean(kwargs, "isHorizontal", true),
-                isAnimating: kwBoolean(kwargs, "isAnimating", false),
-                isRandom: kwBoolean(kwargs, "isRandom", false),
-              };
+              const ggbArgs = [
+                strOfNumber(args[0].v),
+                strOfNumber(args[1].v),
+                strOfNumber(kwNumber(kwargs, "increment", 0.1)),
+                strOfNumber(kwNumber(kwargs, "speed", 1.0)),
+                strOfNumber(kwNumber(kwargs, "width", 100)),
+                strOfBool(kwBoolean(kwargs, "isAngle", false)),
+                strOfBool(kwBoolean(kwargs, "isHorizontal", true)),
+                strOfBool(kwBoolean(kwargs, "isAnimating", false)),
+                strOfBool(kwBoolean(kwargs, "isRandom", false)),
+              ].join(",");
 
-              return new mod.Slider(spec);
+              const ggbCmd = `Slider(${ggbArgs})`;
+              const lbl = ggb.evalCmd(ggbCmd);
+
+              return new mod.Slider(lbl);
             }
 
             throw badArgsError;
@@ -170,6 +136,7 @@ export const register: RegisterFun = (mod, appApi) => {
       value: ggb.sharedGetSets.value,
       ...labelGetSets(ggb.sharedGetSets),
       _ggb_type: ggb.sharedGetSets._ggb_type,
+      _ggb_label: ggb.sharedGetSets._ggb_label,
     },
   });
 
