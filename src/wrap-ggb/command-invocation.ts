@@ -316,6 +316,16 @@ function objectIfMatching(
   return objectFromEvalInfo(evalInfo);
 }
 
+function verifyExactlyOneLabel(labelsStr: string, commandName: string) {
+  const labels = labelsStr.split(",");
+  const nLabels = labelsStr === "" ? 0 : labels.length;
+
+  if (nLabels !== 1)
+    throw new Sk.builtin.RuntimeError(
+      `expecting one result from ${commandName}() but got ${nLabels}`
+    );
+}
+
 ////////////////////////////////////////////////////////////////////////
 // Function to deliberately construct a new SkGgbObject.
 
@@ -339,12 +349,9 @@ function constructInstanceFun(nativeClass: {
     const labelsStr = evalInfo.maybeLabels;
     const labels = labelsStr.split(",");
 
-    const nLabels = labelsStr === "" ? 0 : labels.length;
-    if (nLabels !== 1 && !takeFirst)
-      throw new Sk.builtin.RuntimeError(
-        `expecting one result from ${evalInfo.commandName}()` +
-          ` but got ${nLabels}`
-      );
+    if (!takeFirst) {
+      verifyExactlyOneLabel(labelsStr, evalInfo.commandName);
+    }
 
     const label = takeFirst ? labels[0] : labelsStr;
     return new nativeClass(label);
@@ -372,6 +379,7 @@ function wrapInstanceOrListFun(ggb: GgbApi) {
     const returnsMultiple = evalInfo.matchedSpec.returnsMultiple;
 
     if (returnsMultiple === undefined) {
+      verifyExactlyOneLabel(labelsStr, evalInfo.commandName);
       return wrapExistingGgbObject(ggb, labelsStr);
     }
 
