@@ -78,7 +78,7 @@ Other objects
 .. toctree::
    :maxdepth: 1
 
-   classes/function-graph
    classes/boolean
-   classes/number
+   classes/function-graph
    classes/list
+   classes/number
