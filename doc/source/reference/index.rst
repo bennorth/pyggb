@@ -7,13 +7,13 @@ Geometric objects
 .. toctree::
    :maxdepth: 1
 
-   classes/point
+   classes/angle
+   classes/arc
    classes/circle
    classes/ellipse
-   classes/arc
-   classes/angle
    classes/line
    classes/parabola
+   classes/point
    classes/polygon
    classes/segment
    classes/vector
