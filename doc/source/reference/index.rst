@@ -35,21 +35,6 @@ Functions
    :maxdepth: 1
 
    functions/angle-bisector
-   functions/midpoint
-   functions/perpendicular-bisector
-   functions/perpendicular-line
-   functions/tangent
-   functions/distance
-   functions/circumference
-   functions/perimeter
-   functions/area
-   functions/intersect
-   functions/number-of-objects
-   functions/rotate
-   functions/centroid
-   functions/incircle
-   functions/zoom-in
-   functions/if
    functions/are-collinear
    functions/are-concurrent
    functions/are-concyclic
@@ -57,9 +42,24 @@ Functions
    functions/are-equal
    functions/are-parallel
    functions/are-perpendicular
-   functions/triangle-center
-   functions/misc
+   functions/area
+   functions/centroid
+   functions/circumference
+   functions/distance
    functions/eval-command
+   functions/if
+   functions/incircle
+   functions/intersect
+   functions/midpoint
+   functions/misc
+   functions/number-of-objects
+   functions/perimeter
+   functions/perpendicular-bisector
+   functions/perpendicular-line
+   functions/rotate
+   functions/tangent
+   functions/triangle-center
+   functions/zoom-in
 
 
 Working with geometric objects
