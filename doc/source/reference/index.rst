@@ -11,6 +11,7 @@ Geometric objects
    classes/arc
    classes/circle
    classes/ellipse
+   classes/function-graph
    classes/line
    classes/parabola
    classes/point
@@ -79,6 +80,5 @@ Other objects
    :maxdepth: 1
 
    classes/boolean
-   classes/function-graph
    classes/list
    classes/number
