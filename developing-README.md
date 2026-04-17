@@ -50,6 +50,16 @@ This requires `poetry`; the script will point you to installation docs
 if needed.
 
 
+## End-to-end testing
+
+This is done with Cypress.  With the development server running, you
+can start the Cypress interface with
+
+``` shell
+npx cypress open
+```
+
+
 ## Release process
 
 For deploying to `github.io`, assuming a git worktree `./pages/`
