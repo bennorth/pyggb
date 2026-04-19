@@ -48,6 +48,7 @@ Functions
    functions/circumference
    functions/distance
    functions/eval-command
+   functions/fit-poly
    functions/if
    functions/incircle
    functions/intersect

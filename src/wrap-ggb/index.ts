@@ -4,6 +4,7 @@ import { register as registerCircle } from "./wrappings/circle";
 import { register as registerEllipse } from "./wrappings/ellipse";
 import { register as registerAngle } from "./wrappings/angle";
 import { register as registerArc } from "./wrappings/arc";
+import { register as registerFitPoly } from "./wrappings/fit-poly";
 import { register as registerLine } from "./wrappings/line";
 import { register as registerList } from "./wrappings/list";
 import { register as registerNumber } from "./wrappings/number";
@@ -91,6 +92,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerPredicates(mod, appApi);
   registerTangent(mod, appApi);
   registerTriangleCenter(mod, appApi);
+  registerFitPoly(mod, appApi);
 
   registerClearConsole(mod, appApi);
   registerEvalCommand(mod, appApi);
