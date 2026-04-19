@@ -45,6 +45,14 @@ export const ggbArgumentStrsFromIterable = (
   return xsArray.map((x) => ggbArgumentStr(ggb, x));
 };
 
+/** Convert each element of the Python iterable `xs` into a string
+ * suitable for passing to GeoGebra, and wrap them all in `{}`, giving a
+ * string which GeoGebra will interpret as a (GeoGebra) list. */
+export const ggbListStrFromIterable = (ggb: GgbApi, xs: SkObject): string => {
+  const argStrs = ggbArgumentStrsFromIterable(ggb, xs);
+  return `{${argStrs.join(",")}}`;
+};
+
 const cmdWithArgs = (
   ggb: GgbApi,
   ggbCommandName: string,
