@@ -4,7 +4,7 @@ import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 import {
   constructIfMatching,
-  ggbArgumentStr,
+  ggbListStrFromIterable,
   SignatureSpec,
   throwIfAnyKeywordArgs,
 } from "../command-invocation";
@@ -18,12 +18,8 @@ interface SkGgbList extends SkGgbObject {
 
 const makeEmptyCommand = (_ggb: GgbApi, _args: Array<SkObject>) => "{}";
 
-const makeIterableCommand = (ggb: GgbApi, args: Array<SkObject>) => {
-  const elements = Sk.misceval.arrayFromIterable(args[0]);
-  const elementLabels = elements.map((elt) => ggbArgumentStr(ggb, elt));
-  const ggbCmd = `{${elementLabels.join(",")}}`;
-  return ggbCmd;
-};
+const makeIterableCommand = (ggb: GgbApi, args: Array<SkObject>) =>
+  ggbListStrFromIterable(ggb, args[0]);
 
 const kCommandName = "List";
 const kCtorSignatures: Array<SignatureSpec> = [
