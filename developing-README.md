@@ -142,12 +142,6 @@ bundle.
 
 ## Future work
 
-### Wrap the `FitPoly()` command
-
-Generating the command is fairly straightforward, and produces the
-correct GeoGebra object.  However, what you get back is a `function`
-object, which is not currently wrapped.
-
 ### Investigate inheritance
 
 Is it worth providing common functionality (like setting the colour of
