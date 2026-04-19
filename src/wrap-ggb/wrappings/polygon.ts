@@ -11,7 +11,7 @@ import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
 import {
   constructIfMatching,
-  ggbArgumentStr,
+  ggbArgumentStrsFromIterable,
   SignatureSpec,
 } from "../command-invocation";
 import { GgbApi } from "../../shared/vendor-types/ggbapi";
@@ -26,8 +26,7 @@ declare var Sk: SkulptApi; // eslint-disable-line no-var
 interface SkGgbPolygon extends SkGgbObject {}
 
 const makePointIterableCommand = (ggb: GgbApi, args: Array<SkObject>) => {
-  const points = Sk.misceval.arrayFromIterable(args[0]);
-  const pointLbls = points.map((p) => ggbArgumentStr(ggb, p));
+  const pointLbls = ggbArgumentStrsFromIterable(ggb, args[0]);
   return assembledCommand("Polygon", pointLbls);
 };
 
