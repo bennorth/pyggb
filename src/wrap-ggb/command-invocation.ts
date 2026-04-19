@@ -34,6 +34,17 @@ export const ggbArgumentStr = (ggb: GgbApi, x: SkObject): string => {
   );
 };
 
+/** Convert each element of the Python iterable `xs` into a string
+ * suitable for use as an argument in a GeoGebra command.  Each such
+ * string can be a literal number or the label of a GeoGebra object. */
+export const ggbArgumentStrsFromIterable = (
+  ggb: GgbApi,
+  xs: SkObject
+): Array<string> => {
+  const xsArray = Sk.misceval.arrayFromIterable(xs);
+  return xsArray.map((x) => ggbArgumentStr(ggb, x));
+};
+
 const cmdWithArgs = (
   ggb: GgbApi,
   ggbCommandName: string,
