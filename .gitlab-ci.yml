@@ -11,45 +11,45 @@ stages:
   - build
   - release
 
-build-examples:
-  stage: build-dependencies
-  image: python:3.13-alpine
-  script:
-    - python3 tools/build_examples_index.py ./public/examples > ./public/examples/index.json
-  artifacts:
-    paths:
-      - public/examples/index.json
+# build-examples:
+#   stage: build-dependencies
+#   image: python:3.13-alpine
+#   script:
+#     - python3 tools/build_examples_index.py ./public/examples > ./public/examples/index.json
+#   artifacts:
+#     paths:
+#       - public/examples/index.json
 
-build-docs:
-  stage: build-dependencies
-  image: python:3.13-alpine
-  before_script:
-    - apk --no-cache add curl make
-  script:
-    - curl -sSL https://install.python-poetry.org | python3 -
-    - POETRY=$HOME/.local/bin/poetry
-    - ( cd doc && $POETRY install && $POETRY run make html )
-    - mv doc/build/html public/doc
-  artifacts:
-    paths:
-      - public/doc/
+# build-docs:
+#   stage: build-dependencies
+#   image: python:3.13-alpine
+#   before_script:
+#     - apk --no-cache add curl make
+#   script:
+#     - curl -sSL https://install.python-poetry.org | python3 -
+#     - POETRY=$HOME/.local/bin/poetry
+#     - ( cd doc && $POETRY install && $POETRY run make html )
+#     - mv doc/build/html public/doc
+#   artifacts:
+#     paths:
+#       - public/doc/
 
-build:
-  stage: build
-  image: node:24-alpine
-  before_script:
-    - npm clean-install
-  script:
-    - export VITE_DOCS_BASE_URL_WITHIN_APP=/doc
-    - npx vite build --base=/${PYGGB_HOSTED_BASE_PATH}/
-  artifacts:
-    paths:
-      - dist/
+# build:
+#   stage: build
+#   image: node:24-alpine
+#   before_script:
+#     - npm clean-install
+#   script:
+#     - export VITE_DOCS_BASE_URL_WITHIN_APP=/doc
+#     - npx vite build --base=/${PYGGB_HOSTED_BASE_PATH}/
+#   artifacts:
+#     paths:
+#       - dist/
 
 publish:
   stage: release
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  image: registry.git.geogebra.org/infra/aws-cli:latest
   script:
-    - aws s3 sync ./dist s3://${S3_STATIC_BUCKET}/${PYGGB_HOSTED_BASE_PATH}
+    - aws s3 ls
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
