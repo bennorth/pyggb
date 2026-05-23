@@ -7,12 +7,14 @@ export const specs = [
       k3, k4 = AngleBisector(k2, k1)
 
       k5 = Line(0, 3)
-      print('y=3', Intersect(k5, k3, 1))
+      p1 = Intersect(k5, k3, 1)
+      print('y=3', f"({p1.x:.4f}, {p1.y:.4f})")
 
       k6 = Line(0, 5)
-      print('y=5', Intersect(k6, k4, 1))
+      p2 = Intersect(k6, k4, 1)
+      print('y=5', f"({p2.x:.4f}, {p2.y:.4f})")
     `,
-    expOutputs: ["y=3 (5, 3)", "y=5 (-3, 5)"],
+    expOutputs: ["y=3 (5.0000, 3.0000)", "y=5 (-3.0000, 5.0000)"],
   },
   {
     label: "AngleBisector(point, point, point)",
