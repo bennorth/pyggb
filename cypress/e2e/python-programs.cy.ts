@@ -46,6 +46,7 @@ const getPythonPrograms = async () => {
     import("../python-programs/polygon"),
     import("../python-programs/predicates"),
     import("../python-programs/properties"),
+    import("../python-programs/rigid-polygon"),
     import("../python-programs/rotate"),
     import("../python-programs/segment"),
     import("../python-programs/slider"),
