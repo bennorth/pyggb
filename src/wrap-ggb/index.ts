@@ -13,6 +13,7 @@ import { register as registerVector } from "./wrappings/vector";
 import { register as registerSegment } from "./wrappings/segment";
 import { register as registerParabola } from "./wrappings/parabola";
 import { register as registerPolygon } from "./wrappings/polygon";
+import { register as registerRigidPolygon } from "./wrappings/rigid-polygon";
 import { register as registerSlider } from "./wrappings/slider";
 import { register as registerRotate } from "./wrappings/rotate";
 import { register as registerFunction } from "./wrappings/function";
@@ -71,6 +72,7 @@ globalThis.$skulptGgbModule = (appApi: AppApi) => {
   registerSegment(mod, appApi);
   registerParabola(mod, appApi);
   registerPolygon(mod, appApi);
+  registerRigidPolygon(mod, appApi);
   registerSlider(mod, appApi);
   registerRotate(mod, appApi);
   registerFunction(mod, appApi);

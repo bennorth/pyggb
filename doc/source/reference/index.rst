@@ -58,6 +58,7 @@ Functions
    functions/perimeter
    functions/perpendicular-bisector
    functions/perpendicular-line
+   functions/rigid-polygon
    functions/rotate
    functions/tangent
    functions/triangle-center
