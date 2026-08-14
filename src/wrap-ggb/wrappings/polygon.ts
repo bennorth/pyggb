@@ -6,6 +6,7 @@ import {
   AugmentedGgbApi,
   assembledCommand,
   labelGetSets,
+  kPolygonTypeAndSubtypes,
 } from "../shared";
 import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { registerObjectType } from "../type-registry";
@@ -102,5 +103,7 @@ export const register: RegisterFun = (mod, appApi) => {
   });
 
   mod.Polygon = cls;
-  registerObjectType("polygon", cls);
+  kPolygonTypeAndSubtypes.forEach((typeName) => {
+    registerObjectType(typeName, cls);
+  });
 };
