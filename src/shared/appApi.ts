@@ -40,10 +40,10 @@ globalThis.$appApiHandoverQueue = ((): AppApiHandoverQueue => {
   };
 
   const dequeue = (): AppApi => {
-    const api = queue.shift();
-    if (api == null) throw new Error("api queue empty!");
+    const appApi = queue.shift();
+    if (appApi == null) throw new Error("api queue empty!");
 
-    return api;
+    return appApi;
   };
 
   return { enqueue, dequeue };
