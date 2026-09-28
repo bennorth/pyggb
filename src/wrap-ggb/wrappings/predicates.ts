@@ -16,7 +16,7 @@ export const register: RegisterFun = (mod, appApi) => {
     requiredNArgs: number,
     requiredArgGgbType: GgbObjectType | undefined
   ) => {
-    let func: SkJavaScriptFunction = (...args) => {
+    function func(...args: Array<SkObject>) {
       const requiredArgsHelp =
         "(" +
         Array.from({ length: requiredNArgs })
@@ -43,9 +43,9 @@ export const register: RegisterFun = (mod, appApi) => {
       }
 
       return ggb.existingFromCmdAndGgbArgs(ggbCommand, args);
-    };
+    }
 
-    (func as any).co_name = new Sk.builtin.str(ggbCommand);
+    func.co_name = new Sk.builtin.str(ggbCommand);
 
     return new Sk.builtin.func(func);
   };
