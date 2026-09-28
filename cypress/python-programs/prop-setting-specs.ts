@@ -1,4 +1,10 @@
-const propSettingSpecsLUT = new Map<string, any>(
+type PropSettingSpec = {
+  attrName: string;
+  setValue: string;
+  expValue: string;
+};
+
+const propSettingSpecsLUT = new Map<string, PropSettingSpec>(
   [
     {
       attrName: "opacity",
