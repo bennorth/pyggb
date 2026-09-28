@@ -1,9 +1,6 @@
 import { RegisterFun } from "../../shared/appApi";
 import { augmentedGgbApi, AugmentedGgbApi } from "../shared";
-import {
-  SkJavaScriptFunction,
-  SkulptApi,
-} from "../../shared/vendor-types/skulptapi";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 import { GgbObjectType } from "../../shared/vendor-types/ggbapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
