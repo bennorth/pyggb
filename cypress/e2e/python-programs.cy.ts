@@ -7,10 +7,12 @@ import {
 } from "./shared";
 
 // TODO (see also note at end):
+/*
 class ConstructionVerificationState {
   // List of things we expect to see, in an order which lets us refer back to
   // points when describing lines, say.
 }
+*/
 
 const getPythonPrograms = async () => {
   // Limitation of TypeScript and/or bundler and/or other moving parts
