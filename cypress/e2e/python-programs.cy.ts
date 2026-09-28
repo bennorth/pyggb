@@ -119,10 +119,15 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
     // Allow both of the following:
     //   "Thing() arguments must be ..."
     //   "Thing() argument must be..."
-    const regexp = new RegExp(
-      `^TypeError: ${clsName}\\(\\) arguments? must be`
-    );
-    cy.get(".ErrorReport .message").contains(regexp);
+    const regexp = /^TypeError: ([a-zA-Z]+)\(\) arguments? must be/;
+
+    cy.get(".ErrorReport .message")
+      .contains(regexp)
+      .invoke("text")
+      .should((text) => {
+        const match = text.match(regexp);
+        expect(match?.[1]).to.equal(clsName);
+      });
   };
 
   const assertRuntimeError =
