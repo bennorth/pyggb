@@ -7,7 +7,6 @@ variables:
   PYGGB_HOSTED_BASE_PATH: python
 
 stages:
-  - lint
   - build-dependencies
   - build
   - release
@@ -20,13 +19,6 @@ build-examples:
   artifacts:
     paths:
       - public/examples/index.json
-
-run-lint:
-  stage: lint
-  rules:
-    - when: always
-  script:
-    - npm run lint
 
 build-docs:
   stage: build-dependencies
@@ -48,8 +40,9 @@ build:
   before_script:
     - npm clean-install
   script:
+    - npm run lint
     - export VITE_DOCS_BASE_URL_WITHIN_APP=/doc
-    - npx vite build --base=/${PYGGB_HOSTED_BASE_PATH}/
+    - npx --no-install vite build --base=/${PYGGB_HOSTED_BASE_PATH}/
   artifacts:
     paths:
       - dist/
