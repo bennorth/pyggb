@@ -4,6 +4,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 import pluginSecurity from "eslint-plugin-security";
 export default defineConfig([
+  globalIgnores(["public/vendor/", "dist/", "pages/"]),
   {
     files: ["**/*.ts", "**/*.mts", "**/*.tsx"],
 
