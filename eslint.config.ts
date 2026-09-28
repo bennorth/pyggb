@@ -3,7 +3,8 @@ import eslintJs from "@eslint/js";
 import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 import pluginSecurity from "eslint-plugin-security";
-export default defineConfig({
+export default defineConfig([
+  {
   files: ["**/*.ts", "**/*.mts", "**/*.tsx"],
   // Extend recommended rule sets from:
   // 1. ESLint JS's recommended rules
@@ -45,4 +46,5 @@ export default defineConfig({
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "security/detect-object-injection": "off",
   },
-});
+  },
+]);
