@@ -132,10 +132,15 @@ describe("Handles bad constructor calls", optsNoIsolation, () => {
 
   const assertRuntimeError =
     (clsName: string, messageFragment: string) => () => {
-      const regexp = new RegExp(`^RuntimeError: ${clsName}\\([^)]*\\):`);
+      const regexp = /^RuntimeError: ([a-zA-Z]+)\([^)]*\):/;
       cy.get(".ErrorReport .message")
         .contains(regexp)
-        .contains(messageFragment);
+        .contains(messageFragment)
+        .invoke("text")
+        .should((text) => {
+          const match = text.match(regexp);
+          expect(match?.[1]).to.equal(clsName);
+        });
     };
 
   const simpleBadArgsSpec = (codeFragment: string): CodeWithErrorSpec => {
