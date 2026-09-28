@@ -35,7 +35,7 @@ function wrappedEvalFun(
     `${cmdName}() arguments must be (string)`
   );
 
-  let func: SkJavaScriptFunction = (...args) => {
+  function func(...args: Array<SkObject>) {
     if (args.length !== 1) throw badArgsError;
 
     const arg = args[0];
@@ -45,9 +45,9 @@ function wrappedEvalFun(
     if (evalResultStr == null) throw badResultError;
 
     return transformResultStr(ggb, evalResultStr);
-  };
+  }
 
-  (func as any).co_name = new Sk.builtin.str(cmdName);
+  func.co_name = new Sk.builtin.str(cmdName);
 
   return new Sk.builtin.func(func);
 }
