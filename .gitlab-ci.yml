@@ -40,8 +40,9 @@ build:
   before_script:
     - npm clean-install
   script:
+    - npm run lint
     - export VITE_DOCS_BASE_URL_WITHIN_APP=/doc
-    - npx vite build --base=/${PYGGB_HOSTED_BASE_PATH}/
+    - npx --no-install vite build --base=/${PYGGB_HOSTED_BASE_PATH}/
   artifacts:
     paths:
       - dist/

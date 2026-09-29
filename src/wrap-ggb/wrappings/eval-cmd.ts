@@ -1,10 +1,6 @@
 import { RegisterFun } from "../../shared/appApi";
 import { augmentedGgbApi, AugmentedGgbApi, labelIsValid } from "../shared";
-import {
-  SkJavaScriptFunction,
-  SkObject,
-  SkulptApi,
-} from "../../shared/vendor-types/skulptapi";
+import { SkObject, SkulptApi } from "../../shared/vendor-types/skulptapi";
 
 declare var Sk: SkulptApi; // eslint-disable-line no-var
 
@@ -35,7 +31,7 @@ function wrappedEvalFun(
     `${cmdName}() arguments must be (string)`
   );
 
-  let func: SkJavaScriptFunction = (...args) => {
+  function func(...args: Array<SkObject>) {
     if (args.length !== 1) throw badArgsError;
 
     const arg = args[0];
@@ -45,9 +41,9 @@ function wrappedEvalFun(
     if (evalResultStr == null) throw badResultError;
 
     return transformResultStr(ggb, evalResultStr);
-  };
+  }
 
-  (func as any).co_name = new Sk.builtin.str(cmdName);
+  func.co_name = new Sk.builtin.str(cmdName);
 
   return new Sk.builtin.func(func);
 }
